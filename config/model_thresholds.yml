@@ -1,0 +1,26 @@
+weather_thresholds:
+  wind_under_mph: 15
+  gust_under_mph: 25
+  heavy_wind_mph: 20
+  cold_temp_f: 35
+  hot_temp_f: 85
+  precip_flag_values:
+    - rain
+    - snow
+    - drizzle
+    - thunderstorm
+
+backtest:
+  default_odds: -110
+  min_edge_points: 2.5
+  test_rules:
+    - name: wind_15_under
+      side: under
+      wind_min_mph: 15
+    - name: gust_25_under
+      side: under
+      gust_min_mph: 25
+    - name: cold_wind_under
+      side: under
+      temp_max_f: 40
+      wind_min_mph: 12

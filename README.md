@@ -48,42 +48,18 @@ Then edit `.env` and add your CollegeFootballData key.
 
 ## Basic workflow
 
-### 1. Pull historical data
-
 ```bash
 python -m src.pull_historical_games
 python -m src.pull_historical_lines
 python -m src.pull_historical_weather
-```
-
-### 2. Build the modeling dataset
-
-```bash
 python -m src.build_dataset
-```
-
-### 3. Research weather signals
-
-```bash
 python -m src.research_weather_edges
-```
-
-### 4. Run simple backtests
-
-```bash
 python -m src.backtest_totals
-```
-
-### 5. Generate weekly report skeleton
-
-```bash
 python -m src.predict_week
 python -m src.report
 ```
 
 ## Core target variable
-
-The most important column is:
 
 ```text
 market_residual = actual_total_points - closing_total
@@ -121,7 +97,3 @@ Start simple and interpretable:
 - Use walk-forward validation by season.
 - Track closing-line value and ROI separately.
 - Treat parlays as experimental only.
-
-## Straight bets vs parlays
-
-The initial model focuses on straight totals. Parlays should only be considered after straight-bet edges are validated out-of-sample and correlation between legs is understood.

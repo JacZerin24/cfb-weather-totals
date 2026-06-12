@@ -1,0 +1,28 @@
+project:
+  name: cfb-weather-totals
+  timezone: America/Chicago
+
+data:
+  start_year: 2014
+  end_year: 2025
+  season_type: regular
+  raw_dir: data/raw
+  processed_dir: data/processed
+  outputs_dir: outputs
+
+cfbd:
+  base_url: https://api.collegefootballdata.com
+  preferred_line_providers:
+    - consensus
+    - DraftKings
+    - Bovada
+    - Caesars
+    - BetMGM
+
+modeling:
+  target: market_residual
+  min_games_for_group: 25
+
+weekly:
+  paper_tracking_only: true
+  run_day_note: Friday morning CT is the preferred forecast-update run.

@@ -1,0 +1,15 @@
+bankroll:
+  starting_bankroll: 500
+  unit_percent: 1.0
+  max_single_play_units: 1.0
+  max_weekly_risk_units: 5.0
+  paper_tracking_only: true
+
+sizing:
+  no_play_edge_points: 1.5
+  small_play_edge_points: 2.5
+  normal_play_edge_points: 4.0
+  strong_play_edge_points: 6.0
+  small_play_units: 0.25
+  normal_play_units: 0.50
+  strong_play_units: 1.00
