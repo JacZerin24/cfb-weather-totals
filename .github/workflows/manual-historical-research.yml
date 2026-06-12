@@ -1,0 +1,55 @@
+name: Manual Historical Research Run
+
+on:
+  workflow_dispatch:
+    inputs:
+      note:
+        description: Optional run note
+        required: false
+        default: preseason-test
+
+jobs:
+  historical-research:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Pull historical data and run research
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: |
+          python -m src.pull_historical_games
+          python -m src.pull_historical_lines
+          python -m src.pull_historical_weather
+          python -m src.build_dataset
+          python -m src.research_weather_edges
+          python -m src.backtest_totals
+          python -m src.predict_week
+          python -m src.report
+
+      - name: Upload data and outputs as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cfb-weather-totals-research-output
+          path: |
+            data/raw/*.csv
+            data/processed/*.csv
+            outputs/*
+
+      - name: Commit small output reports
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add outputs/
+          git commit -m "Update historical research outputs" || echo "No changes to commit"
+          git push
