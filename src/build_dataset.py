@@ -34,10 +34,6 @@ def pick_total(lines: pd.DataFrame, preferred: list[str]) -> pd.DataFrame:
     return best
 
 
-def first_existing(df: pd.DataFrame, candidates: list[str]) -> str | None:
-    return next((c for c in candidates if c in df.columns), None)
-
-
 def main() -> None:
     settings = get_settings()
     preferred = settings['cfbd']['preferred_line_providers']
@@ -56,6 +52,13 @@ def main() -> None:
         'startDate': 'start_date',
         'conferenceGame': 'conference_game',
         'neutralSite': 'neutral_site',
+        'homeClassification': 'home_classification',
+        'awayClassification': 'away_classification',
+        'homeConference': 'home_conference',
+        'awayConference': 'away_conference',
+        'homePregameElo': 'home_pregame_elo',
+        'awayPregameElo': 'away_pregame_elo',
+        'venueId': 'venue_id',
     })
     if 'game_id' not in games.columns:
         raise RuntimeError('Could not find game id column in games data.')
@@ -81,7 +84,15 @@ def main() -> None:
     if 'game_id' not in weather.columns:
         weather['game_id'] = np.nan
 
-    keep_game_cols = [c for c in ['game_id', 'season', 'week', 'season_type', 'start_date', 'home_team', 'away_team', 'venue', 'conference_game', 'neutral_site', 'actual_total_points'] if c in games.columns]
+    keep_game_cols = [c for c in [
+        'game_id', 'season', 'week', 'season_type', 'start_date',
+        'home_team', 'away_team', 'venue_id', 'venue',
+        'home_classification', 'away_classification',
+        'home_conference', 'away_conference',
+        'home_pregame_elo', 'away_pregame_elo',
+        'attendance', 'conference_game', 'neutral_site',
+        'actual_total_points',
+    ] if c in games.columns]
     dataset = games[keep_game_cols].merge(totals, on='game_id', how='left')
 
     weather_cols = [c for c in ['game_id', 'game_indoors', 'temperature_f', 'dewpoint_f', 'humidity', 'precipitation', 'snowfall', 'wind_direction_degrees', 'wind_mph', 'pressure', 'weather_condition_code', 'weather_condition'] if c in weather.columns]
