@@ -48,6 +48,7 @@ jobs:
           python -m src.build_dataset
           python -m src.research_weather_edges
           python -m src.backtest_totals
+          python -m src.deep_research
           python -m src.predict_week
           python -m src.report
 
