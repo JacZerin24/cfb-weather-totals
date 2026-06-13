@@ -46,6 +46,7 @@ jobs:
           python -m src.pull_historical_lines
           python -m src.pull_historical_weather
           python -m src.pull_team_season_stats
+          python -m src.pull_team_advanced_stats || echo "Advanced team stats unavailable; continuing."
           python -m src.build_team_features
           python -m src.build_dataset
           python -m src.research_weather_edges
