@@ -17,6 +17,14 @@ def csv_preview(path: Path, max_rows: int = 10) -> str:
     return df.head(max_rows).to_markdown(index=False)
 
 
+def append_markdown(lines: list[str], heading: str, path: Path, fallback: str) -> None:
+    lines.extend(['', heading, ''])
+    if path.exists():
+        lines.append(path.read_text(encoding='utf-8'))
+    else:
+        lines.append(fallback)
+
+
 def main() -> None:
     outputs = ensure_dir('outputs')
     generated = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
@@ -31,18 +39,20 @@ def main() -> None:
         '',
         csv_preview(ROOT / 'outputs/weekly_picks.csv'),
         '',
-        '## Backtest summary',
+        '## Starter backtest summary',
         '',
         csv_preview(ROOT / 'outputs/backtest_summary.csv'),
         '',
-        '## Research summary',
+        '## Walk-forward strategy summary',
         '',
+        csv_preview(ROOT / 'outputs/walk_forward_strategy_summary.csv'),
+        '',
+        '## Detailed rule summary',
+        '',
+        csv_preview(ROOT / 'outputs/rule_backtest_detailed.csv'),
     ]
-    research = ROOT / 'outputs/research_summary.md'
-    if research.exists():
-        lines.append(research.read_text(encoding='utf-8'))
-    else:
-        lines.append('_Research summary not generated yet._')
+    append_markdown(lines, '## Deep research summary', ROOT / 'outputs/deep_research_summary.md', '_Deep research summary not generated yet._')
+    append_markdown(lines, '## Starter research summary', ROOT / 'outputs/research_summary.md', '_Starter research summary not generated yet._')
     out = outputs / 'weekly_report.md'
     out.write_text('\n'.join(lines), encoding='utf-8')
     print(f'Wrote {out}')
