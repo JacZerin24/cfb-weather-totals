@@ -1,6 +1,6 @@
 # Weekly CFB Weather Totals Report
 
-Generated: 2026-06-13 01:17 UTC
+Generated: 2026-06-13 01:28 UTC
 
 > Paper tracking only. This report is not a guarantee of profit or betting advice.
 
@@ -20,12 +20,12 @@ Generated: 2026-06-13 01:17 UTC
 
 ## Walk-forward strategy summary
 
-| name                            | side   |   games |   graded |   wins |   losses |   pushes |   hit_rate |   hit_rate_minus_breakeven |   hit_rate_wilson_low |   hit_rate_wilson_high |   net_units_1u_each |   roi_per_1u |   avg_market_residual |   median_market_residual |   threshold_points | test_seasons   |   avg_abs_pred_edge |
-|:--------------------------------|:-------|--------:|---------:|-------:|---------:|---------:|-----------:|---------------------------:|----------------------:|-----------------------:|--------------------:|-------------:|----------------------:|-------------------------:|-------------------:|:---------------|--------------------:|
-| walk_forward_ridge_abs_edge_1.5 | model  |    3297 |     3273 |   1677 |     1596 |       24 |   0.512374 |                -0.0114356  |              0.495245 |               0.529474 |            -71.4545 |   -0.0218315 |             0.350318  |                     -0.5 |                1.5 | 2016-2025      |             3.00376 |
-| walk_forward_ridge_abs_edge_2.5 | model  |    1559 |     1549 |    769 |      780 |       10 |   0.496449 |                -0.0273602  |              0.471589 |               0.521327 |            -80.9091 |   -0.0522331 |            -0.0667094 |                     -1.5 |                2.5 | 2016-2025      |             4.23713 |
-| walk_forward_ridge_abs_edge_3.5 | model  |     824 |      817 |    405 |      412 |        7 |   0.495716 |                -0.0280935  |              0.461532 |               0.52994  |            -43.8182 |   -0.053633  |            -0.0788835 |                     -1.5 |                3.5 | 2016-2025      |             5.4051  |
-| walk_forward_ridge_abs_edge_5.0 | model  |     236 |      235 |    121 |      114 |        1 |   0.514894 |                -0.00891591 |              0.45127  |               0.578038 |             -4      |   -0.0170213 |            -2.07415   |                     -3.5 |                5   | 2016-2025      |             8.62501 |
+| name                                     | side   |   games |   graded |   wins |   losses |   pushes |   hit_rate |   hit_rate_minus_breakeven |   hit_rate_wilson_low |   hit_rate_wilson_high |   net_units_1u_each |   roi_per_1u |   avg_market_residual |   median_market_residual |   threshold_points | test_seasons   |   avg_abs_pred_edge |
+|:-----------------------------------------|:-------|--------:|---------:|-------:|---------:|---------:|-----------:|---------------------------:|----------------------:|-----------------------:|--------------------:|-------------:|----------------------:|-------------------------:|-------------------:|:---------------|--------------------:|
+| walk_forward_ridge_controls_abs_edge_1.5 | model  |    6426 |     6353 |   3231 |     3122 |       73 |   0.508579 |                 -0.0152309 |              0.496284 |               0.520863 |           -184.727  |   -0.0290772 |              0.405618 |                     -0.5 |                1.5 | 2016-2025      |             3.83267 |
+| walk_forward_ridge_controls_abs_edge_2.5 | model  |    4321 |     4267 |   2173 |     2094 |       54 |   0.509257 |                 -0.0145524 |              0.494256 |               0.524242 |           -118.545  |   -0.0277819 |              0.496991 |                      0   |                2.5 | 2016-2025      |             4.73651 |
+| walk_forward_ridge_controls_abs_edge_3.5 | model  |    2745 |     2709 |   1367 |     1342 |       36 |   0.504614 |                 -0.0191953 |              0.485793 |               0.523422 |            -99.2727 |   -0.0366455 |              0.579417 |                      0   |                3.5 | 2016-2025      |             5.73777 |
+| walk_forward_ridge_controls_abs_edge_5.0 | model  |    1355 |     1339 |    674 |      665 |       16 |   0.503361 |                 -0.0204488 |              0.476608 |               0.530094 |            -52.2727 |   -0.0390386 |              0.150185 |                     -1   |                5   | 2016-2025      |             7.34212 |
 
 ## Detailed rule summary
 
@@ -49,6 +49,7 @@ Target: `market_residual = actual_total_points - closing_total`.
 
 Games with totals used for analysis: 11,757
 Seasons covered: 2014-2025
+Prior-season team stat control columns available: 126
 
 ## Data quality by season
 
@@ -106,34 +107,35 @@ Seasons covered: 2014-2025
 | indoor_over                        | over   |     395 |      392 |    178 |      214 |        3 |   0.454082 |                -0.0697279  |              0.405477 |               0.503578 |           -52.1818  |  -0.133117   |             -0.198734 |                    -2    |
 | snow_any_under                     | under  |       1 |        1 |      0 |        1 |        0 |   0        |                -0.52381    |              0        |               0.793457 |            -1       |  -1          |             23.5      |                    23.5  |
 
-## Walk-forward model test
+## Walk-forward model test with controls
 
-| name                            | side   |   games |   graded |   wins |   losses |   pushes |   hit_rate |   hit_rate_minus_breakeven |   hit_rate_wilson_low |   hit_rate_wilson_high |   net_units_1u_each |   roi_per_1u |   avg_market_residual |   median_market_residual |   threshold_points | test_seasons   |   avg_abs_pred_edge |
-|:--------------------------------|:-------|--------:|---------:|-------:|---------:|---------:|-----------:|---------------------------:|----------------------:|-----------------------:|--------------------:|-------------:|----------------------:|-------------------------:|-------------------:|:---------------|--------------------:|
-| walk_forward_ridge_abs_edge_1.5 | model  |    3297 |     3273 |   1677 |     1596 |       24 |   0.512374 |                -0.0114356  |              0.495245 |               0.529474 |            -71.4545 |   -0.0218315 |             0.350318  |                     -0.5 |                1.5 | 2016-2025      |             3.00376 |
-| walk_forward_ridge_abs_edge_2.5 | model  |    1559 |     1549 |    769 |      780 |       10 |   0.496449 |                -0.0273602  |              0.471589 |               0.521327 |            -80.9091 |   -0.0522331 |            -0.0667094 |                     -1.5 |                2.5 | 2016-2025      |             4.23713 |
-| walk_forward_ridge_abs_edge_3.5 | model  |     824 |      817 |    405 |      412 |        7 |   0.495716 |                -0.0280935  |              0.461532 |               0.52994  |            -43.8182 |   -0.053633  |            -0.0788835 |                     -1.5 |                3.5 | 2016-2025      |             5.4051  |
-| walk_forward_ridge_abs_edge_5.0 | model  |     236 |      235 |    121 |      114 |        1 |   0.514894 |                -0.00891591 |              0.45127  |               0.578038 |             -4      |   -0.0170213 |            -2.07415   |                     -3.5 |                5   | 2016-2025      |             8.62501 |
+| name                                     | side   |   games |   graded |   wins |   losses |   pushes |   hit_rate |   hit_rate_minus_breakeven |   hit_rate_wilson_low |   hit_rate_wilson_high |   net_units_1u_each |   roi_per_1u |   avg_market_residual |   median_market_residual |   threshold_points | test_seasons   |   avg_abs_pred_edge |
+|:-----------------------------------------|:-------|--------:|---------:|-------:|---------:|---------:|-----------:|---------------------------:|----------------------:|-----------------------:|--------------------:|-------------:|----------------------:|-------------------------:|-------------------:|:---------------|--------------------:|
+| walk_forward_ridge_controls_abs_edge_1.5 | model  |    6426 |     6353 |   3231 |     3122 |       73 |   0.508579 |                 -0.0152309 |              0.496284 |               0.520863 |           -184.727  |   -0.0290772 |              0.405618 |                     -0.5 |                1.5 | 2016-2025      |             3.83267 |
+| walk_forward_ridge_controls_abs_edge_2.5 | model  |    4321 |     4267 |   2173 |     2094 |       54 |   0.509257 |                 -0.0145524 |              0.494256 |               0.524242 |           -118.545  |   -0.0277819 |              0.496991 |                      0   |                2.5 | 2016-2025      |             4.73651 |
+| walk_forward_ridge_controls_abs_edge_3.5 | model  |    2745 |     2709 |   1367 |     1342 |       36 |   0.504614 |                 -0.0191953 |              0.485793 |               0.523422 |            -99.2727 |   -0.0366455 |              0.579417 |                      0   |                3.5 | 2016-2025      |             5.73777 |
+| walk_forward_ridge_controls_abs_edge_5.0 | model  |    1355 |     1339 |    674 |      665 |       16 |   0.503361 |                 -0.0204488 |              0.476608 |               0.530094 |            -52.2727 |   -0.0390386 |              0.150185 |                     -1   |                5   | 2016-2025      |             7.34212 |
 
 ## Model diagnostics
 
-|   test_season |   train_games |   test_games |   model_mae |   zero_residual_baseline_mae |   avg_pred_residual |   avg_actual_residual |
-|--------------:|--------------:|-------------:|------------:|-----------------------------:|--------------------:|----------------------:|
-|          2016 |          1445 |          719 |     13.3291 |                      13.2017 |           0.327756  |              1.0751   |
-|          2017 |          2164 |          745 |     14.3229 |                      13.7745 |           3.29503   |             -0.210738 |
-|          2018 |          2909 |          812 |     12.7865 |                      12.8005 |          -0.262955  |              0.508621 |
-|          2019 |          3721 |          841 |     12.9901 |                      12.9691 |           0.317878  |             -0.020214 |
-|          2020 |          4562 |          541 |     13.8731 |                      13.8623 |           0.0262949 |              0.771719 |
-|          2021 |          5103 |          849 |     12.3599 |                      12.3728 |           0.322306  |             -0.534158 |
-|          2022 |          5952 |         1413 |     12.6419 |                      12.5669 |           0.796084  |              0.658882 |
-|          2023 |          7365 |         1345 |     12.7245 |                      12.6435 |           1.60386   |              0.738662 |
-|          2024 |          8710 |         1503 |     12.9173 |                      12.9321 |           0.153453  |              0.94012  |
-|          2025 |         10213 |         1544 |     12.4163 |                      12.2513 |           0.407796  |              0.266192 |
+|   test_season |   train_games |   test_games |   numeric_features |   categorical_features |   prior_team_stat_features |   model_mae |   zero_residual_baseline_mae |   avg_pred_residual |   avg_actual_residual |
+|--------------:|--------------:|-------------:|-------------------:|-----------------------:|---------------------------:|------------:|-----------------------------:|--------------------:|----------------------:|
+|          2016 |          1445 |          719 |                136 |                     10 |                        126 |     14.0013 |                      13.2017 |            0.149684 |              1.0751   |
+|          2017 |          2164 |          745 |                136 |                     10 |                        126 |     14.3755 |                      13.7745 |            1.91365  |             -0.210738 |
+|          2018 |          2909 |          812 |                136 |                     10 |                        126 |     13.0998 |                      12.8005 |           -0.383109 |              0.508621 |
+|          2019 |          3721 |          841 |                136 |                     10 |                        126 |     13.1789 |                      12.9691 |            0.32987  |             -0.020214 |
+|          2020 |          4562 |          541 |                136 |                     10 |                        126 |     14.3661 |                      13.8623 |            2.4826   |              0.771719 |
+|          2021 |          5103 |          849 |                136 |                     10 |                        126 |     12.851  |                      12.3728 |            1.64178  |             -0.534158 |
+|          2022 |          5952 |         1413 |                136 |                     10 |                        126 |     12.7022 |                      12.5669 |            0.473151 |              0.658882 |
+|          2023 |          7365 |         1345 |                136 |                     10 |                        126 |     12.7349 |                      12.6435 |            1.29763  |              0.738662 |
+|          2024 |          8710 |         1503 |                136 |                     10 |                        126 |     12.9525 |                      12.9321 |            0.320178 |              0.94012  |
+|          2025 |         10213 |         1544 |                136 |                     10 |                        126 |     12.4326 |                      12.2513 |            0.582738 |              0.266192 |
 
 ## Defensibility notes
 
 - Rule tables are in-sample screening tools, not final evidence.
 - Walk-forward results matter more because each season is tested using only prior seasons.
+- Prior-season team-stat controls reduce the chance that weather is acting as a proxy for team quality or pace.
 - Any positive rule still needs sensitivity checks by provider, season, conference, total range, and weather data quality.
 - Keep weekly outputs paper-tracking only until an out-of-sample edge is durable.
 
