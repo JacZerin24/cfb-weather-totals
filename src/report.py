@@ -51,10 +51,15 @@ def main() -> None:
         '',
         csv_preview(ROOT / 'outputs/model_bakeoff_summary.csv'),
         '',
+        '## Model edge recent-period validation',
+        '',
+        csv_preview(ROOT / 'outputs/model_edge_by_recent_period.csv'),
+        '',
         '## Detailed rule summary',
         '',
         csv_preview(ROOT / 'outputs/rule_backtest_detailed.csv'),
     ]
+    append_markdown(lines, '## Model edge validation detail', ROOT / 'outputs/model_edge_validation_summary.md', '_Model edge validation summary not generated yet._')
     append_markdown(lines, '## Model bake-off detail', ROOT / 'outputs/model_bakeoff_summary.md', '_Model bake-off summary not generated yet._')
     append_markdown(lines, '## Deep research summary', ROOT / 'outputs/deep_research_summary.md', '_Deep research summary not generated yet._')
     append_markdown(lines, '## Starter research summary', ROOT / 'outputs/research_summary.md', '_Starter research summary not generated yet._')
