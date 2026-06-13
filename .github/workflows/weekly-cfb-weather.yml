@@ -6,6 +6,10 @@ on:
     # Friday 14Z, roughly Friday morning CT depending on daylight saving time.
     - cron: '0 14 * * 5'
 
+permissions:
+  contents: write
+  actions: read
+
 jobs:
   weekly-paper-run:
     runs-on: ubuntu-latest
