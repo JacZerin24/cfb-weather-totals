@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 
-from .utils import read_df, write_df, get_settings
+from .utils import ROOT, get_settings, read_df, write_df
 
 
 def pick_total(lines: pd.DataFrame, preferred: list[str]) -> pd.DataFrame:
@@ -32,6 +34,34 @@ def pick_total(lines: pd.DataFrame, preferred: list[str]) -> pd.DataFrame:
         .rename(columns={'over_under': 'closing_total', 'provider': 'line_provider'})
     )
     return best
+
+
+def merge_prior_team_features(dataset: pd.DataFrame) -> pd.DataFrame:
+    path = ROOT / 'data/processed/team_prior_features.csv'
+    if not path.exists():
+        print('No prior team feature file found. Skipping team stat controls.')
+        return dataset
+    feats = read_df(path)
+    if feats.empty:
+        print('Prior team feature file is empty. Skipping team stat controls.')
+        return dataset
+
+    dataset = dataset.copy()
+    stat_cols = [c for c in feats.columns if c not in {'season', 'feature_team'}]
+    if not stat_cols:
+        return dataset
+
+    home = feats.rename(columns={'feature_team': 'home_team'})
+    home = home.rename(columns={c: f'home_prior_{c}' for c in stat_cols})
+    dataset = dataset.merge(home, on=['season', 'home_team'], how='left')
+
+    away = feats.rename(columns={'feature_team': 'away_team'})
+    away = away.rename(columns={c: f'away_prior_{c}' for c in stat_cols})
+    dataset = dataset.merge(away, on=['season', 'away_team'], how='left')
+
+    added = len([c for c in dataset.columns if c.startswith(('home_prior_', 'away_prior_'))])
+    print(f'Added {added:,} prior-season team stat feature columns.')
+    return dataset
 
 
 def main() -> None:
@@ -98,6 +128,8 @@ def main() -> None:
     weather_cols = [c for c in ['game_id', 'game_indoors', 'temperature_f', 'dewpoint_f', 'humidity', 'precipitation', 'snowfall', 'wind_direction_degrees', 'wind_mph', 'pressure', 'weather_condition_code', 'weather_condition'] if c in weather.columns]
     if 'game_id' in weather_cols:
         dataset = dataset.merge(weather[weather_cols].drop_duplicates('game_id'), on='game_id', how='left')
+
+    dataset = merge_prior_team_features(dataset)
 
     dataset['closing_total'] = pd.to_numeric(dataset['closing_total'], errors='coerce')
     dataset['market_residual'] = dataset['actual_total_points'] - dataset['closing_total']
