@@ -8,6 +8,10 @@ on:
         required: false
         default: preseason-test
 
+permissions:
+  contents: write
+  actions: read
+
 jobs:
   historical-research:
     runs-on: ubuntu-latest
