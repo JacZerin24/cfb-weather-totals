@@ -82,6 +82,9 @@ def prep(raw: pd.DataFrame) -> pd.DataFrame:
             df[c] = pd.to_numeric(df[c], errors='coerce')
         else:
             df[c] = np.nan
+    prior_cols = [c for c in df.columns if c.startswith(('home_prior_', 'away_prior_', 'home_pregame_elo', 'away_pregame_elo'))]
+    for c in prior_cols:
+        df[c] = pd.to_numeric(df[c], errors='coerce')
     df['game_indoors_bool'] = as_bool(df['game_indoors']) if 'game_indoors' in df.columns else False
     df['outdoor'] = ~df['game_indoors_bool']
     df['precip_flag'] = df['precipitation'].fillna(0) > 0
@@ -146,17 +149,19 @@ def rule_tests(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def walk_forward(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
-    nums = ['closing_total', 'wind_mph', 'temperature_f', 'humidity', 'precipitation', 'snowfall', 'dewpoint_f', 'pressure']
-    cats = ['game_indoors_bool', 'neutral_site', 'conference_game', 'line_provider', 'wind_bin', 'temp_bin', 'total_bin', 'fbs_vs_fbs']
+    base_nums = ['closing_total', 'wind_mph', 'temperature_f', 'humidity', 'precipitation', 'snowfall', 'dewpoint_f', 'pressure', 'home_pregame_elo', 'away_pregame_elo']
+    prior_nums = [c for c in df.columns if c.startswith(('home_prior_', 'away_prior_'))]
+    nums = [c for c in base_nums + prior_nums if c in df.columns]
+    cats = ['game_indoors_bool', 'neutral_site', 'conference_game', 'line_provider', 'wind_bin', 'temp_bin', 'total_bin', 'fbs_vs_fbs', 'home_conference', 'away_conference']
+    cats = [c for c in cats if c in df.columns]
     for c in cats:
-        if c not in df.columns:
-            df[c] = 'missing'
+        df[c] = df[c].astype(str).fillna('missing')
     model = Pipeline([
         ('prep', ColumnTransformer([
             ('num', Pipeline([('imp', SimpleImputer(strategy='median')), ('scale', StandardScaler())]), nums),
             ('cat', Pipeline([('imp', SimpleImputer(strategy='most_frequent')), ('onehot', OneHotEncoder(handle_unknown='ignore'))]), cats),
         ])),
-        ('ridge', Ridge(alpha=10.0)),
+        ('ridge', Ridge(alpha=25.0)),
     ])
     pred_parts, diag = [], []
     for season in sorted(df['season'].dropna().astype(int).unique()):
@@ -172,6 +177,9 @@ def walk_forward(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
             'test_season': season,
             'train_games': len(train),
             'test_games': len(test),
+            'numeric_features': len(nums),
+            'categorical_features': len(cats),
+            'prior_team_stat_features': len(prior_nums),
             'model_mae': mean_absolute_error(test['market_residual'], pred),
             'zero_residual_baseline_mae': mean_absolute_error(test['market_residual'], np.zeros(len(test))),
             'avg_pred_residual': float(np.mean(pred)),
@@ -187,7 +195,7 @@ def walk_forward(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
             rows.append({'threshold_points': th, 'games': 0})
             continue
         plays['side'] = np.where(plays['pred_market_residual'] > 0, 'over', 'under')
-        row = summarize(f'walk_forward_ridge_abs_edge_{th}', 'model', plays, settle(plays['actual_total_points'], plays['closing_total'], plays['side']))
+        row = summarize(f'walk_forward_ridge_controls_abs_edge_{th}', 'model', plays, settle(plays['actual_total_points'], plays['closing_total'], plays['side']))
         row['threshold_points'] = th
         row['test_seasons'] = f"{int(pred_df['season'].min())}-{int(pred_df['season'].max())}"
         row['avg_abs_pred_edge'] = float(plays['pred_market_residual'].abs().mean())
@@ -196,6 +204,7 @@ def walk_forward(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
 
 
 def write_summary(df: pd.DataFrame, q: pd.DataFrame, g: pd.DataFrame, r: pd.DataFrame, wf: pd.DataFrame, diag: pd.DataFrame) -> None:
+    prior_count = len([c for c in df.columns if c.startswith(('home_prior_', 'away_prior_'))])
     lines = [
         '# Deep CFB Weather Totals Research Summary',
         '',
@@ -203,15 +212,17 @@ def write_summary(df: pd.DataFrame, q: pd.DataFrame, g: pd.DataFrame, r: pd.Data
         '',
         f"Games with totals used for analysis: {len(df):,}",
         f"Seasons covered: {int(df['season'].min())}-{int(df['season'].max())}",
+        f"Prior-season team stat control columns available: {prior_count:,}",
         '',
         '## Data quality by season', '', q.to_markdown(index=False), '',
         '## Weather group summary', '', g.head(30).to_markdown(index=False), '',
         '## Simple rule tests', '', r.to_markdown(index=False), '',
-        '## Walk-forward model test', '', wf.to_markdown(index=False) if not wf.empty else '_No walk-forward rows._', '',
+        '## Walk-forward model test with controls', '', wf.to_markdown(index=False) if not wf.empty else '_No walk-forward rows._', '',
         '## Model diagnostics', '', diag.to_markdown(index=False) if not diag.empty else '_No diagnostics._', '',
         '## Defensibility notes', '',
         '- Rule tables are in-sample screening tools, not final evidence.',
         '- Walk-forward results matter more because each season is tested using only prior seasons.',
+        '- Prior-season team-stat controls reduce the chance that weather is acting as a proxy for team quality or pace.',
         '- Any positive rule still needs sensitivity checks by provider, season, conference, total range, and weather data quality.',
         '- Keep weekly outputs paper-tracking only until an out-of-sample edge is durable.',
     ]
