@@ -55,6 +55,7 @@ jobs:
           python -m src.model_bakeoff
           python -m src.validate_model_edges
           python -m src.combo_backtest
+          python -m src.weekly_card_backtest
           python -m src.predict_week
           python -m src.report
 
