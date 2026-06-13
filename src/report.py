@@ -47,10 +47,15 @@ def main() -> None:
         '',
         csv_preview(ROOT / 'outputs/walk_forward_strategy_summary.csv'),
         '',
+        '## Model bake-off summary',
+        '',
+        csv_preview(ROOT / 'outputs/model_bakeoff_summary.csv'),
+        '',
         '## Detailed rule summary',
         '',
         csv_preview(ROOT / 'outputs/rule_backtest_detailed.csv'),
     ]
+    append_markdown(lines, '## Model bake-off detail', ROOT / 'outputs/model_bakeoff_summary.md', '_Model bake-off summary not generated yet._')
     append_markdown(lines, '## Deep research summary', ROOT / 'outputs/deep_research_summary.md', '_Deep research summary not generated yet._')
     append_markdown(lines, '## Starter research summary', ROOT / 'outputs/research_summary.md', '_Starter research summary not generated yet._')
     out = outputs / 'weekly_report.md'
