@@ -792,7 +792,7 @@ hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2019,6,
 hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2019,6,1,401117877,Memphis at UL Monroe,under,loss,-1.0,6.414793521368736,21.5,63+,consensus
 hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2019,7,1,401114204,Utah at Oregon State,under,win,0.9090909090909091,6.353560377875159,-0.5,56-63,consensus
 hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2019,7,1,401114343,New Mexico State at Central Michigan,under,loss,-1.0,5.737717018560503,13.0,56-63,consensus
-hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2019,7,1,401114186,Colorado at Oregon,under,win,0.9090909090909091,4.654558744987617,-14.0,56-63,consensus
+hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2019,7,1,401114186,Colorado at Oregon,under,win,0.9090909090909091,4.768505707594947,-14.0,56-63,consensus
 hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2019,8,1,401114169,Arizona at USC,under,win,0.9090909090909091,6.673767608049226,-14.0,63+,consensus
 hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2019,8,1,401114289,Southern Miss at Louisiana Tech,under,loss,-1.0,5.535083303455264,16.5,56-63,consensus
 hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2019,8,1,401112487,Florida State at Wake Forest,under,win,0.9090909090909091,5.482749909587435,-26.5,63+,consensus
@@ -1053,7 +1053,7 @@ hgb_under_3p5_consensus_2leg_top1_nonoverlap,hgb_under_3p5_consensus,2,2019,12,1
 hgb_under_3p5_consensus_2leg_top1_nonoverlap,hgb_under_3p5_consensus,2,2019,13,1,401121973,Texas State at App State,under,win,0.9090909090909091,8.375051042972462,-2.0,49-56,consensus
 hgb_under_3p5_consensus_2leg_top1_nonoverlap,hgb_under_3p5_consensus,2,2019,13,1,401119305,Eastern Michigan at Northern Illinois,under,loss,-1.0,8.177177735682193,4.0,56-63,consensus
 hgb_under_3p5_consensus_2leg_top1_nonoverlap,hgb_under_3p5_consensus,2,2019,14,1,401112524,North Carolina at NC State,under,win,0.9090909090909091,9.080581893140904,-6.5,56-63,consensus
-hgb_under_3p5_consensus_2leg_top1_nonoverlap,hgb_under_3p5_consensus,2,2019,14,1,401114324,Middle Tennessee at Western Kentucky,under,loss,-1.0,8.016030553128292,10.5,42-49,consensus
+hgb_under_3p5_consensus_2leg_top1_nonoverlap,hgb_under_3p5_consensus,2,2019,14,1,401114324,Middle Tennessee at Western Kentucky,under,loss,-1.0,8.129977515735622,10.5,42-49,consensus
 hgb_under_3p5_consensus_2leg_top1_nonoverlap,hgb_under_3p5_consensus,2,2019,15,1,401132982,Miami (OH) at Central Michigan,under,win,0.9090909090909091,7.730601552823602,-9.5,56-63,consensus
 hgb_under_3p5_consensus_2leg_top1_nonoverlap,hgb_under_3p5_consensus,2,2019,15,1,401132979,Hawai'i at Boise State,under,win,0.9090909090909091,5.767467042625848,-23.5,63+,consensus
 hgb_under_3p5_consensus_2leg_top1_nonoverlap,hgb_under_3p5_consensus,2,2020,3,1,401207120,SMU at North Texas,under,loss,-1.0,6.232163658894757,28.5,63+,consensus
@@ -1251,7 +1251,7 @@ hgb_under_3p5_all_2leg_top1_nonoverlap,hgb_under_3p5_all,2,2019,12,1,401114161,A
 hgb_under_3p5_all_2leg_top1_nonoverlap,hgb_under_3p5_all,2,2019,13,1,401121973,Texas State at App State,under,win,0.9090909090909091,8.375051042972462,-2.0,49-56,consensus
 hgb_under_3p5_all_2leg_top1_nonoverlap,hgb_under_3p5_all,2,2019,13,1,401119305,Eastern Michigan at Northern Illinois,under,loss,-1.0,8.177177735682193,4.0,56-63,consensus
 hgb_under_3p5_all_2leg_top1_nonoverlap,hgb_under_3p5_all,2,2019,14,1,401112524,North Carolina at NC State,under,win,0.9090909090909091,9.080581893140904,-6.5,56-63,consensus
-hgb_under_3p5_all_2leg_top1_nonoverlap,hgb_under_3p5_all,2,2019,14,1,401114324,Middle Tennessee at Western Kentucky,under,loss,-1.0,8.016030553128292,10.5,42-49,consensus
+hgb_under_3p5_all_2leg_top1_nonoverlap,hgb_under_3p5_all,2,2019,14,1,401114324,Middle Tennessee at Western Kentucky,under,loss,-1.0,8.129977515735622,10.5,42-49,consensus
 hgb_under_3p5_all_2leg_top1_nonoverlap,hgb_under_3p5_all,2,2019,15,1,401132982,Miami (OH) at Central Michigan,under,win,0.9090909090909091,7.730601552823602,-9.5,56-63,consensus
 hgb_under_3p5_all_2leg_top1_nonoverlap,hgb_under_3p5_all,2,2019,15,1,401132979,Hawai'i at Boise State,under,win,0.9090909090909091,5.767467042625848,-23.5,63+,consensus
 hgb_under_3p5_all_2leg_top1_nonoverlap,hgb_under_3p5_all,2,2020,3,1,401207120,SMU at North Texas,under,loss,-1.0,6.232163658894757,28.5,63+,consensus
@@ -1679,7 +1679,7 @@ hgb_under_5p0_consensus_2leg_top1_nonoverlap,hgb_under_5p0_consensus,2,2019,12,1
 hgb_under_5p0_consensus_2leg_top1_nonoverlap,hgb_under_5p0_consensus,2,2019,13,1,401121973,Texas State at App State,under,win,0.9090909090909091,8.375051042972462,-2.0,49-56,consensus
 hgb_under_5p0_consensus_2leg_top1_nonoverlap,hgb_under_5p0_consensus,2,2019,13,1,401119305,Eastern Michigan at Northern Illinois,under,loss,-1.0,8.177177735682193,4.0,56-63,consensus
 hgb_under_5p0_consensus_2leg_top1_nonoverlap,hgb_under_5p0_consensus,2,2019,14,1,401112524,North Carolina at NC State,under,win,0.9090909090909091,9.080581893140904,-6.5,56-63,consensus
-hgb_under_5p0_consensus_2leg_top1_nonoverlap,hgb_under_5p0_consensus,2,2019,14,1,401114324,Middle Tennessee at Western Kentucky,under,loss,-1.0,8.016030553128292,10.5,42-49,consensus
+hgb_under_5p0_consensus_2leg_top1_nonoverlap,hgb_under_5p0_consensus,2,2019,14,1,401114324,Middle Tennessee at Western Kentucky,under,loss,-1.0,8.129977515735622,10.5,42-49,consensus
 hgb_under_5p0_consensus_2leg_top1_nonoverlap,hgb_under_5p0_consensus,2,2019,15,1,401132982,Miami (OH) at Central Michigan,under,win,0.9090909090909091,7.730601552823602,-9.5,56-63,consensus
 hgb_under_5p0_consensus_2leg_top1_nonoverlap,hgb_under_5p0_consensus,2,2019,15,1,401132979,Hawai'i at Boise State,under,win,0.9090909090909091,5.767467042625848,-23.5,63+,consensus
 hgb_under_5p0_consensus_2leg_top1_nonoverlap,hgb_under_5p0_consensus,2,2020,3,1,401207120,SMU at North Texas,under,loss,-1.0,6.232163658894757,28.5,63+,consensus
