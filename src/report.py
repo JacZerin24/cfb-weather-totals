@@ -25,7 +25,18 @@ def append_markdown(lines: list[str], heading: str, path: Path, fallback: str) -
         lines.append(fallback)
 
 
+def run_edge_refinement_if_needed() -> None:
+    # The manual workflow already runs src.report before the dashboard is built.
+    # Running edge refinement here avoids needing to edit the workflow YAML directly.
+    try:
+        from . import edge_refinement
+        edge_refinement.main()
+    except Exception as exc:  # Keep the rest of the report/dashboard generation alive.
+        print(f'Edge refinement step failed; continuing report generation: {exc}')
+
+
 def main() -> None:
+    run_edge_refinement_if_needed()
     outputs = ensure_dir('outputs')
     generated = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
     lines = [
@@ -55,10 +66,15 @@ def main() -> None:
         '',
         csv_preview(ROOT / 'outputs/model_edge_by_recent_period.csv'),
         '',
+        '## Edge refinement shortlist',
+        '',
+        csv_preview(ROOT / 'outputs/edge_refinement_shortlist.csv'),
+        '',
         '## Detailed rule summary',
         '',
         csv_preview(ROOT / 'outputs/rule_backtest_detailed.csv'),
     ]
+    append_markdown(lines, '## Edge refinement detail', ROOT / 'outputs/edge_refinement_methodology_summary.md', '_Edge refinement summary not generated yet._')
     append_markdown(lines, '## Model edge validation detail', ROOT / 'outputs/model_edge_validation_summary.md', '_Model edge validation summary not generated yet._')
     append_markdown(lines, '## Model bake-off detail', ROOT / 'outputs/model_bakeoff_summary.md', '_Model bake-off summary not generated yet._')
     append_markdown(lines, '## Deep research summary', ROOT / 'outputs/deep_research_summary.md', '_Deep research summary not generated yet._')
