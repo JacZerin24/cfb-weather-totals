@@ -269,8 +269,8 @@ hgb_under_3p5_high_total_2leg_top2_nonoverlap,hgb_under_3p5_high_total,2,2016,7,
 hgb_under_3p5_high_total_2leg_top2_nonoverlap,hgb_under_3p5_high_total,2,2016,7,2,400869465,Pittsburgh at Virginia,under,loss,-1.0,4.288856542653018,15.5,56-63,teamrankings
 hgb_under_3p5_high_total_2leg_top2_nonoverlap,hgb_under_3p5_high_total,2,2016,8,1,400869225,Hawai'i at Air Force,under,loss,-1.0,13.050216980759185,3.0,56-63,teamrankings
 hgb_under_3p5_high_total_2leg_top2_nonoverlap,hgb_under_3p5_high_total,2,2016,8,1,400869544,East Carolina at Cincinnati,under,win,0.9090909090909091,11.244438382157382,-13.0,56-63,teamrankings
-hgb_under_3p5_high_total_2leg_top2_nonoverlap,hgb_under_3p5_high_total,2,2016,8,2,400869224,BYU at Boise State,under,win,0.9090909090909091,7.672144929986937,-3.0,56-63,teamrankings
 hgb_under_3p5_high_total_2leg_top2_nonoverlap,hgb_under_3p5_high_total,2,2016,8,2,400869834,Louisiana at Texas State,under,win,0.9090909090909091,7.668459790060165,-35.0,63+,teamrankings
+hgb_under_3p5_high_total_2leg_top2_nonoverlap,hgb_under_3p5_high_total,2,2016,8,2,400869224,BYU at Boise State,under,win,0.9090909090909091,7.455503095002938,-3.0,56-63,teamrankings
 hgb_under_3p5_high_total_2leg_top2_nonoverlap,hgb_under_3p5_high_total,2,2016,9,1,400869145,California at USC,under,win,0.9090909090909091,7.8837923279727615,-4.0,63+,teamrankings
 hgb_under_3p5_high_total_2leg_top2_nonoverlap,hgb_under_3p5_high_total,2,2016,9,1,400869391,Middle Tennessee at Florida International,under,loss,-1.0,6.519493782860732,14.5,56-63,teamrankings
 hgb_under_3p5_high_total_2leg_top2_nonoverlap,hgb_under_3p5_high_total,2,2016,9,2,400869629,Texas Tech at TCU,under,win,0.9090909090909091,5.8238418600521165,-36.0,63+,teamrankings
@@ -389,7 +389,7 @@ hgb_under_3p5_high_total_2leg_top2_nonoverlap,hgb_under_3p5_high_total,2,2018,11
 hgb_under_3p5_high_total_2leg_top2_nonoverlap,hgb_under_3p5_high_total,2,2018,11,2,401020776,Ohio at Miami (OH),under,win,0.9090909090909091,8.059361990045725,-1.5,56-63,consensus
 hgb_under_3p5_high_total_2leg_top2_nonoverlap,hgb_under_3p5_high_total,2,2018,12,1,401022564,UNLV at Hawai'i,under,win,0.9090909090909091,12.16899630261471,-9.0,63+,consensus
 hgb_under_3p5_high_total_2leg_top2_nonoverlap,hgb_under_3p5_high_total,2,2018,12,1,401019530,Memphis at SMU,under,win,0.9090909090909091,11.930091102322976,-29.0,63+,consensus
-hgb_under_3p5_high_total_2leg_top2_nonoverlap,hgb_under_3p5_high_total,2,2018,12,2,401020783,Toledo at Kent State,under,loss,-1.0,9.672078610621474,32.5,56-63,consensus
+hgb_under_3p5_high_total_2leg_top2_nonoverlap,hgb_under_3p5_high_total,2,2018,12,2,401020783,Toledo at Kent State,under,loss,-1.0,9.493672039191363,32.5,56-63,consensus
 hgb_under_3p5_high_total_2leg_top2_nonoverlap,hgb_under_3p5_high_total,2,2018,12,2,401012346,Missouri at Tennessee,under,loss,-1.0,8.12300934658974,10.0,56-63,consensus
 hgb_under_3p5_high_total_2leg_top2_nonoverlap,hgb_under_3p5_high_total,2,2018,13,1,401012797,Oregon at Oregon State,under,win,0.9090909090909091,14.12658385925083,-1.0,63+,consensus
 hgb_under_3p5_high_total_2leg_top2_nonoverlap,hgb_under_3p5_high_total,2,2018,13,1,401013447,New Mexico State at Liberty,under,win,0.9090909090909091,13.337796308937508,-23.5,63+,teamrankings
@@ -684,7 +684,7 @@ hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2016,7,
 hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2016,7,1,400869466,Virginia Tech at Syracuse,under,win,0.9090909090909091,4.43884010764578,-17.0,63+,teamrankings
 hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2016,8,1,400869225,Hawai'i at Air Force,under,loss,-1.0,13.050216980759185,3.0,56-63,teamrankings
 hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2016,8,1,400869544,East Carolina at Cincinnati,under,win,0.9090909090909091,11.244438382157382,-13.0,56-63,teamrankings
-hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2016,8,1,400869224,BYU at Boise State,under,win,0.9090909090909091,7.672144929986937,-3.0,56-63,teamrankings
+hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2016,8,1,400869834,Louisiana at Texas State,under,win,0.9090909090909091,7.668459790060165,-35.0,63+,teamrankings
 hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2016,9,1,400869145,California at USC,under,win,0.9090909090909091,7.8837923279727615,-4.0,63+,teamrankings
 hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2016,9,1,400869391,Middle Tennessee at Florida International,under,loss,-1.0,6.519493782860732,14.5,56-63,teamrankings
 hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2016,9,1,400869629,Texas Tech at TCU,under,win,0.9090909090909091,5.8238418600521165,-36.0,63+,teamrankings
@@ -774,7 +774,7 @@ hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2018,11
 hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2018,11,1,401013168,Louisville at Syracuse,under,loss,-1.0,8.811152815914422,8.0,63+,consensus
 hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2018,12,1,401022564,UNLV at Hawai'i,under,win,0.9090909090909091,12.16899630261471,-9.0,63+,consensus
 hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2018,12,1,401019530,Memphis at SMU,under,win,0.9090909090909091,11.930091102322976,-29.0,63+,consensus
-hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2018,12,1,401020783,Toledo at Kent State,under,loss,-1.0,9.672078610621474,32.5,56-63,consensus
+hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2018,12,1,401020783,Toledo at Kent State,under,loss,-1.0,9.493672039191363,32.5,56-63,consensus
 hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2018,13,1,401012797,Oregon at Oregon State,under,win,0.9090909090909091,14.12658385925083,-1.0,63+,consensus
 hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2018,13,1,401013447,New Mexico State at Liberty,under,win,0.9090909090909091,13.337796308937508,-23.5,63+,teamrankings
 hgb_under_3p5_high_total_3leg_top1_nonoverlap,hgb_under_3p5_high_total,3,2018,13,1,401020788,Buffalo at Bowling Green,under,win,0.9090909090909091,10.079978225717914,-4.0,56-63,teamrankings

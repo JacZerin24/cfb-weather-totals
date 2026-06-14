@@ -1,0 +1,366 @@
+filter_name,category,description
+hgb_under_3p5_baseline,baseline,All HGB under candidates with at least a 3.5-point predicted edge.
+hgb_under_5p0_baseline,baseline,All HGB under candidates with at least a 5.0-point predicted edge.
+hgb_under_7p0_baseline,baseline,All HGB under candidates with at least a 7.0-point predicted edge.
+hgb_under_3p5_total_ge_52,high_total_bucket,HGB under 3.5+ where closing total is at least 52.
+hgb_under_3p5_total_ge_54,high_total_bucket,HGB under 3.5+ where closing total is at least 54.
+hgb_under_3p5_total_ge_56,high_total_bucket,HGB under 3.5+ where closing total is at least 56.
+hgb_under_3p5_total_ge_58,high_total_bucket,HGB under 3.5+ where closing total is at least 58.
+hgb_under_3p5_total_ge_60,high_total_bucket,HGB under 3.5+ where closing total is at least 60.
+hgb_under_3p5_total_ge_63,high_total_bucket,HGB under 3.5+ where closing total is at least 63.
+hgb_under_3p5_total_ge_66,high_total_bucket,HGB under 3.5+ where closing total is at least 66.
+hgb_under_3p5_total_ge_70,high_total_bucket,HGB under 3.5+ where closing total is at least 70.
+hgb_under_3p5_total_48_52,high_total_bucket,HGB under 3.5+ with closing total 48 to 52.
+hgb_under_3p5_total_52_56,high_total_bucket,HGB under 3.5+ with closing total 52 to 56.
+hgb_under_3p5_total_56_60,high_total_bucket,HGB under 3.5+ with closing total 56 to 60.
+hgb_under_3p5_total_60_63,high_total_bucket,HGB under 3.5+ with closing total 60 to 63.
+hgb_under_3p5_total_63_66,high_total_bucket,HGB under 3.5+ with closing total 63 to 66.
+hgb_under_3p5_total_66_70,high_total_bucket,HGB under 3.5+ with closing total 66 to 70.
+hgb_under_3p5_total_70_plus,high_total_bucket,HGB under 3.5+ with closing total 70+.
+hgb_under_3p5_outdoor_only,weather_single,HGB under 3.5+ excluding indoor games.
+hgb_under_3p5_wind_ge_5,weather_single,HGB under 3.5+ with wind at least 5 mph.
+hgb_under_3p5_wind_ge_10,weather_single,HGB under 3.5+ with wind at least 10 mph.
+hgb_under_3p5_wind_ge_12,weather_single,HGB under 3.5+ with wind at least 12 mph.
+hgb_under_3p5_wind_ge_15,weather_single,HGB under 3.5+ with wind at least 15 mph.
+hgb_under_3p5_wind_ge_18,weather_single,HGB under 3.5+ with wind at least 18 mph.
+hgb_under_3p5_wind_ge_20,weather_single,HGB under 3.5+ with wind at least 20 mph.
+hgb_under_3p5_wind_ge_25,weather_single,HGB under 3.5+ with wind at least 25 mph.
+hgb_under_3p5_temp_le_55,weather_single,HGB under 3.5+ with temperature at or below 55F.
+hgb_under_3p5_temp_le_50,weather_single,HGB under 3.5+ with temperature at or below 50F.
+hgb_under_3p5_temp_le_45,weather_single,HGB under 3.5+ with temperature at or below 45F.
+hgb_under_3p5_temp_le_40,weather_single,HGB under 3.5+ with temperature at or below 40F.
+hgb_under_3p5_temp_le_35,weather_single,HGB under 3.5+ with temperature at or below 35F.
+hgb_under_3p5_temp_le_32,weather_single,HGB under 3.5+ with temperature at or below 32F.
+hgb_under_3p5_temp_le_25,weather_single,HGB under 3.5+ with temperature at or below 25F.
+hgb_under_3p5_temp_ge_80,weather_single,HGB under 3.5+ with temperature at or above 80F.
+hgb_under_3p5_temp_ge_85,weather_single,HGB under 3.5+ with temperature at or above 85F.
+hgb_under_3p5_temp_ge_90,weather_single,HGB under 3.5+ with temperature at or above 90F.
+hgb_under_3p5_temp_ge_95,weather_single,HGB under 3.5+ with temperature at or above 95F.
+hgb_under_3p5_humidity_ge_60,weather_single,HGB under 3.5+ with humidity at least 60%.
+hgb_under_3p5_humidity_ge_70,weather_single,HGB under 3.5+ with humidity at least 70%.
+hgb_under_3p5_humidity_ge_80,weather_single,HGB under 3.5+ with humidity at least 80%.
+hgb_under_3p5_humidity_ge_90,weather_single,HGB under 3.5+ with humidity at least 90%.
+hgb_under_3p5_dewpoint_ge_60,weather_single,HGB under 3.5+ with dewpoint at least 60F.
+hgb_under_3p5_dewpoint_ge_65,weather_single,HGB under 3.5+ with dewpoint at least 65F.
+hgb_under_3p5_dewpoint_ge_70,weather_single,HGB under 3.5+ with dewpoint at least 70F.
+hgb_under_3p5_dewpoint_ge_75,weather_single,HGB under 3.5+ with dewpoint at least 75F.
+hgb_under_3p5_precip_any,weather_single,HGB under 3.5+ with precipitation flag or measurable precipitation.
+hgb_under_3p5_rain_flag,weather_single,HGB under 3.5+ with rain/thunder text or measurable precipitation.
+hgb_under_3p5_snow_flag,weather_single,HGB under 3.5+ with snow flag or measurable snowfall.
+hgb_under_3p5_thunder_flag,weather_single,HGB under 3.5+ with thunderstorm text flag.
+hgb_under_3p5_wintry_flag,weather_single,HGB under 3.5+ with wintry/sleet/freezing flag.
+hgb_under_3p5_high_total_wind15,weather_total_combo,"HGB under 3.5+, total 56+, wind 15+ mph."
+hgb_under_3p5_high_total_cold50,weather_total_combo,"HGB under 3.5+, total 56+, temp <= 50F."
+hgb_under_3p5_high_total_precip,weather_total_combo,"HGB under 3.5+, total 56+, precipitation present."
+hgb_under_3p5_high_total_wind_or_precip,weather_total_combo,"HGB under 3.5+, total 56+, wind 15+ or precipitation."
+hgb_under_3p5_provider_consensus,provider,HGB under 3.5+ using line provider consensus.
+hgb_under_3p5_provider_draftkings,provider,HGB under 3.5+ using line provider DraftKings.
+hgb_under_3p5_provider_espn_bet,provider,HGB under 3.5+ using line provider ESPN Bet.
+hgb_under_3p5_provider_teamrankings,provider,HGB under 3.5+ using line provider teamrankings.
+hgb_under_3p5_provider_william_hill_new_jersey,provider,HGB under 3.5+ using line provider William Hill (New Jersey).
+hgb_under_3p5_provider_bovada,provider,HGB under 3.5+ using line provider Bovada.
+hgb_under_3p5_provider_caesars_sportsbook_colorado,provider,HGB under 3.5+ using line provider Caesars Sportsbook (Colorado).
+hgb_under_3p5_provider_numberfire,provider,HGB under 3.5+ using line provider numberfire.
+hgb_under_3p5_provider_draft_kings,provider,HGB under 3.5+ using line provider Draft Kings.
+hgb_under_3p5_provider_caesars,provider,HGB under 3.5+ using line provider Caesars.
+hgb_under_3p5_provider_count_ge_2,line_market_proxy,HGB under 3.5+ where at least 2 line providers are available.
+hgb_under_3p5_provider_count_ge_3,line_market_proxy,HGB under 3.5+ where at least 3 line providers are available.
+hgb_under_3p5_provider_count_ge_4,line_market_proxy,HGB under 3.5+ where at least 4 line providers are available.
+hgb_under_3p5_provider_count_ge_5,line_market_proxy,HGB under 3.5+ where at least 5 line providers are available.
+hgb_under_3p5_line_range_ge_0p5,line_market_proxy,HGB under 3.5+ where provider total range is at least 0.5 points.
+hgb_under_3p5_line_range_ge_1,line_market_proxy,HGB under 3.5+ where provider total range is at least 1 points.
+hgb_under_3p5_line_range_ge_1p5,line_market_proxy,HGB under 3.5+ where provider total range is at least 1.5 points.
+hgb_under_3p5_line_range_ge_2,line_market_proxy,HGB under 3.5+ where provider total range is at least 2 points.
+hgb_under_3p5_line_range_ge_3,line_market_proxy,HGB under 3.5+ where provider total range is at least 3 points.
+hgb_under_3p5_selected_total_above_median_0p5,line_market_proxy,HGB under 3.5+ where selected total is at least 0.5 above provider median.
+hgb_under_3p5_selected_total_above_median_1,line_market_proxy,HGB under 3.5+ where selected total is at least 1 above provider median.
+hgb_under_3p5_selected_total_above_median_1p5,line_market_proxy,HGB under 3.5+ where selected total is at least 1.5 above provider median.
+hgb_under_3p5_selected_total_above_median_2,line_market_proxy,HGB under 3.5+ where selected total is at least 2 above provider median.
+hgb_under_3p5_two_plus_models_under,model_consensus,HGB under 3.5+ and at least 2 other regression models also lean under.
+hgb_under_3p5_all_models_under,model_consensus,HGB under 3.5+ and all tracked regression models lean under.
+hgb_under_3p5_no_model_strong_opposition,model_consensus,HGB under 3.5+ with no other model strongly leaning over.
+hgb_under_5p0_two_plus_models_under,model_consensus,HGB under 5.0+ and at least 2 other regression models also lean under.
+hgb_under_7p0_no_model_strong_opposition,model_consensus,HGB under 7.0+ with no other model strongly leaning over.
+hgb_under_3p5_high_pass_rate_top30,team_style,HGB under 3.5+ where combined prior pass-rate proxy is in the top 30%.
+hgb_under_3p5_high_pace_top30,team_style,HGB under 3.5+ where combined prior pace/play-volume proxy is in the top 30%.
+hgb_under_3p5_high_pass_yard_share_top30,team_style,HGB under 3.5+ where prior pass-yard share proxy is in the top 30%.
+hgb_under_3p5_combo_cold_le_55_wind_ge_10,weather_combo_grid,HGB under 3.5+ with temp <= 55F and wind >= 10 mph.
+hgb_under_3p5_combo_cold_le_55_wind_ge_12,weather_combo_grid,HGB under 3.5+ with temp <= 55F and wind >= 12 mph.
+hgb_under_3p5_combo_cold_le_50_wind_ge_12,weather_combo_grid,HGB under 3.5+ with temp <= 50F and wind >= 12 mph.
+hgb_under_3p5_combo_cold_le_45_wind_ge_12,weather_combo_grid,HGB under 3.5+ with temp <= 45F and wind >= 12 mph.
+hgb_under_3p5_combo_cold_le_40_wind_ge_12,weather_combo_grid,HGB under 3.5+ with temp <= 40F and wind >= 12 mph.
+hgb_under_3p5_combo_cold_le_50_wind_ge_15,weather_combo_grid,HGB under 3.5+ with temp <= 50F and wind >= 15 mph.
+hgb_under_3p5_combo_cold_le_45_wind_ge_15,weather_combo_grid,HGB under 3.5+ with temp <= 45F and wind >= 15 mph.
+hgb_under_3p5_combo_cold_le_55_precip_any,weather_combo_grid,HGB under 3.5+ with temp <= 55F and any precipitation flag.
+hgb_under_3p5_combo_cold_le_50_precip_any,weather_combo_grid,HGB under 3.5+ with temp <= 50F and any precipitation flag.
+hgb_under_3p5_combo_cold_le_45_precip_any,weather_combo_grid,HGB under 3.5+ with temp <= 45F and any precipitation flag.
+hgb_under_3p5_combo_cold_le_50_rain_flag,weather_combo_grid,HGB under 3.5+ with temp <= 50F and rain/thunder text or precip amount.
+hgb_under_3p5_combo_cold_le_45_rain_flag,weather_combo_grid,HGB under 3.5+ with temp <= 45F and rain/thunder text or precip amount.
+hgb_under_3p5_combo_cold_le_50_snow_flag,weather_combo_grid,HGB under 3.5+ with temp <= 50F and snow/wintry flag.
+hgb_under_3p5_combo_cold_le_45_snow_flag,weather_combo_grid,HGB under 3.5+ with temp <= 45F and snow/wintry flag.
+hgb_under_3p5_combo_wind_ge_10_precip_any,weather_combo_grid,HGB under 3.5+ with wind >= 10 mph and any precipitation flag.
+hgb_under_3p5_combo_wind_ge_12_precip_any,weather_combo_grid,HGB under 3.5+ with wind >= 12 mph and any precipitation flag.
+hgb_under_3p5_combo_wind_ge_15_precip_any,weather_combo_grid,HGB under 3.5+ with wind >= 15 mph and any precipitation flag.
+hgb_under_3p5_combo_wind_ge_10_rain_flag,weather_combo_grid,HGB under 3.5+ with wind >= 10 mph and rain/thunder text or precip amount.
+hgb_under_3p5_combo_wind_ge_12_rain_flag,weather_combo_grid,HGB under 3.5+ with wind >= 12 mph and rain/thunder text or precip amount.
+hgb_under_3p5_combo_wind_ge_15_rain_flag,weather_combo_grid,HGB under 3.5+ with wind >= 15 mph and rain/thunder text or precip amount.
+hgb_under_3p5_combo_wind_ge_10_snow_flag,weather_combo_grid,HGB under 3.5+ with wind >= 10 mph and snow/wintry flag.
+hgb_under_3p5_combo_wind_ge_12_snow_flag,weather_combo_grid,HGB under 3.5+ with wind >= 12 mph and snow/wintry flag.
+hgb_under_3p5_combo_wind_ge_15_snow_flag,weather_combo_grid,HGB under 3.5+ with wind >= 15 mph and snow/wintry flag.
+hgb_under_3p5_combo_heat_ge_85_humid_ge_70,weather_combo_grid,HGB under 3.5+ with temp >= 85F and humidity >= 70%.
+hgb_under_3p5_combo_heat_ge_85_humid_ge_80,weather_combo_grid,HGB under 3.5+ with temp >= 85F and humidity >= 80%.
+hgb_under_3p5_combo_heat_ge_90_humid_ge_70,weather_combo_grid,HGB under 3.5+ with temp >= 90F and humidity >= 70%.
+hgb_under_3p5_combo_heat_ge_85_dewpoint_ge_65,weather_combo_grid,HGB under 3.5+ with temp >= 85F and dewpoint >= 65F.
+hgb_under_3p5_combo_heat_ge_90_dewpoint_ge_70,weather_combo_grid,HGB under 3.5+ with temp >= 90F and dewpoint >= 70F.
+hgb_under_3p5_combo_humid_ge_80_dewpoint_ge_70,weather_combo_grid,HGB under 3.5+ with humidity >= 80% and dewpoint >= 70F.
+hgb_under_3p5_combo_humid_ge_90_dewpoint_ge_70,weather_combo_grid,HGB under 3.5+ with humidity >= 90% and dewpoint >= 70F.
+hgb_under_3p5_combo_cold_le_50_wind_ge_12_precip_any,weather_combo_grid,"HGB under 3.5+ with temp <= 50F, wind >= 12 mph, and any precipitation flag."
+hgb_under_3p5_combo_cold_le_45_wind_ge_12_precip_any,weather_combo_grid,"HGB under 3.5+ with temp <= 45F, wind >= 12 mph, and any precipitation flag."
+hgb_under_3p5_combo_cold_le_50_wind_ge_12_snow_flag,weather_combo_grid,"HGB under 3.5+ with temp <= 50F, wind >= 12 mph, and snow/wintry flag."
+hgb_under_3p5_combo_cold_le_45_wind_ge_12_snow_flag,weather_combo_grid,"HGB under 3.5+ with temp <= 45F, wind >= 12 mph, and snow/wintry flag."
+hgb_under_3p5_combo_wind_ge_12_rain_flag_total_ge_56,weather_combo_grid,"HGB under 3.5+ with wind >= 12 mph, rain/thunder text or precip amount, and total >= 56."
+hgb_under_3p5_combo_wind_ge_12_precip_any_total_ge_56,weather_combo_grid,"HGB under 3.5+ with wind >= 12 mph, any precipitation flag, and total >= 56."
+hgb_under_3p5_combo_cold_le_50_wind_ge_12_total_ge_56,weather_combo_grid,"HGB under 3.5+ with temp <= 50F, wind >= 12 mph, and total >= 56."
+hgb_under_3p5_combo_cold_le_50_precip_any_total_ge_56,weather_combo_grid,"HGB under 3.5+ with temp <= 50F, any precipitation flag, and total >= 56."
+hgb_under_3p5_combo_heat_ge_85_humid_ge_70_total_ge_56,weather_combo_grid,"HGB under 3.5+ with temp >= 85F, humidity >= 70%, and total >= 56."
+hgb_under_3p5_combo_heat_ge_90_humid_ge_70_total_ge_56,weather_combo_grid,"HGB under 3.5+ with temp >= 90F, humidity >= 70%, and total >= 56."
+hgb_under_3p5_combo_heat_ge_85_dewpoint_ge_70_high_pace,weather_combo_grid,"HGB under 3.5+ with temp >= 85F, dewpoint >= 70F, and top 30% pace proxy."
+hgb_under_3p5_combo_total_ge_56_wind_ge_10,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and wind >= 10 mph.
+hgb_under_3p5_combo_total_ge_56_wind_ge_12,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and wind >= 12 mph.
+hgb_under_3p5_combo_total_ge_56_wind_ge_15,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and wind >= 15 mph.
+hgb_under_3p5_combo_total_ge_56_wind_ge_18,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and wind >= 18 mph.
+hgb_under_3p5_combo_total_ge_56_cold_le_55,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and temp <= 55F.
+hgb_under_3p5_combo_total_ge_56_cold_le_50,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and temp <= 50F.
+hgb_under_3p5_combo_total_ge_56_cold_le_45,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and temp <= 45F.
+hgb_under_3p5_combo_total_ge_56_cold_le_40,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and temp <= 40F.
+hgb_under_3p5_combo_total_ge_56_heat_ge_85,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and temp >= 85F.
+hgb_under_3p5_combo_total_ge_56_heat_ge_90,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and temp >= 90F.
+hgb_under_3p5_combo_total_ge_56_heat_ge_95,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and temp >= 95F.
+hgb_under_3p5_combo_total_ge_56_humid_ge_70,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and humidity >= 70%.
+hgb_under_3p5_combo_total_ge_56_humid_ge_80,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and humidity >= 80%.
+hgb_under_3p5_combo_total_ge_56_dewpoint_ge_65,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and dewpoint >= 65F.
+hgb_under_3p5_combo_total_ge_56_dewpoint_ge_70,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and dewpoint >= 70F.
+hgb_under_3p5_combo_total_ge_56_precip_any,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and any precipitation flag.
+hgb_under_3p5_combo_total_ge_56_rain_flag,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and rain/thunder text or precip amount.
+hgb_under_3p5_combo_total_ge_56_snow_flag,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and snow/wintry flag.
+hgb_under_3p5_combo_total_ge_56_thunder_flag,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and thunderstorm text flag.
+hgb_under_3p5_combo_total_ge_56_wintry_flag,weather_total_combo_grid,HGB under 3.5+ with total >= 56 and wintry/sleet/freezing flag.
+hgb_under_3p5_combo_total_ge_58_wind_ge_10,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and wind >= 10 mph.
+hgb_under_3p5_combo_total_ge_58_wind_ge_12,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and wind >= 12 mph.
+hgb_under_3p5_combo_total_ge_58_wind_ge_15,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and wind >= 15 mph.
+hgb_under_3p5_combo_total_ge_58_wind_ge_18,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and wind >= 18 mph.
+hgb_under_3p5_combo_total_ge_58_cold_le_55,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and temp <= 55F.
+hgb_under_3p5_combo_total_ge_58_cold_le_50,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and temp <= 50F.
+hgb_under_3p5_combo_total_ge_58_cold_le_45,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and temp <= 45F.
+hgb_under_3p5_combo_total_ge_58_cold_le_40,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and temp <= 40F.
+hgb_under_3p5_combo_total_ge_58_heat_ge_85,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and temp >= 85F.
+hgb_under_3p5_combo_total_ge_58_heat_ge_90,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and temp >= 90F.
+hgb_under_3p5_combo_total_ge_58_heat_ge_95,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and temp >= 95F.
+hgb_under_3p5_combo_total_ge_58_humid_ge_70,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and humidity >= 70%.
+hgb_under_3p5_combo_total_ge_58_humid_ge_80,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and humidity >= 80%.
+hgb_under_3p5_combo_total_ge_58_dewpoint_ge_65,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and dewpoint >= 65F.
+hgb_under_3p5_combo_total_ge_58_dewpoint_ge_70,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and dewpoint >= 70F.
+hgb_under_3p5_combo_total_ge_58_precip_any,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and any precipitation flag.
+hgb_under_3p5_combo_total_ge_58_rain_flag,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and rain/thunder text or precip amount.
+hgb_under_3p5_combo_total_ge_58_snow_flag,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and snow/wintry flag.
+hgb_under_3p5_combo_total_ge_58_thunder_flag,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and thunderstorm text flag.
+hgb_under_3p5_combo_total_ge_58_wintry_flag,weather_total_combo_grid,HGB under 3.5+ with total >= 58 and wintry/sleet/freezing flag.
+hgb_under_3p5_combo_total_ge_60_wind_ge_10,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and wind >= 10 mph.
+hgb_under_3p5_combo_total_ge_60_wind_ge_12,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and wind >= 12 mph.
+hgb_under_3p5_combo_total_ge_60_wind_ge_15,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and wind >= 15 mph.
+hgb_under_3p5_combo_total_ge_60_wind_ge_18,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and wind >= 18 mph.
+hgb_under_3p5_combo_total_ge_60_cold_le_55,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and temp <= 55F.
+hgb_under_3p5_combo_total_ge_60_cold_le_50,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and temp <= 50F.
+hgb_under_3p5_combo_total_ge_60_cold_le_45,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and temp <= 45F.
+hgb_under_3p5_combo_total_ge_60_cold_le_40,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and temp <= 40F.
+hgb_under_3p5_combo_total_ge_60_heat_ge_85,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and temp >= 85F.
+hgb_under_3p5_combo_total_ge_60_heat_ge_90,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and temp >= 90F.
+hgb_under_3p5_combo_total_ge_60_heat_ge_95,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and temp >= 95F.
+hgb_under_3p5_combo_total_ge_60_humid_ge_70,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and humidity >= 70%.
+hgb_under_3p5_combo_total_ge_60_humid_ge_80,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and humidity >= 80%.
+hgb_under_3p5_combo_total_ge_60_dewpoint_ge_65,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and dewpoint >= 65F.
+hgb_under_3p5_combo_total_ge_60_dewpoint_ge_70,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and dewpoint >= 70F.
+hgb_under_3p5_combo_total_ge_60_precip_any,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and any precipitation flag.
+hgb_under_3p5_combo_total_ge_60_rain_flag,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and rain/thunder text or precip amount.
+hgb_under_3p5_combo_total_ge_60_snow_flag,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and snow/wintry flag.
+hgb_under_3p5_combo_total_ge_60_thunder_flag,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and thunderstorm text flag.
+hgb_under_3p5_combo_total_ge_60_wintry_flag,weather_total_combo_grid,HGB under 3.5+ with total >= 60 and wintry/sleet/freezing flag.
+hgb_under_3p5_combo_total_60_63_wind_ge_10,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and wind >= 10 mph.
+hgb_under_3p5_combo_total_60_63_wind_ge_12,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and wind >= 12 mph.
+hgb_under_3p5_combo_total_60_63_wind_ge_15,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and wind >= 15 mph.
+hgb_under_3p5_combo_total_60_63_wind_ge_18,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and wind >= 18 mph.
+hgb_under_3p5_combo_total_60_63_cold_le_55,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and temp <= 55F.
+hgb_under_3p5_combo_total_60_63_cold_le_50,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and temp <= 50F.
+hgb_under_3p5_combo_total_60_63_cold_le_45,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and temp <= 45F.
+hgb_under_3p5_combo_total_60_63_cold_le_40,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and temp <= 40F.
+hgb_under_3p5_combo_total_60_63_heat_ge_85,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and temp >= 85F.
+hgb_under_3p5_combo_total_60_63_heat_ge_90,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and temp >= 90F.
+hgb_under_3p5_combo_total_60_63_heat_ge_95,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and temp >= 95F.
+hgb_under_3p5_combo_total_60_63_humid_ge_70,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and humidity >= 70%.
+hgb_under_3p5_combo_total_60_63_humid_ge_80,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and humidity >= 80%.
+hgb_under_3p5_combo_total_60_63_dewpoint_ge_65,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and dewpoint >= 65F.
+hgb_under_3p5_combo_total_60_63_dewpoint_ge_70,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and dewpoint >= 70F.
+hgb_under_3p5_combo_total_60_63_precip_any,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and any precipitation flag.
+hgb_under_3p5_combo_total_60_63_rain_flag,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and rain/thunder text or precip amount.
+hgb_under_3p5_combo_total_60_63_snow_flag,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and snow/wintry flag.
+hgb_under_3p5_combo_total_60_63_thunder_flag,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and thunderstorm text flag.
+hgb_under_3p5_combo_total_60_63_wintry_flag,weather_total_combo_grid,HGB under 3.5+ with total 60-63 and wintry/sleet/freezing flag.
+hgb_under_3p5_combo_high_pass_rate_wind_ge_10,weather_team_style_grid,HGB under 3.5+ with top 30% pass-rate proxy and wind >= 10 mph.
+hgb_under_3p5_combo_high_pass_rate_wind_ge_12,weather_team_style_grid,HGB under 3.5+ with top 30% pass-rate proxy and wind >= 12 mph.
+hgb_under_3p5_combo_high_pass_rate_wind_ge_15,weather_team_style_grid,HGB under 3.5+ with top 30% pass-rate proxy and wind >= 15 mph.
+hgb_under_3p5_combo_high_pass_rate_precip_any,weather_team_style_grid,HGB under 3.5+ with top 30% pass-rate proxy and any precipitation flag.
+hgb_under_3p5_combo_high_pass_rate_rain_flag,weather_team_style_grid,HGB under 3.5+ with top 30% pass-rate proxy and rain/thunder text or precip amount.
+hgb_under_3p5_combo_high_pass_rate_snow_flag,weather_team_style_grid,HGB under 3.5+ with top 30% pass-rate proxy and snow/wintry flag.
+hgb_under_3p5_combo_high_pass_rate_cold_le_50,weather_team_style_grid,HGB under 3.5+ with top 30% pass-rate proxy and temp <= 50F.
+hgb_under_3p5_combo_high_pass_rate_cold_le_45,weather_team_style_grid,HGB under 3.5+ with top 30% pass-rate proxy and temp <= 45F.
+hgb_under_3p5_combo_high_pass_rate_heat_ge_85,weather_team_style_grid,HGB under 3.5+ with top 30% pass-rate proxy and temp >= 85F.
+hgb_under_3p5_combo_high_pass_rate_heat_ge_90,weather_team_style_grid,HGB under 3.5+ with top 30% pass-rate proxy and temp >= 90F.
+hgb_under_3p5_combo_high_pass_rate_humid_ge_70,weather_team_style_grid,HGB under 3.5+ with top 30% pass-rate proxy and humidity >= 70%.
+hgb_under_3p5_combo_high_pass_rate_humid_ge_80,weather_team_style_grid,HGB under 3.5+ with top 30% pass-rate proxy and humidity >= 80%.
+hgb_under_3p5_combo_high_pass_rate_dewpoint_ge_70,weather_team_style_grid,HGB under 3.5+ with top 30% pass-rate proxy and dewpoint >= 70F.
+hgb_under_3p5_combo_high_pass_rate_total_ge_56,team_style_total_grid,HGB under 3.5+ with top 30% pass-rate proxy and total >= 56.
+hgb_under_3p5_combo_high_pass_rate_total_ge_56_wind_ge_12,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 56, and wind >= 12 mph."
+hgb_under_3p5_combo_high_pass_rate_total_ge_56_wind_ge_15,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 56, and wind >= 15 mph."
+hgb_under_3p5_combo_high_pass_rate_total_ge_56_precip_any,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 56, and any precipitation flag."
+hgb_under_3p5_combo_high_pass_rate_total_ge_56_rain_flag,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 56, and rain/thunder text or precip amount."
+hgb_under_3p5_combo_high_pass_rate_total_ge_56_cold_le_50,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 56, and temp <= 50F."
+hgb_under_3p5_combo_high_pass_rate_total_ge_56_heat_ge_85,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 56, and temp >= 85F."
+hgb_under_3p5_combo_high_pass_rate_total_ge_56_humid_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 56, and humidity >= 70%."
+hgb_under_3p5_combo_high_pass_rate_total_ge_56_dewpoint_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 56, and dewpoint >= 70F."
+hgb_under_3p5_combo_high_pass_rate_total_ge_58,team_style_total_grid,HGB under 3.5+ with top 30% pass-rate proxy and total >= 58.
+hgb_under_3p5_combo_high_pass_rate_total_ge_58_wind_ge_12,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 58, and wind >= 12 mph."
+hgb_under_3p5_combo_high_pass_rate_total_ge_58_wind_ge_15,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 58, and wind >= 15 mph."
+hgb_under_3p5_combo_high_pass_rate_total_ge_58_precip_any,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 58, and any precipitation flag."
+hgb_under_3p5_combo_high_pass_rate_total_ge_58_rain_flag,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 58, and rain/thunder text or precip amount."
+hgb_under_3p5_combo_high_pass_rate_total_ge_58_cold_le_50,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 58, and temp <= 50F."
+hgb_under_3p5_combo_high_pass_rate_total_ge_58_heat_ge_85,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 58, and temp >= 85F."
+hgb_under_3p5_combo_high_pass_rate_total_ge_58_humid_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 58, and humidity >= 70%."
+hgb_under_3p5_combo_high_pass_rate_total_ge_58_dewpoint_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 58, and dewpoint >= 70F."
+hgb_under_3p5_combo_high_pass_rate_total_ge_60,team_style_total_grid,HGB under 3.5+ with top 30% pass-rate proxy and total >= 60.
+hgb_under_3p5_combo_high_pass_rate_total_ge_60_wind_ge_12,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 60, and wind >= 12 mph."
+hgb_under_3p5_combo_high_pass_rate_total_ge_60_wind_ge_15,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 60, and wind >= 15 mph."
+hgb_under_3p5_combo_high_pass_rate_total_ge_60_precip_any,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 60, and any precipitation flag."
+hgb_under_3p5_combo_high_pass_rate_total_ge_60_rain_flag,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 60, and rain/thunder text or precip amount."
+hgb_under_3p5_combo_high_pass_rate_total_ge_60_cold_le_50,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 60, and temp <= 50F."
+hgb_under_3p5_combo_high_pass_rate_total_ge_60_heat_ge_85,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 60, and temp >= 85F."
+hgb_under_3p5_combo_high_pass_rate_total_ge_60_humid_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 60, and humidity >= 70%."
+hgb_under_3p5_combo_high_pass_rate_total_ge_60_dewpoint_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total >= 60, and dewpoint >= 70F."
+hgb_under_3p5_combo_high_pass_rate_total_60_63,team_style_total_grid,HGB under 3.5+ with top 30% pass-rate proxy and total 60-63.
+hgb_under_3p5_combo_high_pass_rate_total_60_63_wind_ge_12,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total 60-63, and wind >= 12 mph."
+hgb_under_3p5_combo_high_pass_rate_total_60_63_wind_ge_15,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total 60-63, and wind >= 15 mph."
+hgb_under_3p5_combo_high_pass_rate_total_60_63_precip_any,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total 60-63, and any precipitation flag."
+hgb_under_3p5_combo_high_pass_rate_total_60_63_rain_flag,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total 60-63, and rain/thunder text or precip amount."
+hgb_under_3p5_combo_high_pass_rate_total_60_63_cold_le_50,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total 60-63, and temp <= 50F."
+hgb_under_3p5_combo_high_pass_rate_total_60_63_heat_ge_85,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total 60-63, and temp >= 85F."
+hgb_under_3p5_combo_high_pass_rate_total_60_63_humid_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total 60-63, and humidity >= 70%."
+hgb_under_3p5_combo_high_pass_rate_total_60_63_dewpoint_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-rate proxy, total 60-63, and dewpoint >= 70F."
+hgb_under_3p5_combo_high_pace_wind_ge_10,weather_team_style_grid,HGB under 3.5+ with top 30% pace proxy and wind >= 10 mph.
+hgb_under_3p5_combo_high_pace_wind_ge_12,weather_team_style_grid,HGB under 3.5+ with top 30% pace proxy and wind >= 12 mph.
+hgb_under_3p5_combo_high_pace_wind_ge_15,weather_team_style_grid,HGB under 3.5+ with top 30% pace proxy and wind >= 15 mph.
+hgb_under_3p5_combo_high_pace_precip_any,weather_team_style_grid,HGB under 3.5+ with top 30% pace proxy and any precipitation flag.
+hgb_under_3p5_combo_high_pace_rain_flag,weather_team_style_grid,HGB under 3.5+ with top 30% pace proxy and rain/thunder text or precip amount.
+hgb_under_3p5_combo_high_pace_snow_flag,weather_team_style_grid,HGB under 3.5+ with top 30% pace proxy and snow/wintry flag.
+hgb_under_3p5_combo_high_pace_cold_le_50,weather_team_style_grid,HGB under 3.5+ with top 30% pace proxy and temp <= 50F.
+hgb_under_3p5_combo_high_pace_cold_le_45,weather_team_style_grid,HGB under 3.5+ with top 30% pace proxy and temp <= 45F.
+hgb_under_3p5_combo_high_pace_heat_ge_85,weather_team_style_grid,HGB under 3.5+ with top 30% pace proxy and temp >= 85F.
+hgb_under_3p5_combo_high_pace_heat_ge_90,weather_team_style_grid,HGB under 3.5+ with top 30% pace proxy and temp >= 90F.
+hgb_under_3p5_combo_high_pace_humid_ge_70,weather_team_style_grid,HGB under 3.5+ with top 30% pace proxy and humidity >= 70%.
+hgb_under_3p5_combo_high_pace_humid_ge_80,weather_team_style_grid,HGB under 3.5+ with top 30% pace proxy and humidity >= 80%.
+hgb_under_3p5_combo_high_pace_dewpoint_ge_70,weather_team_style_grid,HGB under 3.5+ with top 30% pace proxy and dewpoint >= 70F.
+hgb_under_3p5_combo_high_pace_total_ge_56,team_style_total_grid,HGB under 3.5+ with top 30% pace proxy and total >= 56.
+hgb_under_3p5_combo_high_pace_total_ge_56_wind_ge_12,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 56, and wind >= 12 mph."
+hgb_under_3p5_combo_high_pace_total_ge_56_wind_ge_15,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 56, and wind >= 15 mph."
+hgb_under_3p5_combo_high_pace_total_ge_56_precip_any,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 56, and any precipitation flag."
+hgb_under_3p5_combo_high_pace_total_ge_56_rain_flag,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 56, and rain/thunder text or precip amount."
+hgb_under_3p5_combo_high_pace_total_ge_56_cold_le_50,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 56, and temp <= 50F."
+hgb_under_3p5_combo_high_pace_total_ge_56_heat_ge_85,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 56, and temp >= 85F."
+hgb_under_3p5_combo_high_pace_total_ge_56_humid_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 56, and humidity >= 70%."
+hgb_under_3p5_combo_high_pace_total_ge_56_dewpoint_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 56, and dewpoint >= 70F."
+hgb_under_3p5_combo_high_pace_total_ge_58,team_style_total_grid,HGB under 3.5+ with top 30% pace proxy and total >= 58.
+hgb_under_3p5_combo_high_pace_total_ge_58_wind_ge_12,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 58, and wind >= 12 mph."
+hgb_under_3p5_combo_high_pace_total_ge_58_wind_ge_15,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 58, and wind >= 15 mph."
+hgb_under_3p5_combo_high_pace_total_ge_58_precip_any,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 58, and any precipitation flag."
+hgb_under_3p5_combo_high_pace_total_ge_58_rain_flag,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 58, and rain/thunder text or precip amount."
+hgb_under_3p5_combo_high_pace_total_ge_58_cold_le_50,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 58, and temp <= 50F."
+hgb_under_3p5_combo_high_pace_total_ge_58_heat_ge_85,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 58, and temp >= 85F."
+hgb_under_3p5_combo_high_pace_total_ge_58_humid_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 58, and humidity >= 70%."
+hgb_under_3p5_combo_high_pace_total_ge_58_dewpoint_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 58, and dewpoint >= 70F."
+hgb_under_3p5_combo_high_pace_total_ge_60,team_style_total_grid,HGB under 3.5+ with top 30% pace proxy and total >= 60.
+hgb_under_3p5_combo_high_pace_total_ge_60_wind_ge_12,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 60, and wind >= 12 mph."
+hgb_under_3p5_combo_high_pace_total_ge_60_wind_ge_15,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 60, and wind >= 15 mph."
+hgb_under_3p5_combo_high_pace_total_ge_60_precip_any,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 60, and any precipitation flag."
+hgb_under_3p5_combo_high_pace_total_ge_60_rain_flag,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 60, and rain/thunder text or precip amount."
+hgb_under_3p5_combo_high_pace_total_ge_60_cold_le_50,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 60, and temp <= 50F."
+hgb_under_3p5_combo_high_pace_total_ge_60_heat_ge_85,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 60, and temp >= 85F."
+hgb_under_3p5_combo_high_pace_total_ge_60_humid_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 60, and humidity >= 70%."
+hgb_under_3p5_combo_high_pace_total_ge_60_dewpoint_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total >= 60, and dewpoint >= 70F."
+hgb_under_3p5_combo_high_pace_total_60_63,team_style_total_grid,HGB under 3.5+ with top 30% pace proxy and total 60-63.
+hgb_under_3p5_combo_high_pace_total_60_63_wind_ge_12,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total 60-63, and wind >= 12 mph."
+hgb_under_3p5_combo_high_pace_total_60_63_wind_ge_15,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total 60-63, and wind >= 15 mph."
+hgb_under_3p5_combo_high_pace_total_60_63_precip_any,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total 60-63, and any precipitation flag."
+hgb_under_3p5_combo_high_pace_total_60_63_rain_flag,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total 60-63, and rain/thunder text or precip amount."
+hgb_under_3p5_combo_high_pace_total_60_63_cold_le_50,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total 60-63, and temp <= 50F."
+hgb_under_3p5_combo_high_pace_total_60_63_heat_ge_85,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total 60-63, and temp >= 85F."
+hgb_under_3p5_combo_high_pace_total_60_63_humid_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total 60-63, and humidity >= 70%."
+hgb_under_3p5_combo_high_pace_total_60_63_dewpoint_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pace proxy, total 60-63, and dewpoint >= 70F."
+hgb_under_3p5_combo_high_pass_yard_share_wind_ge_10,weather_team_style_grid,HGB under 3.5+ with top 30% pass-yard-share proxy and wind >= 10 mph.
+hgb_under_3p5_combo_high_pass_yard_share_wind_ge_12,weather_team_style_grid,HGB under 3.5+ with top 30% pass-yard-share proxy and wind >= 12 mph.
+hgb_under_3p5_combo_high_pass_yard_share_wind_ge_15,weather_team_style_grid,HGB under 3.5+ with top 30% pass-yard-share proxy and wind >= 15 mph.
+hgb_under_3p5_combo_high_pass_yard_share_precip_any,weather_team_style_grid,HGB under 3.5+ with top 30% pass-yard-share proxy and any precipitation flag.
+hgb_under_3p5_combo_high_pass_yard_share_rain_flag,weather_team_style_grid,HGB under 3.5+ with top 30% pass-yard-share proxy and rain/thunder text or precip amount.
+hgb_under_3p5_combo_high_pass_yard_share_snow_flag,weather_team_style_grid,HGB under 3.5+ with top 30% pass-yard-share proxy and snow/wintry flag.
+hgb_under_3p5_combo_high_pass_yard_share_cold_le_50,weather_team_style_grid,HGB under 3.5+ with top 30% pass-yard-share proxy and temp <= 50F.
+hgb_under_3p5_combo_high_pass_yard_share_cold_le_45,weather_team_style_grid,HGB under 3.5+ with top 30% pass-yard-share proxy and temp <= 45F.
+hgb_under_3p5_combo_high_pass_yard_share_heat_ge_85,weather_team_style_grid,HGB under 3.5+ with top 30% pass-yard-share proxy and temp >= 85F.
+hgb_under_3p5_combo_high_pass_yard_share_heat_ge_90,weather_team_style_grid,HGB under 3.5+ with top 30% pass-yard-share proxy and temp >= 90F.
+hgb_under_3p5_combo_high_pass_yard_share_humid_ge_70,weather_team_style_grid,HGB under 3.5+ with top 30% pass-yard-share proxy and humidity >= 70%.
+hgb_under_3p5_combo_high_pass_yard_share_humid_ge_80,weather_team_style_grid,HGB under 3.5+ with top 30% pass-yard-share proxy and humidity >= 80%.
+hgb_under_3p5_combo_high_pass_yard_share_dewpoint_ge_70,weather_team_style_grid,HGB under 3.5+ with top 30% pass-yard-share proxy and dewpoint >= 70F.
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_56,team_style_total_grid,HGB under 3.5+ with top 30% pass-yard-share proxy and total >= 56.
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_56_wind_ge_12,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 56, and wind >= 12 mph."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_56_wind_ge_15,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 56, and wind >= 15 mph."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_56_precip_any,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 56, and any precipitation flag."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_56_rain_flag,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 56, and rain/thunder text or precip amount."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_56_cold_le_50,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 56, and temp <= 50F."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_56_heat_ge_85,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 56, and temp >= 85F."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_56_humid_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 56, and humidity >= 70%."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_56_dewpoint_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 56, and dewpoint >= 70F."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_58,team_style_total_grid,HGB under 3.5+ with top 30% pass-yard-share proxy and total >= 58.
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_58_wind_ge_12,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 58, and wind >= 12 mph."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_58_wind_ge_15,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 58, and wind >= 15 mph."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_58_precip_any,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 58, and any precipitation flag."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_58_rain_flag,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 58, and rain/thunder text or precip amount."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_58_cold_le_50,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 58, and temp <= 50F."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_58_heat_ge_85,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 58, and temp >= 85F."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_58_humid_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 58, and humidity >= 70%."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_58_dewpoint_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 58, and dewpoint >= 70F."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_60,team_style_total_grid,HGB under 3.5+ with top 30% pass-yard-share proxy and total >= 60.
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_60_wind_ge_12,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 60, and wind >= 12 mph."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_60_wind_ge_15,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 60, and wind >= 15 mph."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_60_precip_any,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 60, and any precipitation flag."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_60_rain_flag,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 60, and rain/thunder text or precip amount."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_60_cold_le_50,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 60, and temp <= 50F."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_60_heat_ge_85,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 60, and temp >= 85F."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_60_humid_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 60, and humidity >= 70%."
+hgb_under_3p5_combo_high_pass_yard_share_total_ge_60_dewpoint_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total >= 60, and dewpoint >= 70F."
+hgb_under_3p5_combo_high_pass_yard_share_total_60_63,team_style_total_grid,HGB under 3.5+ with top 30% pass-yard-share proxy and total 60-63.
+hgb_under_3p5_combo_high_pass_yard_share_total_60_63_wind_ge_12,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total 60-63, and wind >= 12 mph."
+hgb_under_3p5_combo_high_pass_yard_share_total_60_63_wind_ge_15,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total 60-63, and wind >= 15 mph."
+hgb_under_3p5_combo_high_pass_yard_share_total_60_63_precip_any,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total 60-63, and any precipitation flag."
+hgb_under_3p5_combo_high_pass_yard_share_total_60_63_rain_flag,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total 60-63, and rain/thunder text or precip amount."
+hgb_under_3p5_combo_high_pass_yard_share_total_60_63_cold_le_50,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total 60-63, and temp <= 50F."
+hgb_under_3p5_combo_high_pass_yard_share_total_60_63_heat_ge_85,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total 60-63, and temp >= 85F."
+hgb_under_3p5_combo_high_pass_yard_share_total_60_63_humid_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total 60-63, and humidity >= 70%."
+hgb_under_3p5_combo_high_pass_yard_share_total_60_63_dewpoint_ge_70,weather_team_style_total_grid,"HGB under 3.5+ with top 30% pass-yard-share proxy, total 60-63, and dewpoint >= 70F."
+hgb_under_3p5_combo_provider_count_ge_3_total_ge_56,market_signal_combo_grid,HGB under 3.5+ with 3+ line providers and total >= 56.
+hgb_under_3p5_combo_provider_count_ge_3_total_ge_60,market_signal_combo_grid,HGB under 3.5+ with 3+ line providers and total >= 60.
+hgb_under_3p5_combo_provider_count_ge_3_wind_ge_12,market_signal_combo_grid,HGB under 3.5+ with 3+ line providers and wind >= 12 mph.
+hgb_under_3p5_combo_provider_count_ge_3_high_pass_rate,market_signal_combo_grid,HGB under 3.5+ with 3+ line providers and top 30% pass-rate proxy.
+hgb_under_3p5_combo_line_range_ge_2_total_ge_56,market_signal_combo_grid,HGB under 3.5+ with provider total range >= 2 and total >= 56.
+hgb_under_3p5_combo_line_range_ge_2_total_ge_60,market_signal_combo_grid,HGB under 3.5+ with provider total range >= 2 and total >= 60.
+hgb_under_3p5_combo_line_range_ge_2_wind_ge_12,market_signal_combo_grid,HGB under 3.5+ with provider total range >= 2 and wind >= 12 mph.
+hgb_under_3p5_combo_line_range_ge_2_high_pass_rate,market_signal_combo_grid,HGB under 3.5+ with provider total range >= 2 and top 30% pass-rate proxy.
+hgb_under_3p5_combo_selected_above_median_1_total_ge_56,market_signal_combo_grid,HGB under 3.5+ with selected total >= 1 above provider median and total >= 56.
+hgb_under_3p5_combo_selected_above_median_1_total_ge_60,market_signal_combo_grid,HGB under 3.5+ with selected total >= 1 above provider median and total >= 60.
+hgb_under_3p5_combo_selected_above_median_1_wind_ge_12,market_signal_combo_grid,HGB under 3.5+ with selected total >= 1 above provider median and wind >= 12 mph.
+hgb_under_3p5_combo_selected_above_median_1_high_pass_rate,market_signal_combo_grid,HGB under 3.5+ with selected total >= 1 above provider median and top 30% pass-rate proxy.
