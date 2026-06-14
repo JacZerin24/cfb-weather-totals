@@ -88,6 +88,11 @@ def enrich_file(path: Path) -> None:
 def main() -> None:
     enrich_file(ROOT / 'docs' / 'index.html')
     enrich_file(ROOT / 'outputs' / 'research_dashboard.html')
+    try:
+        from . import enrich_research_dashboard_edge_refinement
+        enrich_research_dashboard_edge_refinement.main()
+    except Exception as exc:
+        print(f'Edge refinement dashboard enrichment failed; continuing: {exc}')
     print('Added modeling explainer section to research dashboard HTML')
 
 
