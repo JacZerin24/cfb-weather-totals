@@ -58,6 +58,7 @@ jobs:
           python -m src.weekly_card_backtest
           python -m src.predict_week
           python -m src.report
+          python -m src.build_research_dashboard
 
       - name: Upload data and outputs as artifact
         if: always()
@@ -68,12 +69,13 @@ jobs:
             data/raw/*.csv
             data/processed/*.csv
             outputs/*
+            docs/*
 
       - name: Commit small output reports
         if: success()
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add outputs/
+          git add outputs/ docs/
           git commit -m "Update historical research outputs" || echo "No changes to commit"
           git push
