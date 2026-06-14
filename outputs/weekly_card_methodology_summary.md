@@ -11,22 +11,22 @@ Instead of grading every possible same-week combination, it selects only the top
 | hgb_under_3p5_high_total_2leg_top1_nonoverlap |      2 |     120 |      120 |     43 |       77 |        0 |   0.358333 |             0.274376 |     36.719  |       0.305992 |              1       |             -6       |                 6.78701 |             -1.55833  |
 | hgb_under_3p5_high_total_2leg_top2_nonoverlap |      2 |     211 |      211 |     74 |      137 |        0 |   0.350711 |             0.274376 |     58.7025 |       0.278211 |              1.75833 |             -9.77686 |                 6.25513 |             -1.23697  |
 | hgb_under_5p0_high_total_2leg_top1_nonoverlap |      2 |     103 |      103 |     36 |       67 |        0 |   0.349515 |             0.274376 |     28.2066 |       0.273851 |              1       |             -8       |                 7.22609 |             -0.847087 |
-| hgb_under_3p5_high_total_3leg_top1_nonoverlap |      3 |     103 |      103 |     18 |       85 |        0 |   0.174757 |             0.143721 |     22.2427 |       0.215948 |              1       |            -15       |                 6.14543 |             -1.33172  |
-| hgb_under_3p5_all_2leg_top1_nonoverlap        |      2 |     126 |      126 |     42 |       84 |        0 |   0.333333 |             0.274376 |     25.3388 |       0.201102 |              1       |            -11.843   |                 7.33563 |             -1.17659  |
-| hgb_under_3p5_consensus_2leg_top1_nonoverlap  |      2 |      86 |       86 |     28 |       58 |        0 |   0.325581 |             0.274376 |     16.0496 |       0.186623 |              1       |            -11.843   |                 7.57403 |             -1.07558  |
-| hgb_under_5p0_consensus_2leg_top1_nonoverlap  |      2 |      81 |       81 |     26 |       55 |        0 |   0.320988 |             0.274376 |     13.7603 |       0.169881 |              1       |            -12.843   |                 7.75307 |             -0.759259 |
+| hgb_under_3p5_high_total_3leg_top1_nonoverlap |      3 |     103 |      103 |     18 |       85 |        0 |   0.174757 |             0.143721 |     22.2427 |       0.215948 |              1       |            -15       |                 6.14606 |             -1.33172  |
+| hgb_under_3p5_all_2leg_top1_nonoverlap        |      2 |     126 |      126 |     42 |       84 |        0 |   0.333333 |             0.274376 |     25.3388 |       0.201102 |              1       |            -11.843   |                 7.33472 |             -1.17659  |
+| hgb_under_3p5_consensus_2leg_top1_nonoverlap  |      2 |      86 |       86 |     28 |       58 |        0 |   0.325581 |             0.274376 |     16.0496 |       0.186623 |              1       |            -11.843   |                 7.5727  |             -1.07558  |
+| hgb_under_5p0_consensus_2leg_top1_nonoverlap  |      2 |      81 |       81 |     26 |       55 |        0 |   0.320988 |             0.274376 |     13.7603 |       0.169881 |              1       |            -12.843   |                 7.75167 |             -0.759259 |
 
 ## Straight-leg equivalent summary
 
 | card_strategy                                 |   unique_straight_legs |   graded |   wins |   losses |   hit_rate |   net_units_flat_1u_each |   roi_per_leg |   avg_abs_pred_edge |   avg_market_residual |
 |:----------------------------------------------|-----------------------:|---------:|-------:|---------:|-----------:|-------------------------:|--------------:|--------------------:|----------------------:|
 | hgb_under_3p5_high_total_2leg_top1_nonoverlap |                    240 |      237 |    139 |       98 |   0.586498 |                  28.3636 |     0.119678  |             7.56983 |             -1.55833  |
-| hgb_under_3p5_high_total_3leg_top1_nonoverlap |                    309 |      307 |    178 |      129 |   0.579805 |                  32.8182 |     0.1069    |             7.29535 |             -1.33172  |
-| hgb_under_3p5_all_2leg_top1_nonoverlap        |                    252 |      249 |    143 |      106 |   0.574297 |                  24      |     0.0963855 |             8.06714 |             -1.17659  |
+| hgb_under_3p5_high_total_3leg_top1_nonoverlap |                    309 |      307 |    178 |      129 |   0.579805 |                  32.8182 |     0.1069    |             7.29556 |             -1.33172  |
+| hgb_under_3p5_all_2leg_top1_nonoverlap        |                    252 |      249 |    143 |      106 |   0.574297 |                  24      |     0.0963855 |             8.06712 |             -1.17659  |
 | hgb_under_5p0_high_total_2leg_top1_nonoverlap |                    206 |      203 |    116 |       87 |   0.571429 |                  18.4545 |     0.0909091 |             7.97085 |             -0.847087 |
-| hgb_under_3p5_consensus_2leg_top1_nonoverlap  |                    172 |      171 |     97 |       74 |   0.567251 |                  14.1818 |     0.0829346 |             8.32102 |             -1.07558  |
-| hgb_under_3p5_high_total_2leg_top2_nonoverlap |                    422 |      419 |    237 |      182 |   0.565632 |                  33.4545 |     0.0798438 |             6.88685 |             -1.23697  |
-| hgb_under_5p0_consensus_2leg_top1_nonoverlap  |                    162 |      161 |     90 |       71 |   0.559006 |                  10.8182 |     0.0671937 |             8.52137 |             -0.759259 |
+| hgb_under_3p5_consensus_2leg_top1_nonoverlap  |                    172 |      171 |     97 |       74 |   0.567251 |                  14.1818 |     0.0829346 |             8.32098 |             -1.07558  |
+| hgb_under_3p5_high_total_2leg_top2_nonoverlap |                    422 |      419 |    237 |      182 |   0.565632 |                  33.4545 |     0.0798438 |             6.88728 |             -1.23697  |
+| hgb_under_5p0_consensus_2leg_top1_nonoverlap  |                    162 |      161 |     90 |       71 |   0.559006 |                  10.8182 |     0.0671937 |             8.52133 |             -0.759259 |
 
 ## Season-by-season summary
 
