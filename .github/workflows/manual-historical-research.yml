@@ -59,6 +59,7 @@ jobs:
           python -m src.predict_week
           python -m src.report
           python -m src.build_research_dashboard
+          python -m src.enrich_research_dashboard_explainer
 
       - name: Upload data and outputs as artifact
         if: always()
