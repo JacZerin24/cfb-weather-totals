@@ -16,6 +16,14 @@ from .pull_historical_lines import flatten_lines
 from .utils import ROOT, ensure_dir, get_settings, read_df, write_df
 
 
+def as_bool(value: Any) -> bool:
+    if isinstance(value, bool):
+        return value
+    if value is None or (isinstance(value, float) and np.isnan(value)):
+        return False
+    return str(value).strip().lower() in {'true', '1', 'yes', 'y'}
+
+
 def _provider_name(value: Any) -> str:
     if isinstance(value, dict):
         return str(value.get('name') or value.get('title') or value.get('provider') or 'unknown')
@@ -121,7 +129,7 @@ def add_live_categories(df: pd.DataFrame) -> pd.DataFrame:
     out['closing_total'] = pd.to_numeric(out.get('closing_total'), errors='coerce')
     for col in ['wind_mph', 'temperature_f', 'humidity', 'precipitation', 'snowfall', 'dewpoint_f', 'pressure']:
         out[col] = pd.to_numeric(out.get(col), errors='coerce') if col in out.columns else np.nan
-    out['game_indoors_bool'] = out.get('game_indoors', False).fillna(False).astype(bool)
+    out['game_indoors_bool'] = out['game_indoors'].map(as_bool) if 'game_indoors' in out.columns else False
     out['wind_bin'] = pd.cut(out['wind_mph'], bins=[-1, 5, 10, 15, 20, 200], labels=['0-5', '5-10', '10-15', '15-20', '20+'])
     out['temp_bin'] = pd.cut(out['temperature_f'], bins=[-100, 35, 50, 70, 85, 200], labels=['<=35', '35-50', '50-70', '70-85', '85+'])
     out['total_bin'] = pd.cut(out['closing_total'], [0, 42, 49, 56, 63, 100], labels=['<=42', '42-49', '49-56', '56-63', '63+'])
@@ -140,8 +148,7 @@ def fetch_nws_weather(board: pd.DataFrame) -> pd.DataFrame:
     rows: list[dict[str, Any]] = []
     for _, game in board.iterrows():
         game_id = game.get('game_id')
-        indoors = bool(game.get('game_indoors', False))
-        if indoors:
+        if as_bool(game.get('game_indoors', False)):
             rows.append({
                 'game_id': game_id,
                 'nws_status': 'indoor',
@@ -228,10 +235,10 @@ def classify_row(row: pd.Series) -> tuple[str, str]:
     if pd.isna(row.get('pred_market_residual')):
         return 'NO PLAY', 'The model could not score this game.'
 
-    forecast_ready = bool(row.get('game_indoors_bool')) or row.get('nws_status') == 'ok'
+    forecast_ready = str(row.get('nws_status') or '').lower() in {'ok', 'indoor'}
     if not forecast_ready:
         return 'WATCH', 'Outdoor game does not yet have a usable NWS kickoff forecast.'
-    if bool(row.get('start_time_tbd', False)):
+    if as_bool(row.get('start_time_tbd', False)):
         return 'WATCH', 'Kickoff time is still TBD, so the weather match is not stable yet.'
 
     pred = float(row['pred_market_residual'])
@@ -246,8 +253,7 @@ def classify_row(row: pd.Series) -> tuple[str, str]:
 
 
 def clean_json_records(df: pd.DataFrame) -> list[dict[str, Any]]:
-    clean = df.copy()
-    clean = clean.where(pd.notnull(clean), None)
+    clean = df.astype(object).where(pd.notnull(df), None)
     records = clean.to_dict(orient='records')
     for row in records:
         for key, value in list(row.items()):
@@ -333,7 +339,7 @@ def main() -> None:
         board['venue_name'] = board['venue']
     if 'venue_dome' not in board.columns:
         board['venue_dome'] = False
-    board['game_indoors'] = board['venue_dome'].fillna(False).astype(bool)
+    board['game_indoors'] = board['venue_dome'].map(as_bool)
 
     line_records: list[dict[str, Any]] = []
     if target_week is not None:
@@ -373,7 +379,7 @@ def main() -> None:
         'precipitation', 'snowfall', 'weather_summary', 'nws_status', 'nws_office',
         'home_conference', 'away_conference', 'home_classification', 'away_classification', 'fbs_vs_fbs',
     ] if c in board.columns]
-    board = board[display_cols + [c for c in board.columns if c not in display_cols and c.startswith(('home_prior_', 'away_prior_'))]]
+    board = board[display_cols].copy()
     board['status_rank'] = board['status'].map({'QUALIFIES': 0, 'LEAN': 1, 'WATCH': 2, 'NO PLAY': 3, 'NO LINE': 4}).fillna(5)
 
     write_outputs(board, season, target_week)
