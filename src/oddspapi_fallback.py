@@ -15,6 +15,34 @@ BASE_URL = 'https://api.oddspapi.io/v4'
 AMERICAN_FOOTBALL_SPORT_ID = 14
 NCAA_TOURNAMENT_ID = 27653
 
+# These are the books OddsPapi's own August 2026 college-football guide
+# observed on NCAA fixtures. Requesting them explicitly avoids a current
+# odds-by-tournaments API quirk where omitting bookmakers returns HTTP 400.
+NCAA_BOOKMAKER_PRIORITY = [
+    'draftkings', 'fanduel', 'betmgm', 'caesars', 'bet365', 'betrivers',
+    'hardrockbet', 'circasports', 'sbobet', 'pinnacle', 'williamhill',
+    'ballybet', 'betparx', 'borgata', 'fourwinds', 'pointsbet.com.au', 'kalshi',
+]
+
+
+def _safe_error_detail(response: requests.Response) -> str:
+    try:
+        payload = response.json()
+    except ValueError:
+        return str(response.text or '').strip()[:240]
+    if isinstance(payload, dict):
+        error = payload.get('error')
+        if isinstance(error, dict):
+            for key in ('message', 'detail', 'code'):
+                if error.get(key):
+                    return str(error[key])[:240]
+        if error:
+            return str(error)[:240]
+        for key in ('message', 'detail', 'code'):
+            if payload.get(key):
+                return str(payload[key])[:240]
+    return str(payload)[:240]
+
 
 def _api_get(path: str, api_key: str, **params: Any) -> tuple[Any | None, str]:
     payload_params = {**params, 'apiKey': api_key}
@@ -37,7 +65,7 @@ def _api_get(path: str, api_key: str, **params: Any) -> tuple[Any | None, str]:
             time.sleep(min(max(retry_ms / 1000.0 + 0.25, 1.1), 5.0))
             continue
         if response.status_code != 200:
-            return None, f'http_{response.status_code}'
+            return {'_http_error': _safe_error_detail(response)}, f'http_{response.status_code}'
         try:
             return response.json(), 'ok'
         except ValueError:
@@ -59,6 +87,27 @@ def _active_subscription(account: Any) -> dict[str, Any]:
         if isinstance(sub, dict) and sub.get('subscription_id') == current_id:
             return sub
     return subscriptions[-1] if subscriptions and isinstance(subscriptions[-1], dict) else {}
+
+
+def _subscription_bookmakers(subscription: dict[str, Any]) -> list[str]:
+    books = subscription.get('bookmakers') or {}
+    if isinstance(books, dict):
+        return [str(slug) for slug in books if str(slug).strip()]
+    if isinstance(books, list):
+        return [str(slug) for slug in books if str(slug).strip()]
+    return []
+
+
+def _bulk_bookmakers(subscription: dict[str, Any]) -> list[str]:
+    allowed = set(_subscription_bookmakers(subscription))
+    if not allowed:
+        # Free accounts are documented as including all books, but keep the
+        # request bounded to known NCAA books if the account response omits them.
+        return NCAA_BOOKMAKER_PRIORITY[:]
+    selected = [slug for slug in NCAA_BOOKMAKER_PRIORITY if slug in allowed]
+    if selected:
+        return selected
+    return sorted(allowed)[:20]
 
 
 def _as_records(payload: Any) -> list[dict[str, Any]]:
@@ -108,7 +157,6 @@ def _is_full_game_total(info: dict[str, Any]) -> bool:
         return False
     if period and period not in {'fulltime', 'full_time', 'game', 'match'}:
         return False
-    # OddsPapi's documented NCAA market name is "Total (incl. overtime)".
     return 'total' in name and 'team total' not in name and ('overtime' in name or 'incl' in name)
 
 
@@ -189,7 +237,6 @@ def select_oddspapi_total(
         key=lambda line: (-line_counts[line], abs(line - center), line),
     )[0]
 
-    # Give every bookmaker one representative live line nearest the market mode.
     representatives = {
         slug: min(lines, key=lambda line: (abs(line - consensus), line))
         for slug, lines in book_lines.items()
@@ -261,9 +308,13 @@ def fetch_oddspapi_ncaa(
     stats: dict[str, Any] = {
         'oddspapi_status': 'missing_key' if not key else 'starting',
         'oddspapi_request_limit': None,
+        'oddspapi_request_count_before': None,
         'oddspapi_request_count': None,
         'oddspapi_fixtures': 0,
+        'oddspapi_fixtures_with_any_odds': 0,
         'oddspapi_odds_fixtures': 0,
+        'oddspapi_bulk_bookmaker_count': 0,
+        'oddspapi_error_detail': '',
     }
     if not key:
         return [], [], [], stats
@@ -275,7 +326,10 @@ def fetch_oddspapi_ncaa(
         return [], [], [], stats
     subscription = _active_subscription(account)
     stats['oddspapi_request_limit'] = subscription.get('request_limit')
+    stats['oddspapi_request_count_before'] = subscription.get('request_count')
     stats['oddspapi_request_count'] = subscription.get('request_count')
+    bulk_books = _bulk_bookmakers(subscription)
+    stats['oddspapi_bulk_bookmaker_count'] = len(bulk_books)
 
     start, end = _date_window(board)
     fixture_params: dict[str, Any] = {
@@ -291,6 +345,7 @@ def fetch_oddspapi_ncaa(
     stats['oddspapi_fixtures_status'] = fixtures_status
     fixtures = _as_records(fixtures_payload)
     stats['oddspapi_fixtures'] = len(fixtures)
+    stats['oddspapi_fixtures_with_any_odds'] = sum(bool(row.get('hasOdds')) for row in fixtures)
     if fixtures_status != 'ok':
         stats['oddspapi_status'] = fixtures_status
         return [], [], [], stats
@@ -305,14 +360,25 @@ def fetch_oddspapi_ncaa(
         'odds-by-tournaments',
         key,
         tournamentIds=str(NCAA_TOURNAMENT_ID),
+        bookmakers=','.join(bulk_books),
         language='en',
         verbosity=3,
         oddsFormat='american',
     )
     stats['oddspapi_odds_status'] = odds_status
+    if isinstance(odds_payload, dict) and odds_payload.get('_http_error'):
+        stats['oddspapi_error_detail'] = str(odds_payload['_http_error'])[:240]
     odds_records = _as_records(odds_payload)
     stats['oddspapi_odds_fixtures'] = len(odds_records)
     stats['oddspapi_status'] = odds_status
+
+    # /account is unmetered; read it again so logs show the actual cost of this run.
+    account_after, account_after_status = _api_get('account', key)
+    if account_after_status == 'ok':
+        after_sub = _active_subscription(account_after)
+        stats['oddspapi_request_count'] = after_sub.get('request_count')
+        stats['oddspapi_request_limit'] = after_sub.get('request_limit') or stats['oddspapi_request_limit']
+
     return fixtures, odds_records, catalog, stats
 
 
@@ -333,6 +399,8 @@ def apply_fcs_oddspapi_fallback(
     stats: dict[str, Any] = {
         'fcs_missing_before': int(missing.sum()),
         'fcs_oddspapi_filled': 0,
+        'fcs_oddspapi_matched_fixtures': 0,
+        'fcs_oddspapi_matched_with_any_odds': 0,
         'oddspapi_status': 'not_needed' if not missing.any() else 'not_called',
     }
     if not missing.any():
@@ -344,6 +412,16 @@ def apply_fcs_oddspapi_fallback(
     else:
         stats['oddspapi_status'] = 'fixture'
 
+    matched: dict[Any, tuple[dict[str, Any], float]] = {}
+    for idx, game in out.loc[missing].iterrows():
+        fixture, confidence = match_oddspapi_fixture(game, fixtures)
+        if fixture is None:
+            continue
+        matched[idx] = (fixture, confidence)
+        stats['fcs_oddspapi_matched_fixtures'] += 1
+        if bool(fixture.get('hasOdds')):
+            stats['fcs_oddspapi_matched_with_any_odds'] += 1
+
     if not fixtures or not odds_records or not market_catalog:
         stats['fcs_missing_after'] = int(missing.sum())
         return out, stats
@@ -354,10 +432,7 @@ def apply_fcs_oddspapi_fallback(
         if isinstance(row, dict) and row.get('fixtureId')
     }
 
-    for idx, game in out.loc[missing].iterrows():
-        fixture, confidence = match_oddspapi_fixture(game, fixtures)
-        if fixture is None:
-            continue
+    for idx, (fixture, confidence) in matched.items():
         fixture_id = str(fixture.get('fixtureId') or '')
         odds_fixture = odds_by_fixture.get(fixture_id)
         if not odds_fixture:
