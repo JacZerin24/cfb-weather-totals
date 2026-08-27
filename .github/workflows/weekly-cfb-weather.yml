@@ -48,13 +48,62 @@ jobs:
             exit 1
           fi
 
+      - name: Restore historical model training data
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/cfb-training
+          mkdir -p /tmp/cfb-training data/processed
+
+          LIVE_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?name=cfb-live-training-data&per_page=100" \
+            --jq '[.artifacts[] | select(.expired == false)] | sort_by(.created_at) | last | .workflow_run.id // empty')
+
+          if [ -n "$LIVE_RUN_ID" ]; then
+            echo "Restoring training data from weekly artifact run ${LIVE_RUN_ID}."
+            gh run download "$LIVE_RUN_ID" -n cfb-live-training-data -D /tmp/cfb-training
+          else
+            RESEARCH_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/manual-historical-research.yml/runs?status=success&per_page=1" \
+              --jq '.workflow_runs[0].id // empty')
+            if [ -z "$RESEARCH_RUN_ID" ]; then
+              echo "ERROR: No successful historical research run is available to seed the live model."
+              exit 1
+            fi
+            echo "Seeding training data from historical research run ${RESEARCH_RUN_ID}."
+            gh run download "$RESEARCH_RUN_ID" -n cfb-weather-totals-research-output -D /tmp/cfb-training
+          fi
+
+          MODEL_PATH=$(find /tmp/cfb-training -type f -name modeling_dataset.csv -print -quit)
+          if [ -z "$MODEL_PATH" ]; then
+            echo "ERROR: modeling_dataset.csv was not found in the restored artifact."
+            exit 1
+          fi
+          cp "$MODEL_PATH" data/processed/modeling_dataset.csv
+
+          TEAM_PATH=$(find /tmp/cfb-training -type f -name team_prior_features.csv -print -quit)
+          if [ -n "$TEAM_PATH" ]; then
+            cp "$TEAM_PATH" data/processed/team_prior_features.csv
+          fi
+
+          echo "Restored $(du -h data/processed/modeling_dataset.csv | cut -f1) modeling dataset."
+
+      - name: Refresh live training artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cfb-live-training-data
+          path: |
+            data/processed/modeling_dataset.csv
+            data/processed/team_prior_features.csv
+          if-no-files-found: error
+          retention-days: 90
+
       - name: Build live weekly board
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           NOAA_API_TOKEN: ${{ secrets.NOAA_API_TOKEN }}
         run: |
-          python -m src.predict_week
+          python -m src.run_live_week
           python -m src.report
           python -m src.build_live_dashboard
 
