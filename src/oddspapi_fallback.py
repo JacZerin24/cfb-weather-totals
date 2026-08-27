@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 import time
 from collections import Counter
+from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -15,10 +16,11 @@ BASE_URL = 'https://api.oddspapi.io/v4'
 AMERICAN_FOOTBALL_SPORT_ID = 14
 NCAA_TOURNAMENT_ID = 27653
 BULK_BOOKMAKER_CHUNK_SIZE = 1
+COVERAGE_PATH = Path('outputs/oddspapi_bookmaker_coverage.csv')
 
-# These are the books OddsPapi's own August 2026 college-football guide
-# observed on NCAA fixtures. The live tournament endpoint accepts one
-# bookmaker per request, so these are queried individually and merged locally.
+# Keep the broad set for one live coverage-validation pass. After the coverage
+# artifact is reviewed, production can use the smallest independent subset that
+# preserves FCS full-game-total coverage.
 NCAA_BOOKMAKER_PRIORITY = [
     'draftkings', 'fanduel', 'betmgm', 'caesars', 'bet365', 'betrivers',
     'hardrockbet', 'circasports', 'sbobet', 'pinnacle', 'williamhill',
@@ -102,8 +104,6 @@ def _subscription_bookmakers(subscription: dict[str, Any]) -> list[str]:
 def _bulk_bookmakers(subscription: dict[str, Any]) -> list[str]:
     allowed = set(_subscription_bookmakers(subscription))
     if not allowed:
-        # Free accounts are documented as including all books, but keep the
-        # request bounded to known NCAA books if the account response omits them.
         return NCAA_BOOKMAKER_PRIORITY[:]
     selected = [slug for slug in NCAA_BOOKMAKER_PRIORITY if slug in allowed]
     if selected:
@@ -128,15 +128,17 @@ def _as_records(payload: Any) -> list[dict[str, Any]]:
         value = payload.get(key)
         if isinstance(value, list):
             return [row for row in value if isinstance(row, dict)]
-    values = [value for value in payload.values() if isinstance(value, dict) and value.get('fixtureId')]
-    return values
+    return [
+        value for value in payload.values()
+        if isinstance(value, dict) and value.get('fixtureId')
+    ]
 
 
 def _merge_odds_records(
     merged: dict[str, dict[str, Any]],
     records: list[dict[str, Any]],
 ) -> None:
-    """Merge disjoint bookmaker batches into one record per fixture."""
+    """Merge disjoint one-book responses into one record per fixture."""
     for row in records:
         fixture_id = str(row.get('fixtureId') or '')
         if not fixture_id:
@@ -177,18 +179,29 @@ def _market_lookup(catalog: Any) -> dict[str, dict[str, Any]]:
 
 
 def _is_full_game_total(info: dict[str, Any]) -> bool:
+    """Identify a regulation/full-game total while excluding team/period totals.
+
+    The live NCAA catalog labels the game-length period as ``result`` (for
+    example, ``Total (incl. overtime)``), while other OddsPapi sports use names
+    such as ``Over Under Full Time`` with period ``fulltime``. Rely primarily on
+    market type + full-game period + plausible football total, not one exact
+    display-name string.
+    """
     name = str(info.get('marketName') or '').strip().lower()
     market_type = str(info.get('marketType') or '').strip().lower()
     period = str(info.get('period') or '').strip().lower()
     player_prop = bool(info.get('playerProp', False))
     handicap = pd.to_numeric(pd.Series([info.get('handicap')]), errors='coerce').iloc[0]
-    if player_prop or pd.isna(handicap) or float(handicap) < 20 or float(handicap) > 100:
+
+    if player_prop or pd.isna(handicap) or not 20 <= float(handicap) <= 100:
         return False
-    if market_type and market_type != 'totals':
+    if market_type != 'totals':
         return False
-    if period and period not in {'fulltime', 'full_time', 'game', 'match'}:
+    if period not in {'result', 'fulltime', 'full_time', 'game', 'match'}:
         return False
-    return 'total' in name and 'team total' not in name and ('overtime' in name or 'incl' in name)
+    if 'team' in name:
+        return False
+    return 'total' in name or ('over' in name and 'under' in name)
 
 
 def _player_node(outcome: Any) -> dict[str, Any] | None:
@@ -223,15 +236,14 @@ def _market_has_two_live_sides(market: Any) -> bool:
     return active >= 2
 
 
-def select_oddspapi_total(
+def _valid_total_lines_by_book(
     odds_fixture: dict[str, Any],
     market_catalog: Any,
-    preferred_providers: list[str] | None = None,
-) -> dict[str, Any] | None:
+) -> dict[str, set[float]]:
     lookup = _market_lookup(market_catalog)
     books = odds_fixture.get('bookmakerOdds') or {}
     if not isinstance(books, dict):
-        return None
+        return {}
 
     book_lines: dict[str, set[float]] = {}
     for slug, book in books.items():
@@ -247,10 +259,17 @@ def select_oddspapi_total(
             if not _is_full_game_total(info) or not _market_has_two_live_sides(market):
                 continue
             line = pd.to_numeric(pd.Series([info.get('handicap')]), errors='coerce').iloc[0]
-            if pd.isna(line):
-                continue
-            book_lines.setdefault(str(slug), set()).add(float(line))
+            if pd.notna(line):
+                book_lines.setdefault(str(slug), set()).add(float(line))
+    return book_lines
 
+
+def select_oddspapi_total(
+    odds_fixture: dict[str, Any],
+    market_catalog: Any,
+    preferred_providers: list[str] | None = None,
+) -> dict[str, Any] | None:
+    book_lines = _valid_total_lines_by_book(odds_fixture, market_catalog)
     if not book_lines:
         return None
 
@@ -364,9 +383,8 @@ def fetch_oddspapi_ncaa(
     stats['oddspapi_request_count'] = subscription.get('request_count')
     bulk_books = _bulk_bookmakers(subscription)
 
-    # Keep a reserve of at least five requests so a scheduled run never drains
-    # the account. Fixtures + markets cost two calls; the remaining allowance is
-    # used for one-book bulk calls in priority order.
+    # Keep a reserve of at least five requests so scheduled runs cannot exhaust
+    # the free account. Fixtures + markets cost two calls; each book costs one.
     try:
         request_limit = int(stats['oddspapi_request_limit'])
         request_count = int(stats['oddspapi_request_count_before'])
@@ -410,7 +428,6 @@ def fetch_oddspapi_ncaa(
 
     for chunk_index, bookmaker_chunk in enumerate(bulk_chunks):
         if chunk_index:
-            # The documented API limit is 1 request/second. Stay slightly below it.
             time.sleep(1.05)
         stats['oddspapi_bulk_calls'] += 1
         odds_payload, odds_status = _api_get(
@@ -451,7 +468,7 @@ def fetch_oddspapi_ncaa(
     if bulk_errors:
         stats['oddspapi_error_detail'] = '; '.join(bulk_errors)[:600]
 
-    # /account is unmetered; read it again so logs show the actual cost of this run.
+    # /account is unmetered; read it again to record the true run cost.
     account_after, account_after_status = _api_get('account', key)
     if account_after_status == 'ok':
         after_sub = _active_subscription(account_after)
@@ -459,6 +476,49 @@ def fetch_oddspapi_ncaa(
         stats['oddspapi_request_limit'] = after_sub.get('request_limit') or stats['oddspapi_request_limit']
 
     return fixtures, odds_records, catalog, stats
+
+
+def _write_bookmaker_coverage(
+    board: pd.DataFrame,
+    matched: dict[Any, tuple[dict[str, Any], float]],
+    odds_by_fixture: dict[str, dict[str, Any]],
+    market_catalog: Any,
+    bookmakers: list[str],
+) -> dict[str, int]:
+    """Persist per-game/per-book live FCS total coverage for source tuning."""
+    rows: list[dict[str, Any]] = []
+    coverage: Counter[str] = Counter()
+
+    for idx, (fixture, _confidence) in matched.items():
+        fixture_id = str(fixture.get('fixtureId') or '')
+        odds_fixture = odds_by_fixture.get(fixture_id, {})
+        books_node = odds_fixture.get('bookmakerOdds') or {}
+        valid = _valid_total_lines_by_book(odds_fixture, market_catalog) if odds_fixture else {}
+        game = board.loc[idx]
+
+        for slug in bookmakers:
+            lines = sorted(valid.get(slug, set()))
+            has_valid = bool(lines)
+            if has_valid:
+                coverage[slug] += 1
+            rows.append({
+                'game_id': game.get('game_id'),
+                'away_team': game.get('away_team'),
+                'home_team': game.get('home_team'),
+                'fixture_id': fixture_id,
+                'bookmaker': slug,
+                'book_present': bool(isinstance(books_node, dict) and slug in books_node),
+                'valid_full_game_total': has_valid,
+                'valid_total_lines': '|'.join(f'{line:g}' for line in lines),
+            })
+
+    COVERAGE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    columns = [
+        'game_id', 'away_team', 'home_team', 'fixture_id', 'bookmaker',
+        'book_present', 'valid_full_game_total', 'valid_total_lines',
+    ]
+    pd.DataFrame(rows, columns=columns).to_csv(COVERAGE_PATH, index=False)
+    return {slug: int(coverage.get(slug, 0)) for slug in bookmakers}
 
 
 def apply_fcs_oddspapi_fallback(
@@ -485,7 +545,8 @@ def apply_fcs_oddspapi_fallback(
     if not missing.any():
         return out, stats
 
-    if fixtures is None or odds_records is None or market_catalog is None:
+    live_fetch = fixtures is None or odds_records is None or market_catalog is None
+    if live_fetch:
         fixtures, odds_records, market_catalog, fetched = fetch_oddspapi_ncaa(out.loc[missing].copy())
         stats.update(fetched)
     else:
@@ -510,6 +571,20 @@ def apply_fcs_oddspapi_fallback(
         for row in odds_records
         if isinstance(row, dict) and row.get('fixtureId')
     }
+
+    if live_fetch:
+        queried_books = [
+            slug for slug in NCAA_BOOKMAKER_PRIORITY
+            if any(
+                isinstance(row.get('bookmakerOdds'), dict) and slug in row.get('bookmakerOdds', {})
+                for row in odds_records
+            )
+        ]
+        if not queried_books:
+            queried_books = NCAA_BOOKMAKER_PRIORITY[: int(stats.get('oddspapi_bulk_bookmaker_count') or 0)]
+        stats['oddspapi_book_total_coverage'] = _write_bookmaker_coverage(
+            out, matched, odds_by_fixture, market_catalog, queried_books,
+        )
 
     for idx, (fixture, confidence) in matched.items():
         fixture_id = str(fixture.get('fixtureId') or '')

@@ -38,7 +38,12 @@ jobs:
           from src.fcs_model import classify_division_row
           from src.nws_forecast import _c_to_f, _kph_to_mph
           from src.odds_api_fallback import apply_fcs_odds_fallback, match_odds_event, select_total_market
-          from src.oddspapi_fallback import apply_fcs_oddspapi_fallback, match_oddspapi_fixture, select_oddspapi_total
+          from src.oddspapi_fallback import (
+              _is_full_game_total,
+              apply_fcs_oddspapi_fallback,
+              match_oddspapi_fixture,
+              select_oddspapi_total,
+          )
 
           qualifying = pd.Series({
               'closing_total': 60.0,
@@ -145,8 +150,8 @@ jobs:
           assert filled.loc[0, 'line_source'] == 'The Odds API'
           assert stats['fcs_fallback_filled'] == 1
 
-          # OddsPapi fixture matching allows the participant order to be reversed
-          # and handles sportsbook nicknames appended to the CFBD school name.
+          # OddsPapi fixture matching allows reversed participant order and
+          # sportsbook nicknames appended to the CFBD school name.
           op_fixtures = [{
               'fixtureId': 'id1402765300000001',
               'tournamentId': 27653,
@@ -158,24 +163,42 @@ jobs:
           op_fixture, op_confidence = match_oddspapi_fixture(fcs_game, op_fixtures)
           assert op_fixture is not None and op_confidence > 0.9
 
+          # This mirrors the live NCAA catalog captured on 2026-08-27. OddsPapi
+          # uses period='result' for its full-game football totals.
           op_catalog = [
               {
-                  'marketId': 1484,
+                  'marketId': 1464,
                   'marketName': 'Total (incl. overtime)',
                   'marketType': 'totals',
-                  'period': 'fulltime',
+                  'period': 'result',
                   'playerProp': False,
-                  'handicap': 49.5,
+                  'handicap': 44.5,
               },
               {
-                  'marketId': 1486,
+                  'marketId': 1460,
                   'marketName': 'Total (incl. overtime)',
                   'marketType': 'totals',
-                  'period': 'fulltime',
+                  'period': 'result',
                   'playerProp': False,
-                  'handicap': 50.0,
+                  'handicap': 43.5,
               },
           ]
+
+          assert _is_full_game_total(op_catalog[0])
+          assert _is_full_game_total({
+              'marketName': 'Over Under Full Time',
+              'marketType': 'totals',
+              'period': 'fulltime',
+              'playerProp': False,
+              'handicap': 52.5,
+          })
+          assert not _is_full_game_total({
+              'marketName': 'Away Team Total',
+              'marketType': 'totals',
+              'period': 'result',
+              'playerProp': False,
+              'handicap': 27.5,
+          })
 
           def live_market(over_id, under_id):
               return {
@@ -183,6 +206,15 @@ jobs:
                   'outcomes': {
                       str(over_id): {'players': {'0': {'active': True, 'price': 1.91}}},
                       str(under_id): {'players': {'0': {'active': True, 'price': 1.91}}},
+                  },
+              }
+
+          def inactive_market(over_id, under_id):
+              return {
+                  'marketActive': True,
+                  'outcomes': {
+                      str(over_id): {'players': {'0': {'active': False, 'price': 1.91}}},
+                      str(under_id): {'players': {'0': {'active': False, 'price': 1.91}}},
                   },
               }
 
@@ -196,31 +228,24 @@ jobs:
                       'bookmakerIsActive': True,
                       'suspended': False,
                       'markets': {
-                          '1484': live_market(1484, 1485),
+                          '1464': live_market(1464, 1465),
+                          '1460': inactive_market(1460, 1461),
                       },
                   },
                   'fanduel': {
                       'bookmakerIsActive': True,
                       'suspended': False,
                       'markets': {
-                          '1484': live_market(1484, 1485),
-                          '1486': live_market(1486, 1487),
-                      },
-                  },
-                  'pinnacle': {
-                      'bookmakerIsActive': True,
-                      'suspended': False,
-                      'markets': {
-                          '1486': live_market(1486, 1487),
+                          '1464': live_market(1464, 1465),
                       },
                   },
               },
           }]
           op_market = select_oddspapi_total(op_odds[0], op_catalog, ['DraftKings', 'FanDuel'])
           assert op_market is not None
-          assert op_market['closing_total'] == 49.5
+          assert op_market['closing_total'] == 44.5
           assert op_market['oddspapi_consensus_book_count'] == 2
-          assert op_market['line_provider_count'] == 3
+          assert op_market['line_provider_count'] == 2
           assert op_market['line_source'] == 'OddsPapi'
 
           op_board = pd.DataFrame([{
@@ -238,7 +263,7 @@ jobs:
               odds_records=op_odds,
               market_catalog=op_catalog,
           )
-          assert op_filled.loc[0, 'closing_total'] == 49.5
+          assert op_filled.loc[0, 'closing_total'] == 44.5
           assert op_filled.loc[0, 'line_source'] == 'OddsPapi'
           assert op_stats['fcs_oddspapi_filled'] == 1
           print('Live FBS/FCS decision, weather conversion, and both FCS odds fallback checks passed.')
