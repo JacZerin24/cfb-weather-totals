@@ -108,6 +108,7 @@ jobs:
           python -m src.report
           python -m src.build_live_dashboard
           python -m src.augment_dashboard_divisions
+          python -m src.fcs_card_guard
 
       - name: Commit generated website and outputs
         run: |
