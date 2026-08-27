@@ -14,11 +14,11 @@ from .odds_api_fallback import _kickoff_distance_hours, _provider_rank, _team_sc
 BASE_URL = 'https://api.oddspapi.io/v4'
 AMERICAN_FOOTBALL_SPORT_ID = 14
 NCAA_TOURNAMENT_ID = 27653
-BULK_BOOKMAKER_CHUNK_SIZE = 3
+BULK_BOOKMAKER_CHUNK_SIZE = 1
 
 # These are the books OddsPapi's own August 2026 college-football guide
-# observed on NCAA fixtures. Requesting them explicitly avoids a current
-# odds-by-tournaments API quirk where omitting bookmakers returns HTTP 400.
+# observed on NCAA fixtures. The live tournament endpoint accepts one
+# bookmaker per request, so these are queried individually and merged locally.
 NCAA_BOOKMAKER_PRIORITY = [
     'draftkings', 'fanduel', 'betmgm', 'caesars', 'bet365', 'betrivers',
     'hardrockbet', 'circasports', 'sbobet', 'pinnacle', 'williamhill',
@@ -366,7 +366,7 @@ def fetch_oddspapi_ncaa(
 
     # Keep a reserve of at least five requests so a scheduled run never drains
     # the account. Fixtures + markets cost two calls; the remaining allowance is
-    # used for 3-book bulk chunks in priority order.
+    # used for one-book bulk calls in priority order.
     try:
         request_limit = int(stats['oddspapi_request_limit'])
         request_count = int(stats['oddspapi_request_count_before'])
