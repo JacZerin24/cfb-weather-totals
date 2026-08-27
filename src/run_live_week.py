@@ -7,10 +7,15 @@ import pandas as pd
 
 from .build_dataset import pick_total
 from .cfbd_client import CFBDClient
+from .fcs_model import (
+    classify_division_row,
+    division_track,
+    fcs_research_tags,
+    score_fcs_rows,
+)
 from .predict_week import (
     add_live_categories,
     as_bool,
-    classify_row,
     fetch_nws_weather,
     fit_and_score,
     line_market_context,
@@ -25,7 +30,8 @@ from .utils import get_settings
 
 
 DISPLAY_COLUMNS = [
-    'status', 'decision_reason', 'research_tags', 'season', 'week', 'game_id', 'start_date', 'start_time_tbd',
+    'status', 'decision_reason', 'research_tags', 'division_track', 'model_track',
+    'season', 'week', 'game_id', 'start_date', 'start_time_tbd',
     'away_team', 'home_team', 'venue_name', 'venue_city', 'venue_state', 'venue_latitude', 'venue_longitude',
     'game_indoors', 'closing_total', 'line_provider', 'line_provider_count', 'line_total_range',
     'line_total_median', 'selected_vs_market_median', 'model_projected_total', 'pred_market_residual',
@@ -41,6 +47,13 @@ def finalize_board(board: pd.DataFrame) -> pd.DataFrame:
     out = board[[c for c in DISPLAY_COLUMNS if c in board.columns]].copy()
     out['status_rank'] = out['status'].map(STATUS_RANK).fillna(5)
     return out
+
+
+def combined_research_tags(row: pd.Series) -> str:
+    base = str(research_tags(row) or '').strip()
+    fcs = str(fcs_research_tags(row) or '').strip()
+    tags = [tag for tag in [base, fcs] if tag]
+    return '; '.join(tags)
 
 
 def main() -> None:
@@ -61,7 +74,12 @@ def main() -> None:
 
     target_week = int(future.iloc[0]['week']) if pd.notna(future.iloc[0]['week']) else None
     board = future[future['week'].eq(target_week)].copy() if target_week is not None else future.head(100).copy()
-    print(f'Upcoming season {season}, week {target_week}: {len(board)} scheduled games')
+    board['division_track'] = division_track(board)
+    print(
+        f'Upcoming season {season}, week {target_week}: {len(board)} scheduled games '
+        f"({int(board['division_track'].eq('FBS').sum())} FBS-vs-FBS, "
+        f"{int(board['division_track'].eq('FCS').sum())} FCS-vs-FCS)"
+    )
 
     line_records = client.get('/lines', {'year': season, 'week': target_week, 'seasonType': season_type}) if target_week is not None else []
     lines = normalize_lines(line_records)
@@ -81,8 +99,6 @@ def main() -> None:
         board['line_total_median'] = np.nan
         board['selected_vs_market_median'] = np.nan
 
-    # Venue coordinates are retained in the production board so the website can
-    # map every scheduled game, including games that do not yet have a total.
     venues = normalize_venues(client.get('/venues'))
     if not venues.empty and 'venue_id' in board.columns:
         board = board.merge(venues, on='venue_id', how='left')
@@ -92,12 +108,15 @@ def main() -> None:
         board['venue_dome'] = False
     board['game_indoors'] = board['venue_dome'].map(as_bool)
 
-    # When the market has not posted any totals yet, keep the complete slate as
-    # NO LINE instead of dropping games or spending NWS/model work unnecessarily.
     if games_with_lines == 0:
         board['status'] = 'NO LINE'
-        board['decision_reason'] = 'No current market total is available.'
+        board['decision_reason'] = np.where(
+            board['division_track'].eq('FCS'),
+            'No current FCS market total is available.',
+            'No current market total is available.',
+        )
         board['research_tags'] = ''
+        board['model_track'] = np.where(board['division_track'].eq('FCS'), 'FCS-only HGB', 'GENERAL HGB')
         board['model_projected_total'] = np.nan
         board['pred_market_residual'] = np.nan
         board['abs_pred_edge'] = np.nan
@@ -110,25 +129,31 @@ def main() -> None:
 
     board = merge_prior_team_features(board)
 
-    # NWS requests are only needed for games the market can currently score.
-    # NO LINE games still remain on the site/map with their venue coordinates.
+    # Only games with a current total need an NWS forecast/model score. Games
+    # without a line stay visible and will be evaluated on a later refresh.
     weather_input = board[board['closing_total'].notna()].copy()
     weather = fetch_nws_weather(weather_input)
     if not weather.empty:
         board = board.merge(weather, on='game_id', how='left')
 
     board = add_live_categories(board)
-    board = fit_and_score(board)
 
-    statuses = board.apply(classify_row, axis=1)
+    # Preserve the existing all-CFB HGB behavior first, then override FCS-vs-FCS
+    # predictions with a model trained exclusively on historical FCS-vs-FCS games.
+    board = fit_and_score(board)
+    board['model_track'] = 'GENERAL HGB'
+    board = score_fcs_rows(board)
+
+    statuses = board.apply(classify_division_row, axis=1)
     board['status'] = [s[0] for s in statuses]
     board['decision_reason'] = [s[1] for s in statuses]
-    board['research_tags'] = board.apply(research_tags, axis=1)
+    board['research_tags'] = board.apply(combined_research_tags, axis=1)
     board = finalize_board(board)
 
     write_outputs(board, season, target_week)
     print(
-        f"Wrote {len(board)} weekly games with {games_with_lines} current totals and "
+        f"Wrote {len(board)} weekly games with {games_with_lines} current totals, "
+        f"{int(board['division_track'].eq('FCS').sum())} FCS-vs-FCS games, and "
         f"{int(board['status'].eq('QUALIFIES').sum())} qualifying target(s)."
     )
 

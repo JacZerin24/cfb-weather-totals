@@ -35,6 +35,7 @@ jobs:
           python - <<'PY'
           import pandas as pd
           from src.predict_week import classify_row
+          from src.fcs_model import classify_division_row
           from src.nws_forecast import _c_to_f, _kph_to_mph
 
           qualifying = pd.Series({
@@ -55,11 +56,35 @@ jobs:
               'nws_status': 'indoor',
               'start_time_tbd': False,
           })
+          fcs_qualifying = pd.Series({
+              'division_track': 'FCS',
+              'closing_total': 60.0,
+              'pred_market_residual': -8.0,
+              'nws_status': 'ok',
+              'start_time_tbd': False,
+          })
+          fcs_lean = pd.Series({
+              'division_track': 'FCS',
+              'closing_total': 57.0,
+              'pred_market_residual': -6.0,
+              'nws_status': 'ok',
+              'start_time_tbd': False,
+          })
+          fcs_no_play = pd.Series({
+              'division_track': 'FCS',
+              'closing_total': 60.0,
+              'pred_market_residual': -3.0,
+              'nws_status': 'ok',
+              'start_time_tbd': False,
+          })
 
           assert classify_row(qualifying)[0] == 'QUALIFIES'
           assert classify_row(watch)[0] == 'WATCH'
           assert classify_row(no_play)[0] == 'NO PLAY'
+          assert classify_division_row(fcs_qualifying)[0] == 'QUALIFIES'
+          assert classify_division_row(fcs_lean)[0] == 'LEAN'
+          assert classify_division_row(fcs_no_play)[0] == 'NO PLAY'
           assert round(_c_to_f(0), 1) == 32.0
           assert round(_kph_to_mph(16.0934), 1) == 10.0
-          print('Live decision and weather conversion checks passed.')
+          print('Live FBS/FCS decision and weather conversion checks passed.')
           PY
