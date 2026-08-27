@@ -113,4 +113,5 @@ jobs:
           git config user.email "github-actions@github.com"
           git add outputs/ docs/
           git commit -m "Update live CFB weather totals board" || echo "No changes to commit"
-          git push
+          git pull --rebase origin main
+          git push origin main
