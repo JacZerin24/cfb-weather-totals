@@ -83,8 +83,6 @@ def main() -> None:
         f"{int(board['division_track'].eq('FCS').sum())} FCS-vs-FCS)"
     )
 
-    # CFBD remains the first live-market source so existing FBS behavior and any
-    # FCS lines it already carries are preserved exactly.
     line_records = client.get('/lines', {'year': season, 'week': target_week, 'seasonType': season_type}) if target_week is not None else []
     lines = normalize_lines(line_records)
     selected = pick_total(lines, settings['cfbd']['preferred_line_providers'])
@@ -101,10 +99,6 @@ def main() -> None:
         board['selected_vs_market_median'] = np.nan
 
     preferred = settings['cfbd'].get('preferred_line_providers', [])
-
-    # OddsPapi explicitly carries the full NCAA regular-season tournament,
-    # including FBS and FCS programs. Use it first for FCS-vs-FCS games that
-    # CFBD leaves without a total. The Odds API remains a secondary fallback.
     board, oddspapi_stats = apply_fcs_oddspapi_fallback(board, preferred)
     board, odds_api_stats = apply_fcs_odds_fallback(board, preferred)
 
@@ -116,11 +110,18 @@ def main() -> None:
     print(
         f"OddsPapi: status={oddspapi_stats.get('oddspapi_status', 'unknown')}; "
         f"filled={oddspapi_stats.get('fcs_oddspapi_filled', 0)} FCS game(s); "
-        f"fixtures={oddspapi_stats.get('oddspapi_fixtures', 0)}; "
+        f"matched={oddspapi_stats.get('fcs_oddspapi_matched_fixtures', 0)}; "
+        f"matched hasOdds={oddspapi_stats.get('fcs_oddspapi_matched_with_any_odds', 0)}; "
+        f"fixtures={oddspapi_stats.get('oddspapi_fixtures', 0)} "
+        f"({oddspapi_stats.get('oddspapi_fixtures_with_any_odds', 0)} with any odds); "
+        f"bulk books={oddspapi_stats.get('oddspapi_bulk_bookmaker_count', 0)}; "
         f"odds fixtures={oddspapi_stats.get('oddspapi_odds_fixtures', 0)}; "
-        f"account requests={oddspapi_stats.get('oddspapi_request_count', '—')}/"
+        f"account requests={oddspapi_stats.get('oddspapi_request_count_before', '—')}→"
+        f"{oddspapi_stats.get('oddspapi_request_count', '—')}/"
         f"{oddspapi_stats.get('oddspapi_request_limit', '—')}."
     )
+    if oddspapi_stats.get('oddspapi_error_detail'):
+        print(f"OddsPapi response detail: {oddspapi_stats['oddspapi_error_detail']}")
     print(
         f"FCS line coverage: {fcs_with_lines}/{fcs_games}; "
         f"secondary Odds API filled {odds_api_stats.get('fcs_fallback_filled', 0)} game(s) "
@@ -157,17 +158,12 @@ def main() -> None:
 
     board = merge_prior_team_features(board)
 
-    # Only games with a current total need an NWS forecast/model score. Games
-    # without a line stay visible and will be evaluated on a later refresh.
     weather_input = board[board['closing_total'].notna()].copy()
     weather = fetch_nws_weather(weather_input)
     if not weather.empty:
         board = board.merge(weather, on='game_id', how='left')
 
     board = add_live_categories(board)
-
-    # Preserve the existing all-CFB HGB behavior first, then override FCS-vs-FCS
-    # predictions with a model trained exclusively on historical FCS-vs-FCS games.
     board = fit_and_score(board)
     board['model_track'] = 'GENERAL HGB'
     board = score_fcs_rows(board)
