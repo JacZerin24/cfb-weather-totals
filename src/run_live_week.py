@@ -13,6 +13,7 @@ from .fcs_model import (
     fcs_research_tags,
     score_fcs_rows,
 )
+from .odds_api_fallback import apply_fcs_odds_fallback
 from .predict_week import (
     add_live_categories,
     as_bool,
@@ -33,8 +34,8 @@ DISPLAY_COLUMNS = [
     'status', 'decision_reason', 'research_tags', 'division_track', 'model_track',
     'season', 'week', 'game_id', 'start_date', 'start_time_tbd',
     'away_team', 'home_team', 'venue_name', 'venue_city', 'venue_state', 'venue_latitude', 'venue_longitude',
-    'game_indoors', 'closing_total', 'line_provider', 'line_provider_count', 'line_total_range',
-    'line_total_median', 'selected_vs_market_median', 'model_projected_total', 'pred_market_residual',
+    'game_indoors', 'closing_total', 'line_provider', 'line_source', 'line_provider_count', 'line_total_range',
+    'line_total_median', 'selected_vs_market_median', 'odds_match_confidence', 'model_projected_total', 'pred_market_residual',
     'abs_pred_edge', 'model_side', 'temperature_f', 'dewpoint_f', 'humidity', 'wind_mph', 'wind_gust_mph',
     'precip_probability_pct', 'precipitation', 'snowfall', 'weather_summary', 'nws_status', 'nws_office',
     'home_conference', 'away_conference', 'home_classification', 'away_classification', 'fbs_vs_fbs',
@@ -81,13 +82,12 @@ def main() -> None:
         f"{int(board['division_track'].eq('FCS').sum())} FCS-vs-FCS)"
     )
 
+    # CFBD remains the primary live-market source so historical/live behavior is
+    # unchanged whenever CFBD already carries a total.
     line_records = client.get('/lines', {'year': season, 'week': target_week, 'seasonType': season_type}) if target_week is not None else []
     lines = normalize_lines(line_records)
     selected = pick_total(lines, settings['cfbd']['preferred_line_providers'])
     board = board.merge(selected, on='game_id', how='left')
-
-    games_with_lines = int(board['closing_total'].notna().sum()) if 'closing_total' in board.columns else 0
-    print(f'Games with a usable current total: {games_with_lines}')
 
     context = line_market_context(lines)
     if not context.empty:
@@ -98,6 +98,25 @@ def main() -> None:
         board['line_total_range'] = np.nan
         board['line_total_median'] = np.nan
         board['selected_vs_market_median'] = np.nan
+
+    # FCS lines are often much thinner in CFBD than in the active sportsbook
+    # market. For FCS-vs-FCS games still missing a total, try The Odds API using
+    # the optional ODDS_API_KEY GitHub secret. FBS/general games are not changed.
+    board, fallback_stats = apply_fcs_odds_fallback(
+        board,
+        settings['cfbd'].get('preferred_line_providers', []),
+    )
+
+    games_with_lines = int(board['closing_total'].notna().sum()) if 'closing_total' in board.columns else 0
+    fcs_mask = board['division_track'].eq('FCS')
+    fcs_games = int(fcs_mask.sum())
+    fcs_with_lines = int(board.loc[fcs_mask, 'closing_total'].notna().sum()) if fcs_games else 0
+    print(f'Games with a usable current total: {games_with_lines}')
+    print(
+        f"FCS line coverage: {fcs_with_lines}/{fcs_games}; "
+        f"Odds fallback filled {fallback_stats.get('fcs_fallback_filled', 0)} game(s) "
+        f"(status={fallback_stats.get('odds_api_status', 'unknown')})."
+    )
 
     venues = normalize_venues(client.get('/venues'))
     if not venues.empty and 'venue_id' in board.columns:
@@ -112,7 +131,7 @@ def main() -> None:
         board['status'] = 'NO LINE'
         board['decision_reason'] = np.where(
             board['division_track'].eq('FCS'),
-            'No current FCS market total is available.',
+            'No current FCS market total is available from CFBD or the configured odds fallback.',
             'No current market total is available.',
         )
         board['research_tags'] = ''
@@ -153,7 +172,7 @@ def main() -> None:
     write_outputs(board, season, target_week)
     print(
         f"Wrote {len(board)} weekly games with {games_with_lines} current totals, "
-        f"{int(board['division_track'].eq('FCS').sum())} FCS-vs-FCS games, and "
+        f"{fcs_games} FCS-vs-FCS games ({fcs_with_lines} with totals), and "
         f"{int(board['status'].eq('QUALIFIES').sum())} qualifying target(s)."
     )
 
