@@ -14,6 +14,7 @@ from .fcs_model import (
     score_fcs_rows,
 )
 from .odds_api_fallback import apply_fcs_odds_fallback
+from .oddspapi_fallback import apply_fcs_oddspapi_fallback
 from .predict_week import (
     add_live_categories,
     as_bool,
@@ -82,8 +83,8 @@ def main() -> None:
         f"{int(board['division_track'].eq('FCS').sum())} FCS-vs-FCS)"
     )
 
-    # CFBD remains the primary live-market source so historical/live behavior is
-    # unchanged whenever CFBD already carries a total.
+    # CFBD remains the first live-market source so existing FBS behavior and any
+    # FCS lines it already carries are preserved exactly.
     line_records = client.get('/lines', {'year': season, 'week': target_week, 'seasonType': season_type}) if target_week is not None else []
     lines = normalize_lines(line_records)
     selected = pick_total(lines, settings['cfbd']['preferred_line_providers'])
@@ -99,13 +100,13 @@ def main() -> None:
         board['line_total_median'] = np.nan
         board['selected_vs_market_median'] = np.nan
 
-    # FCS lines are often much thinner in CFBD than in the active sportsbook
-    # market. For FCS-vs-FCS games still missing a total, try The Odds API using
-    # the optional ODDS_API_KEY GitHub secret. FBS/general games are not changed.
-    board, fallback_stats = apply_fcs_odds_fallback(
-        board,
-        settings['cfbd'].get('preferred_line_providers', []),
-    )
+    preferred = settings['cfbd'].get('preferred_line_providers', [])
+
+    # OddsPapi explicitly carries the full NCAA regular-season tournament,
+    # including FBS and FCS programs. Use it first for FCS-vs-FCS games that
+    # CFBD leaves without a total. The Odds API remains a secondary fallback.
+    board, oddspapi_stats = apply_fcs_oddspapi_fallback(board, preferred)
+    board, odds_api_stats = apply_fcs_odds_fallback(board, preferred)
 
     games_with_lines = int(board['closing_total'].notna().sum()) if 'closing_total' in board.columns else 0
     fcs_mask = board['division_track'].eq('FCS')
@@ -113,9 +114,17 @@ def main() -> None:
     fcs_with_lines = int(board.loc[fcs_mask, 'closing_total'].notna().sum()) if fcs_games else 0
     print(f'Games with a usable current total: {games_with_lines}')
     print(
+        f"OddsPapi: status={oddspapi_stats.get('oddspapi_status', 'unknown')}; "
+        f"filled={oddspapi_stats.get('fcs_oddspapi_filled', 0)} FCS game(s); "
+        f"fixtures={oddspapi_stats.get('oddspapi_fixtures', 0)}; "
+        f"odds fixtures={oddspapi_stats.get('oddspapi_odds_fixtures', 0)}; "
+        f"account requests={oddspapi_stats.get('oddspapi_request_count', '—')}/"
+        f"{oddspapi_stats.get('oddspapi_request_limit', '—')}."
+    )
+    print(
         f"FCS line coverage: {fcs_with_lines}/{fcs_games}; "
-        f"Odds fallback filled {fallback_stats.get('fcs_fallback_filled', 0)} game(s) "
-        f"(status={fallback_stats.get('odds_api_status', 'unknown')})."
+        f"secondary Odds API filled {odds_api_stats.get('fcs_fallback_filled', 0)} game(s) "
+        f"(status={odds_api_stats.get('odds_api_status', 'unknown')})."
     )
 
     venues = normalize_venues(client.get('/venues'))
@@ -131,7 +140,7 @@ def main() -> None:
         board['status'] = 'NO LINE'
         board['decision_reason'] = np.where(
             board['division_track'].eq('FCS'),
-            'No current FCS market total is available from CFBD or the configured odds fallback.',
+            'No current FCS market total is available from CFBD, OddsPapi, or the secondary odds fallback.',
             'No current market total is available.',
         )
         board['research_tags'] = ''
