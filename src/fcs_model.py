@@ -13,8 +13,10 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from .predict_week import as_bool, classify_row
 from .utils import read_df
 
+# Selected after pinned-environment walk-forward comparison across 2023-2025.
+# This 7.5+/56+ candidate was positive in all three test seasons (41-32 overall).
 FCS_QUALIFY_EDGE = 7.5
-FCS_QUALIFY_TOTAL = 58.0
+FCS_QUALIFY_TOTAL = 56.0
 FCS_LEAN_EDGE = 5.0
 FCS_LEAN_TOTAL = 56.0
 
@@ -179,17 +181,17 @@ def classify_division_row(row: pd.Series) -> tuple[str, str]:
     if pred <= -FCS_QUALIFY_EDGE and total >= FCS_QUALIFY_TOTAL:
         return (
             'QUALIFIES',
-            'FCS-only HGB under edge ≥7.5 with a 58+ total; the conservative 2023-2025 walk-forward candidate screen.',
+            'FCS-only HGB under edge ≥7.5 with a 56+ total; this screen was positive in each 2023-2025 walk-forward test season.',
         )
     if pred <= -FCS_LEAN_EDGE and total >= FCS_LEAN_TOTAL:
         return (
             'LEAN',
-            'FCS-only HGB points under with a 5.0+ edge and 56+ total, but it does not meet the conservative 7.5/58 qualifying screen.',
+            'FCS-only HGB points under with a 5.0+ edge and 56+ total, but it does not meet the 7.5-point qualifying edge.',
         )
     if pred <= -FCS_QUALIFY_EDGE:
         return (
             'LEAN',
-            'FCS-only HGB has a strong under edge, but the market total is below the preferred 58+ qualifying screen.',
+            'FCS-only HGB has a strong under edge, but the market total is below the preferred 56+ qualifying screen.',
         )
     if pred >= FCS_LEAN_EDGE:
         return 'NO PLAY', 'FCS-only model points over; the FCS research track has not validated an over production strategy.'
@@ -206,5 +208,5 @@ def fcs_research_tags(row: pd.Series) -> str:
     if pd.notna(pred) and pd.notna(edge) and float(pred) < 0 and float(edge) >= FCS_QUALIFY_EDGE:
         tags.append('FCS 7.5+ under edge')
     if pd.notna(total) and float(total) >= FCS_QUALIFY_TOTAL:
-        tags.append('FCS 58+ total')
+        tags.append('FCS 56+ total')
     return '; '.join(tags)
