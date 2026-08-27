@@ -14,6 +14,7 @@ from .odds_api_fallback import _kickoff_distance_hours, _provider_rank, _team_sc
 BASE_URL = 'https://api.oddspapi.io/v4'
 AMERICAN_FOOTBALL_SPORT_ID = 14
 NCAA_TOURNAMENT_ID = 27653
+BULK_BOOKMAKER_CHUNK_SIZE = 3
 
 # These are the books OddsPapi's own August 2026 college-football guide
 # observed on NCAA fixtures. Requesting them explicitly avoids a current
@@ -110,6 +111,12 @@ def _bulk_bookmakers(subscription: dict[str, Any]) -> list[str]:
     return sorted(allowed)[:20]
 
 
+def _chunks(values: list[str], size: int = BULK_BOOKMAKER_CHUNK_SIZE) -> list[list[str]]:
+    if size < 1:
+        raise ValueError('Chunk size must be at least 1.')
+    return [values[i:i + size] for i in range(0, len(values), size)]
+
+
 def _as_records(payload: Any) -> list[dict[str, Any]]:
     if isinstance(payload, list):
         return [row for row in payload if isinstance(row, dict)]
@@ -123,6 +130,30 @@ def _as_records(payload: Any) -> list[dict[str, Any]]:
             return [row for row in value if isinstance(row, dict)]
     values = [value for value in payload.values() if isinstance(value, dict) and value.get('fixtureId')]
     return values
+
+
+def _merge_odds_records(
+    merged: dict[str, dict[str, Any]],
+    records: list[dict[str, Any]],
+) -> None:
+    """Merge disjoint bookmaker batches into one record per fixture."""
+    for row in records:
+        fixture_id = str(row.get('fixtureId') or '')
+        if not fixture_id:
+            continue
+        if fixture_id not in merged:
+            base = dict(row)
+            base['bookmakerOdds'] = dict(row.get('bookmakerOdds') or {})
+            merged[fixture_id] = base
+            continue
+        existing = merged[fixture_id]
+        existing_books = existing.setdefault('bookmakerOdds', {})
+        new_books = row.get('bookmakerOdds') or {}
+        if isinstance(existing_books, dict) and isinstance(new_books, dict):
+            existing_books.update(new_books)
+        for key, value in row.items():
+            if key != 'bookmakerOdds' and key not in existing:
+                existing[key] = value
 
 
 def _date_window(board: pd.DataFrame) -> tuple[str | None, str | None]:
@@ -314,6 +345,9 @@ def fetch_oddspapi_ncaa(
         'oddspapi_fixtures_with_any_odds': 0,
         'oddspapi_odds_fixtures': 0,
         'oddspapi_bulk_bookmaker_count': 0,
+        'oddspapi_bulk_calls': 0,
+        'oddspapi_bulk_successes': 0,
+        'oddspapi_bulk_failures': 0,
         'oddspapi_error_detail': '',
     }
     if not key:
@@ -329,7 +363,21 @@ def fetch_oddspapi_ncaa(
     stats['oddspapi_request_count_before'] = subscription.get('request_count')
     stats['oddspapi_request_count'] = subscription.get('request_count')
     bulk_books = _bulk_bookmakers(subscription)
+
+    # Keep a reserve of at least five requests so a scheduled run never drains
+    # the account. Fixtures + markets cost two calls; the remaining allowance is
+    # used for 3-book bulk chunks in priority order.
+    try:
+        request_limit = int(stats['oddspapi_request_limit'])
+        request_count = int(stats['oddspapi_request_count_before'])
+        max_bulk_calls = max(0, request_limit - request_count - 7)
+        if max_bulk_calls < len(_chunks(bulk_books)):
+            bulk_books = bulk_books[:max_bulk_calls * BULK_BOOKMAKER_CHUNK_SIZE]
+    except (TypeError, ValueError):
+        pass
+
     stats['oddspapi_bulk_bookmaker_count'] = len(bulk_books)
+    bulk_chunks = _chunks(bulk_books)
 
     start, end = _date_window(board)
     fixture_params: dict[str, Any] = {
@@ -356,21 +404,52 @@ def fetch_oddspapi_ncaa(
         stats['oddspapi_status'] = catalog_status
         return fixtures, [], [], stats
 
-    odds_payload, odds_status = _api_get(
-        'odds-by-tournaments',
-        key,
-        tournamentIds=str(NCAA_TOURNAMENT_ID),
-        bookmakers=','.join(bulk_books),
-        language='en',
-        verbosity=3,
-        oddsFormat='american',
-    )
-    stats['oddspapi_odds_status'] = odds_status
-    if isinstance(odds_payload, dict) and odds_payload.get('_http_error'):
-        stats['oddspapi_error_detail'] = str(odds_payload['_http_error'])[:240]
-    odds_records = _as_records(odds_payload)
+    merged_odds: dict[str, dict[str, Any]] = {}
+    bulk_errors: list[str] = []
+    bulk_statuses: list[str] = []
+
+    for chunk_index, bookmaker_chunk in enumerate(bulk_chunks):
+        if chunk_index:
+            # The documented API limit is 1 request/second. Stay slightly below it.
+            time.sleep(1.05)
+        stats['oddspapi_bulk_calls'] += 1
+        odds_payload, odds_status = _api_get(
+            'odds-by-tournaments',
+            key,
+            tournamentIds=str(NCAA_TOURNAMENT_ID),
+            bookmakers=','.join(bookmaker_chunk),
+            language='en',
+            verbosity=3,
+            oddsFormat='american',
+        )
+        bulk_statuses.append(odds_status)
+        if odds_status == 'ok':
+            stats['oddspapi_bulk_successes'] += 1
+            _merge_odds_records(merged_odds, _as_records(odds_payload))
+        else:
+            stats['oddspapi_bulk_failures'] += 1
+            detail = ''
+            if isinstance(odds_payload, dict) and odds_payload.get('_http_error'):
+                detail = str(odds_payload['_http_error'])[:160]
+            books = ','.join(bookmaker_chunk)
+            bulk_errors.append(f'{books}: {odds_status}{" - " + detail if detail else ""}')
+
+    odds_records = list(merged_odds.values())
     stats['oddspapi_odds_fixtures'] = len(odds_records)
-    stats['oddspapi_status'] = odds_status
+    if stats['oddspapi_bulk_successes'] and not stats['oddspapi_bulk_failures']:
+        stats['oddspapi_status'] = 'ok'
+        stats['oddspapi_odds_status'] = 'ok'
+    elif stats['oddspapi_bulk_successes']:
+        stats['oddspapi_status'] = 'partial'
+        stats['oddspapi_odds_status'] = 'partial'
+    elif not bulk_chunks:
+        stats['oddspapi_status'] = 'quota_guard'
+        stats['oddspapi_odds_status'] = 'quota_guard'
+    else:
+        stats['oddspapi_status'] = bulk_statuses[0] if bulk_statuses else 'no_bulk_calls'
+        stats['oddspapi_odds_status'] = stats['oddspapi_status']
+    if bulk_errors:
+        stats['oddspapi_error_detail'] = '; '.join(bulk_errors)[:600]
 
     # /account is unmetered; read it again so logs show the actual cost of this run.
     account_after, account_after_status = _api_get('account', key)
