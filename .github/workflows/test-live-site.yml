@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'src/**'
+      - 'tools/**'
       - '.github/workflows/**'
       - 'requirements.txt'
       - 'config/**'
@@ -150,8 +151,6 @@ jobs:
           assert filled.loc[0, 'line_source'] == 'The Odds API'
           assert stats['fcs_fallback_filled'] == 1
 
-          # OddsPapi fixture matching allows reversed participant order and
-          # sportsbook nicknames appended to the CFBD school name.
           op_fixtures = [{
               'fixtureId': 'id1402765300000001',
               'tournamentId': 27653,
@@ -163,8 +162,6 @@ jobs:
           op_fixture, op_confidence = match_oddspapi_fixture(fcs_game, op_fixtures)
           assert op_fixture is not None and op_confidence > 0.9
 
-          # This mirrors the live NCAA catalog captured on 2026-08-27. OddsPapi
-          # uses period='result' for its full-game football totals.
           op_catalog = [
               {
                   'marketId': 1464,
@@ -268,3 +265,6 @@ jobs:
           assert op_stats['fcs_oddspapi_filled'] == 1
           print('Live FBS/FCS decision, weather conversion, and both FCS odds fallback checks passed.')
           PY
+
+      - name: Summarize observed OddsPapi bookmaker coverage
+        run: python tools/oddspapi_coverage_summary.py
