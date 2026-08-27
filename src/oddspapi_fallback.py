@@ -18,13 +18,14 @@ NCAA_TOURNAMENT_ID = 27653
 BULK_BOOKMAKER_CHUNK_SIZE = 1
 COVERAGE_PATH = Path('outputs/oddspapi_bookmaker_coverage.csv')
 
-# Keep the broad set for one live coverage-validation pass. After the coverage
-# artifact is reviewed, production can use the smallest independent subset that
-# preserves FCS full-game-total coverage.
+# Live FCS coverage audit on 2026-08-27 found bet365 and Hard Rock Bet on
+# all 30 FCS fixtures that had an active two-sided full-game total, while
+# DraftKings and BetRivers each covered 28/30. Querying these four preserves
+# the observed union while providing independent main-line corroboration and
+# reducing a normal refresh from 19 OddsPapi requests to 6 total requests
+# (fixtures + markets + four one-book odds calls).
 NCAA_BOOKMAKER_PRIORITY = [
-    'draftkings', 'fanduel', 'betmgm', 'caesars', 'bet365', 'betrivers',
-    'hardrockbet', 'circasports', 'sbobet', 'pinnacle', 'williamhill',
-    'ballybet', 'betparx', 'borgata', 'fourwinds', 'pointsbet.com.au', 'kalshi',
+    'bet365', 'draftkings', 'betrivers', 'hardrockbet',
 ]
 
 
@@ -280,8 +281,11 @@ def select_oddspapi_total(
     if not line_counts:
         return None
 
-    all_quotes = [line for lines in book_lines.values() for line in lines]
-    center = float(np.median(all_quotes))
+    # Give each sportsbook one equal vote when locating the center. This keeps a
+    # book that exposes a large alternate-total ladder (notably Hard Rock Bet)
+    # from overpowering books that expose only their main or near-main total.
+    book_centers = [float(np.median(sorted(lines))) for lines in book_lines.values() if lines]
+    center = float(np.median(book_centers))
     consensus = sorted(
         line_counts,
         key=lambda line: (-line_counts[line], abs(line - center), line),
