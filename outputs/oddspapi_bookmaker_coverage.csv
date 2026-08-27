@@ -1,919 +1,217 @@
 game_id,away_team,home_team,fixture_id,bookmaker,book_present,valid_full_game_total,valid_total_lines
-401868007,Colgate,Fordham,id1402765370923584,draftkings,True,True,50.5
-401868007,Colgate,Fordham,id1402765370923584,fanduel,False,False,
-401868007,Colgate,Fordham,id1402765370923584,betmgm,True,True,50.5
-401868007,Colgate,Fordham,id1402765370923584,caesars,False,False,
 401868007,Colgate,Fordham,id1402765370923584,bet365,True,True,48.5|50.5
+401868007,Colgate,Fordham,id1402765370923584,draftkings,True,True,50.5
 401868007,Colgate,Fordham,id1402765370923584,betrivers,True,True,50.5
 401868007,Colgate,Fordham,id1402765370923584,hardrockbet,True,True,43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5
-401868007,Colgate,Fordham,id1402765370923584,circasports,False,False,
-401868007,Colgate,Fordham,id1402765370923584,sbobet,False,False,
-401868007,Colgate,Fordham,id1402765370923584,pinnacle,False,False,
-401868007,Colgate,Fordham,id1402765370923584,williamhill,False,False,
-401868007,Colgate,Fordham,id1402765370923584,ballybet,True,True,50.5
-401868007,Colgate,Fordham,id1402765370923584,betparx,True,True,50.5
-401868007,Colgate,Fordham,id1402765370923584,borgata,True,True,50.5
-401868007,Colgate,Fordham,id1402765370923584,fourwinds,True,True,50.5
-401868007,Colgate,Fordham,id1402765370923584,pointsbet.com.au,True,True,50.5
-401868007,Colgate,Fordham,id1402765370923584,kalshi,True,True,31.5|34.5|37.5|40.5|43.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|55.5|58.5|61.5|64.5|67.5|70.5
-401866617,Rhode Island,Merrimack,id1402765370993004,draftkings,True,True,53.5
-401866617,Rhode Island,Merrimack,id1402765370993004,fanduel,False,False,
-401866617,Rhode Island,Merrimack,id1402765370993004,betmgm,True,True,52.5
-401866617,Rhode Island,Merrimack,id1402765370993004,caesars,False,False,
-401866617,Rhode Island,Merrimack,id1402765370993004,bet365,True,True,52.5
-401866617,Rhode Island,Merrimack,id1402765370993004,betrivers,True,True,52.5
-401866617,Rhode Island,Merrimack,id1402765370993004,hardrockbet,True,True,45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5
-401866617,Rhode Island,Merrimack,id1402765370993004,circasports,False,False,
-401866617,Rhode Island,Merrimack,id1402765370993004,sbobet,False,False,
-401866617,Rhode Island,Merrimack,id1402765370993004,pinnacle,False,False,
-401866617,Rhode Island,Merrimack,id1402765370993004,williamhill,False,False,
-401866617,Rhode Island,Merrimack,id1402765370993004,ballybet,True,True,52.5
-401866617,Rhode Island,Merrimack,id1402765370993004,betparx,True,True,52.5
-401866617,Rhode Island,Merrimack,id1402765370993004,borgata,True,True,52.5
-401866617,Rhode Island,Merrimack,id1402765370993004,fourwinds,True,True,52.5
-401866617,Rhode Island,Merrimack,id1402765370993004,pointsbet.com.au,True,True,52.5
-401866617,Rhode Island,Merrimack,id1402765370993004,kalshi,True,True,35.5|38.5|41.5|44.5|47.5|50.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5|62.5|65.5|68.5|71.5|74.5
-401868040,William & Mary,Villanova,id1402765370923580,draftkings,True,True,50.5
-401868040,William & Mary,Villanova,id1402765370923580,fanduel,False,False,
-401868040,William & Mary,Villanova,id1402765370923580,betmgm,True,True,50.5
-401868040,William & Mary,Villanova,id1402765370923580,caesars,False,False,
-401868040,William & Mary,Villanova,id1402765370923580,bet365,True,True,50.5
-401868040,William & Mary,Villanova,id1402765370923580,betrivers,True,True,49.5
-401868040,William & Mary,Villanova,id1402765370923580,hardrockbet,True,True,43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5
-401868040,William & Mary,Villanova,id1402765370923580,circasports,False,False,
-401868040,William & Mary,Villanova,id1402765370923580,sbobet,False,False,
-401868040,William & Mary,Villanova,id1402765370923580,pinnacle,False,False,
-401868040,William & Mary,Villanova,id1402765370923580,williamhill,False,False,
-401868040,William & Mary,Villanova,id1402765370923580,ballybet,True,True,49.5
-401868040,William & Mary,Villanova,id1402765370923580,betparx,True,True,49.5
-401868040,William & Mary,Villanova,id1402765370923580,borgata,True,True,50.5
-401868040,William & Mary,Villanova,id1402765370923580,fourwinds,True,True,49.5
-401868040,William & Mary,Villanova,id1402765370923580,pointsbet.com.au,True,True,50.5
-401868040,William & Mary,Villanova,id1402765370923580,kalshi,True,True,32.5|35.5|38.5|41.5|44.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|56.5|59.5|62.5|65.5|68.5|71.5
-401868261,Marist,New Haven,id1402765370923552,draftkings,True,True,44.5
-401868261,Marist,New Haven,id1402765370923552,fanduel,False,False,
-401868261,Marist,New Haven,id1402765370923552,betmgm,True,True,44.5
-401868261,Marist,New Haven,id1402765370923552,caesars,False,False,
 401868261,Marist,New Haven,id1402765370923552,bet365,True,True,44.5
+401868261,Marist,New Haven,id1402765370923552,draftkings,True,True,44.5
 401868261,Marist,New Haven,id1402765370923552,betrivers,False,False,
 401868261,Marist,New Haven,id1402765370923552,hardrockbet,True,True,37.5|38.5|39.5|40.5|41.5|42.5|43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5
-401868261,Marist,New Haven,id1402765370923552,circasports,False,False,
-401868261,Marist,New Haven,id1402765370923552,sbobet,False,False,
-401868261,Marist,New Haven,id1402765370923552,pinnacle,False,False,
-401868261,Marist,New Haven,id1402765370923552,williamhill,False,False,
-401868261,Marist,New Haven,id1402765370923552,ballybet,False,False,
-401868261,Marist,New Haven,id1402765370923552,betparx,False,False,
-401868261,Marist,New Haven,id1402765370923552,borgata,True,True,44.5
-401868261,Marist,New Haven,id1402765370923552,fourwinds,False,False,
-401868261,Marist,New Haven,id1402765370923552,pointsbet.com.au,True,True,44.5
-401868261,Marist,New Haven,id1402765370923552,kalshi,True,True,30.5|33.5|36.5|39.5|42.5|43.5|44.5|45.5|46.5|47.5|48.5|51.5|54.5|57.5|60.5|63.5|66.5
-401866616,New Hampshire,UAlbany,id1402765370923550,draftkings,True,True,45.5
-401866616,New Hampshire,UAlbany,id1402765370923550,fanduel,False,False,
-401866616,New Hampshire,UAlbany,id1402765370923550,betmgm,True,True,45.5
-401866616,New Hampshire,UAlbany,id1402765370923550,caesars,False,False,
+401868040,William & Mary,Villanova,id1402765370923580,bet365,True,True,50.5
+401868040,William & Mary,Villanova,id1402765370923580,draftkings,True,True,50.5
+401868040,William & Mary,Villanova,id1402765370923580,betrivers,True,True,49.5
+401868040,William & Mary,Villanova,id1402765370923580,hardrockbet,True,True,43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5
+401866617,Rhode Island,Merrimack,id1402765370993004,bet365,True,True,52.5
+401866617,Rhode Island,Merrimack,id1402765370993004,draftkings,True,True,53.5
+401866617,Rhode Island,Merrimack,id1402765370993004,betrivers,True,True,52.5
+401866617,Rhode Island,Merrimack,id1402765370993004,hardrockbet,True,True,45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5
 401866616,New Hampshire,UAlbany,id1402765370923550,bet365,True,True,45.5
+401866616,New Hampshire,UAlbany,id1402765370923550,draftkings,True,True,45.5
 401866616,New Hampshire,UAlbany,id1402765370923550,betrivers,True,True,45
 401866616,New Hampshire,UAlbany,id1402765370923550,hardrockbet,True,True,38.5|39.5|40.5|41.5|42.5|43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5
-401866616,New Hampshire,UAlbany,id1402765370923550,circasports,False,False,
-401866616,New Hampshire,UAlbany,id1402765370923550,sbobet,False,False,
-401866616,New Hampshire,UAlbany,id1402765370923550,pinnacle,False,False,
-401866616,New Hampshire,UAlbany,id1402765370923550,williamhill,False,False,
-401866616,New Hampshire,UAlbany,id1402765370923550,ballybet,True,True,45
-401866616,New Hampshire,UAlbany,id1402765370923550,betparx,True,True,45
-401866616,New Hampshire,UAlbany,id1402765370923550,borgata,True,True,45.5
-401866616,New Hampshire,UAlbany,id1402765370923550,fourwinds,True,True,45
-401866616,New Hampshire,UAlbany,id1402765370923550,pointsbet.com.au,True,True,45.5
-401866616,New Hampshire,UAlbany,id1402765370923550,kalshi,True,True,30.5|33.5|36.5|39.5|42.5|43.5|44.5|45.5|46.5|47.5|48.5|51.5|54.5|57.5|60.5|63.5|66.5
-401868129,Weber State,Northern Colorado,id1402765370923560,draftkings,True,True,49.5
-401868129,Weber State,Northern Colorado,id1402765370923560,fanduel,False,False,
-401868129,Weber State,Northern Colorado,id1402765370923560,betmgm,True,True,49.5
-401868129,Weber State,Northern Colorado,id1402765370923560,caesars,False,False,
 401868129,Weber State,Northern Colorado,id1402765370923560,bet365,True,True,48.5
+401868129,Weber State,Northern Colorado,id1402765370923560,draftkings,True,True,49.5
 401868129,Weber State,Northern Colorado,id1402765370923560,betrivers,True,True,50
 401868129,Weber State,Northern Colorado,id1402765370923560,hardrockbet,True,True,42.5|43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5
-401868129,Weber State,Northern Colorado,id1402765370923560,circasports,False,False,
-401868129,Weber State,Northern Colorado,id1402765370923560,sbobet,False,False,
-401868129,Weber State,Northern Colorado,id1402765370923560,pinnacle,False,False,
-401868129,Weber State,Northern Colorado,id1402765370923560,williamhill,False,False,
-401868129,Weber State,Northern Colorado,id1402765370923560,ballybet,True,True,50
-401868129,Weber State,Northern Colorado,id1402765370923560,betparx,True,True,50
-401868129,Weber State,Northern Colorado,id1402765370923560,borgata,True,True,49.5
-401868129,Weber State,Northern Colorado,id1402765370923560,fourwinds,True,True,50
-401868129,Weber State,Northern Colorado,id1402765370923560,pointsbet.com.au,True,True,49.5
-401868129,Weber State,Northern Colorado,id1402765370923560,kalshi,True,True,32.5|35.5|38.5|41.5|44.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|56.5|59.5|62.5|65.5|68.5|71.5
-401868073,Idaho,Cal Poly,id1402765370923548,draftkings,True,True,55.5
-401868073,Idaho,Cal Poly,id1402765370923548,fanduel,False,False,
-401868073,Idaho,Cal Poly,id1402765370923548,betmgm,True,True,54.5
-401868073,Idaho,Cal Poly,id1402765370923548,caesars,False,False,
 401868073,Idaho,Cal Poly,id1402765370923548,bet365,True,True,55.5
+401868073,Idaho,Cal Poly,id1402765370923548,draftkings,True,True,55.5
 401868073,Idaho,Cal Poly,id1402765370923548,betrivers,True,True,55.5
 401868073,Idaho,Cal Poly,id1402765370923548,hardrockbet,True,True,55.5
-401868073,Idaho,Cal Poly,id1402765370923548,circasports,False,False,
-401868073,Idaho,Cal Poly,id1402765370923548,sbobet,False,False,
-401868073,Idaho,Cal Poly,id1402765370923548,pinnacle,False,False,
-401868073,Idaho,Cal Poly,id1402765370923548,williamhill,False,False,
-401868073,Idaho,Cal Poly,id1402765370923548,ballybet,True,True,55.5
-401868073,Idaho,Cal Poly,id1402765370923548,betparx,True,True,55.5
-401868073,Idaho,Cal Poly,id1402765370923548,borgata,True,True,54.5
-401868073,Idaho,Cal Poly,id1402765370923548,fourwinds,True,True,55.5
-401868073,Idaho,Cal Poly,id1402765370923548,pointsbet.com.au,True,True,55
-401868073,Idaho,Cal Poly,id1402765370923548,kalshi,True,True,35.5|38.5|41.5|44.5|47.5|50.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5|62.5|65.5|68.5|71.5|74.5
-401867916,Robert Morris,Wagner,id1402765370923578,draftkings,True,True,39.5
-401867916,Robert Morris,Wagner,id1402765370923578,fanduel,False,False,
-401867916,Robert Morris,Wagner,id1402765370923578,betmgm,False,False,
-401867916,Robert Morris,Wagner,id1402765370923578,caesars,False,False,
 401867916,Robert Morris,Wagner,id1402765370923578,bet365,True,True,39.5
+401867916,Robert Morris,Wagner,id1402765370923578,draftkings,True,True,39.5
 401867916,Robert Morris,Wagner,id1402765370923578,betrivers,True,True,39.5
 401867916,Robert Morris,Wagner,id1402765370923578,hardrockbet,True,True,32.5|33.5|34.5|35.5|36.5|37.5|38.5|39.5|40.5|41.5|42.5|43.5|44.5|45.5|46.5
-401867916,Robert Morris,Wagner,id1402765370923578,circasports,False,False,
-401867916,Robert Morris,Wagner,id1402765370923578,sbobet,False,False,
-401867916,Robert Morris,Wagner,id1402765370923578,pinnacle,False,False,
-401867916,Robert Morris,Wagner,id1402765370923578,williamhill,False,False,
-401867916,Robert Morris,Wagner,id1402765370923578,ballybet,True,True,39.5
-401867916,Robert Morris,Wagner,id1402765370923578,betparx,True,True,39.5
-401867916,Robert Morris,Wagner,id1402765370923578,borgata,False,False,
-401867916,Robert Morris,Wagner,id1402765370923578,fourwinds,True,True,39.5
-401867916,Robert Morris,Wagner,id1402765370923578,pointsbet.com.au,True,True,40
-401867916,Robert Morris,Wagner,id1402765370923578,kalshi,True,True,31.5|34.5|37.5|38.5|39.5|40.5|41.5|42.5|43.5|46.5|49.5|52.5|55.5|58.5|61.5
-401867882,Central Connecticut,South Dakota,id1402765370923574,draftkings,True,True,53.5
-401867882,Central Connecticut,South Dakota,id1402765370923574,fanduel,False,False,
-401867882,Central Connecticut,South Dakota,id1402765370923574,betmgm,False,False,
-401867882,Central Connecticut,South Dakota,id1402765370923574,caesars,False,False,
 401867882,Central Connecticut,South Dakota,id1402765370923574,bet365,True,True,53.5
+401867882,Central Connecticut,South Dakota,id1402765370923574,draftkings,True,True,53.5
 401867882,Central Connecticut,South Dakota,id1402765370923574,betrivers,True,True,53.5
 401867882,Central Connecticut,South Dakota,id1402765370923574,hardrockbet,True,True,46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5|60.5
-401867882,Central Connecticut,South Dakota,id1402765370923574,circasports,False,False,
-401867882,Central Connecticut,South Dakota,id1402765370923574,sbobet,False,False,
-401867882,Central Connecticut,South Dakota,id1402765370923574,pinnacle,False,False,
-401867882,Central Connecticut,South Dakota,id1402765370923574,williamhill,False,False,
-401867882,Central Connecticut,South Dakota,id1402765370923574,ballybet,True,True,53.5
-401867882,Central Connecticut,South Dakota,id1402765370923574,betparx,True,True,53.5
-401867882,Central Connecticut,South Dakota,id1402765370923574,borgata,False,False,
-401867882,Central Connecticut,South Dakota,id1402765370923574,fourwinds,True,True,53.5
-401867882,Central Connecticut,South Dakota,id1402765370923574,pointsbet.com.au,True,True,53.5
-401867882,Central Connecticut,South Dakota,id1402765370923574,kalshi,True,True,34.5|37.5|40.5|43.5|46.5|49.5|52.5|53.5|54.5|55.5|56.5|57.5|58.5|61.5|64.5|67.5|70.5|73.5
-401868154,UC Davis,Portland State,id1402765370923618,draftkings,True,True,62.5
-401868154,UC Davis,Portland State,id1402765370923618,fanduel,False,False,
-401868154,UC Davis,Portland State,id1402765370923618,betmgm,False,False,
-401868154,UC Davis,Portland State,id1402765370923618,caesars,False,False,
-401868154,UC Davis,Portland State,id1402765370923618,bet365,True,True,62.5
-401868154,UC Davis,Portland State,id1402765370923618,betrivers,True,True,63
-401868154,UC Davis,Portland State,id1402765370923618,hardrockbet,True,True,55.5|56.5|57.5|58.5|59.5|60.5|61.5|62.5|63.5|64.5|65.5|66.5|67.5|68.5|69.5
-401868154,UC Davis,Portland State,id1402765370923618,circasports,False,False,
-401868154,UC Davis,Portland State,id1402765370923618,sbobet,False,False,
-401868154,UC Davis,Portland State,id1402765370923618,pinnacle,False,False,
-401868154,UC Davis,Portland State,id1402765370923618,williamhill,False,False,
-401868154,UC Davis,Portland State,id1402765370923618,ballybet,True,True,63
-401868154,UC Davis,Portland State,id1402765370923618,betparx,True,True,63
-401868154,UC Davis,Portland State,id1402765370923618,borgata,False,False,
-401868154,UC Davis,Portland State,id1402765370923618,fourwinds,True,True,63
-401868154,UC Davis,Portland State,id1402765370923618,pointsbet.com.au,True,True,62.5
-401868154,UC Davis,Portland State,id1402765370923618,kalshi,True,True,43.5|46.5|49.5|52.5|55.5|58.5|61.5|62.5|63.5|64.5|65.5|66.5|67.5|70.5|73.5
-401868324,Southern,Alabama State,id1402765370894738,draftkings,True,True,56.5
-401868324,Southern,Alabama State,id1402765370894738,fanduel,False,False,
-401868324,Southern,Alabama State,id1402765370894738,betmgm,False,False,
-401868324,Southern,Alabama State,id1402765370894738,caesars,False,False,
 401868324,Southern,Alabama State,id1402765370894738,bet365,True,True,56.5
+401868324,Southern,Alabama State,id1402765370894738,draftkings,True,True,56.5
 401868324,Southern,Alabama State,id1402765370894738,betrivers,True,True,57.5
 401868324,Southern,Alabama State,id1402765370894738,hardrockbet,True,True,49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5|60.5|61.5|62.5|63.5
-401868324,Southern,Alabama State,id1402765370894738,circasports,False,False,
-401868324,Southern,Alabama State,id1402765370894738,sbobet,False,False,
-401868324,Southern,Alabama State,id1402765370894738,pinnacle,False,False,
-401868324,Southern,Alabama State,id1402765370894738,williamhill,False,False,
-401868324,Southern,Alabama State,id1402765370894738,ballybet,True,True,57.5
-401868324,Southern,Alabama State,id1402765370894738,betparx,True,True,57.5
-401868324,Southern,Alabama State,id1402765370894738,borgata,False,False,
-401868324,Southern,Alabama State,id1402765370894738,fourwinds,True,True,57.5
-401868324,Southern,Alabama State,id1402765370894738,pointsbet.com.au,True,True,56.5
-401868324,Southern,Alabama State,id1402765370894738,kalshi,True,True,37.5|40.5|43.5|46.5|49.5|52.5|55.5|56.5|57.5|58.5|59.5|60.5|61.5|64.5|67.5|70.5|73.5
-401868022,Lehigh,Holy Cross,id1402765370923582,draftkings,True,True,47.5
-401868022,Lehigh,Holy Cross,id1402765370923582,fanduel,False,False,
-401868022,Lehigh,Holy Cross,id1402765370923582,betmgm,False,False,
-401868022,Lehigh,Holy Cross,id1402765370923582,caesars,False,False,
+401868154,UC Davis,Portland State,id1402765370923618,bet365,True,True,62.5
+401868154,UC Davis,Portland State,id1402765370923618,draftkings,True,True,62.5
+401868154,UC Davis,Portland State,id1402765370923618,betrivers,True,True,63
+401868154,UC Davis,Portland State,id1402765370923618,hardrockbet,True,True,55.5|56.5|57.5|58.5|59.5|60.5|61.5|62.5|63.5|64.5|65.5|66.5|67.5|68.5|69.5
 401868022,Lehigh,Holy Cross,id1402765370923582,bet365,True,True,47.5
+401868022,Lehigh,Holy Cross,id1402765370923582,draftkings,True,True,47.5
 401868022,Lehigh,Holy Cross,id1402765370923582,betrivers,True,True,47.5
 401868022,Lehigh,Holy Cross,id1402765370923582,hardrockbet,True,True,41.5|44.5|47.5|50.5|53.5
-401868022,Lehigh,Holy Cross,id1402765370923582,circasports,False,False,
-401868022,Lehigh,Holy Cross,id1402765370923582,sbobet,False,False,
-401868022,Lehigh,Holy Cross,id1402765370923582,pinnacle,False,False,
-401868022,Lehigh,Holy Cross,id1402765370923582,williamhill,False,False,
-401868022,Lehigh,Holy Cross,id1402765370923582,ballybet,True,True,47.5
-401868022,Lehigh,Holy Cross,id1402765370923582,betparx,True,True,47.5
-401868022,Lehigh,Holy Cross,id1402765370923582,borgata,False,False,
-401868022,Lehigh,Holy Cross,id1402765370923582,fourwinds,True,True,47.5
-401868022,Lehigh,Holy Cross,id1402765370923582,pointsbet.com.au,True,True,47.5
-401868022,Lehigh,Holy Cross,id1402765370923582,kalshi,True,True,30.5|33.5|36.5|39.5|42.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|54.5|57.5|60.5|63.5|66.5|69.5
-401868084,Eastern Washington,Northern Arizona,id1402765370923556,draftkings,True,True,56.5
-401868084,Eastern Washington,Northern Arizona,id1402765370923556,fanduel,False,False,
-401868084,Eastern Washington,Northern Arizona,id1402765370923556,betmgm,False,False,
-401868084,Eastern Washington,Northern Arizona,id1402765370923556,caesars,False,False,
 401868084,Eastern Washington,Northern Arizona,id1402765370923556,bet365,True,True,56.5
+401868084,Eastern Washington,Northern Arizona,id1402765370923556,draftkings,True,True,56.5
 401868084,Eastern Washington,Northern Arizona,id1402765370923556,betrivers,True,True,55.5
 401868084,Eastern Washington,Northern Arizona,id1402765370923556,hardrockbet,True,True,49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5|60.5|61.5|62.5|63.5
-401868084,Eastern Washington,Northern Arizona,id1402765370923556,circasports,False,False,
-401868084,Eastern Washington,Northern Arizona,id1402765370923556,sbobet,False,False,
-401868084,Eastern Washington,Northern Arizona,id1402765370923556,pinnacle,False,False,
-401868084,Eastern Washington,Northern Arizona,id1402765370923556,williamhill,False,False,
-401868084,Eastern Washington,Northern Arizona,id1402765370923556,ballybet,True,True,55.5
-401868084,Eastern Washington,Northern Arizona,id1402765370923556,betparx,True,True,55.5
-401868084,Eastern Washington,Northern Arizona,id1402765370923556,borgata,False,False,
-401868084,Eastern Washington,Northern Arizona,id1402765370923556,fourwinds,True,True,55.5
-401868084,Eastern Washington,Northern Arizona,id1402765370923556,pointsbet.com.au,True,True,56.5
-401868084,Eastern Washington,Northern Arizona,id1402765370923556,kalshi,True,True,35.5|38.5|41.5|44.5|47.5|50.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5|62.5|65.5|68.5|71.5|74.5
-401866620,Campbell,East Tennessee State,id1402765370923594,draftkings,False,False,
-401866620,Campbell,East Tennessee State,id1402765370923594,fanduel,False,False,
-401866620,Campbell,East Tennessee State,id1402765370923594,betmgm,False,False,
-401866620,Campbell,East Tennessee State,id1402765370923594,caesars,False,False,
 401866620,Campbell,East Tennessee State,id1402765370923594,bet365,True,True,55.5
+401866620,Campbell,East Tennessee State,id1402765370923594,draftkings,False,False,
 401866620,Campbell,East Tennessee State,id1402765370923594,betrivers,True,True,56
 401866620,Campbell,East Tennessee State,id1402765370923594,hardrockbet,True,True,55.5
-401866620,Campbell,East Tennessee State,id1402765370923594,circasports,False,False,
-401866620,Campbell,East Tennessee State,id1402765370923594,sbobet,False,False,
-401866620,Campbell,East Tennessee State,id1402765370923594,pinnacle,False,False,
-401866620,Campbell,East Tennessee State,id1402765370923594,williamhill,False,False,
-401866620,Campbell,East Tennessee State,id1402765370923594,ballybet,True,True,56
-401866620,Campbell,East Tennessee State,id1402765370923594,betparx,True,True,56
-401866620,Campbell,East Tennessee State,id1402765370923594,borgata,False,False,
-401866620,Campbell,East Tennessee State,id1402765370923594,fourwinds,True,True,56
-401866620,Campbell,East Tennessee State,id1402765370923594,pointsbet.com.au,True,True,56
-401866620,Campbell,East Tennessee State,id1402765370923594,kalshi,True,True,35.5|38.5|41.5|44.5|47.5|50.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5|62.5|65.5|68.5|71.5|74.5
-401867988,Bucknell,Richmond,id1402765370923566,draftkings,True,True,49.5
-401867988,Bucknell,Richmond,id1402765370923566,fanduel,False,False,
-401867988,Bucknell,Richmond,id1402765370923566,betmgm,False,False,
-401867988,Bucknell,Richmond,id1402765370923566,caesars,False,False,
 401867988,Bucknell,Richmond,id1402765370923566,bet365,True,True,49.5
+401867988,Bucknell,Richmond,id1402765370923566,draftkings,True,True,49.5
 401867988,Bucknell,Richmond,id1402765370923566,betrivers,True,True,48.5
 401867988,Bucknell,Richmond,id1402765370923566,hardrockbet,True,True,42.5|43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5
-401867988,Bucknell,Richmond,id1402765370923566,circasports,False,False,
-401867988,Bucknell,Richmond,id1402765370923566,sbobet,False,False,
-401867988,Bucknell,Richmond,id1402765370923566,pinnacle,False,False,
-401867988,Bucknell,Richmond,id1402765370923566,williamhill,False,False,
-401867988,Bucknell,Richmond,id1402765370923566,ballybet,True,True,48.5
-401867988,Bucknell,Richmond,id1402765370923566,betparx,True,True,48.5
-401867988,Bucknell,Richmond,id1402765370923566,borgata,False,False,
-401867988,Bucknell,Richmond,id1402765370923566,fourwinds,True,True,48.5
-401867988,Bucknell,Richmond,id1402765370923566,pointsbet.com.au,True,True,49.5
-401867988,Bucknell,Richmond,id1402765370923566,kalshi,True,True,31.5|34.5|37.5|40.5|43.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|55.5|58.5|61.5|64.5|67.5|70.5
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,draftkings,True,True,52.5
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,fanduel,False,False,
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,betmgm,False,False,
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,caesars,False,False,
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,bet365,True,True,52.5
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,betrivers,True,True,53.5
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,hardrockbet,True,True,46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5|60.5
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,circasports,False,False,
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,sbobet,False,False,
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,pinnacle,False,False,
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,williamhill,False,False,
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,ballybet,True,True,53.5
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,betparx,True,True,53.5
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,borgata,False,False,
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,fourwinds,True,True,53.5
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,pointsbet.com.au,True,True,53
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,kalshi,True,True,33.5|36.5|39.5|42.5|45.5|48.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5|60.5|63.5|66.5|69.5|72.5
-401866618,Morgan State,North Carolina A&T,id1402765370923564,draftkings,True,True,50.5
-401866618,Morgan State,North Carolina A&T,id1402765370923564,fanduel,False,False,
-401866618,Morgan State,North Carolina A&T,id1402765370923564,betmgm,False,False,
-401866618,Morgan State,North Carolina A&T,id1402765370923564,caesars,False,False,
-401866618,Morgan State,North Carolina A&T,id1402765370923564,bet365,True,True,50.5
-401866618,Morgan State,North Carolina A&T,id1402765370923564,betrivers,True,True,50.5
-401866618,Morgan State,North Carolina A&T,id1402765370923564,hardrockbet,True,True,43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5
-401866618,Morgan State,North Carolina A&T,id1402765370923564,circasports,False,False,
-401866618,Morgan State,North Carolina A&T,id1402765370923564,sbobet,False,False,
-401866618,Morgan State,North Carolina A&T,id1402765370923564,pinnacle,False,False,
-401866618,Morgan State,North Carolina A&T,id1402765370923564,williamhill,False,False,
-401866618,Morgan State,North Carolina A&T,id1402765370923564,ballybet,True,True,50.5
-401866618,Morgan State,North Carolina A&T,id1402765370923564,betparx,True,True,50.5
-401866618,Morgan State,North Carolina A&T,id1402765370923564,borgata,False,False,
-401866618,Morgan State,North Carolina A&T,id1402765370923564,fourwinds,True,True,50.5
-401866618,Morgan State,North Carolina A&T,id1402765370923564,pointsbet.com.au,True,True,50
-401866618,Morgan State,North Carolina A&T,id1402765370923564,kalshi,True,True,32.5|35.5|38.5|41.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|53.5|56.5|59.5|62.5|65.5|68.5
-401866619,Bryant,Stonehill,id1402765370923576,draftkings,True,True,44.5
-401866619,Bryant,Stonehill,id1402765370923576,fanduel,False,False,
-401866619,Bryant,Stonehill,id1402765370923576,betmgm,False,False,
-401866619,Bryant,Stonehill,id1402765370923576,caesars,False,False,
 401866619,Bryant,Stonehill,id1402765370923576,bet365,True,True,44.5
+401866619,Bryant,Stonehill,id1402765370923576,draftkings,True,True,44.5
 401866619,Bryant,Stonehill,id1402765370923576,betrivers,True,True,43.5
 401866619,Bryant,Stonehill,id1402765370923576,hardrockbet,True,True,37.5|38.5|39.5|40.5|41.5|42.5|43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5
-401866619,Bryant,Stonehill,id1402765370923576,circasports,False,False,
-401866619,Bryant,Stonehill,id1402765370923576,sbobet,False,False,
-401866619,Bryant,Stonehill,id1402765370923576,pinnacle,False,False,
-401866619,Bryant,Stonehill,id1402765370923576,williamhill,False,False,
-401866619,Bryant,Stonehill,id1402765370923576,ballybet,True,True,43.5
-401866619,Bryant,Stonehill,id1402765370923576,betparx,True,True,43.5
-401866619,Bryant,Stonehill,id1402765370923576,borgata,False,False,
-401866619,Bryant,Stonehill,id1402765370923576,fourwinds,True,True,43.5
-401866619,Bryant,Stonehill,id1402765370923576,pointsbet.com.au,True,True,44
-401866619,Bryant,Stonehill,id1402765370923576,kalshi,True,True,32.5|35.5|38.5|41.5|42.5|43.5|44.5|45.5|46.5|47.5|50.5|53.5|56.5|59.5|62.5|65.5
-401868149,Samford,North Alabama,id1402765370894672,draftkings,True,True,55.5
-401868149,Samford,North Alabama,id1402765370894672,fanduel,False,False,
-401868149,Samford,North Alabama,id1402765370894672,betmgm,False,False,
-401868149,Samford,North Alabama,id1402765370894672,caesars,False,False,
-401868149,Samford,North Alabama,id1402765370894672,bet365,True,True,55.5
-401868149,Samford,North Alabama,id1402765370894672,betrivers,True,True,56.5
-401868149,Samford,North Alabama,id1402765370894672,hardrockbet,True,True,49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5|60.5|61.5|62.5|63.5
-401868149,Samford,North Alabama,id1402765370894672,circasports,False,False,
-401868149,Samford,North Alabama,id1402765370894672,sbobet,False,False,
-401868149,Samford,North Alabama,id1402765370894672,pinnacle,False,False,
-401868149,Samford,North Alabama,id1402765370894672,williamhill,False,False,
-401868149,Samford,North Alabama,id1402765370894672,ballybet,True,True,56.5
-401868149,Samford,North Alabama,id1402765370894672,betparx,True,True,56.5
-401868149,Samford,North Alabama,id1402765370894672,borgata,False,False,
-401868149,Samford,North Alabama,id1402765370894672,fourwinds,True,True,56.5
-401868149,Samford,North Alabama,id1402765370894672,pointsbet.com.au,True,True,55.5
-401868149,Samford,North Alabama,id1402765370894672,kalshi,True,True,36.5|39.5|42.5|45.5|48.5|51.5|54.5|55.5|56.5|57.5|58.5|59.5|60.5|63.5|66.5|69.5|72.5
-401868305,Stephen F. Austin,McNeese,id1402765370923604,draftkings,True,True,49.5
-401868305,Stephen F. Austin,McNeese,id1402765370923604,fanduel,False,False,
-401868305,Stephen F. Austin,McNeese,id1402765370923604,betmgm,False,False,
-401868305,Stephen F. Austin,McNeese,id1402765370923604,caesars,False,False,
-401868305,Stephen F. Austin,McNeese,id1402765370923604,bet365,True,True,49.5
-401868305,Stephen F. Austin,McNeese,id1402765370923604,betrivers,True,True,50.5
-401868305,Stephen F. Austin,McNeese,id1402765370923604,hardrockbet,True,True,42.5|43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5
-401868305,Stephen F. Austin,McNeese,id1402765370923604,circasports,False,False,
-401868305,Stephen F. Austin,McNeese,id1402765370923604,sbobet,False,False,
-401868305,Stephen F. Austin,McNeese,id1402765370923604,pinnacle,False,False,
-401868305,Stephen F. Austin,McNeese,id1402765370923604,williamhill,False,False,
-401868305,Stephen F. Austin,McNeese,id1402765370923604,ballybet,True,True,50.5
-401868305,Stephen F. Austin,McNeese,id1402765370923604,betparx,True,True,50.5
-401868305,Stephen F. Austin,McNeese,id1402765370923604,borgata,False,False,
-401868305,Stephen F. Austin,McNeese,id1402765370923604,fourwinds,True,True,50.5
-401868305,Stephen F. Austin,McNeese,id1402765370923604,pointsbet.com.au,True,True,49.5
-401868305,Stephen F. Austin,McNeese,id1402765370923604,kalshi,True,True,30.5|33.5|36.5|39.5|42.5|45.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|57.5|60.5|63.5|66.5|69.5|72.5
-401872615,Stetson,South Dakota State,id1402765371320366,draftkings,True,True,56.5
-401872615,Stetson,South Dakota State,id1402765371320366,fanduel,False,False,
-401872615,Stetson,South Dakota State,id1402765371320366,betmgm,False,False,
-401872615,Stetson,South Dakota State,id1402765371320366,caesars,False,False,
-401872615,Stetson,South Dakota State,id1402765371320366,bet365,True,True,56.5
-401872615,Stetson,South Dakota State,id1402765371320366,betrivers,False,False,
-401872615,Stetson,South Dakota State,id1402765371320366,hardrockbet,True,True,51.5|54.5|57.5|60.5|63.5
-401872615,Stetson,South Dakota State,id1402765371320366,circasports,False,False,
-401872615,Stetson,South Dakota State,id1402765371320366,sbobet,False,False,
-401872615,Stetson,South Dakota State,id1402765371320366,pinnacle,False,False,
-401872615,Stetson,South Dakota State,id1402765371320366,williamhill,False,False,
-401872615,Stetson,South Dakota State,id1402765371320366,ballybet,False,False,
-401872615,Stetson,South Dakota State,id1402765371320366,betparx,False,False,
-401872615,Stetson,South Dakota State,id1402765371320366,borgata,False,False,
-401872615,Stetson,South Dakota State,id1402765371320366,fourwinds,False,False,
-401872615,Stetson,South Dakota State,id1402765371320366,pointsbet.com.au,True,True,56.5
-401872615,Stetson,South Dakota State,id1402765371320366,kalshi,True,True,37.5|40.5|43.5|46.5|49.5|52.5|55.5|56.5|57.5|58.5|59.5|60.5|61.5|64.5|67.5|70.5|73.5
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,draftkings,True,True,50.5
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,fanduel,False,False,
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,betmgm,False,False,
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,caesars,False,False,
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,bet365,True,True,50.5
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,betrivers,True,True,50
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,hardrockbet,True,True,43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,circasports,False,False,
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,sbobet,False,False,
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,pinnacle,False,False,
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,williamhill,False,False,
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,ballybet,True,True,50
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,betparx,True,True,50
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,borgata,False,False,
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,fourwinds,True,True,50
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,pointsbet.com.au,True,True,50.5
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,kalshi,True,True,32.5|35.5|38.5|41.5|44.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|56.5|59.5|62.5|65.5|68.5|71.5
-401868049,Abilene Christian,Lamar,id1402765370923602,draftkings,True,True,49.5
-401868049,Abilene Christian,Lamar,id1402765370923602,fanduel,False,False,
-401868049,Abilene Christian,Lamar,id1402765370923602,betmgm,False,False,
-401868049,Abilene Christian,Lamar,id1402765370923602,caesars,False,False,
+401866618,Morgan State,North Carolina A&T,id1402765370923564,bet365,True,True,50.5
+401866618,Morgan State,North Carolina A&T,id1402765370923564,draftkings,True,True,50.5
+401866618,Morgan State,North Carolina A&T,id1402765370923564,betrivers,True,True,50.5
+401866618,Morgan State,North Carolina A&T,id1402765370923564,hardrockbet,True,True,43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5
+401867855,Southeast Missouri State,Indiana State,id1402765370923572,bet365,True,True,52.5
+401867855,Southeast Missouri State,Indiana State,id1402765370923572,draftkings,True,True,52.5
+401867855,Southeast Missouri State,Indiana State,id1402765370923572,betrivers,True,True,53.5
+401867855,Southeast Missouri State,Indiana State,id1402765370923572,hardrockbet,True,True,46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5|60.5
 401868049,Abilene Christian,Lamar,id1402765370923602,bet365,True,True,49.5
+401868049,Abilene Christian,Lamar,id1402765370923602,draftkings,True,True,49.5
 401868049,Abilene Christian,Lamar,id1402765370923602,betrivers,True,True,49
 401868049,Abilene Christian,Lamar,id1402765370923602,hardrockbet,True,True,42.5|43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5
-401868049,Abilene Christian,Lamar,id1402765370923602,circasports,False,False,
-401868049,Abilene Christian,Lamar,id1402765370923602,sbobet,False,False,
-401868049,Abilene Christian,Lamar,id1402765370923602,pinnacle,False,False,
-401868049,Abilene Christian,Lamar,id1402765370923602,williamhill,False,False,
-401868049,Abilene Christian,Lamar,id1402765370923602,ballybet,True,True,49
-401868049,Abilene Christian,Lamar,id1402765370923602,betparx,True,True,49
-401868049,Abilene Christian,Lamar,id1402765370923602,borgata,False,False,
-401868049,Abilene Christian,Lamar,id1402765370923602,fourwinds,True,True,49
-401868049,Abilene Christian,Lamar,id1402765370923602,pointsbet.com.au,True,True,50
-401868049,Abilene Christian,Lamar,id1402765370923602,kalshi,True,True,31.5|34.5|37.5|40.5|43.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|55.5|58.5|61.5|64.5|67.5|70.5
-401866621,Monmouth,Tennessee Tech,id1402765370993944,draftkings,True,True,58.5
-401866621,Monmouth,Tennessee Tech,id1402765370993944,fanduel,False,False,
-401866621,Monmouth,Tennessee Tech,id1402765370993944,betmgm,False,False,
-401866621,Monmouth,Tennessee Tech,id1402765370993944,caesars,False,False,
-401866621,Monmouth,Tennessee Tech,id1402765370993944,bet365,True,True,59.5
-401866621,Monmouth,Tennessee Tech,id1402765370993944,betrivers,True,True,59
-401866621,Monmouth,Tennessee Tech,id1402765370993944,hardrockbet,True,True,52.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5|60.5|61.5|62.5|63.5|64.5|65.5|66.5
-401866621,Monmouth,Tennessee Tech,id1402765370993944,circasports,False,False,
-401866621,Monmouth,Tennessee Tech,id1402765370993944,sbobet,False,False,
-401866621,Monmouth,Tennessee Tech,id1402765370993944,pinnacle,False,False,
-401866621,Monmouth,Tennessee Tech,id1402765370993944,williamhill,False,False,
-401866621,Monmouth,Tennessee Tech,id1402765370993944,ballybet,True,True,59
-401866621,Monmouth,Tennessee Tech,id1402765370993944,betparx,False,False,
-401866621,Monmouth,Tennessee Tech,id1402765370993944,borgata,False,False,
-401866621,Monmouth,Tennessee Tech,id1402765370993944,fourwinds,True,True,59
-401866621,Monmouth,Tennessee Tech,id1402765370993944,pointsbet.com.au,True,True,59.5
-401866621,Monmouth,Tennessee Tech,id1402765370993944,kalshi,True,True,37.5|40.5|43.5|46.5|49.5|52.5|55.5|56.5|57.5|58.5|59.5|60.5|61.5|64.5|67.5|70.5|73.5
-401867977,North Carolina Central,Texas Southern,id1402765370993210,draftkings,True,True,51.5
-401867977,North Carolina Central,Texas Southern,id1402765370993210,fanduel,False,False,
-401867977,North Carolina Central,Texas Southern,id1402765370993210,betmgm,False,False,
-401867977,North Carolina Central,Texas Southern,id1402765370993210,caesars,False,False,
 401867977,North Carolina Central,Texas Southern,id1402765370993210,bet365,True,True,51.5
+401867977,North Carolina Central,Texas Southern,id1402765370993210,draftkings,True,True,51.5
 401867977,North Carolina Central,Texas Southern,id1402765370993210,betrivers,True,True,51.5
 401867977,North Carolina Central,Texas Southern,id1402765370993210,hardrockbet,True,True,44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5|58.5
-401867977,North Carolina Central,Texas Southern,id1402765370993210,circasports,False,False,
-401867977,North Carolina Central,Texas Southern,id1402765370993210,sbobet,False,False,
-401867977,North Carolina Central,Texas Southern,id1402765370993210,pinnacle,False,False,
-401867977,North Carolina Central,Texas Southern,id1402765370993210,williamhill,False,False,
-401867977,North Carolina Central,Texas Southern,id1402765370993210,ballybet,True,True,51.5
-401867977,North Carolina Central,Texas Southern,id1402765370993210,betparx,True,True,51.5
-401867977,North Carolina Central,Texas Southern,id1402765370993210,borgata,False,False,
-401867977,North Carolina Central,Texas Southern,id1402765370993210,fourwinds,True,True,51.5
-401867977,North Carolina Central,Texas Southern,id1402765370993210,pointsbet.com.au,True,True,52
-401867977,North Carolina Central,Texas Southern,id1402765370993210,kalshi,True,True,31.5|34.5|37.5|40.5|43.5|46.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|58.5|61.5|64.5|67.5|70.5|73.5
-401867935,Alabama A&M,Howard,id1402765370894638,draftkings,True,True,46.5
-401867935,Alabama A&M,Howard,id1402765370894638,fanduel,False,False,
-401867935,Alabama A&M,Howard,id1402765370894638,betmgm,False,False,
-401867935,Alabama A&M,Howard,id1402765370894638,caesars,False,False,
+401866621,Monmouth,Tennessee Tech,id1402765370993944,bet365,True,True,59.5
+401866621,Monmouth,Tennessee Tech,id1402765370993944,draftkings,True,True,58.5
+401866621,Monmouth,Tennessee Tech,id1402765370993944,betrivers,True,True,59
+401866621,Monmouth,Tennessee Tech,id1402765370993944,hardrockbet,True,True,52.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5|60.5|61.5|62.5|63.5|64.5|65.5|66.5
+401872615,Stetson,South Dakota State,id1402765371320366,bet365,True,True,56.5
+401872615,Stetson,South Dakota State,id1402765371320366,draftkings,True,True,56.5
+401872615,Stetson,South Dakota State,id1402765371320366,betrivers,False,False,
+401872615,Stetson,South Dakota State,id1402765371320366,hardrockbet,True,True,51.5|54.5|57.5|60.5|63.5
+401868139,Eastern Kentucky,Western Carolina,id1402765370923598,bet365,True,True,50.5
+401868139,Eastern Kentucky,Western Carolina,id1402765370923598,draftkings,True,True,50.5
+401868139,Eastern Kentucky,Western Carolina,id1402765370923598,betrivers,True,True,50
+401868139,Eastern Kentucky,Western Carolina,id1402765370923598,hardrockbet,True,True,43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5
+401868149,Samford,North Alabama,id1402765370894672,bet365,True,True,55.5
+401868149,Samford,North Alabama,id1402765370894672,draftkings,True,True,55.5
+401868149,Samford,North Alabama,id1402765370894672,betrivers,True,True,56.5
+401868149,Samford,North Alabama,id1402765370894672,hardrockbet,True,True,49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5|60.5|61.5|62.5|63.5
+401868305,Stephen F. Austin,McNeese,id1402765370923604,bet365,True,True,49.5
+401868305,Stephen F. Austin,McNeese,id1402765370923604,draftkings,True,True,49.5
+401868305,Stephen F. Austin,McNeese,id1402765370923604,betrivers,True,True,50.5
+401868305,Stephen F. Austin,McNeese,id1402765370923604,hardrockbet,True,True,42.5|43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5
 401867935,Alabama A&M,Howard,id1402765370894638,bet365,True,True,45.5
+401867935,Alabama A&M,Howard,id1402765370894638,draftkings,True,True,46.5
 401867935,Alabama A&M,Howard,id1402765370894638,betrivers,True,True,45.5
 401867935,Alabama A&M,Howard,id1402765370894638,hardrockbet,True,True,45.5
-401867935,Alabama A&M,Howard,id1402765370894638,circasports,False,False,
-401867935,Alabama A&M,Howard,id1402765370894638,sbobet,False,False,
-401867935,Alabama A&M,Howard,id1402765370894638,pinnacle,False,False,
-401867935,Alabama A&M,Howard,id1402765370894638,williamhill,False,False,
-401867935,Alabama A&M,Howard,id1402765370894638,ballybet,True,True,45.5
-401867935,Alabama A&M,Howard,id1402765370894638,betparx,True,True,45.5
-401867935,Alabama A&M,Howard,id1402765370894638,borgata,False,False,
-401867935,Alabama A&M,Howard,id1402765370894638,fourwinds,True,True,45.5
-401867935,Alabama A&M,Howard,id1402765370894638,pointsbet.com.au,True,True,46
-401867935,Alabama A&M,Howard,id1402765370894638,kalshi,True,True,31.5|34.5|37.5|40.5|43.5|44.5|45.5|46.5|47.5|48.5|49.5|52.5|55.5|58.5|61.5|64.5|67.5
-401868194,Jackson State,Tennessee State,id1402765370993600,draftkings,False,False,
-401868194,Jackson State,Tennessee State,id1402765370993600,fanduel,False,False,
-401868194,Jackson State,Tennessee State,id1402765370993600,betmgm,False,False,
-401868194,Jackson State,Tennessee State,id1402765370993600,caesars,False,False,
 401868194,Jackson State,Tennessee State,id1402765370993600,bet365,True,True,49.5
+401868194,Jackson State,Tennessee State,id1402765370993600,draftkings,False,False,
 401868194,Jackson State,Tennessee State,id1402765370993600,betrivers,True,True,49.5
 401868194,Jackson State,Tennessee State,id1402765370993600,hardrockbet,True,True,49.5
-401868194,Jackson State,Tennessee State,id1402765370993600,circasports,False,False,
-401868194,Jackson State,Tennessee State,id1402765370993600,sbobet,False,False,
-401868194,Jackson State,Tennessee State,id1402765370993600,pinnacle,False,False,
-401868194,Jackson State,Tennessee State,id1402765370993600,williamhill,False,False,
-401868194,Jackson State,Tennessee State,id1402765370993600,ballybet,True,True,49.5
-401868194,Jackson State,Tennessee State,id1402765370993600,betparx,True,True,49.5
-401868194,Jackson State,Tennessee State,id1402765370993600,borgata,False,False,
-401868194,Jackson State,Tennessee State,id1402765370993600,fourwinds,True,True,49.5
-401868194,Jackson State,Tennessee State,id1402765370993600,pointsbet.com.au,False,False,
-401868194,Jackson State,Tennessee State,id1402765370993600,kalshi,True,True,32.5|35.5|38.5|41.5|44.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|56.5|59.5|62.5|65.5|68.5|71.5
-401868110,Southern Utah,Montana,id1402765370923558,draftkings,True,True,58.5
-401868110,Southern Utah,Montana,id1402765370923558,fanduel,False,False,
-401868110,Southern Utah,Montana,id1402765370923558,betmgm,False,False,
-401868110,Southern Utah,Montana,id1402765370923558,caesars,False,False,
-401868110,Southern Utah,Montana,id1402765370923558,bet365,True,True,58.5
-401868110,Southern Utah,Montana,id1402765370923558,betrivers,True,True,58.5
-401868110,Southern Utah,Montana,id1402765370923558,hardrockbet,True,True,58.5
-401868110,Southern Utah,Montana,id1402765370923558,circasports,False,False,
-401868110,Southern Utah,Montana,id1402765370923558,sbobet,False,False,
-401868110,Southern Utah,Montana,id1402765370923558,pinnacle,False,False,
-401868110,Southern Utah,Montana,id1402765370923558,williamhill,False,False,
-401868110,Southern Utah,Montana,id1402765370923558,ballybet,True,True,58.5
-401868110,Southern Utah,Montana,id1402765370923558,betparx,True,True,58.5
-401868110,Southern Utah,Montana,id1402765370923558,borgata,False,False,
-401868110,Southern Utah,Montana,id1402765370923558,fourwinds,True,True,58.5
-401868110,Southern Utah,Montana,id1402765370923558,pointsbet.com.au,True,True,59
-401868110,Southern Utah,Montana,id1402765370923558,kalshi,True,True,38.5|41.5|44.5|47.5|50.5|53.5|56.5|57.5|58.5|59.5|60.5|61.5|62.5|65.5|68.5|71.5|74.5
-401868235,Prairie View A&M,Tarleton State,id1402765370923616,draftkings,True,True,54.5
-401868235,Prairie View A&M,Tarleton State,id1402765370923616,fanduel,False,False,
-401868235,Prairie View A&M,Tarleton State,id1402765370923616,betmgm,False,False,
-401868235,Prairie View A&M,Tarleton State,id1402765370923616,caesars,False,False,
 401868235,Prairie View A&M,Tarleton State,id1402765370923616,bet365,True,True,54.5
+401868235,Prairie View A&M,Tarleton State,id1402765370923616,draftkings,True,True,54.5
 401868235,Prairie View A&M,Tarleton State,id1402765370923616,betrivers,True,True,54.5
 401868235,Prairie View A&M,Tarleton State,id1402765370923616,hardrockbet,True,True,54.5
-401868235,Prairie View A&M,Tarleton State,id1402765370923616,circasports,False,False,
-401868235,Prairie View A&M,Tarleton State,id1402765370923616,sbobet,False,False,
-401868235,Prairie View A&M,Tarleton State,id1402765370923616,pinnacle,False,False,
-401868235,Prairie View A&M,Tarleton State,id1402765370923616,williamhill,False,False,
-401868235,Prairie View A&M,Tarleton State,id1402765370923616,ballybet,True,True,54.5
-401868235,Prairie View A&M,Tarleton State,id1402765370923616,betparx,True,True,54.5
-401868235,Prairie View A&M,Tarleton State,id1402765370923616,borgata,False,False,
-401868235,Prairie View A&M,Tarleton State,id1402765370923616,fourwinds,True,True,54.5
-401868235,Prairie View A&M,Tarleton State,id1402765370923616,pointsbet.com.au,True,True,54.5
-401868235,Prairie View A&M,Tarleton State,id1402765370923616,kalshi,True,True,34.5|37.5|40.5|43.5|46.5|49.5|52.5|53.5|54.5|55.5|56.5|57.5|58.5|61.5|64.5|67.5|70.5|73.5
-401868118,Montana State,Utah Tech,id1402765370923614,draftkings,True,True,56.5
-401868118,Montana State,Utah Tech,id1402765370923614,fanduel,False,False,
-401868118,Montana State,Utah Tech,id1402765370923614,betmgm,False,False,
-401868118,Montana State,Utah Tech,id1402765370923614,caesars,False,False,
+401868110,Southern Utah,Montana,id1402765370923558,bet365,True,True,58.5
+401868110,Southern Utah,Montana,id1402765370923558,draftkings,True,True,58.5
+401868110,Southern Utah,Montana,id1402765370923558,betrivers,True,True,58.5
+401868110,Southern Utah,Montana,id1402765370923558,hardrockbet,True,True,58.5
 401868118,Montana State,Utah Tech,id1402765370923614,bet365,True,True,56.5
+401868118,Montana State,Utah Tech,id1402765370923614,draftkings,True,True,56.5
 401868118,Montana State,Utah Tech,id1402765370923614,betrivers,True,True,57.5
 401868118,Montana State,Utah Tech,id1402765370923614,hardrockbet,True,True,56.5
-401868118,Montana State,Utah Tech,id1402765370923614,circasports,False,False,
-401868118,Montana State,Utah Tech,id1402765370923614,sbobet,False,False,
-401868118,Montana State,Utah Tech,id1402765370923614,pinnacle,False,False,
-401868118,Montana State,Utah Tech,id1402765370923614,williamhill,False,False,
-401868118,Montana State,Utah Tech,id1402765370923614,ballybet,True,True,57.5
-401868118,Montana State,Utah Tech,id1402765370923614,betparx,True,True,57.5
-401868118,Montana State,Utah Tech,id1402765370923614,borgata,False,False,
-401868118,Montana State,Utah Tech,id1402765370923614,fourwinds,True,True,57.5
-401868118,Montana State,Utah Tech,id1402765370923614,pointsbet.com.au,True,False,
-401868118,Montana State,Utah Tech,id1402765370923614,kalshi,True,True,37.5|40.5|43.5|46.5|49.5|52.5|55.5|56.5|57.5|58.5|59.5|60.5|61.5|64.5|67.5|70.5|73.5
-401866622,Lindenwood,Stony Brook,id1402765370923620,draftkings,False,False,
-401866622,Lindenwood,Stony Brook,id1402765370923620,fanduel,False,False,
-401866622,Lindenwood,Stony Brook,id1402765370923620,betmgm,False,False,
-401866622,Lindenwood,Stony Brook,id1402765370923620,caesars,False,False,
 401866622,Lindenwood,Stony Brook,id1402765370923620,bet365,False,False,
+401866622,Lindenwood,Stony Brook,id1402765370923620,draftkings,False,False,
 401866622,Lindenwood,Stony Brook,id1402765370923620,betrivers,False,False,
 401866622,Lindenwood,Stony Brook,id1402765370923620,hardrockbet,False,False,
-401866622,Lindenwood,Stony Brook,id1402765370923620,circasports,False,False,
-401866622,Lindenwood,Stony Brook,id1402765370923620,sbobet,False,False,
-401866622,Lindenwood,Stony Brook,id1402765370923620,pinnacle,False,False,
-401866622,Lindenwood,Stony Brook,id1402765370923620,williamhill,False,False,
-401866622,Lindenwood,Stony Brook,id1402765370923620,ballybet,False,False,
-401866622,Lindenwood,Stony Brook,id1402765370923620,betparx,False,False,
-401866622,Lindenwood,Stony Brook,id1402765370923620,borgata,False,False,
-401866622,Lindenwood,Stony Brook,id1402765370923620,fourwinds,False,False,
-401866622,Lindenwood,Stony Brook,id1402765370923620,pointsbet.com.au,False,False,
-401866622,Lindenwood,Stony Brook,id1402765370923620,kalshi,True,False,
-401867889,Southern Illinois,Samford,id1402765370923622,draftkings,False,False,
-401867889,Southern Illinois,Samford,id1402765370923622,fanduel,False,False,
-401867889,Southern Illinois,Samford,id1402765370923622,betmgm,False,False,
-401867889,Southern Illinois,Samford,id1402765370923622,caesars,False,False,
 401867889,Southern Illinois,Samford,id1402765370923622,bet365,False,False,
+401867889,Southern Illinois,Samford,id1402765370923622,draftkings,False,False,
 401867889,Southern Illinois,Samford,id1402765370923622,betrivers,False,False,
 401867889,Southern Illinois,Samford,id1402765370923622,hardrockbet,False,False,
-401867889,Southern Illinois,Samford,id1402765370923622,circasports,False,False,
-401867889,Southern Illinois,Samford,id1402765370923622,sbobet,False,False,
-401867889,Southern Illinois,Samford,id1402765370923622,pinnacle,False,False,
-401867889,Southern Illinois,Samford,id1402765370923622,williamhill,False,False,
-401867889,Southern Illinois,Samford,id1402765370923622,ballybet,False,False,
-401867889,Southern Illinois,Samford,id1402765370923622,betparx,False,False,
-401867889,Southern Illinois,Samford,id1402765370923622,borgata,False,False,
-401867889,Southern Illinois,Samford,id1402765370923622,fourwinds,False,False,
-401867889,Southern Illinois,Samford,id1402765370923622,pointsbet.com.au,False,False,
-401867889,Southern Illinois,Samford,id1402765370923622,kalshi,True,False,
-401869127,Richmond,Howard,id1402765370923640,draftkings,False,False,
-401869127,Richmond,Howard,id1402765370923640,fanduel,False,False,
-401869127,Richmond,Howard,id1402765370923640,betmgm,False,False,
-401869127,Richmond,Howard,id1402765370923640,caesars,False,False,
 401869127,Richmond,Howard,id1402765370923640,bet365,False,False,
+401869127,Richmond,Howard,id1402765370923640,draftkings,False,False,
 401869127,Richmond,Howard,id1402765370923640,betrivers,False,False,
 401869127,Richmond,Howard,id1402765370923640,hardrockbet,False,False,
-401869127,Richmond,Howard,id1402765370923640,circasports,False,False,
-401869127,Richmond,Howard,id1402765370923640,sbobet,False,False,
-401869127,Richmond,Howard,id1402765370923640,pinnacle,False,False,
-401869127,Richmond,Howard,id1402765370923640,williamhill,False,False,
-401869127,Richmond,Howard,id1402765370923640,ballybet,False,False,
-401869127,Richmond,Howard,id1402765370923640,betparx,False,False,
-401869127,Richmond,Howard,id1402765370923640,borgata,False,False,
-401869127,Richmond,Howard,id1402765370923640,fourwinds,False,False,
-401869127,Richmond,Howard,id1402765370923640,pointsbet.com.au,False,False,
-401869127,Richmond,Howard,id1402765370923640,kalshi,True,False,
-401867924,Stonehill,New Haven,id1402765370923646,draftkings,False,False,
-401867924,Stonehill,New Haven,id1402765370923646,fanduel,False,False,
-401867924,Stonehill,New Haven,id1402765370923646,betmgm,False,False,
-401867924,Stonehill,New Haven,id1402765370923646,caesars,False,False,
 401867924,Stonehill,New Haven,id1402765370923646,bet365,False,False,
+401867924,Stonehill,New Haven,id1402765370923646,draftkings,False,False,
 401867924,Stonehill,New Haven,id1402765370923646,betrivers,False,False,
 401867924,Stonehill,New Haven,id1402765370923646,hardrockbet,False,False,
-401867924,Stonehill,New Haven,id1402765370923646,circasports,False,False,
-401867924,Stonehill,New Haven,id1402765370923646,sbobet,False,False,
-401867924,Stonehill,New Haven,id1402765370923646,pinnacle,False,False,
-401867924,Stonehill,New Haven,id1402765370923646,williamhill,False,False,
-401867924,Stonehill,New Haven,id1402765370923646,ballybet,False,False,
-401867924,Stonehill,New Haven,id1402765370923646,betparx,False,False,
-401867924,Stonehill,New Haven,id1402765370923646,borgata,False,False,
-401867924,Stonehill,New Haven,id1402765370923646,fourwinds,False,False,
-401867924,Stonehill,New Haven,id1402765370923646,pointsbet.com.au,False,False,
-401867924,Stonehill,New Haven,id1402765370923646,kalshi,True,False,
-401868017,Lehigh,Georgetown,id1402765370923656,draftkings,False,False,
-401868017,Lehigh,Georgetown,id1402765370923656,fanduel,False,False,
-401868017,Lehigh,Georgetown,id1402765370923656,betmgm,False,False,
-401868017,Lehigh,Georgetown,id1402765370923656,caesars,False,False,
 401868017,Lehigh,Georgetown,id1402765370923656,bet365,False,False,
+401868017,Lehigh,Georgetown,id1402765370923656,draftkings,False,False,
 401868017,Lehigh,Georgetown,id1402765370923656,betrivers,False,False,
 401868017,Lehigh,Georgetown,id1402765370923656,hardrockbet,False,False,
-401868017,Lehigh,Georgetown,id1402765370923656,circasports,False,False,
-401868017,Lehigh,Georgetown,id1402765370923656,sbobet,False,False,
-401868017,Lehigh,Georgetown,id1402765370923656,pinnacle,False,False,
-401868017,Lehigh,Georgetown,id1402765370923656,williamhill,False,False,
-401868017,Lehigh,Georgetown,id1402765370923656,ballybet,False,False,
-401868017,Lehigh,Georgetown,id1402765370923656,betparx,False,False,
-401868017,Lehigh,Georgetown,id1402765370923656,borgata,False,False,
-401868017,Lehigh,Georgetown,id1402765370923656,fourwinds,False,False,
-401868017,Lehigh,Georgetown,id1402765370923656,pointsbet.com.au,False,False,
-401868017,Lehigh,Georgetown,id1402765370923656,kalshi,True,False,
-401868000,Holy Cross,Colgate,id1402765370923654,draftkings,False,False,
-401868000,Holy Cross,Colgate,id1402765370923654,fanduel,False,False,
-401868000,Holy Cross,Colgate,id1402765370923654,betmgm,False,False,
-401868000,Holy Cross,Colgate,id1402765370923654,caesars,False,False,
 401868000,Holy Cross,Colgate,id1402765370923654,bet365,False,False,
+401868000,Holy Cross,Colgate,id1402765370923654,draftkings,False,False,
 401868000,Holy Cross,Colgate,id1402765370923654,betrivers,False,False,
 401868000,Holy Cross,Colgate,id1402765370923654,hardrockbet,False,False,
-401868000,Holy Cross,Colgate,id1402765370923654,circasports,False,False,
-401868000,Holy Cross,Colgate,id1402765370923654,sbobet,False,False,
-401868000,Holy Cross,Colgate,id1402765370923654,pinnacle,False,False,
-401868000,Holy Cross,Colgate,id1402765370923654,williamhill,False,False,
-401868000,Holy Cross,Colgate,id1402765370923654,ballybet,False,False,
-401868000,Holy Cross,Colgate,id1402765370923654,betparx,False,False,
-401868000,Holy Cross,Colgate,id1402765370923654,borgata,False,False,
-401868000,Holy Cross,Colgate,id1402765370923654,fourwinds,False,False,
-401868000,Holy Cross,Colgate,id1402765370923654,pointsbet.com.au,False,False,
-401868000,Holy Cross,Colgate,id1402765370923654,kalshi,True,False,
-401868186,Gardner-Webb,Wofford,id1402765370923664,draftkings,False,False,
-401868186,Gardner-Webb,Wofford,id1402765370923664,fanduel,False,False,
-401868186,Gardner-Webb,Wofford,id1402765370923664,betmgm,False,False,
-401868186,Gardner-Webb,Wofford,id1402765370923664,caesars,False,False,
 401868186,Gardner-Webb,Wofford,id1402765370923664,bet365,False,False,
+401868186,Gardner-Webb,Wofford,id1402765370923664,draftkings,False,False,
 401868186,Gardner-Webb,Wofford,id1402765370923664,betrivers,False,False,
 401868186,Gardner-Webb,Wofford,id1402765370923664,hardrockbet,False,False,
-401868186,Gardner-Webb,Wofford,id1402765370923664,circasports,False,False,
-401868186,Gardner-Webb,Wofford,id1402765370923664,sbobet,False,False,
-401868186,Gardner-Webb,Wofford,id1402765370923664,pinnacle,False,False,
-401868186,Gardner-Webb,Wofford,id1402765370923664,williamhill,False,False,
-401868186,Gardner-Webb,Wofford,id1402765370923664,ballybet,False,False,
-401868186,Gardner-Webb,Wofford,id1402765370923664,betparx,False,False,
-401868186,Gardner-Webb,Wofford,id1402765370923664,borgata,False,False,
-401868186,Gardner-Webb,Wofford,id1402765370923664,fourwinds,False,False,
-401868186,Gardner-Webb,Wofford,id1402765370923664,pointsbet.com.au,False,False,
-401868186,Gardner-Webb,Wofford,id1402765370923664,kalshi,True,False,
-401866624,Sacred Heart,Monmouth,id1402765370923638,draftkings,False,False,
-401866624,Sacred Heart,Monmouth,id1402765370923638,fanduel,False,False,
-401866624,Sacred Heart,Monmouth,id1402765370923638,betmgm,False,False,
-401866624,Sacred Heart,Monmouth,id1402765370923638,caesars,False,False,
 401866624,Sacred Heart,Monmouth,id1402765370923638,bet365,False,False,
+401866624,Sacred Heart,Monmouth,id1402765370923638,draftkings,False,False,
 401866624,Sacred Heart,Monmouth,id1402765370923638,betrivers,False,False,
 401866624,Sacred Heart,Monmouth,id1402765370923638,hardrockbet,False,False,
-401866624,Sacred Heart,Monmouth,id1402765370923638,circasports,False,False,
-401866624,Sacred Heart,Monmouth,id1402765370923638,sbobet,False,False,
-401866624,Sacred Heart,Monmouth,id1402765370923638,pinnacle,False,False,
-401866624,Sacred Heart,Monmouth,id1402765370923638,williamhill,False,False,
-401866624,Sacred Heart,Monmouth,id1402765370923638,ballybet,False,False,
-401866624,Sacred Heart,Monmouth,id1402765370923638,betparx,False,False,
-401866624,Sacred Heart,Monmouth,id1402765370923638,borgata,False,False,
-401866624,Sacred Heart,Monmouth,id1402765370923638,fourwinds,False,False,
-401866624,Sacred Heart,Monmouth,id1402765370923638,pointsbet.com.au,False,False,
-401866624,Sacred Heart,Monmouth,id1402765370923638,kalshi,True,False,
-401868111,Drake,Montana,id1402765370923628,draftkings,False,False,
-401868111,Drake,Montana,id1402765370923628,fanduel,False,False,
-401868111,Drake,Montana,id1402765370923628,betmgm,False,False,
-401868111,Drake,Montana,id1402765370923628,caesars,False,False,
 401868111,Drake,Montana,id1402765370923628,bet365,False,False,
+401868111,Drake,Montana,id1402765370923628,draftkings,False,False,
 401868111,Drake,Montana,id1402765370923628,betrivers,False,False,
 401868111,Drake,Montana,id1402765370923628,hardrockbet,False,False,
-401868111,Drake,Montana,id1402765370923628,circasports,False,False,
-401868111,Drake,Montana,id1402765370923628,sbobet,False,False,
-401868111,Drake,Montana,id1402765370923628,pinnacle,False,False,
-401868111,Drake,Montana,id1402765370923628,williamhill,False,False,
-401868111,Drake,Montana,id1402765370923628,ballybet,False,False,
-401868111,Drake,Montana,id1402765370923628,betparx,False,False,
-401868111,Drake,Montana,id1402765370923628,borgata,False,False,
-401868111,Drake,Montana,id1402765370923628,fourwinds,False,False,
-401868111,Drake,Montana,id1402765370923628,pointsbet.com.au,False,False,
-401868111,Drake,Montana,id1402765370923628,kalshi,True,False,
-401866625,Western Carolina,Campbell,id1402765370923636,draftkings,False,False,
-401866625,Western Carolina,Campbell,id1402765370923636,fanduel,False,False,
-401866625,Western Carolina,Campbell,id1402765370923636,betmgm,False,False,
-401866625,Western Carolina,Campbell,id1402765370923636,caesars,False,False,
 401866625,Western Carolina,Campbell,id1402765370923636,bet365,False,False,
+401866625,Western Carolina,Campbell,id1402765370923636,draftkings,False,False,
 401866625,Western Carolina,Campbell,id1402765370923636,betrivers,False,False,
 401866625,Western Carolina,Campbell,id1402765370923636,hardrockbet,False,False,
-401866625,Western Carolina,Campbell,id1402765370923636,circasports,False,False,
-401866625,Western Carolina,Campbell,id1402765370923636,sbobet,False,False,
-401866625,Western Carolina,Campbell,id1402765370923636,pinnacle,False,False,
-401866625,Western Carolina,Campbell,id1402765370923636,williamhill,False,False,
-401866625,Western Carolina,Campbell,id1402765370923636,ballybet,False,False,
-401866625,Western Carolina,Campbell,id1402765370923636,betparx,False,False,
-401866625,Western Carolina,Campbell,id1402765370923636,borgata,False,False,
-401866625,Western Carolina,Campbell,id1402765370923636,fourwinds,False,False,
-401866625,Western Carolina,Campbell,id1402765370923636,pointsbet.com.au,False,False,
-401866625,Western Carolina,Campbell,id1402765370923636,kalshi,True,False,
-401867875,St. Thomas (MN),North Dakota,id1402765370924714,draftkings,False,False,
-401867875,St. Thomas (MN),North Dakota,id1402765370924714,fanduel,False,False,
-401867875,St. Thomas (MN),North Dakota,id1402765370924714,betmgm,False,False,
-401867875,St. Thomas (MN),North Dakota,id1402765370924714,caesars,False,False,
 401867875,St. Thomas (MN),North Dakota,id1402765370924714,bet365,False,False,
+401867875,St. Thomas (MN),North Dakota,id1402765370924714,draftkings,False,False,
 401867875,St. Thomas (MN),North Dakota,id1402765370924714,betrivers,False,False,
 401867875,St. Thomas (MN),North Dakota,id1402765370924714,hardrockbet,False,False,
-401867875,St. Thomas (MN),North Dakota,id1402765370924714,circasports,False,False,
-401867875,St. Thomas (MN),North Dakota,id1402765370924714,sbobet,False,False,
-401867875,St. Thomas (MN),North Dakota,id1402765370924714,pinnacle,False,False,
-401867875,St. Thomas (MN),North Dakota,id1402765370924714,williamhill,False,False,
-401867875,St. Thomas (MN),North Dakota,id1402765370924714,ballybet,False,False,
-401867875,St. Thomas (MN),North Dakota,id1402765370924714,betparx,False,False,
-401867875,St. Thomas (MN),North Dakota,id1402765370924714,borgata,False,False,
-401867875,St. Thomas (MN),North Dakota,id1402765370924714,fourwinds,False,False,
-401867875,St. Thomas (MN),North Dakota,id1402765370924714,pointsbet.com.au,False,False,
-401867875,St. Thomas (MN),North Dakota,id1402765370924714,kalshi,True,False,
-401867989,Villanova,Bucknell,id1402765370923652,draftkings,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,fanduel,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,betmgm,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,caesars,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,bet365,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,betrivers,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,hardrockbet,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,circasports,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,sbobet,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,pinnacle,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,williamhill,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,ballybet,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,betparx,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,borgata,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,fourwinds,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,pointsbet.com.au,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,kalshi,True,False,
-401868274,Presbyterian,Mercer,id1402765371530332,draftkings,False,False,
-401868274,Presbyterian,Mercer,id1402765371530332,fanduel,False,False,
-401868274,Presbyterian,Mercer,id1402765371530332,betmgm,False,False,
-401868274,Presbyterian,Mercer,id1402765371530332,caesars,False,False,
 401868274,Presbyterian,Mercer,id1402765371530332,bet365,False,False,
+401868274,Presbyterian,Mercer,id1402765371530332,draftkings,False,False,
 401868274,Presbyterian,Mercer,id1402765371530332,betrivers,False,False,
 401868274,Presbyterian,Mercer,id1402765371530332,hardrockbet,False,False,
-401868274,Presbyterian,Mercer,id1402765371530332,circasports,False,False,
-401868274,Presbyterian,Mercer,id1402765371530332,sbobet,False,False,
-401868274,Presbyterian,Mercer,id1402765371530332,pinnacle,False,False,
-401868274,Presbyterian,Mercer,id1402765371530332,williamhill,False,False,
-401868274,Presbyterian,Mercer,id1402765371530332,ballybet,False,False,
-401868274,Presbyterian,Mercer,id1402765371530332,betparx,False,False,
-401868274,Presbyterian,Mercer,id1402765371530332,borgata,False,False,
-401868274,Presbyterian,Mercer,id1402765371530332,fourwinds,False,False,
-401868274,Presbyterian,Mercer,id1402765371530332,pointsbet.com.au,False,False,
-401868274,Presbyterian,Mercer,id1402765371530332,kalshi,True,False,
-401868336,Tennessee Tech,Chattanooga,id1402765370923662,draftkings,False,False,
-401868336,Tennessee Tech,Chattanooga,id1402765370923662,fanduel,False,False,
-401868336,Tennessee Tech,Chattanooga,id1402765370923662,betmgm,False,False,
-401868336,Tennessee Tech,Chattanooga,id1402765370923662,caesars,False,False,
-401868336,Tennessee Tech,Chattanooga,id1402765370923662,bet365,False,False,
-401868336,Tennessee Tech,Chattanooga,id1402765370923662,betrivers,False,False,
-401868336,Tennessee Tech,Chattanooga,id1402765370923662,hardrockbet,False,False,
-401868336,Tennessee Tech,Chattanooga,id1402765370923662,circasports,False,False,
-401868336,Tennessee Tech,Chattanooga,id1402765370923662,sbobet,False,False,
-401868336,Tennessee Tech,Chattanooga,id1402765370923662,pinnacle,False,False,
-401868336,Tennessee Tech,Chattanooga,id1402765370923662,williamhill,False,False,
-401868336,Tennessee Tech,Chattanooga,id1402765370923662,ballybet,False,False,
-401868336,Tennessee Tech,Chattanooga,id1402765370923662,betparx,False,False,
-401868336,Tennessee Tech,Chattanooga,id1402765370923662,borgata,False,False,
-401868336,Tennessee Tech,Chattanooga,id1402765370923662,fourwinds,False,False,
-401868336,Tennessee Tech,Chattanooga,id1402765370923662,pointsbet.com.au,False,False,
-401868336,Tennessee Tech,Chattanooga,id1402765370923662,kalshi,True,False,
-401867692,Delaware State,William & Mary,id1402765370923650,draftkings,False,False,
-401867692,Delaware State,William & Mary,id1402765370923650,fanduel,False,False,
-401867692,Delaware State,William & Mary,id1402765370923650,betmgm,False,False,
-401867692,Delaware State,William & Mary,id1402765370923650,caesars,False,False,
+401867989,Villanova,Bucknell,id1402765370923652,bet365,False,False,
+401867989,Villanova,Bucknell,id1402765370923652,draftkings,False,False,
+401867989,Villanova,Bucknell,id1402765370923652,betrivers,False,False,
+401867989,Villanova,Bucknell,id1402765370923652,hardrockbet,False,False,
 401867692,Delaware State,William & Mary,id1402765370923650,bet365,False,False,
+401867692,Delaware State,William & Mary,id1402765370923650,draftkings,False,False,
 401867692,Delaware State,William & Mary,id1402765370923650,betrivers,False,False,
 401867692,Delaware State,William & Mary,id1402765370923650,hardrockbet,False,False,
-401867692,Delaware State,William & Mary,id1402765370923650,circasports,False,False,
-401867692,Delaware State,William & Mary,id1402765370923650,sbobet,False,False,
-401867692,Delaware State,William & Mary,id1402765370923650,pinnacle,False,False,
-401867692,Delaware State,William & Mary,id1402765370923650,williamhill,False,False,
-401867692,Delaware State,William & Mary,id1402765370923650,ballybet,False,False,
-401867692,Delaware State,William & Mary,id1402765370923650,betparx,False,False,
-401867692,Delaware State,William & Mary,id1402765370923650,borgata,False,False,
-401867692,Delaware State,William & Mary,id1402765370923650,fourwinds,False,False,
-401867692,Delaware State,William & Mary,id1402765370923650,pointsbet.com.au,False,False,
-401867692,Delaware State,William & Mary,id1402765370923650,kalshi,True,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,draftkings,False,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,fanduel,False,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,betmgm,False,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,caesars,False,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,bet365,False,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,betrivers,False,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,hardrockbet,False,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,circasports,False,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,sbobet,False,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,pinnacle,False,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,williamhill,False,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,ballybet,False,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,betparx,False,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,borgata,False,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,fourwinds,False,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,pointsbet.com.au,False,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,kalshi,True,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,draftkings,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,fanduel,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,betmgm,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,caesars,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,bet365,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,betrivers,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,hardrockbet,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,circasports,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,sbobet,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,pinnacle,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,williamhill,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,ballybet,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,betparx,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,borgata,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,fourwinds,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,pointsbet.com.au,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,kalshi,True,False,
-401867845,Illinois State,Western Illinois,id1402765370923634,draftkings,False,False,
-401867845,Illinois State,Western Illinois,id1402765370923634,fanduel,False,False,
-401867845,Illinois State,Western Illinois,id1402765370923634,betmgm,False,False,
-401867845,Illinois State,Western Illinois,id1402765370923634,caesars,False,False,
+401868336,Tennessee Tech,Chattanooga,id1402765370923662,bet365,False,False,
+401868336,Tennessee Tech,Chattanooga,id1402765370923662,draftkings,False,False,
+401868336,Tennessee Tech,Chattanooga,id1402765370923662,betrivers,False,False,
+401868336,Tennessee Tech,Chattanooga,id1402765370923662,hardrockbet,False,False,
 401867845,Illinois State,Western Illinois,id1402765370923634,bet365,False,False,
+401867845,Illinois State,Western Illinois,id1402765370923634,draftkings,False,False,
 401867845,Illinois State,Western Illinois,id1402765370923634,betrivers,False,False,
 401867845,Illinois State,Western Illinois,id1402765370923634,hardrockbet,False,False,
-401867845,Illinois State,Western Illinois,id1402765370923634,circasports,False,False,
-401867845,Illinois State,Western Illinois,id1402765370923634,sbobet,False,False,
-401867845,Illinois State,Western Illinois,id1402765370923634,pinnacle,False,False,
-401867845,Illinois State,Western Illinois,id1402765370923634,williamhill,False,False,
-401867845,Illinois State,Western Illinois,id1402765370923634,ballybet,False,False,
-401867845,Illinois State,Western Illinois,id1402765370923634,betparx,False,False,
-401867845,Illinois State,Western Illinois,id1402765370923634,borgata,False,False,
-401867845,Illinois State,Western Illinois,id1402765370923634,fourwinds,False,False,
-401867845,Illinois State,Western Illinois,id1402765370923634,pointsbet.com.au,False,False,
-401867845,Illinois State,Western Illinois,id1402765370923634,kalshi,True,False,
-401868158,Weber State,Southern Utah,id1402765370923680,draftkings,False,False,
-401868158,Weber State,Southern Utah,id1402765370923680,fanduel,False,False,
-401868158,Weber State,Southern Utah,id1402765370923680,betmgm,False,False,
-401868158,Weber State,Southern Utah,id1402765370923680,caesars,False,False,
-401868158,Weber State,Southern Utah,id1402765370923680,bet365,False,False,
-401868158,Weber State,Southern Utah,id1402765370923680,betrivers,False,False,
-401868158,Weber State,Southern Utah,id1402765370923680,hardrockbet,False,False,
-401868158,Weber State,Southern Utah,id1402765370923680,circasports,False,False,
-401868158,Weber State,Southern Utah,id1402765370923680,sbobet,False,False,
-401868158,Weber State,Southern Utah,id1402765370923680,pinnacle,False,False,
-401868158,Weber State,Southern Utah,id1402765370923680,williamhill,False,False,
-401868158,Weber State,Southern Utah,id1402765370923680,ballybet,False,False,
-401868158,Weber State,Southern Utah,id1402765370923680,betparx,False,False,
-401868158,Weber State,Southern Utah,id1402765370923680,borgata,False,False,
-401868158,Weber State,Southern Utah,id1402765370923680,fourwinds,False,False,
-401868158,Weber State,Southern Utah,id1402765370923680,pointsbet.com.au,False,False,
-401868158,Weber State,Southern Utah,id1402765370923680,kalshi,True,False,
-401867883,South Dakota,Northern Colorado,id1402765370923630,draftkings,False,False,
-401867883,South Dakota,Northern Colorado,id1402765370923630,fanduel,False,False,
-401867883,South Dakota,Northern Colorado,id1402765370923630,betmgm,False,False,
-401867883,South Dakota,Northern Colorado,id1402765370923630,caesars,False,False,
+401868085,Northern Iowa,Eastern Washington,id1402765370923626,bet365,False,False,
+401868085,Northern Iowa,Eastern Washington,id1402765370923626,draftkings,False,False,
+401868085,Northern Iowa,Eastern Washington,id1402765370923626,betrivers,False,False,
+401868085,Northern Iowa,Eastern Washington,id1402765370923626,hardrockbet,False,False,
+401868071,West Florida,Central Arkansas,id1402765370992350,bet365,False,False,
+401868071,West Florida,Central Arkansas,id1402765370992350,draftkings,False,False,
+401868071,West Florida,Central Arkansas,id1402765370992350,betrivers,False,False,
+401868071,West Florida,Central Arkansas,id1402765370992350,hardrockbet,False,False,
 401867883,South Dakota,Northern Colorado,id1402765370923630,bet365,False,False,
+401867883,South Dakota,Northern Colorado,id1402765370923630,draftkings,False,False,
 401867883,South Dakota,Northern Colorado,id1402765370923630,betrivers,False,False,
 401867883,South Dakota,Northern Colorado,id1402765370923630,hardrockbet,False,False,
-401867883,South Dakota,Northern Colorado,id1402765370923630,circasports,False,False,
-401867883,South Dakota,Northern Colorado,id1402765370923630,sbobet,False,False,
-401867883,South Dakota,Northern Colorado,id1402765370923630,pinnacle,False,False,
-401867883,South Dakota,Northern Colorado,id1402765370923630,williamhill,False,False,
-401867883,South Dakota,Northern Colorado,id1402765370923630,ballybet,False,False,
-401867883,South Dakota,Northern Colorado,id1402765370923630,betparx,False,False,
-401867883,South Dakota,Northern Colorado,id1402765370923630,borgata,False,False,
-401867883,South Dakota,Northern Colorado,id1402765370923630,fourwinds,False,False,
-401867883,South Dakota,Northern Colorado,id1402765370923630,pointsbet.com.au,False,False,
-401867883,South Dakota,Northern Colorado,id1402765370923630,kalshi,True,False,
-401868119,Butler,Montana State,id1402765370923682,draftkings,False,False,
-401868119,Butler,Montana State,id1402765370923682,fanduel,False,False,
-401868119,Butler,Montana State,id1402765370923682,betmgm,False,False,
-401868119,Butler,Montana State,id1402765370923682,caesars,False,False,
+401868158,Weber State,Southern Utah,id1402765370923680,bet365,False,False,
+401868158,Weber State,Southern Utah,id1402765370923680,draftkings,False,False,
+401868158,Weber State,Southern Utah,id1402765370923680,betrivers,False,False,
+401868158,Weber State,Southern Utah,id1402765370923680,hardrockbet,False,False,
 401868119,Butler,Montana State,id1402765370923682,bet365,False,False,
+401868119,Butler,Montana State,id1402765370923682,draftkings,False,False,
 401868119,Butler,Montana State,id1402765370923682,betrivers,False,False,
 401868119,Butler,Montana State,id1402765370923682,hardrockbet,False,False,
-401868119,Butler,Montana State,id1402765370923682,circasports,False,False,
-401868119,Butler,Montana State,id1402765370923682,sbobet,False,False,
-401868119,Butler,Montana State,id1402765370923682,pinnacle,False,False,
-401868119,Butler,Montana State,id1402765370923682,williamhill,False,False,
-401868119,Butler,Montana State,id1402765370923682,ballybet,False,False,
-401868119,Butler,Montana State,id1402765370923682,betparx,False,False,
-401868119,Butler,Montana State,id1402765370923682,borgata,False,False,
-401868119,Butler,Montana State,id1402765370923682,fourwinds,False,False,
-401868119,Butler,Montana State,id1402765370923682,pointsbet.com.au,False,False,
-401868119,Butler,Montana State,id1402765370923682,kalshi,True,False,
-401868163,UC Davis,San Diego,id1402765370994214,draftkings,False,False,
-401868163,UC Davis,San Diego,id1402765370994214,fanduel,False,False,
-401868163,UC Davis,San Diego,id1402765370994214,betmgm,False,False,
-401868163,UC Davis,San Diego,id1402765370994214,caesars,False,False,
 401868163,UC Davis,San Diego,id1402765370994214,bet365,False,False,
+401868163,UC Davis,San Diego,id1402765370994214,draftkings,False,False,
 401868163,UC Davis,San Diego,id1402765370994214,betrivers,False,False,
 401868163,UC Davis,San Diego,id1402765370994214,hardrockbet,False,False,
-401868163,UC Davis,San Diego,id1402765370994214,circasports,False,False,
-401868163,UC Davis,San Diego,id1402765370994214,sbobet,False,False,
-401868163,UC Davis,San Diego,id1402765370994214,pinnacle,False,False,
-401868163,UC Davis,San Diego,id1402765370994214,williamhill,False,False,
-401868163,UC Davis,San Diego,id1402765370994214,ballybet,False,False,
-401868163,UC Davis,San Diego,id1402765370994214,betparx,False,False,
-401868163,UC Davis,San Diego,id1402765370994214,borgata,False,False,
-401868163,UC Davis,San Diego,id1402765370994214,fourwinds,False,False,
-401868163,UC Davis,San Diego,id1402765370994214,pointsbet.com.au,False,False,
-401868163,UC Davis,San Diego,id1402765370994214,kalshi,True,False,
-401868967,Texas Southern,Prairie View A&M,id1402765370923684,draftkings,False,False,
-401868967,Texas Southern,Prairie View A&M,id1402765370923684,fanduel,False,False,
-401868967,Texas Southern,Prairie View A&M,id1402765370923684,betmgm,False,False,
-401868967,Texas Southern,Prairie View A&M,id1402765370923684,caesars,False,False,
 401868967,Texas Southern,Prairie View A&M,id1402765370923684,bet365,False,False,
+401868967,Texas Southern,Prairie View A&M,id1402765370923684,draftkings,False,False,
 401868967,Texas Southern,Prairie View A&M,id1402765370923684,betrivers,False,False,
 401868967,Texas Southern,Prairie View A&M,id1402765370923684,hardrockbet,False,False,
-401868967,Texas Southern,Prairie View A&M,id1402765370923684,circasports,False,False,
-401868967,Texas Southern,Prairie View A&M,id1402765370923684,sbobet,False,False,
-401868967,Texas Southern,Prairie View A&M,id1402765370923684,pinnacle,False,False,
-401868967,Texas Southern,Prairie View A&M,id1402765370923684,williamhill,False,False,
-401868967,Texas Southern,Prairie View A&M,id1402765370923684,ballybet,False,False,
-401868967,Texas Southern,Prairie View A&M,id1402765370923684,betparx,False,False,
-401868967,Texas Southern,Prairie View A&M,id1402765370923684,borgata,False,False,
-401868967,Texas Southern,Prairie View A&M,id1402765370923684,fourwinds,False,False,
-401868967,Texas Southern,Prairie View A&M,id1402765370923684,pointsbet.com.au,False,False,
-401868967,Texas Southern,Prairie View A&M,id1402765370923684,kalshi,True,False,
-401867939,South Carolina State,Florida A&M,id1402765370894792,draftkings,False,False,
-401867939,South Carolina State,Florida A&M,id1402765370894792,fanduel,False,False,
-401867939,South Carolina State,Florida A&M,id1402765370894792,betmgm,False,False,
-401867939,South Carolina State,Florida A&M,id1402765370894792,caesars,False,False,
 401867939,South Carolina State,Florida A&M,id1402765370894792,bet365,False,False,
+401867939,South Carolina State,Florida A&M,id1402765370894792,draftkings,False,False,
 401867939,South Carolina State,Florida A&M,id1402765370894792,betrivers,False,False,
 401867939,South Carolina State,Florida A&M,id1402765370894792,hardrockbet,False,False,
-401867939,South Carolina State,Florida A&M,id1402765370894792,circasports,False,False,
-401867939,South Carolina State,Florida A&M,id1402765370894792,sbobet,False,False,
-401867939,South Carolina State,Florida A&M,id1402765370894792,pinnacle,False,False,
-401867939,South Carolina State,Florida A&M,id1402765370894792,williamhill,False,False,
-401867939,South Carolina State,Florida A&M,id1402765370894792,ballybet,False,False,
-401867939,South Carolina State,Florida A&M,id1402765370894792,betparx,False,False,
-401867939,South Carolina State,Florida A&M,id1402765370894792,borgata,False,False,
-401867939,South Carolina State,Florida A&M,id1402765370894792,fourwinds,False,False,
-401867939,South Carolina State,Florida A&M,id1402765370894792,pointsbet.com.au,False,False,
-401867939,South Carolina State,Florida A&M,id1402765370894792,kalshi,True,False,
