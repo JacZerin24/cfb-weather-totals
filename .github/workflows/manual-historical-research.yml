@@ -41,6 +41,9 @@ jobs:
       - name: Pull historical data and run research
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          NOAA_API_TOKEN: ${{ secrets.NOAA_API_TOKEN }}
         run: |
           python -m src.pull_historical_games
           python -m src.pull_historical_lines

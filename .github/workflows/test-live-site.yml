@@ -38,6 +38,7 @@ jobs:
           from src.fcs_model import classify_division_row
           from src.nws_forecast import _c_to_f, _kph_to_mph
           from src.odds_api_fallback import apply_fcs_odds_fallback, match_odds_event, select_total_market
+          from src.oddspapi_fallback import apply_fcs_oddspapi_fallback, match_oddspapi_fixture, select_oddspapi_total
 
           qualifying = pd.Series({
               'closing_total': 60.0,
@@ -143,5 +144,102 @@ jobs:
           assert filled.loc[0, 'closing_total'] == 51.5
           assert filled.loc[0, 'line_source'] == 'The Odds API'
           assert stats['fcs_fallback_filled'] == 1
-          print('Live FBS/FCS decision, weather conversion, and FCS odds fallback checks passed.')
+
+          # OddsPapi fixture matching allows the participant order to be reversed
+          # and handles sportsbook nicknames appended to the CFBD school name.
+          op_fixtures = [{
+              'fixtureId': 'id1402765300000001',
+              'tournamentId': 27653,
+              'startTime': '2026-08-27T22:00:00Z',
+              'participant1Name': 'Stony Brook Seawolves',
+              'participant2Name': 'Delaware State Hornets',
+              'hasOdds': True,
+          }]
+          op_fixture, op_confidence = match_oddspapi_fixture(fcs_game, op_fixtures)
+          assert op_fixture is not None and op_confidence > 0.9
+
+          op_catalog = [
+              {
+                  'marketId': 1484,
+                  'marketName': 'Total (incl. overtime)',
+                  'marketType': 'totals',
+                  'period': 'fulltime',
+                  'playerProp': False,
+                  'handicap': 49.5,
+              },
+              {
+                  'marketId': 1486,
+                  'marketName': 'Total (incl. overtime)',
+                  'marketType': 'totals',
+                  'period': 'fulltime',
+                  'playerProp': False,
+                  'handicap': 50.0,
+              },
+          ]
+
+          def live_market(over_id, under_id):
+              return {
+                  'marketActive': True,
+                  'outcomes': {
+                      str(over_id): {'players': {'0': {'active': True, 'price': 1.91}}},
+                      str(under_id): {'players': {'0': {'active': True, 'price': 1.91}}},
+                  },
+              }
+
+          op_odds = [{
+              'fixtureId': 'id1402765300000001',
+              'tournamentId': 27653,
+              'startTime': '2026-08-27T22:00:00Z',
+              'hasOdds': True,
+              'bookmakerOdds': {
+                  'draftkings': {
+                      'bookmakerIsActive': True,
+                      'suspended': False,
+                      'markets': {
+                          '1484': live_market(1484, 1485),
+                      },
+                  },
+                  'fanduel': {
+                      'bookmakerIsActive': True,
+                      'suspended': False,
+                      'markets': {
+                          '1484': live_market(1484, 1485),
+                          '1486': live_market(1486, 1487),
+                      },
+                  },
+                  'pinnacle': {
+                      'bookmakerIsActive': True,
+                      'suspended': False,
+                      'markets': {
+                          '1486': live_market(1486, 1487),
+                      },
+                  },
+              },
+          }]
+          op_market = select_oddspapi_total(op_odds[0], op_catalog, ['DraftKings', 'FanDuel'])
+          assert op_market is not None
+          assert op_market['closing_total'] == 49.5
+          assert op_market['oddspapi_consensus_book_count'] == 2
+          assert op_market['line_provider_count'] == 3
+          assert op_market['line_source'] == 'OddsPapi'
+
+          op_board = pd.DataFrame([{
+              'game_id': 1,
+              'division_track': 'FCS',
+              'home_team': 'Delaware State',
+              'away_team': 'Stony Brook',
+              'start_date': '2026-08-27T22:00:00Z',
+              'closing_total': None,
+          }])
+          op_filled, op_stats = apply_fcs_oddspapi_fallback(
+              op_board,
+              ['DraftKings', 'FanDuel'],
+              fixtures=op_fixtures,
+              odds_records=op_odds,
+              market_catalog=op_catalog,
+          )
+          assert op_filled.loc[0, 'closing_total'] == 49.5
+          assert op_filled.loc[0, 'line_source'] == 'OddsPapi'
+          assert op_stats['fcs_oddspapi_filled'] == 1
+          print('Live FBS/FCS decision, weather conversion, and both FCS odds fallback checks passed.')
           PY
