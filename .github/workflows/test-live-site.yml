@@ -37,6 +37,7 @@ jobs:
           from src.predict_week import classify_row
           from src.fcs_model import classify_division_row
           from src.nws_forecast import _c_to_f, _kph_to_mph
+          from src.odds_api_fallback import apply_fcs_odds_fallback, match_odds_event, select_total_market
 
           qualifying = pd.Series({
               'closing_total': 60.0,
@@ -86,5 +87,61 @@ jobs:
           assert classify_division_row(fcs_no_play)[0] == 'NO PLAY'
           assert round(_c_to_f(0), 1) == 32.0
           assert round(_kph_to_mph(16.0934), 1) == 10.0
-          print('Live FBS/FCS decision and weather conversion checks passed.')
+
+          odds_fixture = [{
+              'id': 'fixture-game',
+              'commence_time': '2026-08-27T22:00:00Z',
+              'home_team': 'Delaware State Hornets',
+              'away_team': 'Stony Brook Seawolves',
+              'bookmakers': [
+                  {
+                      'key': 'draftkings',
+                      'title': 'DraftKings',
+                      'markets': [{
+                          'key': 'totals',
+                          'outcomes': [
+                              {'name': 'Over', 'price': -110, 'point': 51.5},
+                              {'name': 'Under', 'price': -110, 'point': 51.5},
+                          ],
+                      }],
+                  },
+                  {
+                      'key': 'fanduel',
+                      'title': 'FanDuel',
+                      'markets': [{
+                          'key': 'totals',
+                          'outcomes': [
+                              {'name': 'Over', 'price': -110, 'point': 52.0},
+                              {'name': 'Under', 'price': -110, 'point': 52.0},
+                          ],
+                      }],
+                  },
+              ],
+          }]
+          fcs_game = pd.Series({
+              'division_track': 'FCS',
+              'home_team': 'Delaware State',
+              'away_team': 'Stony Brook',
+              'start_date': '2026-08-27T22:00:00Z',
+          })
+          event, confidence = match_odds_event(fcs_game, odds_fixture)
+          assert event is not None and confidence > 0.9
+          market = select_total_market(event, ['DraftKings', 'FanDuel'])
+          assert market is not None
+          assert market['closing_total'] == 51.5
+          assert market['line_provider_count'] == 2
+
+          board = pd.DataFrame([{
+              'game_id': 1,
+              'division_track': 'FCS',
+              'home_team': 'Delaware State',
+              'away_team': 'Stony Brook',
+              'start_date': '2026-08-27T22:00:00Z',
+              'closing_total': None,
+          }])
+          filled, stats = apply_fcs_odds_fallback(board, ['DraftKings', 'FanDuel'], events=odds_fixture)
+          assert filled.loc[0, 'closing_total'] == 51.5
+          assert filled.loc[0, 'line_source'] == 'The Odds API'
+          assert stats['fcs_fallback_filled'] == 1
+          print('Live FBS/FCS decision, weather conversion, and FCS odds fallback checks passed.')
           PY
