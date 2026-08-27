@@ -19,6 +19,13 @@ from .utils import ensure_dir, write_df
 BREAKEVEN = 110 / 210
 EDGE_GRID = [1.5, 2.5, 3.5, 5.0, 6.0, 7.5]
 TOTAL_GRID = [0.0, 49.0, 52.0, 54.0, 56.0, 58.0, 60.0]
+CANDIDATE_SCREENS = [
+    ('edge_1.5_total_60', 1.5, 60.0),
+    ('edge_5.0_total_58', 5.0, 58.0),
+    ('edge_7.5_total_56', 7.5, 56.0),
+    ('edge_5.0_total_60', 5.0, 60.0),
+    ('edge_7.5_total_58', 7.5, 58.0),
+]
 
 
 def _grade_under(frame: pd.DataFrame) -> dict[str, float | int]:
@@ -60,8 +67,6 @@ def walk_forward_predictions(data: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataF
     for season in sorted(data['season'].dropna().astype(int).unique()):
         train = data[data['season'] < season].copy()
         test = data[data['season'] == season].copy()
-        # FCS market totals are only present from 2022 onward in the current dataset.
-        # Requiring 500 prior games allows 2023-2025 to be tested walk-forward.
         if len(train) < 500 or len(test) < 100:
             continue
         model = build_fcs_model()
@@ -90,11 +95,10 @@ def threshold_grid(predictions: pd.DataFrame) -> pd.DataFrame:
             mask = predictions['pred_market_residual'].le(-edge)
             if minimum_total > 0:
                 mask &= predictions['closing_total'].ge(minimum_total)
-            graded = _grade_under(predictions[mask].copy())
             rows.append({
                 'under_edge_threshold': edge,
                 'minimum_total': minimum_total,
-                **graded,
+                **_grade_under(predictions[mask].copy()),
             })
     return pd.DataFrame(rows).sort_values(['roi_per_1u', 'graded'], ascending=[False, False])
 
@@ -107,6 +111,24 @@ def selected_screen_by_season(predictions: pd.DataFrame) -> pd.DataFrame:
             & group['closing_total'].ge(FCS_QUALIFY_TOTAL)
         ].copy()
         rows.append({'season': int(season), **_grade_under(sub)})
+    return pd.DataFrame(rows)
+
+
+def candidate_screens_by_season(predictions: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    for name, edge, total in CANDIDATE_SCREENS:
+        for season, group in predictions.groupby('season'):
+            sub = group[
+                group['pred_market_residual'].le(-edge)
+                & group['closing_total'].ge(total)
+            ].copy()
+            rows.append({
+                'candidate': name,
+                'under_edge_threshold': edge,
+                'minimum_total': total,
+                'season': int(season),
+                **_grade_under(sub),
+            })
     return pd.DataFrame(rows)
 
 
@@ -124,6 +146,7 @@ def write_markdown(
     diagnostics: pd.DataFrame,
     grid: pd.DataFrame,
     by_season: pd.DataFrame,
+    candidates: pd.DataFrame,
 ) -> None:
     selected = grid[
         grid['under_edge_threshold'].eq(FCS_QUALIFY_EDGE)
@@ -141,7 +164,7 @@ def write_markdown(
         f'Historical FCS games with usable totals/results: **{len(data):,}**.',
         f'Walk-forward test seasons: **{int(by_season.season.min())}-{int(by_season.season.max())}**.' if not by_season.empty else 'No walk-forward seasons available.',
         '',
-        '## Conservative FCS candidate screen',
+        '## Current live candidate screen',
         '',
         f'- Dedicated FCS HistGradientBoosting model',
         f'- Predicted UNDER edge: **{FCS_QUALIFY_EDGE:.1f}+ points**',
@@ -150,9 +173,15 @@ def write_markdown(
         f'- Paper ROI at -110: **{selected["roi_per_1u"]:.1%} per graded play**',
         f'- 95% Wilson interval for hit rate: **{low:.1%} to {high:.1%}**',
         '',
-        '### By season',
+        '### Current screen by season',
         '',
         by_season.to_markdown(index=False) if not by_season.empty else '_No rows._',
+        '',
+        '## Leading candidate screens by season',
+        '',
+        'These are shown explicitly so a rule is not selected only because it tops an aggregate ROI table.',
+        '',
+        candidates.to_markdown(index=False) if not candidates.empty else '_No rows._',
         '',
         '## Model diagnostics',
         '',
@@ -166,7 +195,8 @@ def write_markdown(
         '',
         '- The threshold grid is a research screen, so the selected rule is not treated as a guaranteed edge.',
         '- FCS market data in the current historical dataset begins in 2022, which limits the number of independent test seasons.',
-        '- The FCS model MAE can be worse than a zero-residual baseline even when selective under subsets perform well; this is why the live site uses a strict screen rather than every model prediction.',
+        '- Candidate screens are compared season-by-season before changing the live QUALIFIES rule.',
+        '- The FCS model MAE is worse than a zero-residual baseline in each walk-forward season; selective subset performance must therefore be treated cautiously.',
         '- Keep the FCS track in paper-tracking mode while 2026 live forecasts, closing totals, and results accumulate.',
         '- No FCS over strategy is promoted from this analysis.',
     ]
@@ -184,13 +214,15 @@ def main() -> None:
 
     grid = threshold_grid(predictions)
     by_season = selected_screen_by_season(predictions)
+    candidates = candidate_screens_by_season(predictions)
     summary = data_summary(data)
 
     write_df(summary, 'outputs/fcs_data_summary.csv')
     write_df(diagnostics, 'outputs/fcs_model_diagnostics.csv')
     write_df(grid, 'outputs/fcs_threshold_grid.csv')
     write_df(by_season, 'outputs/fcs_selected_screen_by_season.csv')
-    write_markdown(data, diagnostics, grid, by_season)
+    write_df(candidates, 'outputs/fcs_candidate_by_season.csv')
+    write_markdown(data, diagnostics, grid, by_season, candidates)
     print(
         f'FCS research: {len(data)} historical games with totals; '
         f'{len(predictions)} walk-forward predictions.'
