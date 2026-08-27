@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 from datetime import datetime, timezone
 
 import numpy as np
@@ -22,51 +21,26 @@ from .predict_week import (
     research_tags,
     write_outputs,
 )
-from .utils import ROOT, ensure_dir, get_settings, write_df
+from .utils import get_settings
 
 
-def write_no_market_board(board: pd.DataFrame, season: int, week: int | None) -> None:
-    out = board.copy()
-    out['closing_total'] = np.nan
-    out['status'] = 'NO LINE'
-    out['decision_reason'] = 'No current market total is available.'
-    out['research_tags'] = ''
-    out['abs_pred_edge'] = np.nan
-    out['pred_market_residual'] = np.nan
-    out['model_projected_total'] = np.nan
-    out['model_side'] = ''
-    out['status_rank'] = 4
-    keep = [c for c in [
-        'status', 'decision_reason', 'research_tags', 'season', 'week', 'game_id', 'start_date', 'start_time_tbd',
-        'away_team', 'home_team', 'venue', 'home_conference', 'away_conference',
-        'home_classification', 'away_classification', 'closing_total', 'model_projected_total',
-        'pred_market_residual', 'abs_pred_edge', 'model_side', 'status_rank',
-    ] if c in out.columns]
-    out = out[keep].head(100)
-    write_df(out, 'outputs/weekly_board.csv')
-    write_df(pd.DataFrame([{
-        'status': 'no_current_lines',
-        'note': 'The upcoming week does not yet have usable market totals. No play is forced.',
-    }]), 'outputs/weekly_picks.csv')
-    write_df(pd.DataFrame([{
-        'card_status': 'NO_CARD',
-        'note': 'No current market totals are available.',
-    }]), 'outputs/weekly_card.csv')
-    write_df(pd.DataFrame(), 'outputs/nws_forecasts.csv')
-    snapshot = {
-        'generated_at': datetime.now(timezone.utc).isoformat(),
-        'season': season,
-        'week': week,
-        'games_scanned': int(len(out)),
-        'games_with_lines': 0,
-        'qualifying_targets': 0,
-        'leans': 0,
-        'nws_ready_outdoor_games': 0,
-        'board': [],
-        'top_two_card_game_ids': [],
-    }
-    ensure_dir('outputs')
-    (ROOT / 'outputs/weekly_snapshot.json').write_text(json.dumps(snapshot, indent=2), encoding='utf-8')
+DISPLAY_COLUMNS = [
+    'status', 'decision_reason', 'research_tags', 'season', 'week', 'game_id', 'start_date', 'start_time_tbd',
+    'away_team', 'home_team', 'venue_name', 'venue_city', 'venue_state', 'venue_latitude', 'venue_longitude',
+    'game_indoors', 'closing_total', 'line_provider', 'line_provider_count', 'line_total_range',
+    'line_total_median', 'selected_vs_market_median', 'model_projected_total', 'pred_market_residual',
+    'abs_pred_edge', 'model_side', 'temperature_f', 'dewpoint_f', 'humidity', 'wind_mph', 'wind_gust_mph',
+    'precip_probability_pct', 'precipitation', 'snowfall', 'weather_summary', 'nws_status', 'nws_office',
+    'home_conference', 'away_conference', 'home_classification', 'away_classification', 'fbs_vs_fbs',
+]
+
+STATUS_RANK = {'QUALIFIES': 0, 'LEAN': 1, 'WATCH': 2, 'NO PLAY': 3, 'NO LINE': 4}
+
+
+def finalize_board(board: pd.DataFrame) -> pd.DataFrame:
+    out = board[[c for c in DISPLAY_COLUMNS if c in board.columns]].copy()
+    out['status_rank'] = out['status'].map(STATUS_RANK).fillna(5)
+    return out
 
 
 def main() -> None:
@@ -87,19 +61,15 @@ def main() -> None:
 
     target_week = int(future.iloc[0]['week']) if pd.notna(future.iloc[0]['week']) else None
     board = future[future['week'].eq(target_week)].copy() if target_week is not None else future.head(100).copy()
-    print(f'Upcoming season {season}, week {target_week}: {len(board)} scheduled games before market screening')
+    print(f'Upcoming season {season}, week {target_week}: {len(board)} scheduled games')
 
     line_records = client.get('/lines', {'year': season, 'week': target_week, 'seasonType': season_type}) if target_week is not None else []
     lines = normalize_lines(line_records)
     selected = pick_total(lines, settings['cfbd']['preferred_line_providers'])
     board = board.merge(selected, on='game_id', how='left')
 
-    with_lines = board[board['closing_total'].notna()].copy()
-    print(f'Games with a usable current total: {len(with_lines)}')
-    if with_lines.empty:
-        write_no_market_board(board, season, target_week)
-        return
-    board = with_lines
+    games_with_lines = int(board['closing_total'].notna().sum()) if 'closing_total' in board.columns else 0
+    print(f'Games with a usable current total: {games_with_lines}')
 
     context = line_market_context(lines)
     if not context.empty:
@@ -111,6 +81,8 @@ def main() -> None:
         board['line_total_median'] = np.nan
         board['selected_vs_market_median'] = np.nan
 
+    # Venue coordinates are retained in the production board so the website can
+    # map every scheduled game, including games that do not yet have a total.
     venues = normalize_venues(client.get('/venues'))
     if not venues.empty and 'venue_id' in board.columns:
         board = board.merge(venues, on='venue_id', how='left')
@@ -120,10 +92,31 @@ def main() -> None:
         board['venue_dome'] = False
     board['game_indoors'] = board['venue_dome'].map(as_bool)
 
+    # When the market has not posted any totals yet, keep the complete slate as
+    # NO LINE instead of dropping games or spending NWS/model work unnecessarily.
+    if games_with_lines == 0:
+        board['status'] = 'NO LINE'
+        board['decision_reason'] = 'No current market total is available.'
+        board['research_tags'] = ''
+        board['model_projected_total'] = np.nan
+        board['pred_market_residual'] = np.nan
+        board['abs_pred_edge'] = np.nan
+        board['model_side'] = ''
+        board['nws_status'] = ''
+        board = finalize_board(board)
+        write_outputs(board, season, target_week)
+        print('Wrote the full weekly slate with no current market totals.')
+        return
+
     board = merge_prior_team_features(board)
-    weather = fetch_nws_weather(board)
+
+    # NWS requests are only needed for games the market can currently score.
+    # NO LINE games still remain on the site/map with their venue coordinates.
+    weather_input = board[board['closing_total'].notna()].copy()
+    weather = fetch_nws_weather(weather_input)
     if not weather.empty:
         board = board.merge(weather, on='game_id', how='left')
+
     board = add_live_categories(board)
     board = fit_and_score(board)
 
@@ -131,21 +124,13 @@ def main() -> None:
     board['status'] = [s[0] for s in statuses]
     board['decision_reason'] = [s[1] for s in statuses]
     board['research_tags'] = board.apply(research_tags, axis=1)
-
-    display_cols = [c for c in [
-        'status', 'decision_reason', 'research_tags', 'season', 'week', 'game_id', 'start_date', 'start_time_tbd',
-        'away_team', 'home_team', 'venue_name', 'venue_city', 'venue_state', 'game_indoors',
-        'closing_total', 'line_provider', 'line_provider_count', 'line_total_range', 'line_total_median', 'selected_vs_market_median',
-        'model_projected_total', 'pred_market_residual', 'abs_pred_edge', 'model_side',
-        'temperature_f', 'dewpoint_f', 'humidity', 'wind_mph', 'wind_gust_mph', 'precip_probability_pct',
-        'precipitation', 'snowfall', 'weather_summary', 'nws_status', 'nws_office',
-        'home_conference', 'away_conference', 'home_classification', 'away_classification', 'fbs_vs_fbs',
-    ] if c in board.columns]
-    board = board[display_cols].copy()
-    board['status_rank'] = board['status'].map({'QUALIFIES': 0, 'LEAN': 1, 'WATCH': 2, 'NO PLAY': 3, 'NO LINE': 4}).fillna(5)
+    board = finalize_board(board)
 
     write_outputs(board, season, target_week)
-    print(f"Wrote live weekly outputs with {int(board['status'].eq('QUALIFIES').sum())} qualifying target(s).")
+    print(
+        f"Wrote {len(board)} weekly games with {games_with_lines} current totals and "
+        f"{int(board['status'].eq('QUALIFIES').sum())} qualifying target(s)."
+    )
 
 
 if __name__ == '__main__':
