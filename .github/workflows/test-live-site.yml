@@ -1,0 +1,65 @@
+name: Validate Live CFB Website
+
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - '.github/workflows/**'
+      - 'requirements.txt'
+      - 'config/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Compile Python source
+        run: python -m compileall -q src
+
+      - name: Validate live decision logic
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          from src.predict_week import classify_row
+          from src.nws_forecast import _c_to_f, _kph_to_mph
+
+          qualifying = pd.Series({
+              'closing_total': 60.0,
+              'pred_market_residual': -4.2,
+              'nws_status': 'ok',
+              'start_time_tbd': False,
+          })
+          watch = pd.Series({
+              'closing_total': 60.0,
+              'pred_market_residual': -4.2,
+              'nws_status': 'missing_coordinates',
+              'start_time_tbd': False,
+          })
+          no_play = pd.Series({
+              'closing_total': 60.0,
+              'pred_market_residual': 4.2,
+              'nws_status': 'indoor',
+              'start_time_tbd': False,
+          })
+
+          assert classify_row(qualifying)[0] == 'QUALIFIES'
+          assert classify_row(watch)[0] == 'WATCH'
+          assert classify_row(no_play)[0] == 'NO PLAY'
+          assert round(_c_to_f(0), 1) == 32.0
+          assert round(_kph_to_mph(16.0934), 1) == 10.0
+          print('Live decision and weather conversion checks passed.')
+          PY
