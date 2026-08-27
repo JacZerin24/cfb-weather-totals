@@ -4,7 +4,6 @@ on:
   pull_request:
     paths:
       - 'src/**'
-      - 'tools/**'
       - '.github/workflows/**'
       - 'requirements.txt'
       - 'config/**'
@@ -40,11 +39,14 @@ jobs:
           from src.nws_forecast import _c_to_f, _kph_to_mph
           from src.odds_api_fallback import apply_fcs_odds_fallback, match_odds_event, select_total_market
           from src.oddspapi_fallback import (
+              NCAA_BOOKMAKER_PRIORITY,
               _is_full_game_total,
               apply_fcs_oddspapi_fallback,
               match_oddspapi_fixture,
               select_oddspapi_total,
           )
+
+          assert NCAA_BOOKMAKER_PRIORITY == ['bet365', 'draftkings', 'betrivers', 'hardrockbet']
 
           qualifying = pd.Series({
               'closing_total': 60.0,
@@ -245,6 +247,55 @@ jobs:
           assert op_market['line_provider_count'] == 2
           assert op_market['line_source'] == 'OddsPapi'
 
+          # Alternate-line ladders count as one sportsbook when locating the
+          # center; they cannot overwhelm two books quoting a single main total.
+          ladder_catalog = []
+          hardrock_markets = {}
+          for i, line in enumerate([44.5, 45.5, 46.5, 47.5, 48.5, 49.5, 50.5, 51.5, 52.5, 53.5, 54.5]):
+              market_id = 2000 + i * 2
+              ladder_catalog.append({
+                  'marketId': market_id,
+                  'marketName': 'Total (incl. overtime)',
+                  'marketType': 'totals',
+                  'period': 'result',
+                  'playerProp': False,
+                  'handicap': line,
+              })
+              hardrock_markets[str(market_id)] = live_market(market_id, market_id + 1)
+          main_id = 3000
+          ladder_catalog.append({
+              'marketId': main_id,
+              'marketName': 'Total (incl. overtime)',
+              'marketType': 'totals',
+              'period': 'result',
+              'playerProp': False,
+              'handicap': 50.5,
+          })
+          ladder_odds = {
+              'fixtureId': 'ladder-test',
+              'bookmakerOdds': {
+                  'bet365': {
+                      'bookmakerIsActive': True,
+                      'suspended': False,
+                      'markets': {str(main_id): live_market(main_id, main_id + 1)},
+                  },
+                  'draftkings': {
+                      'bookmakerIsActive': True,
+                      'suspended': False,
+                      'markets': {str(main_id): live_market(main_id, main_id + 1)},
+                  },
+                  'hardrockbet': {
+                      'bookmakerIsActive': True,
+                      'suspended': False,
+                      'markets': hardrock_markets,
+                  },
+              },
+          }
+          ladder_market = select_oddspapi_total(ladder_odds, ladder_catalog)
+          assert ladder_market is not None
+          assert ladder_market['closing_total'] == 50.5
+          assert ladder_market['oddspapi_consensus_book_count'] == 3
+
           op_board = pd.DataFrame([{
               'game_id': 1,
               'division_track': 'FCS',
@@ -265,6 +316,3 @@ jobs:
           assert op_stats['fcs_oddspapi_filled'] == 1
           print('Live FBS/FCS decision, weather conversion, and both FCS odds fallback checks passed.')
           PY
-
-      - name: Summarize observed OddsPapi bookmaker coverage
-        run: python tools/oddspapi_coverage_summary.py
