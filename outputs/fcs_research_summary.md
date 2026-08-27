@@ -5,7 +5,7 @@ This track uses **FCS-vs-FCS games only** and predicts `actual_total_points - cl
 Historical FCS games with usable totals/results: **2,345**.
 Walk-forward test seasons: **2023-2025**.
 
-## Conservative FCS candidate screen
+## Current live candidate screen
 
 - Dedicated FCS HistGradientBoosting model
 - Predicted UNDER edge: **7.5+ points**
@@ -14,13 +14,35 @@ Walk-forward test seasons: **2023-2025**.
 - Paper ROI at -110: **2.3% per graded play**
 - 95% Wilson interval for hit rate: **40.7% to 66.0%**
 
-### By season
+### Current screen by season
 
 |   season |   games |   graded |   wins |   losses |   pushes |   hit_rate |   roi_per_1u |
 |---------:|--------:|---------:|-------:|---------:|---------:|-----------:|-------------:|
 |     2023 |      14 |       14 |      7 |        7 |        0 |        0.5 |   -0.0454545 |
 |     2024 |      22 |       22 |     11 |       11 |        0 |        0.5 |   -0.0454545 |
 |     2025 |      20 |       20 |     12 |        8 |        0 |        0.6 |    0.145455  |
+
+## Leading candidate screens by season
+
+These are shown explicitly so a rule is not selected only because it tops an aggregate ROI table.
+
+| candidate         |   under_edge_threshold |   minimum_total |   season |   games |   graded |   wins |   losses |   pushes |   hit_rate |   roi_per_1u |
+|:------------------|-----------------------:|----------------:|---------:|--------:|---------:|-------:|---------:|---------:|-----------:|-------------:|
+| edge_1.5_total_60 |                    1.5 |              60 |     2023 |      31 |       30 |     21 |        9 |        1 |   0.7      |    0.336364  |
+| edge_1.5_total_60 |                    1.5 |              60 |     2024 |      15 |       15 |      5 |       10 |        0 |   0.333333 |   -0.363636  |
+| edge_1.5_total_60 |                    1.5 |              60 |     2025 |      35 |       35 |     19 |       16 |        0 |   0.542857 |    0.0363636 |
+| edge_5.0_total_58 |                    5   |              58 |     2023 |      22 |       22 |     15 |        7 |        0 |   0.681818 |    0.301653  |
+| edge_5.0_total_58 |                    5   |              58 |     2024 |      31 |       31 |     15 |       16 |        0 |   0.483871 |   -0.0762463 |
+| edge_5.0_total_58 |                    5   |              58 |     2025 |      36 |       36 |     20 |       16 |        0 |   0.555556 |    0.0606061 |
+| edge_7.5_total_56 |                    7.5 |              56 |     2023 |      15 |       15 |      8 |        7 |        0 |   0.533333 |    0.0181818 |
+| edge_7.5_total_56 |                    7.5 |              56 |     2024 |      31 |       31 |     17 |       14 |        0 |   0.548387 |    0.0469208 |
+| edge_7.5_total_56 |                    7.5 |              56 |     2025 |      27 |       27 |     16 |       11 |        0 |   0.592593 |    0.131313  |
+| edge_5.0_total_60 |                    5   |              60 |     2023 |      21 |       21 |     14 |        7 |        0 |   0.666667 |    0.272727  |
+| edge_5.0_total_60 |                    5   |              60 |     2024 |      10 |       10 |      3 |        7 |        0 |   0.3      |   -0.427273  |
+| edge_5.0_total_60 |                    5   |              60 |     2025 |      26 |       26 |     15 |       11 |        0 |   0.576923 |    0.101399  |
+| edge_7.5_total_58 |                    7.5 |              58 |     2023 |      14 |       14 |      7 |        7 |        0 |   0.5      |   -0.0454545 |
+| edge_7.5_total_58 |                    7.5 |              58 |     2024 |      22 |       22 |     11 |       11 |        0 |   0.5      |   -0.0454545 |
+| edge_7.5_total_58 |                    7.5 |              58 |     2025 |      20 |       20 |     12 |        8 |        0 |   0.6      |    0.145455  |
 
 ## Model diagnostics
 
@@ -59,6 +81,7 @@ Walk-forward test seasons: **2023-2025**.
 
 - The threshold grid is a research screen, so the selected rule is not treated as a guaranteed edge.
 - FCS market data in the current historical dataset begins in 2022, which limits the number of independent test seasons.
-- The FCS model MAE can be worse than a zero-residual baseline even when selective under subsets perform well; this is why the live site uses a strict screen rather than every model prediction.
+- Candidate screens are compared season-by-season before changing the live QUALIFIES rule.
+- The FCS model MAE is worse than a zero-residual baseline in each walk-forward season; selective subset performance must therefore be treated cautiously.
 - Keep the FCS track in paper-tracking mode while 2026 live forecasts, closing totals, and results accumulate.
 - No FCS over strategy is promoted from this analysis.
