@@ -9,18 +9,18 @@ Walk-forward test seasons: **2023-2025**.
 
 - Dedicated FCS HistGradientBoosting model
 - Predicted UNDER edge: **7.5+ points**
-- Market total: **58+**
-- Walk-forward record: **30-26** (53.6%)
-- Paper ROI at -110: **2.3% per graded play**
-- 95% Wilson interval for hit rate: **40.7% to 66.0%**
+- Market total: **56+**
+- Walk-forward record: **41-32** (56.2%)
+- Paper ROI at -110: **7.2% per graded play**
+- 95% Wilson interval for hit rate: **44.8% to 67.0%**
 
 ### Current screen by season
 
 |   season |   games |   graded |   wins |   losses |   pushes |   hit_rate |   roi_per_1u |
 |---------:|--------:|---------:|-------:|---------:|---------:|-----------:|-------------:|
-|     2023 |      14 |       14 |      7 |        7 |        0 |        0.5 |   -0.0454545 |
-|     2024 |      22 |       22 |     11 |       11 |        0 |        0.5 |   -0.0454545 |
-|     2025 |      20 |       20 |     12 |        8 |        0 |        0.6 |    0.145455  |
+|     2023 |      15 |       15 |      8 |        7 |        0 |   0.533333 |    0.0181818 |
+|     2024 |      31 |       31 |     17 |       14 |        0 |   0.548387 |    0.0469208 |
+|     2025 |      27 |       27 |     16 |       11 |        0 |   0.592593 |    0.131313  |
 
 ## Leading candidate screens by season
 
