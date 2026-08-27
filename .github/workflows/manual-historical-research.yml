@@ -56,7 +56,7 @@ jobs:
           python -m src.validate_model_edges
           python -m src.combo_backtest
           python -m src.weekly_card_backtest
-          python -m src.predict_week
+          python -m src.run_live_week
           python -m src.report
           python -m src.build_research_dashboard
           python -m src.enrich_research_dashboard_explainer
