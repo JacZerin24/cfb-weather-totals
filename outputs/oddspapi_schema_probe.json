@@ -1,0 +1,400 @@
+{
+  "bookmaker": "draftkings",
+  "catalog_shape": {
+    "sample_records": [
+      {
+        "handicap": 0.0,
+        "marketId": 101,
+        "marketLength": 3,
+        "marketName": "Full Time Result",
+        "marketType": "1x2",
+        "period": "fulltime",
+        "playerProp": false,
+        "sportId": 10
+      },
+      {
+        "handicap": 0.0,
+        "marketId": 104,
+        "marketLength": 2,
+        "marketName": "Both Teams To Score",
+        "marketType": "bothteamsscore",
+        "period": "fulltime",
+        "playerProp": false,
+        "sportId": 10
+      },
+      {
+        "handicap": 0.5,
+        "marketId": 106,
+        "marketLength": 2,
+        "marketName": "Over Under Full Time",
+        "marketType": "totals",
+        "period": "fulltime",
+        "playerProp": false,
+        "sportId": 10
+      },
+      {
+        "handicap": 1.5,
+        "marketId": 108,
+        "marketLength": 2,
+        "marketName": "Over Under Full Time",
+        "marketType": "totals",
+        "period": "fulltime",
+        "playerProp": false,
+        "sportId": 10
+      },
+      {
+        "handicap": 2.5,
+        "marketId": 1010,
+        "marketLength": 2,
+        "marketName": "Over Under Full Time",
+        "marketType": "totals",
+        "period": "fulltime",
+        "playerProp": false,
+        "sportId": 10
+      }
+    ],
+    "top_keys": [],
+    "type": "list"
+  },
+  "counts": {
+    "catalog_records_detected": 32815,
+    "fcs_board_games": 62,
+    "fixtures": 451,
+    "odds_fixtures": 157
+  },
+  "probe_version": 1,
+  "selected": {
+    "bookmaker_keys": [
+      "bookmakerIsActive",
+      "bookmakerFixtureId",
+      "fixturePath",
+      "suspended",
+      "markets"
+    ],
+    "bookmaker_primitive_fields": {
+      "bookmakerFixtureId": "34568706",
+      "bookmakerIsActive": true,
+      "fixturePath": "https://sportsbook.draftkings.com/event/34568706",
+      "suspended": false
+    },
+    "fixture": {
+      "fixtureId": "id1402765370923552",
+      "hasOdds": true,
+      "participant1Name": "New Haven Chargers",
+      "participant2Name": "Marist Red Foxes",
+      "startTime": "2026-08-28T22:00:00.000Z",
+      "tournamentId": 27653
+    },
+    "game": {
+      "away_team": "Marist",
+      "home_team": "New Haven",
+      "start_date": "2026-08-28 22:00:00+00:00"
+    },
+    "market_count": 4,
+    "markets": [
+      {
+        "catalog_match": {
+          "handicap": 1.5,
+          "marketId": 14292,
+          "marketLength": 2,
+          "marketName": "Handicap (incl. overtime)",
+          "marketType": "spreads",
+          "period": "result",
+          "playerProp": false,
+          "sportId": 14
+        },
+        "market_key": "14292",
+        "market_keys": [
+          "bookmakerMarketId",
+          "marketActive",
+          "outcomes"
+        ],
+        "market_primitive_fields": {
+          "bookmakerMarketId": "2_86009020",
+          "marketActive": true
+        },
+        "outcomes": {
+          "keys": [
+            "14293",
+            "14292"
+          ],
+          "sample": {
+            "keys": [
+              "players"
+            ],
+            "player_keys": [
+              "active",
+              "betslip",
+              "bookmakerOutcomeId",
+              "bookmakerChangedAt",
+              "changedAt",
+              "limit",
+              "playerName",
+              "price",
+              "priceAmerican",
+              "priceFractional",
+              "mainLine",
+              "exchangeMeta"
+            ],
+            "player_primitive_fields": {
+              "active": true,
+              "betslip": "https://sportsbook.draftkings.com/event/34568706?outcomes=0HC86009020N150_3",
+              "bookmakerChangedAt": null,
+              "bookmakerOutcomeId": "0HC86009020N150_3",
+              "changedAt": "2026-08-27T16:42:30.845Z",
+              "exchangeMeta": null,
+              "limit": null,
+              "mainLine": true,
+              "playerName": null,
+              "price": 1.917,
+              "priceAmerican": "-109",
+              "priceFractional": "11/12"
+            },
+            "players_keys": [
+              "0"
+            ],
+            "players_type": "dict",
+            "primitive_fields": {}
+          },
+          "type": "dict"
+        }
+      },
+      {
+        "catalog_match": {
+          "handicap": 0.0,
+          "marketId": 141,
+          "marketLength": 2,
+          "marketName": "Winner (incl. overtime)",
+          "marketType": "moneyline",
+          "period": "result",
+          "playerProp": false,
+          "sportId": 14
+        },
+        "market_key": "141",
+        "market_keys": [
+          "bookmakerMarketId",
+          "marketActive",
+          "outcomes"
+        ],
+        "market_primitive_fields": {
+          "bookmakerMarketId": "1_86009020",
+          "marketActive": true
+        },
+        "outcomes": {
+          "keys": [
+            "142",
+            "141"
+          ],
+          "sample": {
+            "keys": [
+              "players"
+            ],
+            "player_keys": [
+              "active",
+              "betslip",
+              "bookmakerOutcomeId",
+              "bookmakerChangedAt",
+              "changedAt",
+              "limit",
+              "playerName",
+              "price",
+              "priceAmerican",
+              "priceFractional",
+              "mainLine",
+              "exchangeMeta"
+            ],
+            "player_primitive_fields": {
+              "active": true,
+              "betslip": "https://sportsbook.draftkings.com/event/34568706?outcomes=0ML86009020_3",
+              "bookmakerChangedAt": null,
+              "bookmakerOutcomeId": "0ML86009020_3",
+              "changedAt": "2026-08-27T16:42:30.845Z",
+              "exchangeMeta": null,
+              "limit": null,
+              "mainLine": true,
+              "playerName": null,
+              "price": 1.862,
+              "priceAmerican": "-116",
+              "priceFractional": "25/29"
+            },
+            "players_keys": [
+              "0"
+            ],
+            "players_type": "dict",
+            "primitive_fields": {}
+          },
+          "type": "dict"
+        }
+      },
+      {
+        "catalog_match": {
+          "handicap": 44.5,
+          "marketId": 1464,
+          "marketLength": 2,
+          "marketName": "Total (incl. overtime)",
+          "marketType": "totals",
+          "period": "result",
+          "playerProp": false,
+          "sportId": 14
+        },
+        "market_key": "1464",
+        "market_keys": [
+          "bookmakerMarketId",
+          "marketActive",
+          "outcomes"
+        ],
+        "market_primitive_fields": {
+          "bookmakerMarketId": "3_86009020",
+          "marketActive": true
+        },
+        "outcomes": {
+          "keys": [
+            "1465",
+            "1464"
+          ],
+          "sample": {
+            "keys": [
+              "players"
+            ],
+            "player_keys": [
+              "active",
+              "betslip",
+              "bookmakerOutcomeId",
+              "bookmakerChangedAt",
+              "changedAt",
+              "limit",
+              "playerName",
+              "price",
+              "priceAmerican",
+              "priceFractional",
+              "mainLine",
+              "exchangeMeta"
+            ],
+            "player_primitive_fields": {
+              "active": true,
+              "betslip": "https://sportsbook.draftkings.com/event/34568706?outcomes=0OU86009020U4450_3",
+              "bookmakerChangedAt": null,
+              "bookmakerOutcomeId": "0OU86009020U4450_3",
+              "changedAt": "2026-08-26T14:48:40.656Z",
+              "exchangeMeta": null,
+              "limit": null,
+              "mainLine": true,
+              "playerName": null,
+              "price": 1.87,
+              "priceAmerican": "-115",
+              "priceFractional": "87/100"
+            },
+            "players_keys": [
+              "0"
+            ],
+            "players_type": "dict",
+            "primitive_fields": {}
+          },
+          "type": "dict"
+        }
+      },
+      {
+        "catalog_match": {
+          "handicap": 43.5,
+          "marketId": 1460,
+          "marketLength": 2,
+          "marketName": "Total (incl. overtime)",
+          "marketType": "totals",
+          "period": "result",
+          "playerProp": false,
+          "sportId": 14
+        },
+        "market_key": "1460",
+        "market_keys": [
+          "bookmakerMarketId",
+          "marketActive",
+          "outcomes"
+        ],
+        "market_primitive_fields": {
+          "bookmakerMarketId": "3_86009020",
+          "marketActive": true
+        },
+        "outcomes": {
+          "keys": [
+            "1461",
+            "1460"
+          ],
+          "sample": {
+            "keys": [
+              "players"
+            ],
+            "player_keys": [
+              "active",
+              "betslip",
+              "bookmakerOutcomeId",
+              "bookmakerChangedAt",
+              "changedAt",
+              "limit",
+              "playerName",
+              "price",
+              "priceAmerican",
+              "priceFractional",
+              "mainLine",
+              "exchangeMeta"
+            ],
+            "player_primitive_fields": {
+              "active": false,
+              "betslip": "https://sportsbook.draftkings.com/event/34568706?outcomes=0OU86009020U4350_3",
+              "bookmakerChangedAt": null,
+              "bookmakerOutcomeId": "0OU86009020U4350_3",
+              "changedAt": "2026-08-26T14:48:40.656Z",
+              "exchangeMeta": null,
+              "limit": null,
+              "mainLine": false,
+              "playerName": null,
+              "price": 1.877,
+              "priceAmerican": "-114",
+              "priceFractional": "57/65"
+            },
+            "players_keys": [
+              "0"
+            ],
+            "players_type": "dict",
+            "primitive_fields": {}
+          },
+          "type": "dict"
+        }
+      }
+    ],
+    "markets_type": "dict",
+    "match_confidence": 0.97,
+    "odds_fixture_keys": [
+      "fixtureId",
+      "participant1Id",
+      "participant2Id",
+      "sportId",
+      "tournamentId",
+      "seasonId",
+      "statusId",
+      "hasOdds",
+      "startTime",
+      "trueStartTime",
+      "trueEndTime",
+      "updatedAt",
+      "externalProviders",
+      "statusName",
+      "participant1Name",
+      "participant1ShortName",
+      "participant1Abbr",
+      "participant2Name",
+      "participant2ShortName",
+      "participant2Abbr",
+      "sportName",
+      "tournamentSlug",
+      "categorySlug",
+      "categoryName",
+      "tournamentName",
+      "bookmakerOdds"
+    ]
+  },
+  "statuses": {
+    "fixtures": "ok",
+    "markets": "ok",
+    "odds": "ok"
+  }
+}
