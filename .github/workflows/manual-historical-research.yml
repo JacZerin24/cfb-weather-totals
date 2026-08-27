@@ -60,6 +60,8 @@ jobs:
           python -m src.report
           python -m src.build_research_dashboard
           python -m src.enrich_research_dashboard_explainer
+          cp docs/index.html docs/research.html
+          python -m src.build_live_dashboard
 
       - name: Upload data and outputs as artifact
         if: always()

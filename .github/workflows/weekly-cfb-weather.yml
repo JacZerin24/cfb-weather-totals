@@ -2,13 +2,26 @@ name: Weekly CFB Weather Totals
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'config/**'
+      - 'data/processed/**'
+      - '.github/workflows/weekly-cfb-weather.yml'
   schedule:
-    # Friday 14Z, roughly Friday morning CT depending on daylight saving time.
+    # Friday morning refresh plus a Saturday morning update closer to most kickoffs.
     - cron: '0 14 * * 5'
+    - cron: '0 13 * * 6'
 
 permissions:
   contents: write
   actions: read
+
+concurrency:
+  group: weekly-cfb-weather
+  cancel-in-progress: true
 
 jobs:
   weekly-paper-run:
@@ -26,7 +39,16 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run paper-tracking report
+      - name: Confirm CFBD API key
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: |
+          if [ -z "$CFBD_API_KEY" ]; then
+            echo "ERROR: CFBD_API_KEY is missing."
+            exit 1
+          fi
+
+      - name: Build live weekly board
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
@@ -34,11 +56,12 @@ jobs:
         run: |
           python -m src.predict_week
           python -m src.report
+          python -m src.build_live_dashboard
 
-      - name: Commit generated outputs
+      - name: Commit generated website and outputs
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add outputs/
-          git commit -m "Update weekly CFB weather totals report" || echo "No changes to commit"
+          git add outputs/ docs/
+          git commit -m "Update live CFB weather totals board" || echo "No changes to commit"
           git push
