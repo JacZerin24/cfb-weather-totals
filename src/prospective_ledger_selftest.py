@@ -52,8 +52,8 @@ def main() -> None:
             'model_side': 'under',
             'model_track': 'GENERAL HGB',
         },
-        # A rerun of the same scheduled run cannot opportunistically replace
-        # the first successful attempt.
+        # A rerun of the same scheduled model run cannot opportunistically
+        # replace the first successful attempt.
         {
             'game_id': 1,
             'start_date': kickoff,
@@ -151,8 +151,6 @@ def main() -> None:
     assert float(overall['hit_rate_ex_pushes']) == 1.0
     assert abs(float(overall['average_clv_points']) - 1.5) < 1e-8
 
-    # Immutable filenames bind the file name to the content hash and refuse
-    # an overwrite of the exact same run/timestamp payload.
     fixture = pd.DataFrame([{
         'github_run_id': 'fixture',
         'github_run_attempt': 1,
@@ -175,7 +173,18 @@ def main() -> None:
     for cron in protocol['official_entry_policy']['eligible_crons']:
         assert str(cron) in weekly_workflow, f'Official protocol cron is not scheduled: {cron}'
 
-    print('Prospective ledger protocol, entry selection, CLV, grading, and immutability checks passed.')
+    close_workflow = (ROOT / '.github/workflows/prospective-close-capture.yml').read_text(encoding='utf-8')
+    assert 'workflow_dispatch' not in close_workflow, 'Close benchmark workflow must not allow manual captures.'
+    assert 'github.run_attempt == 1' in close_workflow, 'Close benchmark workflow must exclude rerun backfill.'
+    for cron in protocol['closing_benchmark_policy']['capture_crons']:
+        assert str(cron) in close_workflow, f'Frozen close-capture cron is not scheduled: {cron}'
+
+    grade_workflow = (ROOT / '.github/workflows/prospective-grade.yml').read_text(encoding='utf-8')
+    assert 'workflow_dispatch' not in grade_workflow, 'Prospective grading workflow should remain schedule-only.'
+    for cron in protocol['paper_grading']['postgame_grade_crons']:
+        assert str(cron) in grade_workflow, f'Frozen postgame grading cron is not scheduled: {cron}'
+
+    print('Prospective ledger protocol, entry selection, CLV, grading cadence, and immutability checks passed.')
 
 
 if __name__ == '__main__':
