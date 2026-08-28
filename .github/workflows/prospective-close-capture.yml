@@ -1,7 +1,6 @@
 name: Prospective Near-Kickoff Market Capture
 
 on:
-  workflow_dispatch:
   schedule:
     # Hourly during the main college-football kickoff window Thursday through
     # Monday. The script writes a file only when a game starts within 90 minutes.
@@ -40,7 +39,8 @@ jobs:
             exit 1
           fi
 
-      - name: Capture near-kickoff market and rebuild prospective ledger
+      - name: Capture immutable near-kickoff market
+        if: ${{ github.run_attempt == 1 }}
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
           ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
@@ -53,9 +53,9 @@ jobs:
         run: |
           python -m src.prospective_ledger validate-protocol
           python -m src.prospective_ledger capture-close
-          python -m src.prospective_ledger build
 
-      - name: Commit prospective ledger updates
+      - name: Commit prospective market capture
+        if: ${{ github.run_attempt == 1 }}
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
