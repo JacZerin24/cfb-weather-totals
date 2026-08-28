@@ -25,8 +25,14 @@ official_entry_policy:
   selection: "For each game, use the latest successful eligible scheduled snapshot at least 120 minutes before kickoff. For duplicate attempts of the same GitHub run, retain the earliest successful attempt. Manual and push-triggered refreshes are archived but are never official entries."
 
 closing_benchmark_policy:
+  capture_event_name: "schedule"
+  capture_crons:
+    - "15 14-23 * * 4,5,6,0,1"
+    - "15 0-5 * * 5,6,0,1,2"
   capture_window_minutes: 90
-  selection: "Use the latest immutable market capture before kickoff. Prefer the median total across available books; if a median is unavailable, use the selected current total."
+  allow_manual_capture: false
+  allow_rerun_backfill: false
+  selection: "Use the latest immutable first-attempt scheduled market capture before kickoff. Prefer the median total across available books; if a median is unavailable, use the selected current total. Missing captures stay missing and are not manually backfilled."
   clv_definition: "For an under, CLV points = entry total minus benchmark close total. Positive is favorable. For an over, CLV points = benchmark close total minus entry total."
 
 paper_grading:
@@ -36,6 +42,9 @@ paper_grading:
   win_profit_units: 0.9090909091
   loss_profit_units: -1.0
   push_profit_units: 0.0
+  postgame_grade_crons:
+    - "0 12 * * 0,1,2"
+  timing_note: "Derived grades are rebuilt only on postgame mornings or the scheduled pregame model runs, not during the live-game capture window."
 
 freeze_policy:
   description: "Do not tune production thresholds or retrospectively alter official-entry selection based on 2026 outcomes before the declared review point. Any future protocol change must receive a new protocol_version and applies prospectively only."
