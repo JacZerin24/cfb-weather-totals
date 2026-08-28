@@ -4,7 +4,7 @@ import argparse
 import hashlib
 import os
 import re
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -16,14 +16,8 @@ from .cfbd_client import CFBDClient
 from .fcs_model import FCS_QUALIFY_EDGE, FCS_QUALIFY_TOTAL, division_track
 from .odds_api_fallback import apply_fcs_odds_fallback
 from .oddspapi_fallback import apply_fcs_oddspapi_fallback
-from .predict_week import (
-    GENERAL_QUALIFY_EDGE,
-    GENERAL_QUALIFY_TOTAL,
-    line_market_context,
-    normalize_games,
-    normalize_lines,
-)
-from .utils import ROOT, ensure_dir, get_settings, load_yaml, read_df, write_df
+from .predict_week import classify_row, line_market_context, normalize_games, normalize_lines
+from .utils import ROOT, get_settings, load_yaml, read_df, write_df
 
 PROTOCOL_PATH = ROOT / 'config/prospective_protocol_2026.yml'
 PROSPECTIVE_ROOT = ROOT / 'outputs/prospective/2026'
@@ -47,15 +41,33 @@ def validate_frozen_rules() -> None:
     protocol = load_protocol()
     general = protocol['rules']['general']
     fcs = protocol['rules']['fcs']
+
+    edge = float(general['qualify_edge_points'])
+    total = float(general['minimum_total'])
+    fixture = pd.Series({
+        'closing_total': total,
+        'pred_market_residual': -edge,
+        'nws_status': 'ok',
+        'start_time_tbd': False,
+    })
+    if classify_row(fixture)[0] != 'QUALIFIES':
+        raise RuntimeError('Frozen general threshold no longer qualifies at the protocol boundary.')
+    weaker = fixture.copy()
+    weaker['pred_market_residual'] = -(edge - 0.001)
+    if classify_row(weaker)[0] == 'QUALIFIES':
+        raise RuntimeError('Production general edge threshold is looser than the frozen protocol.')
+    lower_total = fixture.copy()
+    lower_total['closing_total'] = total - 0.001
+    if classify_row(lower_total)[0] == 'QUALIFIES':
+        raise RuntimeError('Production general total threshold is looser than the frozen protocol.')
+
     checks = [
-        ('general qualify edge', float(general['qualify_edge_points']), float(GENERAL_QUALIFY_EDGE)),
-        ('general minimum total', float(general['minimum_total']), float(GENERAL_QUALIFY_TOTAL)),
         ('FCS qualify edge', float(fcs['qualify_edge_points']), float(FCS_QUALIFY_EDGE)),
         ('FCS minimum total', float(fcs['minimum_total']), float(FCS_QUALIFY_TOTAL)),
     ]
     drift = [f'{name}: protocol={expected:g}, code={actual:g}' for name, expected, actual in checks if expected != actual]
     if drift:
-        raise RuntimeError('Frozen 2026 prospective protocol no longer matches production rules: ' + '; '.join(drift))
+        raise RuntimeError('Frozen 2026 prospective protocol no longer matches production FCS rules: ' + '; '.join(drift))
 
 
 def _bool(value: Any) -> bool:
@@ -295,7 +307,9 @@ def select_official_entries(snapshots: pd.DataFrame, protocol: dict[str, Any] | 
     minimum_lead = float(protocol['official_entry_policy']['minimum_lead_minutes'])
 
     work = snapshots.copy()
-    work['official_eligible'] = work.get('official_eligible', False).map(_bool)
+    if 'official_eligible' not in work.columns:
+        work['official_eligible'] = False
+    work['official_eligible'] = work['official_eligible'].map(_bool)
     work['snapshot_timestamp_utc'] = pd.to_datetime(work['snapshot_timestamp_utc'], utc=True, errors='coerce')
     work['start_date'] = pd.to_datetime(work['start_date'], utc=True, errors='coerce')
     work['github_run_attempt'] = pd.to_numeric(work.get('github_run_attempt'), errors='coerce').fillna(1).astype(int)
@@ -310,13 +324,8 @@ def select_official_entries(snapshots: pd.DataFrame, protocol: dict[str, Any] | 
     if eligible.empty:
         return pd.DataFrame()
 
-    # A rerun of the same scheduled GitHub run is not allowed to create a later
-    # opportunistic entry. Retain the earliest successful immutable attempt.
     eligible = eligible.sort_values(['github_run_id', 'game_id', 'github_run_attempt', 'snapshot_timestamp_utc'])
     eligible = eligible.drop_duplicates(['github_run_id', 'game_id'], keep='first')
-
-    # The official entry is the latest predeclared scheduled snapshot that still
-    # respects the minimum lead-time rule. This yields exactly one entry per game.
     eligible = eligible.sort_values(['game_id', 'snapshot_timestamp_utc'])
     official = eligible.groupby('game_id', as_index=False, sort=False).tail(1).copy()
     official['official_entry'] = True
@@ -430,15 +439,13 @@ def grade_official_entries(
     out['actual_total_points'] = pd.to_numeric(out.get('actual_total_points'), errors='coerce')
     out['entry_market_residual_actual'] = out['actual_total_points'] - out['entry_total']
     qualifying_status = str(protocol['paper_grading']['qualifying_status'])
-    out['paper_qualifier'] = out.get('status', '').astype(str).eq(qualifying_status)
+    status = out['status'].astype(str) if 'status' in out.columns else pd.Series('', index=out.index)
+    out['paper_qualifier'] = status.eq(qualifying_status)
 
+    model_side = out['model_side'] if 'model_side' in out.columns else pd.Series('', index=out.index)
     all_results = [
         _settle(actual, total, side)
-        for actual, total, side in zip(
-            out['actual_total_points'],
-            out['entry_total'],
-            out.get('model_side', pd.Series('', index=out.index)),
-        )
+        for actual, total, side in zip(out['actual_total_points'], out['entry_total'], model_side)
     ]
     out['result_vs_entry_line'] = all_results
     out['paper_result'] = np.where(out['paper_qualifier'], out['result_vs_entry_line'], '')
@@ -447,8 +454,10 @@ def grade_official_entries(
         for result, qualifier in zip(out['result_vs_entry_line'], out['paper_qualifier'])
     ]
 
-    out['benchmark_close_total'] = pd.to_numeric(out.get('benchmark_close_total'), errors='coerce')
-    side = out.get('model_side', pd.Series('', index=out.index)).astype(str).str.lower()
+    if 'benchmark_close_total' not in out.columns:
+        out['benchmark_close_total'] = np.nan
+    out['benchmark_close_total'] = pd.to_numeric(out['benchmark_close_total'], errors='coerce')
+    side = model_side.astype(str).str.lower()
     under_clv = out['entry_total'] - out['benchmark_close_total']
     over_clv = out['benchmark_close_total'] - out['entry_total']
     out['clv_points'] = np.where(side.eq('under'), under_clv, np.where(side.eq('over'), over_clv, np.nan))
@@ -467,7 +476,6 @@ def summarize_graded(graded: pd.DataFrame) -> pd.DataFrame:
     for label, frame in groups:
         qualifiers = frame[frame['paper_qualifier'].map(_bool)].copy()
         settled = qualifiers[qualifiers['paper_result'].isin(['win', 'loss', 'push'])].copy()
-        graded_no_push = settled[settled['paper_result'].isin(['win', 'loss'])]
         wins = int(settled['paper_result'].eq('win').sum())
         losses = int(settled['paper_result'].eq('loss').sum())
         pushes = int(settled['paper_result'].eq('push').sum())
@@ -497,6 +505,8 @@ def summarize_graded(graded: pd.DataFrame) -> pd.DataFrame:
 def _write_summary_markdown(summary: pd.DataFrame, graded: pd.DataFrame, manifest: pd.DataFrame) -> None:
     protocol = load_protocol()
     out = PROSPECTIVE_ROOT / 'prospective_summary.md'
+    board_count = int(manifest['kind'].eq('board_snapshot').sum()) if not manifest.empty and 'kind' in manifest.columns else 0
+    close_count = int(manifest['kind'].eq('close_capture').sum()) if not manifest.empty and 'kind' in manifest.columns else 0
     lines = [
         '# 2026 Prospective Validation Ledger',
         '',
@@ -519,9 +529,9 @@ def _write_summary_markdown(summary: pd.DataFrame, graded: pd.DataFrame, manifes
         '',
         '## Data integrity',
         '',
-        f"- Immutable board snapshots: {int((manifest.get('kind') == 'board_snapshot').sum()) if not manifest.empty else 0}",
-        f"- Immutable close captures: {int((manifest.get('kind') == 'close_capture').sum()) if not manifest.empty else 0}",
-        f"- Official game entries selected: {len(graded)}",
+        f'- Immutable board snapshots: {board_count}',
+        f'- Immutable close captures: {close_count}',
+        f'- Official game entries selected: {len(graded)}',
         '',
         'Every immutable CSV filename contains the first 12 characters of its SHA-256 content hash. The workflow verifies those hashes before rebuilding derived results.',
         '',
@@ -551,9 +561,10 @@ def build_ledger(client: CFBDClient | None = None) -> tuple[pd.DataFrame, pd.Dat
     write_df(summary, PROSPECTIVE_ROOT / 'summary.csv')
     _write_summary_markdown(summary, graded, manifest)
 
+    qualifier_count = int(graded['paper_qualifier'].map(_bool).sum()) if not graded.empty and 'paper_qualifier' in graded.columns else 0
     print(
         f'Prospective ledger rebuilt: {len(official)} official game entries, '
-        f"{int(graded.get('paper_qualifier', pd.Series(dtype=bool)).map(_bool).sum()) if not graded.empty else 0} qualifying entries."
+        f'{qualifier_count} qualifying entries.'
     )
     return graded, summary
 
