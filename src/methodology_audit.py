@@ -93,6 +93,18 @@ def by_season(frame: pd.DataFrame, edge: float, minimum_total: float) -> pd.Data
     return pd.DataFrame(rows)
 
 
+def general_scope_frames(pred: pd.DataFrame) -> dict[str, pd.DataFrame]:
+    home = pred.get('home_classification', pd.Series('', index=pred.index)).astype(str).str.lower()
+    away = pred.get('away_classification', pd.Series('', index=pred.index)).astype(str).str.lower()
+    fcs_fcs = home.eq('fcs') & away.eq('fcs')
+    fbs_fbs = pred.get('fbs_vs_fbs', pd.Series(False, index=pred.index)).astype(bool)
+    return {
+        'mixed_all': pred,
+        'general_live_scope': pred[~fcs_fcs].copy(),
+        'fbs_vs_fbs': pred[fbs_fbs].copy(),
+    }
+
+
 def general_oof(raw: pd.DataFrame, variant: str) -> tuple[pd.DataFrame, pd.DataFrame]:
     df = prep(raw)
     nums, cats = feature_lists(df)
@@ -346,7 +358,9 @@ def write_report(
     provider_df: pd.DataFrame,
 ) -> None:
     out = ensure_dir('outputs') / 'methodology_audit_summary.md'
-    general = variant_summary[(variant_summary.track == 'general') & (variant_summary.variant == 'current')].iloc[0]
+    general = variant_summary[(variant_summary.track == 'general') & (variant_summary.variant == 'current') & (variant_summary.scope == 'general_live_scope')].iloc[0]
+    general_fbs = variant_summary[(variant_summary.track == 'general') & (variant_summary.variant == 'current') & (variant_summary.scope == 'fbs_vs_fbs')].iloc[0]
+    general_mixed = variant_summary[(variant_summary.track == 'general') & (variant_summary.variant == 'current') & (variant_summary.scope == 'mixed_all')].iloc[0]
     fcs = variant_summary[(variant_summary.track == 'FCS') & (variant_summary.variant == 'current')].iloc[0]
     nested_g = _aggregate_nested(nested_general_df)
     nested_f = _aggregate_nested(nested_fcs_df)
@@ -365,7 +379,9 @@ def write_report(
         '',
         '## Frozen current-screen results on out-of-fold predictions',
         '',
-        f"- General HGB under {GENERAL_EDGE:g}+ with total {GENERAL_TOTAL:g}+: {int(general.wins)}-{int(general.losses)} over {int(general.graded)} graded, hit {_fmt_pct(general.hit_rate)}, paper ROI {_fmt_pct(general.roi_per_1u)}, Wilson 95% {_fmt_pct(general.wilson_low)}–{_fmt_pct(general.wilson_high)}, nominal one-sided p={general['one_sided_binom_p_vs_-110']:.4f}.",
+        f"- General-production scope (broad HGB, excluding pure FCS-FCS games now handled by the dedicated FCS model), under {GENERAL_EDGE:g}+ with total {GENERAL_TOTAL:g}+: {int(general.wins)}-{int(general.losses)} over {int(general.graded)} graded, hit {_fmt_pct(general.hit_rate)}, paper ROI {_fmt_pct(general.roi_per_1u)}, Wilson 95% {_fmt_pct(general.wilson_low)}–{_fmt_pct(general.wilson_high)}, nominal one-sided p={general['one_sided_binom_p_vs_-110']:.4f}.",
+        f"- FBS-vs-FBS subset of that broad model: {int(general_fbs.wins)}-{int(general_fbs.losses)} over {int(general_fbs.graded)} graded, hit {_fmt_pct(general_fbs.hit_rate)}, paper ROI {_fmt_pct(general_fbs.roi_per_1u)}, nominal p={general_fbs['one_sided_binom_p_vs_-110']:.4f}.",
+        f"- Mixed-classification diagnostic (the older research universe): {int(general_mixed.wins)}-{int(general_mixed.losses)} over {int(general_mixed.graded)} graded, hit {_fmt_pct(general_mixed.hit_rate)}, paper ROI {_fmt_pct(general_mixed.roi_per_1u)}.",
         f"- FCS HGB under {FCS_EDGE:g}+ with total {FCS_TOTAL:g}+: {int(fcs.wins)}-{int(fcs.losses)} over {int(fcs.graded)} graded, hit {_fmt_pct(fcs.hit_rate)}, paper ROI {_fmt_pct(fcs.roi_per_1u)}, Wilson 95% {_fmt_pct(fcs.wilson_low)}–{_fmt_pct(fcs.wilson_high)}, nominal one-sided p={fcs['one_sided_binom_p_vs_-110']:.4f}.",
         '',
         'Nominal p-values above do **not** correct for the many model, threshold, total, provider, weather, and interaction screens examined during research.',
@@ -435,15 +451,18 @@ def main() -> None:
         pred, diag = general_oof(raw, variant)
         if pred.empty:
             continue
-        g = grade_under(pred, GENERAL_EDGE, GENERAL_TOTAL)
-        variant_rows.append({'track': 'general', 'variant': variant, **g})
-        season = by_season(pred, GENERAL_EDGE, GENERAL_TOTAL)
-        season['track'] = 'general'
-        season['variant'] = variant
-        season_rows.append(season)
+        scopes = general_scope_frames(pred)
+        for scope, scope_pred in scopes.items():
+            g = grade_under(scope_pred, GENERAL_EDGE, GENERAL_TOTAL)
+            variant_rows.append({'track': 'general', 'scope': scope, 'variant': variant, **g})
+            season = by_season(scope_pred, GENERAL_EDGE, GENERAL_TOTAL)
+            season['track'] = 'general'
+            season['scope'] = scope
+            season['variant'] = variant
+            season_rows.append(season)
         diag_parts.append(diag)
         if variant == 'current':
-            general_current = pred
+            general_current = scopes['general_live_scope']
 
     fcs_data = historical_fcs_training()
     fcs_current = pd.DataFrame()
@@ -452,9 +471,10 @@ def main() -> None:
         if pred.empty:
             continue
         g = grade_under(pred, FCS_EDGE, FCS_TOTAL)
-        variant_rows.append({'track': 'FCS', 'variant': variant, **g})
+        variant_rows.append({'track': 'FCS', 'scope': 'fcs_vs_fcs', 'variant': variant, **g})
         season = by_season(pred, FCS_EDGE, FCS_TOTAL)
         season['track'] = 'FCS'
+        season['scope'] = 'fcs_vs_fcs'
         season['variant'] = variant
         season_rows.append(season)
         diag_parts.append(diag)
