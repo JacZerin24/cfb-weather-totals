@@ -1,0 +1,65 @@
+name: Prospective Near-Kickoff Market Capture
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Hourly during the main college-football kickoff window Thursday through
+    # Monday. The script writes a file only when a game starts within 90 minutes.
+    - cron: '15 14-23 * * 4,5,6,0,1'
+    - cron: '15 0-5 * * 5,6,0,1,2'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cfb-weather-data-writes
+  cancel-in-progress: false
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Confirm CFBD API key
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: |
+          if [ -z "$CFBD_API_KEY" ]; then
+            echo "ERROR: CFBD_API_KEY is missing."
+            exit 1
+          fi
+
+      - name: Capture near-kickoff market and rebuild prospective ledger
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          PROSPECTIVE_EVENT_NAME: ${{ github.event_name }}
+          PROSPECTIVE_EVENT_SCHEDULE: ${{ github.event.schedule }}
+          PROSPECTIVE_RUN_ID: ${{ github.run_id }}
+          PROSPECTIVE_RUN_ATTEMPT: ${{ github.run_attempt }}
+          PROSPECTIVE_SHA: ${{ github.sha }}
+        run: |
+          python -m src.prospective_ledger validate-protocol
+          python -m src.prospective_ledger capture-close
+          python -m src.prospective_ledger build
+
+      - name: Commit prospective ledger updates
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add outputs/prospective/2026/
+          git commit -m "Capture prospective CFB market benchmark" || echo "No prospective changes to commit"
+          git pull --rebase origin main
+          git push origin main
