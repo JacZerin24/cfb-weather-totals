@@ -1,0 +1,40 @@
+name: Validate Prospective Ledger
+
+on:
+  pull_request:
+    paths:
+      - 'src/prospective_ledger.py'
+      - 'src/prospective_ledger_selftest.py'
+      - 'config/prospective_protocol_2026.yml'
+      - '.github/workflows/weekly-cfb-weather.yml'
+      - '.github/workflows/prospective-close-capture.yml'
+      - '.github/workflows/prospective-grade.yml'
+      - '.github/workflows/prospective-ledger-tests.yml'
+      - 'src/predict_week.py'
+      - 'src/fcs_model.py'
+      - 'requirements.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install pinned dependencies
+        run: pip install -r requirements.txt
+
+      - name: Compile prospective source
+        run: python -m compileall -q src
+
+      - name: Validate frozen prospective methodology
+        run: python -m src.prospective_ledger_selftest

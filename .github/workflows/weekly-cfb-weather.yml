@@ -11,7 +11,9 @@ on:
       - 'data/processed/**'
       - '.github/workflows/weekly-cfb-weather.yml'
   schedule:
-    # Friday morning refresh plus a Saturday morning update closer to most kickoffs.
+    # Frozen prospective entry snapshots: Thursday/Friday morning plus a
+    # Saturday morning update closer to most kickoffs.
+    - cron: '0 14 * * 4'
     - cron: '0 14 * * 5'
     - cron: '0 13 * * 6'
 
@@ -20,8 +22,8 @@ permissions:
   actions: read
 
 concurrency:
-  group: weekly-cfb-weather
-  cancel-in-progress: true
+  group: cfb-weather-data-writes
+  cancel-in-progress: false
 
 jobs:
   weekly-paper-run:
@@ -110,6 +112,23 @@ jobs:
           python -m src.build_live_dashboard
           python -m src.augment_dashboard_divisions
           python -m src.fcs_card_guard
+
+      - name: Archive prospective entry snapshot
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+          PROSPECTIVE_EVENT_NAME: ${{ github.event_name }}
+          PROSPECTIVE_EVENT_SCHEDULE: ${{ github.event.schedule }}
+          PROSPECTIVE_RUN_ID: ${{ github.run_id }}
+          PROSPECTIVE_RUN_ATTEMPT: ${{ github.run_attempt }}
+          PROSPECTIVE_SHA: ${{ github.sha }}
+        run: |
+          python -m src.prospective_ledger validate-protocol
+          python -m src.prospective_ledger snapshot-board
+          if [ "$PROSPECTIVE_EVENT_NAME" = "schedule" ]; then
+            python -m src.prospective_ledger build
+          else
+            python -m src.prospective_ledger verify
+          fi
 
       - name: Commit generated website and outputs
         run: |
