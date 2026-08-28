@@ -1,0 +1,55 @@
+name: Rebuild Prospective Results
+
+on:
+  schedule:
+    # Postgame morning rebuilds. These times are intentionally well after the
+    # prior night's games so in-progress scores are not treated as final.
+    - cron: '0 12 * * 0,1,2'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cfb-weather-data-writes
+  cancel-in-progress: false
+
+jobs:
+  grade:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Confirm CFBD API key
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: |
+          if [ -z "$CFBD_API_KEY" ]; then
+            echo "ERROR: CFBD_API_KEY is missing."
+            exit 1
+          fi
+
+      - name: Rebuild official prospective grades and CLV
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: |
+          python -m src.prospective_ledger validate-protocol
+          python -m src.prospective_ledger build
+
+      - name: Commit derived prospective results
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add outputs/prospective/2026/
+          git commit -m "Rebuild prospective CFB research results" || echo "No prospective changes to commit"
+          git pull --rebase origin main
+          git push origin main
