@@ -7,11 +7,13 @@ on:
       - three-leg-parlay-research
     paths:
       - 'src/three_leg_parlay_research.py'
+      - 'src/three_leg_paired_followup.py'
       - '.github/workflows/three-leg-parlay-research.yml'
       - 'requirements.txt'
   pull_request:
     paths:
       - 'src/three_leg_parlay_research.py'
+      - 'src/three_leg_paired_followup.py'
       - '.github/workflows/three-leg-parlay-research.yml'
       - 'requirements.txt'
   workflow_dispatch:
@@ -62,13 +64,16 @@ jobs:
           fi
 
       - name: Compile research source
-        run: python -m compileall -q src/three_leg_parlay_research.py
+        run: python -m compileall -q src/three_leg_parlay_research.py src/three_leg_paired_followup.py
 
       - name: Run research self-test
         run: python -m src.three_leg_parlay_research --self-test
 
       - name: Run pinned three-leg study
         run: python -m src.three_leg_parlay_research
+
+      - name: Run matched-week follow-up
+        run: python -m src.three_leg_paired_followup
 
       - name: Print primary audit tables
         run: |
@@ -95,6 +100,12 @@ jobs:
           cat outputs/three_leg_random_selection_null.csv
           echo '=== CARD AVAILABILITY ==='
           cat outputs/three_leg_card_availability.csv
+          echo '=== MATCHED-WEEK TWO VS THREE ==='
+          cat outputs/three_leg_matched_two_vs_three_summary.csv
+          echo '=== MATCHED-WEEK TWO VS THREE BY SEASON ==='
+          cat outputs/three_leg_matched_two_vs_three_by_season.csv
+          echo '=== CONDITIONAL THIRD LEG ==='
+          cat outputs/three_leg_third_leg_conditional.csv
 
       - name: Upload research outputs
         uses: actions/upload-artifact@v4
