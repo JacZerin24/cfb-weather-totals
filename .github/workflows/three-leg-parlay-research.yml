@@ -1,5 +1,6 @@
 name: Three-Leg Parlay Research
 
+# Branch-only research runner; this workflow does not modify the live weekly card.
 on:
   push:
     branches:
