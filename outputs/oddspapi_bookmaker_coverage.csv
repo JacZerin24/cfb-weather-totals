@@ -1,128 +1,16 @@
 game_id,away_team,home_team,fixture_id,bookmaker,book_present,valid_full_game_total,valid_total_lines
-401868040,William & Mary,Villanova,id1402765370923580,bet365,True,True,50.5
-401868040,William & Mary,Villanova,id1402765370923580,draftkings,True,True,50.5
-401868040,William & Mary,Villanova,id1402765370923580,betrivers,True,True,49.5
-401868040,William & Mary,Villanova,id1402765370923580,hardrockbet,True,True,43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5
-401866617,Rhode Island,Merrimack,id1402765370993004,bet365,True,True,52.5
-401866617,Rhode Island,Merrimack,id1402765370993004,draftkings,True,True,53.5
-401866617,Rhode Island,Merrimack,id1402765370993004,betrivers,True,True,52.5
-401866617,Rhode Island,Merrimack,id1402765370993004,hardrockbet,True,True,45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5
-401868261,Marist,New Haven,id1402765370923552,bet365,True,True,44.5
-401868261,Marist,New Haven,id1402765370923552,draftkings,True,True,44.5
-401868261,Marist,New Haven,id1402765370923552,betrivers,False,False,
-401868261,Marist,New Haven,id1402765370923552,hardrockbet,True,True,37.5|38.5|39.5|40.5|41.5|42.5|43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5
-401868007,Colgate,Fordham,id1402765370923584,bet365,True,True,48.5|50.5
-401868007,Colgate,Fordham,id1402765370923584,draftkings,True,True,50.5
-401868007,Colgate,Fordham,id1402765370923584,betrivers,True,True,50.5
-401868007,Colgate,Fordham,id1402765370923584,hardrockbet,True,True,43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5
-401868129,Weber State,Northern Colorado,id1402765370923560,bet365,True,True,48.5
-401868129,Weber State,Northern Colorado,id1402765370923560,draftkings,True,True,49.5
-401868129,Weber State,Northern Colorado,id1402765370923560,betrivers,True,True,50
-401868129,Weber State,Northern Colorado,id1402765370923560,hardrockbet,True,True,42.5|43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5
-401868073,Idaho,Cal Poly,id1402765370923548,bet365,True,True,55.5
-401868073,Idaho,Cal Poly,id1402765370923548,draftkings,True,True,55.5
-401868073,Idaho,Cal Poly,id1402765370923548,betrivers,True,True,55.5
-401868073,Idaho,Cal Poly,id1402765370923548,hardrockbet,True,True,55.5
-401867916,Robert Morris,Wagner,id1402765370923578,bet365,True,True,39.5
-401867916,Robert Morris,Wagner,id1402765370923578,draftkings,True,True,39.5
-401867916,Robert Morris,Wagner,id1402765370923578,betrivers,True,True,39.5
-401867916,Robert Morris,Wagner,id1402765370923578,hardrockbet,True,True,32.5|33.5|34.5|35.5|36.5|37.5|38.5|39.5|40.5|41.5|42.5|43.5|44.5|45.5|46.5
-401867882,Central Connecticut,South Dakota,id1402765370923574,bet365,True,True,53.5
-401867882,Central Connecticut,South Dakota,id1402765370923574,draftkings,True,True,53.5
-401867882,Central Connecticut,South Dakota,id1402765370923574,betrivers,True,True,53.5
-401867882,Central Connecticut,South Dakota,id1402765370923574,hardrockbet,True,True,45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5
-401868324,Southern,Alabama State,id1402765370894738,bet365,True,True,56.5
-401868324,Southern,Alabama State,id1402765370894738,draftkings,True,True,56.5
-401868324,Southern,Alabama State,id1402765370894738,betrivers,True,True,57.5
-401868324,Southern,Alabama State,id1402765370894738,hardrockbet,True,True,49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5|60.5|61.5|62.5|63.5
-401868154,UC Davis,Portland State,id1402765370923618,bet365,True,True,62.5
-401868154,UC Davis,Portland State,id1402765370923618,draftkings,True,True,62.5
-401868154,UC Davis,Portland State,id1402765370923618,betrivers,True,True,63
-401868154,UC Davis,Portland State,id1402765370923618,hardrockbet,True,True,55.5|56.5|57.5|58.5|59.5|60.5|61.5|62.5|63.5|64.5|65.5|66.5|67.5|68.5|69.5
-401868022,Lehigh,Holy Cross,id1402765370923582,bet365,True,True,47.5
-401868022,Lehigh,Holy Cross,id1402765370923582,draftkings,True,True,47.5
-401868022,Lehigh,Holy Cross,id1402765370923582,betrivers,True,True,47.5
-401868022,Lehigh,Holy Cross,id1402765370923582,hardrockbet,True,True,41.5|44.5|47.5|50.5|53.5
-401868084,Eastern Washington,Northern Arizona,id1402765370923556,bet365,True,True,56.5
-401868084,Eastern Washington,Northern Arizona,id1402765370923556,draftkings,True,True,56.5
-401868084,Eastern Washington,Northern Arizona,id1402765370923556,betrivers,True,True,55.5
-401868084,Eastern Washington,Northern Arizona,id1402765370923556,hardrockbet,True,True,49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5|60.5|61.5|62.5|63.5
-401866620,Campbell,East Tennessee State,id1402765370923594,bet365,True,True,55.5
-401866620,Campbell,East Tennessee State,id1402765370923594,draftkings,False,False,
-401866620,Campbell,East Tennessee State,id1402765370923594,betrivers,True,True,56
-401866620,Campbell,East Tennessee State,id1402765370923594,hardrockbet,True,True,55.5
-401866618,Morgan State,North Carolina A&T,id1402765370923564,bet365,True,True,50.5
-401866618,Morgan State,North Carolina A&T,id1402765370923564,draftkings,True,True,50.5
-401866618,Morgan State,North Carolina A&T,id1402765370923564,betrivers,True,True,50.5
-401866618,Morgan State,North Carolina A&T,id1402765370923564,hardrockbet,True,True,43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5
-401866619,Bryant,Stonehill,id1402765370923576,bet365,True,True,44.5
-401866619,Bryant,Stonehill,id1402765370923576,draftkings,True,True,44.5
-401866619,Bryant,Stonehill,id1402765370923576,betrivers,True,True,43.5
-401866619,Bryant,Stonehill,id1402765370923576,hardrockbet,True,True,37.5|38.5|39.5|40.5|41.5|42.5|43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,bet365,True,True,52.5
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,draftkings,True,True,52.5
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,betrivers,True,True,53.5
-401867855,Southeast Missouri State,Indiana State,id1402765370923572,hardrockbet,True,True,46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5|60.5
-401867988,Bucknell,Richmond,id1402765370923566,bet365,True,True,49.5
-401867988,Bucknell,Richmond,id1402765370923566,draftkings,True,True,49.5
-401867988,Bucknell,Richmond,id1402765370923566,betrivers,True,True,48.5
-401867988,Bucknell,Richmond,id1402765370923566,hardrockbet,True,True,42.5|43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5
-401868049,Abilene Christian,Lamar,id1402765370923602,bet365,True,True,49.5
-401868049,Abilene Christian,Lamar,id1402765370923602,draftkings,True,True,49.5
-401868049,Abilene Christian,Lamar,id1402765370923602,betrivers,True,True,49
-401868049,Abilene Christian,Lamar,id1402765370923602,hardrockbet,True,True,42.5|43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5
-401872615,Stetson,South Dakota State,id1402765371320366,bet365,True,True,56.5
-401872615,Stetson,South Dakota State,id1402765371320366,draftkings,True,True,56.5
-401872615,Stetson,South Dakota State,id1402765371320366,betrivers,False,False,
-401872615,Stetson,South Dakota State,id1402765371320366,hardrockbet,True,True,51.5|54.5|57.5|60.5|63.5
-401868305,Stephen F. Austin,McNeese,id1402765370923604,bet365,True,True,49.5
-401868305,Stephen F. Austin,McNeese,id1402765370923604,draftkings,True,True,49.5
-401868305,Stephen F. Austin,McNeese,id1402765370923604,betrivers,True,True,50.5
-401868305,Stephen F. Austin,McNeese,id1402765370923604,hardrockbet,True,True,42.5|43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5
-401868149,Samford,North Alabama,id1402765370894672,bet365,True,True,55.5
-401868149,Samford,North Alabama,id1402765370894672,draftkings,True,True,55.5
-401868149,Samford,North Alabama,id1402765370894672,betrivers,True,True,56.5
-401868149,Samford,North Alabama,id1402765370894672,hardrockbet,True,True,49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5|60.5|61.5|62.5|63.5
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,bet365,True,True,50.5
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,draftkings,True,True,50.5
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,betrivers,True,True,50
-401868139,Eastern Kentucky,Western Carolina,id1402765370923598,hardrockbet,True,True,43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5
-401866621,Monmouth,Tennessee Tech,id1402765370993944,bet365,True,True,59.5
-401866621,Monmouth,Tennessee Tech,id1402765370993944,draftkings,True,True,58.5
-401866621,Monmouth,Tennessee Tech,id1402765370993944,betrivers,True,True,59
-401866621,Monmouth,Tennessee Tech,id1402765370993944,hardrockbet,True,True,52.5|53.5|54.5|55.5|56.5|57.5|58.5|59.5|60.5|61.5|62.5|63.5|64.5|65.5|66.5
-401867977,North Carolina Central,Texas Southern,id1402765370993210,bet365,True,True,51.5
-401867977,North Carolina Central,Texas Southern,id1402765370993210,draftkings,True,True,51.5
-401867977,North Carolina Central,Texas Southern,id1402765370993210,betrivers,True,True,51.5
-401867977,North Carolina Central,Texas Southern,id1402765370993210,hardrockbet,True,True,44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5|57.5|58.5
-401867935,Alabama A&M,Howard,id1402765370894638,bet365,True,True,45.5
-401867935,Alabama A&M,Howard,id1402765370894638,draftkings,True,True,46.5
-401867935,Alabama A&M,Howard,id1402765370894638,betrivers,True,True,45.5
-401867935,Alabama A&M,Howard,id1402765370894638,hardrockbet,True,True,38.5|39.5|40.5|41.5|42.5|43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5
-401868194,Jackson State,Tennessee State,id1402765370993600,bet365,True,True,49.5
+401868194,Jackson State,Tennessee State,id1402765370993600,bet365,True,False,
 401868194,Jackson State,Tennessee State,id1402765370993600,draftkings,False,False,
 401868194,Jackson State,Tennessee State,id1402765370993600,betrivers,True,True,49.5
-401868194,Jackson State,Tennessee State,id1402765370993600,hardrockbet,True,True,42.5|43.5|44.5|45.5|46.5|47.5|48.5|49.5|50.5|51.5|52.5|53.5|54.5|55.5|56.5
-401868110,Southern Utah,Montana,id1402765370923558,bet365,True,True,58.5
-401868110,Southern Utah,Montana,id1402765370923558,draftkings,True,True,58.5
-401868110,Southern Utah,Montana,id1402765370923558,betrivers,True,True,58.5
-401868110,Southern Utah,Montana,id1402765370923558,hardrockbet,True,True,58.5
-401868235,Prairie View A&M,Tarleton State,id1402765370923616,bet365,True,True,54.5
-401868235,Prairie View A&M,Tarleton State,id1402765370923616,draftkings,True,True,54.5
-401868235,Prairie View A&M,Tarleton State,id1402765370923616,betrivers,True,True,54.5
-401868235,Prairie View A&M,Tarleton State,id1402765370923616,hardrockbet,True,True,54.5
-401868118,Montana State,Utah Tech,id1402765370923614,bet365,True,True,56.5
-401868118,Montana State,Utah Tech,id1402765370923614,draftkings,True,True,56.5
-401868118,Montana State,Utah Tech,id1402765370923614,betrivers,True,True,57.5
-401868118,Montana State,Utah Tech,id1402765370923614,hardrockbet,True,True,56.5
-401866622,Lindenwood,Stony Brook,id1402765370923620,bet365,False,False,
-401866622,Lindenwood,Stony Brook,id1402765370923620,draftkings,False,False,
-401866622,Lindenwood,Stony Brook,id1402765370923620,betrivers,False,False,
-401866622,Lindenwood,Stony Brook,id1402765370923620,hardrockbet,False,False,
+401868194,Jackson State,Tennessee State,id1402765370993600,hardrockbet,True,True,49.5
 401867889,Southern Illinois,Samford,id1402765370923622,bet365,False,False,
 401867889,Southern Illinois,Samford,id1402765370923622,draftkings,False,False,
 401867889,Southern Illinois,Samford,id1402765370923622,betrivers,False,False,
 401867889,Southern Illinois,Samford,id1402765370923622,hardrockbet,False,False,
+401866622,Lindenwood,Stony Brook,id1402765370923620,bet365,False,False,
+401866622,Lindenwood,Stony Brook,id1402765370923620,draftkings,False,False,
+401866622,Lindenwood,Stony Brook,id1402765370923620,betrivers,False,False,
+401866622,Lindenwood,Stony Brook,id1402765370923620,hardrockbet,False,False,
 401869127,Richmond,Howard,id1402765370923640,bet365,False,False,
 401869127,Richmond,Howard,id1402765370923640,draftkings,False,False,
 401869127,Richmond,Howard,id1402765370923640,betrivers,False,False,
@@ -163,34 +51,38 @@ game_id,away_team,home_team,fixture_id,bookmaker,book_present,valid_full_game_to
 401867692,Delaware State,William & Mary,id1402765370923650,draftkings,False,False,
 401867692,Delaware State,William & Mary,id1402765370923650,betrivers,False,False,
 401867692,Delaware State,William & Mary,id1402765370923650,hardrockbet,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,bet365,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,draftkings,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,betrivers,False,False,
-401867989,Villanova,Bucknell,id1402765370923652,hardrockbet,False,False,
 401868336,Tennessee Tech,Chattanooga,id1402765370923662,bet365,False,False,
 401868336,Tennessee Tech,Chattanooga,id1402765370923662,draftkings,False,False,
 401868336,Tennessee Tech,Chattanooga,id1402765370923662,betrivers,False,False,
 401868336,Tennessee Tech,Chattanooga,id1402765370923662,hardrockbet,False,False,
+401867989,Villanova,Bucknell,id1402765370923652,bet365,False,False,
+401867989,Villanova,Bucknell,id1402765370923652,draftkings,False,False,
+401867989,Villanova,Bucknell,id1402765370923652,betrivers,False,False,
+401867989,Villanova,Bucknell,id1402765370923652,hardrockbet,False,False,
 401868274,Presbyterian,Mercer,id1402765371530332,bet365,False,False,
 401868274,Presbyterian,Mercer,id1402765371530332,draftkings,False,False,
 401868274,Presbyterian,Mercer,id1402765371530332,betrivers,False,False,
 401868274,Presbyterian,Mercer,id1402765371530332,hardrockbet,False,False,
-401867845,Illinois State,Western Illinois,id1402765370923634,bet365,False,False,
-401867845,Illinois State,Western Illinois,id1402765370923634,draftkings,False,False,
-401867845,Illinois State,Western Illinois,id1402765370923634,betrivers,False,False,
-401867845,Illinois State,Western Illinois,id1402765370923634,hardrockbet,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,bet365,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,draftkings,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,betrivers,False,False,
-401868071,West Florida,Central Arkansas,id1402765370992350,hardrockbet,False,False,
 401868085,Northern Iowa,Eastern Washington,id1402765370923626,bet365,False,False,
 401868085,Northern Iowa,Eastern Washington,id1402765370923626,draftkings,False,False,
 401868085,Northern Iowa,Eastern Washington,id1402765370923626,betrivers,False,False,
 401868085,Northern Iowa,Eastern Washington,id1402765370923626,hardrockbet,False,False,
+401868071,West Florida,Central Arkansas,id1402765370992350,bet365,False,False,
+401868071,West Florida,Central Arkansas,id1402765370992350,draftkings,False,False,
+401868071,West Florida,Central Arkansas,id1402765370992350,betrivers,False,False,
+401868071,West Florida,Central Arkansas,id1402765370992350,hardrockbet,False,False,
+401867845,Illinois State,Western Illinois,id1402765370923634,bet365,False,False,
+401867845,Illinois State,Western Illinois,id1402765370923634,draftkings,False,False,
+401867845,Illinois State,Western Illinois,id1402765370923634,betrivers,False,False,
+401867845,Illinois State,Western Illinois,id1402765370923634,hardrockbet,False,False,
 401868158,Weber State,Southern Utah,id1402765370923680,bet365,False,False,
 401868158,Weber State,Southern Utah,id1402765370923680,draftkings,False,False,
 401868158,Weber State,Southern Utah,id1402765370923680,betrivers,False,False,
 401868158,Weber State,Southern Utah,id1402765370923680,hardrockbet,False,False,
+401868306,East Texas A&M,Stephen F. Austin,id1402765370923668,bet365,False,False,
+401868306,East Texas A&M,Stephen F. Austin,id1402765370923668,draftkings,False,False,
+401868306,East Texas A&M,Stephen F. Austin,id1402765370923668,betrivers,False,False,
+401868306,East Texas A&M,Stephen F. Austin,id1402765370923668,hardrockbet,False,False,
 401867883,South Dakota,Northern Colorado,id1402765370923630,bet365,False,False,
 401867883,South Dakota,Northern Colorado,id1402765370923630,draftkings,False,False,
 401867883,South Dakota,Northern Colorado,id1402765370923630,betrivers,False,False,
