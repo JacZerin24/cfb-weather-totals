@@ -1,0 +1,73 @@
+name: Three-Leg Parlay Research
+
+on:
+  pull_request:
+    paths:
+      - 'src/three_leg_parlay_research.py'
+      - '.github/workflows/three-leg-parlay-research.yml'
+      - 'requirements.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install pinned dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore latest live training artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/three-leg-research
+          mkdir -p /tmp/three-leg-research data/processed
+          RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?name=cfb-live-training-data&per_page=100" \
+            --jq '[.artifacts[] | select(.expired == false)] | sort_by(.created_at) | last | .workflow_run.id // empty')
+          if [ -z "$RUN_ID" ]; then
+            echo "ERROR: No live training artifact is available."
+            exit 1
+          fi
+          echo "Using training artifact from workflow run ${RUN_ID}."
+          gh run download "$RUN_ID" -n cfb-live-training-data -D /tmp/three-leg-research
+          MODEL_PATH=$(find /tmp/three-leg-research -type f -name modeling_dataset.csv -print -quit)
+          if [ -z "$MODEL_PATH" ]; then
+            echo "ERROR: modeling_dataset.csv was not found."
+            exit 1
+          fi
+          cp "$MODEL_PATH" data/processed/modeling_dataset.csv
+          TEAM_PATH=$(find /tmp/three-leg-research -type f -name team_prior_features.csv -print -quit)
+          if [ -n "$TEAM_PATH" ]; then
+            cp "$TEAM_PATH" data/processed/team_prior_features.csv
+          fi
+
+      - name: Compile research source
+        run: python -m compileall -q src/three_leg_parlay_research.py
+
+      - name: Run research self-test
+        run: python -m src.three_leg_parlay_research --self-test
+
+      - name: Run pinned three-leg study
+        run: python -m src.three_leg_parlay_research
+
+      - name: Upload research outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: three-leg-parlay-research-output
+          path: |
+            outputs/three_leg_*.csv
+            outputs/three_leg_research_summary.md
+          if-no-files-found: error
+          retention-days: 90
