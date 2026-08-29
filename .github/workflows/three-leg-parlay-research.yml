@@ -1,6 +1,13 @@
 name: Three-Leg Parlay Research
 
 on:
+  push:
+    branches:
+      - three-leg-parlay-research
+    paths:
+      - 'src/three_leg_parlay_research.py'
+      - '.github/workflows/three-leg-parlay-research.yml'
+      - 'requirements.txt'
   pull_request:
     paths:
       - 'src/three_leg_parlay_research.py'
@@ -61,6 +68,32 @@ jobs:
 
       - name: Run pinned three-leg study
         run: python -m src.three_leg_parlay_research
+
+      - name: Print primary audit tables
+        run: |
+          echo '=== PRIMARY SEASON BREAKDOWN ==='
+          python - <<'PY'
+          import pandas as pd
+          p='outputs/three_leg_by_season.csv'
+          d=pd.read_csv(p)
+          print(d[d['config'].eq('primary_general_3leg_edge3p5_total56')].to_string(index=False))
+          PY
+          echo '=== ERA BREAKDOWN ==='
+          cat outputs/three_leg_by_era.csv
+          echo '=== STRAIGHT EQUIVALENT ==='
+          cat outputs/three_leg_straight_equivalent.csv
+          echo '=== RANK PERFORMANCE ==='
+          cat outputs/three_leg_rank_performance.csv
+          echo '=== LEG DEPENDENCE ==='
+          cat outputs/three_leg_leg_dependence.csv
+          echo '=== INDEPENDENCE CHECK ==='
+          cat outputs/three_leg_independence_check.csv
+          echo '=== LEAVE ONE SEASON OUT ==='
+          cat outputs/three_leg_leave_one_season_out.csv
+          echo '=== RANDOM-SELECTION NULL ==='
+          cat outputs/three_leg_random_selection_null.csv
+          echo '=== CARD AVAILABILITY ==='
+          cat outputs/three_leg_card_availability.csv
 
       - name: Upload research outputs
         uses: actions/upload-artifact@v4
