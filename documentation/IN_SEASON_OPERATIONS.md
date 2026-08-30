@@ -127,6 +127,8 @@ Protocol 2026.1 attempted this once per hour. After Week 1 exposed misses caused
 - only GitHub run attempt 1 is allowed to capture;
 - no postgame/manual backfill is allowed.
 
+The ledger independently re-checks the capture window, scheduled-event status, and first-run-attempt rule before selecting a CLV benchmark, so those integrity rules do not rely only on the workflow definition.
+
 The script writes a close-capture file only when at least one game starts within the next 90 minutes. Multiple pregame captures of the same game are allowed; the ledger selects the latest valid pre-kickoff benchmark. The preferred benchmark is the median across available books, with the selected current total as fallback when a median is unavailable.
 
 For an UNDER:

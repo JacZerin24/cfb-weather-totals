@@ -106,29 +106,65 @@ def main() -> None:
     assert abs(float(official.iloc[0]['entry_lead_minutes']) - 180.0) < 0.01
 
     closes = pd.DataFrame([
-        {
-            'game_id': 1,
-            'start_date': kickoff,
-            'snapshot_timestamp_utc': '2026-09-05T14:45:00Z',
-            'benchmark_close_total': 58.0,
-            'line_provider': 'Book A',
-            'line_source': 'fixture',
-            'line_provider_count': 2,
-            '_immutable_file': 'old.csv',
-            '_immutable_sha256': 'a' * 64,
-        },
-        {
-            'game_id': 1,
-            'start_date': kickoff,
-            'snapshot_timestamp_utc': '2026-09-05T15:30:00Z',
-            'benchmark_close_total': 57.5,
-            'line_provider': 'Book B',
-            'line_source': 'fixture',
-            'line_provider_count': 3,
-            '_immutable_file': 'latest.csv',
-            '_immutable_sha256': 'b' * 64,
-        },
-    ])
+    {
+        'record_kind': 'close_capture',
+        'game_id': 1,
+        'start_date': kickoff,
+        'snapshot_timestamp_utc': '2026-09-05T14:45:00Z',
+        'benchmark_close_total': 58.0,
+        'github_event_name': 'schedule',
+        'github_run_attempt': 1,
+        'line_provider': 'Book A',
+        'line_source': 'fixture',
+        'line_provider_count': 2,
+        '_immutable_file': 'old.csv',
+        '_immutable_sha256': 'a' * 64,
+    },
+    {
+        'record_kind': 'close_capture',
+        'game_id': 1,
+        'start_date': kickoff,
+        'snapshot_timestamp_utc': '2026-09-05T15:30:00Z',
+        'benchmark_close_total': 57.5,
+        'github_event_name': 'schedule',
+        'github_run_attempt': 1,
+        'line_provider': 'Book B',
+        'line_source': 'fixture',
+        'line_provider_count': 3,
+        '_immutable_file': 'latest.csv',
+        '_immutable_sha256': 'b' * 64,
+    },
+    # Scheduled but outside the frozen 90-minute close window.
+    {
+        'record_kind': 'close_capture',
+        'game_id': 1,
+        'start_date': kickoff,
+        'snapshot_timestamp_utc': '2026-09-05T14:00:00Z',
+        'benchmark_close_total': 60.0,
+        'github_event_name': 'schedule',
+        'github_run_attempt': 1,
+    },
+    # A manual capture cannot replace the scheduled benchmark.
+    {
+        'record_kind': 'close_capture',
+        'game_id': 1,
+        'start_date': kickoff,
+        'snapshot_timestamp_utc': '2026-09-05T15:40:00Z',
+        'benchmark_close_total': 56.5,
+        'github_event_name': 'workflow_dispatch',
+        'github_run_attempt': 1,
+    },
+    # A rerun cannot opportunistically backfill a closer number.
+    {
+        'record_kind': 'close_capture',
+        'game_id': 1,
+        'start_date': kickoff,
+        'snapshot_timestamp_utc': '2026-09-05T15:45:00Z',
+        'benchmark_close_total': 56.0,
+        'github_event_name': 'schedule',
+        'github_run_attempt': 2,
+    },
+])
     selected_close = select_benchmark_closes(closes)
     assert len(selected_close) == 1
     assert float(selected_close.iloc[0]['benchmark_close_total']) == 57.5
