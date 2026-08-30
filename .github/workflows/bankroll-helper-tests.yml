@@ -1,0 +1,71 @@
+name: Validate Bankroll Helper
+
+on:
+  pull_request:
+    paths:
+      - 'src/bankroll_helper.py'
+      - '.github/workflows/bankroll-helper-tests.yml'
+      - '.github/workflows/weekly-cfb-weather.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Validate bankroll plan logic
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          from src.bankroll_helper import _inject, _qualifier_records, _script, _section_html
+
+          board = pd.DataFrame([
+              {
+                  'game_id': 1, 'status': 'QUALIFIES', 'division_track': 'FBS',
+                  'away_team': 'General A', 'home_team': 'General B',
+                  'closing_total': 60.0, 'abs_pred_edge': 6.0,
+              },
+              {
+                  'game_id': 2, 'status': 'QUALIFIES', 'division_track': 'OTHER',
+                  'away_team': 'General C', 'home_team': 'General D',
+                  'closing_total': 58.0, 'abs_pred_edge': 4.0,
+              },
+              {
+                  'game_id': 3, 'status': 'QUALIFIES', 'division_track': 'FCS',
+                  'away_team': 'FCS A', 'home_team': 'FCS B',
+                  'closing_total': 59.5, 'abs_pred_edge': 8.0,
+              },
+              {
+                  'game_id': 4, 'status': 'LEAN', 'division_track': 'FBS',
+                  'away_team': 'Lean A', 'home_team': 'Lean B',
+                  'closing_total': 55.0, 'abs_pred_edge': 5.0,
+              },
+          ])
+
+          general, fcs, card = _qualifier_records(board)
+          assert [g['game_id'] for g in general] == ['1', '2']
+          assert [g['game_id'] for g in fcs] == ['3']
+          assert [g['game_id'] for g in card] == ['1', '2']
+
+          html = '<html><head><style></style></head><body><nav><a href="#card">2-leg card</a></nav><main><section id="card">card</section></main></body></html>'
+          rendered = _inject(html, _section_html(2, 1, True), _script(general, fcs, card))
+          assert 'id="bankroll"' in rendered
+          assert 'href="#bankroll"' in rendered
+          assert 'PAPER ONLY' in rendered
+          assert 'bankrollData' in rendered
+          assert rendered.index('id="bankroll"') < rendered.index('id="card"')
+          print('Bankroll helper validation passed.')
+          PY
