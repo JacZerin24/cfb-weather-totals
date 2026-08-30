@@ -335,19 +335,41 @@ def select_official_entries(snapshots: pd.DataFrame, protocol: dict[str, Any] | 
 def select_benchmark_closes(close_captures: pd.DataFrame) -> pd.DataFrame:
     if close_captures.empty:
         return pd.DataFrame(columns=['game_id', 'benchmark_close_total'])
+
+    policy = load_protocol()['closing_benchmark_policy']
+    capture_event_name = str(policy.get('capture_event_name', 'schedule'))
+    window_minutes = float(policy['capture_window_minutes'])
+
     work = close_captures.copy()
     work['snapshot_timestamp_utc'] = pd.to_datetime(work['snapshot_timestamp_utc'], utc=True, errors='coerce')
     work['start_date'] = pd.to_datetime(work['start_date'], utc=True, errors='coerce')
     work['benchmark_close_total'] = pd.to_numeric(work.get('benchmark_close_total'), errors='coerce')
-    work = work[
+    event_name = work.get('github_event_name', pd.Series('', index=work.index)).astype(str)
+    run_attempt = pd.to_numeric(
+        work.get('github_run_attempt', pd.Series(np.nan, index=work.index)),
+        errors='coerce',
+    )
+    work['close_capture_lead_minutes'] = (
+        work['start_date'] - work['snapshot_timestamp_utc']
+    ).dt.total_seconds() / 60.0
+
+    valid = (
         work['benchmark_close_total'].notna()
         & work['snapshot_timestamp_utc'].notna()
         & work['start_date'].notna()
-        & work['snapshot_timestamp_utc'].lt(work['start_date'])
-    ].copy()
+        & work['close_capture_lead_minutes'].ge(0)
+        & work['close_capture_lead_minutes'].le(window_minutes)
+    )
+    if not bool(policy.get('allow_manual_capture', False)):
+        valid &= event_name.eq(capture_event_name)
+    if not bool(policy.get('allow_rerun_backfill', False)):
+        valid &= run_attempt.eq(1)
+    if 'record_kind' in work.columns:
+        valid &= work['record_kind'].astype(str).eq('close_capture')
+
+    work = work[valid].copy()
     if work.empty:
         return pd.DataFrame(columns=['game_id', 'benchmark_close_total'])
-    work['close_capture_lead_minutes'] = (work['start_date'] - work['snapshot_timestamp_utc']).dt.total_seconds() / 60.0
     work = work.sort_values(['game_id', 'snapshot_timestamp_utc'])
     selected = work.groupby('game_id', as_index=False, sort=False).tail(1).copy()
     rename = {
