@@ -1,0 +1,219 @@
+name: Temporary Close Ledger Guard Patch
+
+on:
+  push:
+    branches:
+      - prospective-close-ledger-guard
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: prospective-close-ledger-guard
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Harden close selection and tests
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          ledger_path = Path('src/prospective_ledger.py')
+          text = ledger_path.read_text(encoding='utf-8')
+          old = '''def select_benchmark_closes(close_captures: pd.DataFrame) -> pd.DataFrame:
+              if close_captures.empty:
+                  return pd.DataFrame(columns=['game_id', 'benchmark_close_total'])
+              work = close_captures.copy()
+              work['snapshot_timestamp_utc'] = pd.to_datetime(work['snapshot_timestamp_utc'], utc=True, errors='coerce')
+              work['start_date'] = pd.to_datetime(work['start_date'], utc=True, errors='coerce')
+              work['benchmark_close_total'] = pd.to_numeric(work.get('benchmark_close_total'), errors='coerce')
+              work = work[
+                  work['benchmark_close_total'].notna()
+                  & work['snapshot_timestamp_utc'].notna()
+                  & work['start_date'].notna()
+                  & work['snapshot_timestamp_utc'].lt(work['start_date'])
+              ].copy()
+              if work.empty:
+                  return pd.DataFrame(columns=['game_id', 'benchmark_close_total'])
+              work['close_capture_lead_minutes'] = (work['start_date'] - work['snapshot_timestamp_utc']).dt.total_seconds() / 60.0
+              work = work.sort_values(['game_id', 'snapshot_timestamp_utc'])
+              selected = work.groupby('game_id', as_index=False, sort=False).tail(1).copy()
+              rename = {
+                  'snapshot_timestamp_utc': 'benchmark_close_captured_at_utc',
+                  'line_provider': 'benchmark_close_provider',
+                  'line_source': 'benchmark_close_source',
+                  'line_provider_count': 'benchmark_close_provider_count',
+                  '_immutable_file': 'benchmark_close_immutable_file',
+                  '_immutable_sha256': 'benchmark_close_immutable_sha256',
+              }
+              selected = selected.rename(columns=rename)
+              keep = [c for c in [
+                  'game_id', 'benchmark_close_total', 'benchmark_close_captured_at_utc',
+                  'close_capture_lead_minutes', 'benchmark_close_provider', 'benchmark_close_source',
+                  'benchmark_close_provider_count', 'benchmark_close_immutable_file', 'benchmark_close_immutable_sha256',
+              ] if c in selected.columns]
+              return selected[keep]
+          '''
+          # Dedent the embedded source text because the YAML heredoc itself is indented.
+          import textwrap
+          old = textwrap.dedent(old)
+          new = '''def select_benchmark_closes(close_captures: pd.DataFrame) -> pd.DataFrame:
+              if close_captures.empty:
+                  return pd.DataFrame(columns=['game_id', 'benchmark_close_total'])
+
+              policy = load_protocol()['closing_benchmark_policy']
+              capture_event_name = str(policy.get('capture_event_name', 'schedule'))
+              window_minutes = float(policy['capture_window_minutes'])
+
+              work = close_captures.copy()
+              work['snapshot_timestamp_utc'] = pd.to_datetime(work['snapshot_timestamp_utc'], utc=True, errors='coerce')
+              work['start_date'] = pd.to_datetime(work['start_date'], utc=True, errors='coerce')
+              work['benchmark_close_total'] = pd.to_numeric(work.get('benchmark_close_total'), errors='coerce')
+              event_name = work.get('github_event_name', pd.Series('', index=work.index)).astype(str)
+              run_attempt = pd.to_numeric(
+                  work.get('github_run_attempt', pd.Series(np.nan, index=work.index)),
+                  errors='coerce',
+              )
+              work['close_capture_lead_minutes'] = (
+                  work['start_date'] - work['snapshot_timestamp_utc']
+              ).dt.total_seconds() / 60.0
+
+              valid = (
+                  work['benchmark_close_total'].notna()
+                  & work['snapshot_timestamp_utc'].notna()
+                  & work['start_date'].notna()
+                  & work['close_capture_lead_minutes'].ge(0)
+                  & work['close_capture_lead_minutes'].le(window_minutes)
+              )
+              if not bool(policy.get('allow_manual_capture', False)):
+                  valid &= event_name.eq(capture_event_name)
+              if not bool(policy.get('allow_rerun_backfill', False)):
+                  valid &= run_attempt.eq(1)
+              if 'record_kind' in work.columns:
+                  valid &= work['record_kind'].astype(str).eq('close_capture')
+
+              work = work[valid].copy()
+              if work.empty:
+                  return pd.DataFrame(columns=['game_id', 'benchmark_close_total'])
+              work = work.sort_values(['game_id', 'snapshot_timestamp_utc'])
+              selected = work.groupby('game_id', as_index=False, sort=False).tail(1).copy()
+              rename = {
+                  'snapshot_timestamp_utc': 'benchmark_close_captured_at_utc',
+                  'line_provider': 'benchmark_close_provider',
+                  'line_source': 'benchmark_close_source',
+                  'line_provider_count': 'benchmark_close_provider_count',
+                  '_immutable_file': 'benchmark_close_immutable_file',
+                  '_immutable_sha256': 'benchmark_close_immutable_sha256',
+              }
+              selected = selected.rename(columns=rename)
+              keep = [c for c in [
+                  'game_id', 'benchmark_close_total', 'benchmark_close_captured_at_utc',
+                  'close_capture_lead_minutes', 'benchmark_close_provider', 'benchmark_close_source',
+                  'benchmark_close_provider_count', 'benchmark_close_immutable_file', 'benchmark_close_immutable_sha256',
+              ] if c in selected.columns]
+              return selected[keep]
+          '''
+          new = textwrap.dedent(new)
+          if old not in text:
+              raise SystemExit('Expected select_benchmark_closes block was not found; refusing to patch.')
+          ledger_path.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          test_path = Path('src/prospective_ledger_selftest.py')
+          test_text = test_path.read_text(encoding='utf-8')
+          start = test_text.index('    closes = pd.DataFrame([')
+          end = test_text.index('    selected_close = select_benchmark_closes(closes)', start)
+          close_fixture = '''    closes = pd.DataFrame([
+              {
+                  'record_kind': 'close_capture',
+                  'game_id': 1,
+                  'start_date': kickoff,
+                  'snapshot_timestamp_utc': '2026-09-05T14:45:00Z',
+                  'benchmark_close_total': 58.0,
+                  'github_event_name': 'schedule',
+                  'github_run_attempt': 1,
+                  'line_provider': 'Book A',
+                  'line_source': 'fixture',
+                  'line_provider_count': 2,
+                  '_immutable_file': 'old.csv',
+                  '_immutable_sha256': 'a' * 64,
+              },
+              {
+                  'record_kind': 'close_capture',
+                  'game_id': 1,
+                  'start_date': kickoff,
+                  'snapshot_timestamp_utc': '2026-09-05T15:30:00Z',
+                  'benchmark_close_total': 57.5,
+                  'github_event_name': 'schedule',
+                  'github_run_attempt': 1,
+                  'line_provider': 'Book B',
+                  'line_source': 'fixture',
+                  'line_provider_count': 3,
+                  '_immutable_file': 'latest.csv',
+                  '_immutable_sha256': 'b' * 64,
+              },
+              # Scheduled but outside the frozen 90-minute close window.
+              {
+                  'record_kind': 'close_capture',
+                  'game_id': 1,
+                  'start_date': kickoff,
+                  'snapshot_timestamp_utc': '2026-09-05T14:00:00Z',
+                  'benchmark_close_total': 60.0,
+                  'github_event_name': 'schedule',
+                  'github_run_attempt': 1,
+              },
+              # A manual capture cannot replace the scheduled benchmark.
+              {
+                  'record_kind': 'close_capture',
+                  'game_id': 1,
+                  'start_date': kickoff,
+                  'snapshot_timestamp_utc': '2026-09-05T15:40:00Z',
+                  'benchmark_close_total': 56.5,
+                  'github_event_name': 'workflow_dispatch',
+                  'github_run_attempt': 1,
+              },
+              # A rerun cannot opportunistically backfill a closer number.
+              {
+                  'record_kind': 'close_capture',
+                  'game_id': 1,
+                  'start_date': kickoff,
+                  'snapshot_timestamp_utc': '2026-09-05T15:45:00Z',
+                  'benchmark_close_total': 56.0,
+                  'github_event_name': 'schedule',
+                  'github_run_attempt': 2,
+              },
+          ])
+          '''
+          test_path.write_text(test_text[:start] + close_fixture + test_text[end:], encoding='utf-8')
+
+          docs_path = Path('documentation/IN_SEASON_OPERATIONS.md')
+          docs = docs_path.read_text(encoding='utf-8')
+          marker = '- no postgame/manual backfill is allowed.\n'
+          addition = marker + '\nThe ledger independently re-checks the capture window, scheduled-event status, and first-run-attempt rule before selecting a CLV benchmark, so those integrity rules do not rely only on the workflow definition.\n'
+          if marker not in docs:
+              raise SystemExit('Expected in-season documentation marker was not found; refusing to patch.')
+          docs_path.write_text(docs.replace(marker, addition, 1), encoding='utf-8')
+          PY
+
+          python -m compileall -q src
+          python -m src.prospective_ledger_selftest
+
+      - name: Commit tested guard and remove temporary workflow
+        run: |
+          rm .github/workflows/temp-close-ledger-guard.yml
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add src/prospective_ledger.py src/prospective_ledger_selftest.py documentation/IN_SEASON_OPERATIONS.md .github/workflows/temp-close-ledger-guard.yml
+          git commit -m "Harden prospective close benchmark selection"
+          git push origin HEAD:prospective-close-ledger-guard
