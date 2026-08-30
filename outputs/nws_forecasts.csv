@@ -1,82 +1,82 @@
 game_id,away_team,home_team,start_date,venue_name,game_indoors,nws_status,nws_office,temperature_f,dewpoint_f,humidity,wind_mph,wind_gust_mph,precip_probability_pct,precipitation,snowfall,weather_summary
-401862697,Houston Christian,Rice,2026-09-05 23:00:00+00:00,Rice Stadium,False,ok,HGX,93.0,75.0,56.0,6.904674552,11.50779092,34.0,0.02,0.0,Measurable precipitation forecast
+401862697,Houston Christian,Rice,2026-09-05 23:00:00+00:00,Rice Stadium,False,ok,HGX,92.0,76.0,60.0,6.904674552,11.50779092,44.0,0.04,0.0,Measurable precipitation forecast
 401856775,Utah Tech,BYU,2026-09-06 00:00:00+00:00,LaVell Edwards Stadium,False,ok,SLC,82.0,48.0,31.0,5.75389546,12.658570012,22.0,0.0,0.0,No meaningful precipitation signal
-401858429,Toledo,Michigan State,2026-09-05 00:00:00+00:00,Spartan Stadium,False,ok,GRR,77.0,64.0,64.0,6.904674552,17.26168638,13.0,0.0,0.0,No meaningful precipitation signal
+401858429,Toledo,Michigan State,2026-09-05 00:00:00+00:00,Spartan Stadium,False,ok,GRR,76.0,66.0,71.0,4.603116368,12.658570012,10.0,0.0,0.0,No meaningful precipitation signal
 401856774,Morgan State,Arizona State,2026-09-06 02:00:00+00:00,Mountain America Stadium,False,ok,PSR,103.0,61.0,26.0,5.75389546,11.50779092,14.0,0.0,0.0,No meaningful precipitation signal
 401856664,UTEP,Oklahoma,2026-09-05 00:00:00+00:00,"Memorial Stadium (Norman, OK)",False,ok,OUN,96.0,66.0,38.0,10.357011828,16.110907288,4.0,0.0,0.0,No meaningful precipitation signal
-401858207,Miami (OH),Pittsburgh,2026-09-05 16:30:00+00:00,Acrisure Stadium,False,ok,PBZ,77.0,67.0,71.0,5.75389546,10.357011828,21.0,0.0,0.0,No meaningful precipitation signal
+401858207,Miami (OH),Pittsburgh,2026-09-05 16:30:00+00:00,Acrisure Stadium,False,ok,PBZ,77.0,67.0,72.0,5.75389546,10.357011828,25.0,0.0,0.0,Low precipitation chance
 401856636,Baylor,Auburn,2026-09-05 19:30:00+00:00,Mercedes-Benz Stadium,True,indoor,,,,,,,,,,Indoor/dome game
-401862694,The Citadel,Charlotte,2026-09-05 19:30:00+00:00,Jerry Richardson Stadium,False,ok,GSP,91.0,71.0,53.0,4.603116368,9.206232736,23.0,0.01,0.0,No meaningful precipitation signal
+401862694,The Citadel,Charlotte,2026-09-05 19:30:00+00:00,Jerry Richardson Stadium,False,ok,GSP,92.0,72.0,51.0,5.75389546,11.50779092,21.0,0.0,0.0,No meaningful precipitation signal
 401864424,Merrimack,Delaware,2026-09-03 23:00:00+00:00,Delaware Stadium,False,ok,PHI,85.0,71.0,63.0,4.603116368,8.055453644,27.0,0.0,0.0,Low precipitation chance
 401866627,Maine,App State,2026-09-05 19:30:00+00:00,Kidd Brewer Stadium,False,ok,RNK,79.0,64.0,60.0,4.603116368,9.206232736,38.0,0.0,0.0,Low precipitation chance
 401856768,Idaho,Utah,2026-09-04 01:00:00+00:00,Rice-Eccles Stadium,False,ok,SLC,80.0,46.0,30.0,8.055453644,19.563244564,10.0,0.0,0.0,No meaningful precipitation signal
 401866410,Tarleton State,Bowling Green,2026-09-05 16:00:00+00:00,Doyt L. Perry Stadium,False,ok,CLE,78.0,66.0,65.0,8.055453644,13.809349104,14.0,0.0,0.0,No meaningful precipitation signal
-401856780,Coastal Carolina,West Virginia,2026-09-05 16:00:00+00:00,Milan Puskar Stadium,False,ok,PBZ,76.0,67.0,73.0,4.603116368,10.357011828,18.0,0.0,0.0,No meaningful precipitation signal
-401868316,SE Louisiana,South Alabama,2026-09-05 23:00:00+00:00,Hancock Whitney Stadium,False,ok,MOB,87.0,76.0,70.0,4.603116368,6.904674552,42.0,0.26,0.0,Measurable precipitation forecast
+401856780,Coastal Carolina,West Virginia,2026-09-05 16:00:00+00:00,Milan Puskar Stadium,False,ok,PBZ,76.0,67.0,75.0,4.603116368,10.357011828,19.0,0.0,0.0,No meaningful precipitation signal
+401868316,SE Louisiana,South Alabama,2026-09-05 23:00:00+00:00,Hancock Whitney Stadium,False,ok,MOB,87.0,76.0,70.0,4.603116368,8.055453644,47.0,0.08,0.0,Measurable precipitation forecast
 401862699,Florida International,South Florida,2026-09-05 23:00:00+00:00,Raymond James Stadium,False,ok,TBW,86.0,76.0,74.0,4.603116368,8.055453644,62.0,0.19,0.0,Measurable precipitation forecast
 401870790,Mercyhurst,New Mexico State,2026-09-06 01:00:00+00:00,Aggie Memorial Stadium,False,ok,EPZ,93.0,50.0,23.0,5.75389546,13.809349104,9.0,0.0,0.0,No meaningful precipitation signal
 401856635,North Alabama,Arkansas,2026-09-05 20:15:00+00:00,Razorback Stadium,False,ok,TSA,98.0,67.0,37.0,6.904674552,11.50779092,14.0,0.0,0.0,No meaningful precipitation signal
 401862700,UT Rio Grande Valley,UTSA,2026-09-05 19:30:00+00:00,Alamodome,True,indoor,,,,,,,,,,Indoor/dome game
 401864425,West Georgia,Kennesaw State,2026-09-03 23:00:00+00:00,Fifth Third Stadium,False,ok,FFC,90.0,71.0,53.0,2.301558184,5.75389546,15.0,0.0,0.0,No meaningful precipitation signal
 401870763,Sam Houston,Troy,2026-09-05 23:00:00+00:00,Veterans Memorial Stadium (AL),False,ok,BMX,88.0,72.0,59.0,3.452337276,9.206232736,23.0,0.0,0.0,No meaningful precipitation signal
-401858427,Hampton,Maryland,2026-09-06 00:00:00+00:00,SECU Stadium,False,ok,LWX,79.0,65.0,62.0,5.75389546,10.357011828,16.0,0.0,0.0,No meaningful precipitation signal
+401858427,Hampton,Maryland,2026-09-06 00:00:00+00:00,SECU Stadium,False,ok,LWX,79.0,65.0,62.0,5.75389546,11.50779092,25.0,0.0,0.0,Low precipitation chance
 401868356,Alcorn State,Southern Miss,2026-09-05 21:00:00+00:00,M. M. Roberts Stadium,False,ok,JAN,95.0,72.0,48.0,4.603116368,10.357011828,28.0,0.02,0.0,Measurable precipitation forecast
 401858208,New Hampshire,Syracuse,2026-09-05 16:00:00+00:00,JMA Wireless Dome,True,indoor,,,,,,,,,,Indoor/dome game
 401856658,Tennessee State,Georgia,2026-09-05 19:00:00+00:00,Sanford Stadium,False,ok,FFC,94.0,71.0,47.0,4.603116368,10.357011828,21.0,0.02,0.0,Measurable precipitation forecast
 401860879,Portland State,San Diego State,2026-09-06 01:30:00+00:00,Snapdragon Stadium,False,ok,SGX,85.0,66.0,53.0,8.055453644,14.960128196000001,6.0,0.0,0.0,No meaningful precipitation signal
-401858432,Ball State,Ohio State,2026-09-05 16:30:00+00:00,Ohio Stadium,False,ok,ILN,80.0,67.0,65.0,4.603116368,10.357011828,17.0,0.0,0.0,No meaningful precipitation signal
-401862696,Towson,Navy,2026-09-05 19:30:00+00:00,Navy-Marine Corps Memorial Stadium,False,ok,LWX,84.0,67.0,57.0,8.055453644,12.658570012,23.0,0.030000000000000002,0.0,Measurable precipitation forecast
+401858432,Ball State,Ohio State,2026-09-05 16:30:00+00:00,Ohio Stadium,False,ok,ILN,80.0,69.0,69.0,5.75389546,10.357011828,29.0,0.0,0.0,Low precipitation chance
+401862696,Towson,Navy,2026-09-05 19:30:00+00:00,Navy-Marine Corps Memorial Stadium,False,ok,LWX,84.0,68.0,59.0,8.055453644,11.50779092,23.0,0.0,0.0,No meaningful precipitation signal
 401858426,Northern Illinois,Iowa,2026-09-05 20:15:00+00:00,Kinnick Stadium,False,ok,DVN,89.0,68.0,50.0,8.055453644,13.809349104,8.0,0.0,0.0,No meaningful precipitation signal
 401856662,UL Monroe,Mississippi State,2026-09-05 23:30:00+00:00,Davis Wade Stadium,False,ok,JAN,93.0,73.0,52.0,2.301558184,8.055453644,18.0,0.0,0.0,No meaningful precipitation signal
 401858430,Ohio,Nebraska,2026-09-05 16:00:00+00:00,"Memorial Stadium (Lincoln, NE)",False,ok,OAX,86.0,67.0,54.0,6.904674552,13.809349104,11.0,0.0,0.0,No meaningful precipitation signal
-401868170,Charleston Southern,Georgia Southern,2026-09-05 23:00:00+00:00,Allen E. Paulson Stadium,False,ok,CHS,87.0,74.0,65.0,4.603116368,9.206232736,26.0,0.0,0.0,Low precipitation chance
-401866409,UAlbany,Buffalo,2026-09-03 23:00:00+00:00,UB Stadium,False,ok,BUF,77.0,66.0,68.0,5.75389546,9.206232736,24.0,0.030000000000000002,0.0,Measurable precipitation forecast
+401868170,Charleston Southern,Georgia Southern,2026-09-05 23:00:00+00:00,Allen E. Paulson Stadium,False,ok,CHS,88.0,74.0,63.0,4.603116368,10.357011828,31.0,0.0,0.0,Low precipitation chance
+401866409,UAlbany,Buffalo,2026-09-03 23:00:00+00:00,UB Stadium,False,ok,BUF,77.0,66.0,69.0,5.75389546,8.055453644,30.0,0.07,0.0,Measurable precipitation forecast
 401860878,Wyoming,Colorado State,2026-09-05 22:00:00+00:00,Canvas Stadium,False,ok,BOU,88.0,51.0,28.0,9.206232736,18.412465472,16.0,0.0,0.0,No meaningful precipitation signal
-401862701,Bryant,Army,2026-09-05 16:00:00+00:00,Michie Stadium,False,ok,OKX,74.0,66.0,76.0,4.603116368,10.357011828,16.0,0.28,0.0,Measurable precipitation forecast
+401862701,Bryant,Army,2026-09-05 16:00:00+00:00,Michie Stadium,False,ok,OKX,73.0,66.0,79.0,4.603116368,9.206232736,18.0,0.0,0.0,No meaningful precipitation signal
 401856779,Southeast Missouri State,Iowa State,2026-09-05 17:00:00+00:00,Jack Trice Stadium,False,ok,DMX,85.0,69.0,59.0,6.904674552,12.658570012,17.0,0.0,0.0,No meaningful precipitation signal
-401856637,Florida Atlantic,Florida,2026-09-05 23:45:00+00:00,Ben Hill Griffin Stadium,False,ok,JAX,83.0,76.0,80.0,4.603116368,10.357011828,41.0,0.11000000000000001,0.0,Measurable precipitation forecast
+401856637,Florida Atlantic,Florida,2026-09-05 23:45:00+00:00,Ben Hill Griffin Stadium,False,ok,JAX,86.0,76.0,72.0,4.603116368,10.357011828,42.0,0.07,0.0,Measurable precipitation forecast
 401858437,Washington State,Washington,2026-09-06 20:00:00+00:00,Husky Stadium,False,ok,SEW,71.0,58.0,64.0,3.452337276,4.603116368,20.0,0.0,0.0,No meaningful precipitation signal
-401858204,Akron,Wake Forest,2026-09-03 23:00:00+00:00,Allegacy Federal Credit Union Stadium,False,ok,RAH,89.0,70.0,54.0,4.603116368,8.055453644,10.0,0.0,0.0,No meaningful precipitation signal
+401858204,Akron,Wake Forest,2026-09-03 23:00:00+00:00,Allegacy Federal Credit Union Stadium,False,ok,RAH,89.0,71.0,56.0,4.603116368,6.904674552,25.0,0.0,0.0,Low precipitation chance
 401856776,Colorado,Georgia Tech,2026-09-04 00:00:00+00:00,Bobby Dodd Stadium,False,ok,FFC,89.0,69.0,51.0,3.452337276,6.904674552,10.0,0.0,0.0,No meaningful precipitation signal
 401864499,Fordham,North Dakota State,2026-09-05 19:30:00+00:00,Fargodome,True,indoor,,,,,,,,,,Indoor/dome game
 401867973,Norfolk State,Old Dominion,2026-09-05 22:00:00+00:00,S.B. Ballard Stadium,False,ok,AKQ,83.0,70.0,65.0,9.206232736,11.50779092,37.0,0.0,0.0,Low precipitation chance
 401858428,Western Michigan,Michigan,2026-09-05 23:30:00+00:00,Michigan Stadium,False,ok,DTX,80.0,65.0,59.0,8.055453644,14.960128196000001,11.0,0.0,0.0,No meaningful precipitation signal
 401866411,Mississippi Valley State,Sacramento State,2026-09-06 02:00:00+00:00,Hornet Stadium,False,ok,STO,86.0,50.0,29.0,5.75389546,10.357011828,8.0,0.0,0.0,No meaningful precipitation signal
-401858438,Wisconsin,Notre Dame,2026-09-06 23:30:00+00:00,Lambeau Field,False,ok,GRB,78.0,68.0,71.0,4.603116368,10.357011828,18.0,0.0,0.0,No meaningful precipitation signal
+401858438,Wisconsin,Notre Dame,2026-09-06 23:30:00+00:00,Lambeau Field,False,ok,GRB,78.0,64.0,62.0,5.75389546,11.50779092,9.0,0.16999999999999998,0.0,Measurable precipitation forecast
 401858211,VMI,Virginia Tech,2026-09-05 23:30:00+00:00,Lane Stadium,False,ok,RNK,79.0,63.0,59.0,3.452337276,10.357011828,27.0,0.0,0.0,Low precipitation chance
 401858434,Marshall,Penn State,2026-09-05 19:30:00+00:00,Beaver Stadium,False,ok,CTP,77.0,64.0,64.0,5.75389546,11.50779092,17.0,0.060000000000000005,0.0,Measurable precipitation forecast
-401868140,Eastern Kentucky,Jacksonville State,2026-09-05 23:00:00+00:00,AmFirst Stadium,False,ok,BMX,89.0,72.0,57.0,2.301558184,6.904674552,19.0,0.01,0.0,No meaningful precipitation signal
+401868140,Eastern Kentucky,Jacksonville State,2026-09-05 23:00:00+00:00,AmFirst Stadium,False,ok,BMX,88.0,72.0,59.0,2.301558184,6.904674552,22.0,0.0,0.0,No meaningful precipitation signal
 401856772,Oklahoma State,Tulsa,2026-09-05 19:45:00+00:00,Chapman Stadium,False,ok,TSA,97.0,71.0,43.0,5.75389546,11.50779092,8.0,0.0,0.0,No meaningful precipitation signal
 401864498,Central Michigan,New Mexico,2026-09-06 02:00:00+00:00,University Stadium (NM),False,ok,ABQ,91.0,47.0,22.0,4.603116368,13.809349104,8.0,0.0,0.0,No meaningful precipitation signal
 401858422,Eastern Illinois,Minnesota,2026-09-04 00:00:00+00:00,Huntington Bank Stadium,False,ok,MPX,83.0,71.0,68.0,5.75389546,11.50779092,24.0,0.0,0.0,No meaningful precipitation signal
 401856771,Nicholls,Kansas State,2026-09-05 23:00:00+00:00,Bill Snyder Family Stadium,False,ok,TOP,90.0,67.0,47.0,5.75389546,10.357011828,4.0,0.0,0.0,No meaningful precipitation signal
-401856663,Arkansas-Pine Bluff,Missouri,2026-09-04 00:00:00+00:00,Memorial Stadium,False,ok,LSX,90.0,72.0,56.0,2.301558184,4.603116368,8.0,0.0,0.0,No meaningful precipitation signal
-401856770,Abilene Christian,Texas Tech,2026-09-05 23:00:00+00:00,Jones AT&T Stadium,False,ok,LUB,96.0,55.0,25.0,10.357011828,14.960128196000001,6.0,0.0,0.0,No meaningful precipitation signal
-401858424,UAB,Illinois,2026-09-04 01:00:00+00:00,"Memorial Stadium (Champaign, IL)",False,ok,ILX,83.0,71.0,67.0,4.603116368,6.904674552,14.0,0.0,0.0,No meaningful precipitation signal
+401856663,Arkansas-Pine Bluff,Missouri,2026-09-04 00:00:00+00:00,Memorial Stadium,False,ok,LSX,92.0,72.0,52.0,2.301558184,4.603116368,5.0,0.0,0.0,No meaningful precipitation signal
+401856770,Abilene Christian,Texas Tech,2026-09-05 23:00:00+00:00,Jones AT&T Stadium,False,ok,LUB,97.0,55.0,25.0,10.357011828,16.110907288,5.0,0.0,0.0,No meaningful precipitation signal
+401858424,UAB,Illinois,2026-09-04 01:00:00+00:00,"Memorial Stadium (Champaign, IL)",False,ok,ILX,85.0,72.0,64.0,3.452337276,4.603116368,8.0,0.0,0.0,No meaningful precipitation signal
 401858423,Massachusetts,Rutgers,2026-09-03 22:00:00+00:00,SHI Stadium,False,ok,PHI,83.0,71.0,67.0,4.603116368,13.809349104,45.0,0.07,0.0,Measurable precipitation forecast
-401856778,Oregon State,Houston,2026-09-05 16:00:00+00:00,TDECU Stadium,False,ok,HGX,90.0,78.0,68.0,3.452337276,6.904674552,17.0,0.0,0.0,No meaningful precipitation signal
+401856778,Oregon State,Houston,2026-09-05 16:00:00+00:00,TDECU Stadium,False,ok,HGX,88.0,78.0,72.0,4.603116368,5.75389546,28.0,0.030000000000000002,0.0,Measurable precipitation forecast
 401856769,Long Island University,Kansas,2026-09-05 00:00:00+00:00,Memorial Stadium,False,ok,TOP,90.0,69.0,50.0,4.603116368,8.055453644,6.0,0.0,0.0,No meaningful precipitation signal
 401858436,Fresno State,USC,2026-09-05 01:00:00+00:00,Los Angeles Memorial Coliseum,False,ok,LOX,79.0,63.0,58.0,9.206232736,16.110907288,2.0,0.0,0.0,No meaningful precipitation signal
 401861962,Lafayette,UConn,2026-09-05 16:00:00+00:00,Pratt & Whitney Stadium,False,ok,BOX,73.0,63.0,71.0,6.904674552,14.960128196000001,7.0,0.0,0.0,No meaningful precipitation signal
 401862698,Rhode Island,Temple,2026-09-05 18:00:00+00:00,Lincoln Financial Field,False,ok,PHI,79.0,66.0,64.0,5.75389546,12.658570012,25.0,0.05,0.0,Measurable precipitation forecast
-401869142,Lamar,Louisiana,2026-09-06 00:00:00+00:00,Cajun Field,False,ok,LCH,89.0,78.0,71.0,3.452337276,9.206232736,11.0,0.0,0.0,No meaningful precipitation signal
+401869142,Lamar,Louisiana,2026-09-06 00:00:00+00:00,Cajun Field,False,ok,LCH,89.0,78.0,70.0,3.452337276,9.206232736,6.0,0.0,0.0,No meaningful precipitation signal
+401858431,South Dakota State,Northwestern,2026-09-06 00:00:00+00:00,Lanny and Sharon Martin Stadium,False,ok,LOT,77.0,68.0,75.0,11.50779092,12.658570012,8.0,0.0,0.0,No meaningful precipitation signal
 401856767,Bethune-Cookman,UCF,2026-09-03 23:00:00+00:00,FBC Mortgage Stadium,False,ok,MLB,83.0,76.0,80.0,9.206232736,13.809349104,66.0,0.09000000000000001,0.0,Measurable precipitation forecast
 401856634,East Carolina,Alabama,2026-09-05 16:00:00+00:00,Bryant-Denny Stadium,False,ok,BMX,90.0,72.0,56.0,2.301558184,6.904674552,9.0,0.0,0.0,No meaningful precipitation signal
-401869960,Liberty,James Madison,2026-09-05 16:00:00+00:00,Bridgeforth Stadium,False,ok,LWX,80.0,66.0,62.0,3.452337276,9.206232736,14.0,0.0,0.0,No meaningful precipitation signal
+401869960,Liberty,James Madison,2026-09-05 16:00:00+00:00,Bridgeforth Stadium,False,ok,LWX,80.0,67.0,65.0,3.452337276,9.206232736,16.0,0.0,0.0,No meaningful precipitation signal
 401856660,Clemson,LSU,2026-09-05 23:30:00+00:00,Tiger Stadium (LA),False,ok,LIX,91.0,76.0,62.0,3.452337276,5.75389546,42.0,0.62,0.0,Measurable precipitation forecast
-401856668,Missouri State,Texas A&M,2026-09-05 23:00:00+00:00,Kyle Field,False,ok,HGX,95.0,74.0,51.0,8.055453644,12.658570012,20.0,0.0,0.0,No meaningful precipitation signal
+401856668,Missouri State,Texas A&M,2026-09-05 23:00:00+00:00,Kyle Field,False,ok,HGX,93.0,75.0,56.0,8.055453644,11.50779092,31.0,0.01,0.0,Low precipitation chance
 401856669,Austin Peay,Vanderbilt,2026-09-05 23:00:00+00:00,FirstBank Stadium,False,ok,OHX,92.0,68.0,46.0,5.75389546,9.206232736,21.0,0.0,0.0,No meaningful precipitation signal
 401858210,UCLA,California,2026-09-06 02:30:00+00:00,California Memorial Stadium,False,ok,MTR,68.0,56.0,65.0,8.055453644,11.50779092,7.0,0.0,0.0,No meaningful precipitation signal
-401856777,Boston College,Cincinnati,2026-09-05 19:30:00+00:00,Nippert Stadium,False,ok,ILN,88.0,67.0,49.0,4.603116368,10.357011828,16.0,0.0,0.0,No meaningful precipitation signal
-401858431,South Dakota State,Northwestern,2026-09-06 00:00:00+00:00,Lanny and Sharon Martin Stadium,False,ok,LOT,78.0,68.0,71.0,12.658570012,13.809349104,12.0,0.0,0.0,No meaningful precipitation signal
+401856777,Boston College,Cincinnati,2026-09-05 19:30:00+00:00,Nippert Stadium,False,ok,ILN,88.0,69.0,53.0,6.904674552,11.50779092,32.0,0.0,0.0,Low precipitation chance
 401860880,Idaho State,Utah State,2026-09-05 23:00:00+00:00,Maverik Stadium,False,ok,SLC,80.0,50.0,35.0,5.75389546,16.110907288,23.0,0.1,0.0,Measurable precipitation forecast
-401856665,Kent State,South Carolina,2026-09-05 16:45:00+00:00,Williams-Brice Stadium,False,ok,CAE,90.0,75.0,62.0,2.301558184,5.75389546,3.0,0.0,0.0,No meaningful precipitation signal
-401858212,SMU,Florida State,2026-09-07 23:30:00+00:00,Doak Campbell Stadium,False,ok,TAE,84.0,76.0,77.0,3.452337276,10.357011828,20.0,0.04,0.0,Measurable precipitation forecast
+401856665,Kent State,South Carolina,2026-09-05 16:45:00+00:00,Williams-Brice Stadium,False,ok,CAE,91.0,75.0,60.0,2.301558184,5.75389546,6.0,0.0,0.0,No meaningful precipitation signal
+401858212,SMU,Florida State,2026-09-07 23:30:00+00:00,Doak Campbell Stadium,False,ok,TAE,84.0,76.0,77.0,3.452337276,10.357011828,25.0,0.08,0.0,Measurable precipitation forecast
 401867866,Murray State,Middle Tennessee,2026-09-05 23:00:00+00:00,"Johnny ""Red"" Floyd Stadium",False,ok,OHX,92.0,68.0,46.0,5.75389546,8.055453644,19.0,0.0,0.0,No meaningful precipitation signal
-401858209,Tulane,Duke,2026-09-05 19:30:00+00:00,Wallace Wade Stadium,False,ok,RAH,90.0,70.0,52.0,5.75389546,10.357011828,26.0,0.0,0.0,Low precipitation chance
+401858209,Tulane,Duke,2026-09-05 19:30:00+00:00,Wallace Wade Stadium,False,ok,RAH,91.0,71.0,52.0,5.75389546,9.206232736,29.0,0.0,0.0,Low precipitation chance
 401864497,UNLV,Hawai'i,2026-09-06 02:00:00+00:00,Clarence T.C. Ching Athletics Complex,False,ok,HFO,86.0,71.0,61.0,20.714023656,28.7694773,13.0,0.0,0.0,No meaningful precipitation signal
 401864496,Duquesne,Air Force,2026-09-05 17:00:00+00:00,Falcon Stadium,False,ok,PUB,80.0,49.0,34.0,4.603116368,10.357011828,0.0,0.0,0.0,No meaningful precipitation signal
-401856667,Texas State,Texas,2026-09-05 19:30:00+00:00,DKR-Texas Memorial Stadium,False,ok,EWX,100.0,72.0,41.0,3.452337276,11.50779092,7.0,0.0,0.0,No meaningful precipitation signal
+401856667,Texas State,Texas,2026-09-05 19:30:00+00:00,DKR-Texas Memorial Stadium,False,ok,EWX,98.0,72.0,43.0,3.452337276,11.50779092,19.0,0.0,0.0,No meaningful precipitation signal
 401856659,Youngstown State,Kentucky,2026-09-05 17:00:00+00:00,Kroger Field,False,ok,LMK,86.0,66.0,51.0,5.75389546,10.357011828,9.0,0.0,0.0,No meaningful precipitation signal
 401858206,Miami,Stanford,2026-09-05 01:00:00+00:00,Stanford Stadium,False,ok,MTR,72.0,57.0,59.0,13.809349104,18.412465472,8.0,0.0,0.0,No meaningful precipitation signal
 401862695,Arkansas State,Memphis,2026-09-05 23:00:00+00:00,Simmons Bank Liberty Stadium,False,ok,MEG,94.0,71.0,48.0,5.75389546,10.357011828,11.0,0.0,0.0,No meaningful precipitation signal
@@ -93,226 +93,226 @@ game_id,away_team,home_team,start_date,venue_name,game_indoors,nws_status,nws_of
 401906596,West Alabama,Tuskegee,2026-08-31 00:00:00+00:00,Cramton Bowl,False,,,,,,,,,,,
 401908891,Merchant Marine,Montclair State,2026-09-03 21:00:00+00:00,Sprague Field,False,,,,,,,,,,,
 401906880,Northwood,Wayne State (MI),2026-09-03 22:00:00+00:00,Tom Adams Field,False,,,,,,,,,,,
-401907412,Thomas,Carson Newman,2026-09-03 22:00:00+00:00,Burke-Tarr Stadium,False,,,,,,,,,,,
-401907484,Kutztown,Assumption,2026-09-03 22:00:00+00:00,Multi-Sport Stadium,False,,,,,,,,,,,
-401868269,Kentucky Christian,Morehead State,2026-09-03 22:00:00+00:00,Jayne Stadium,False,,,,,,,,,,,
+401907493,Bloomsburg,Fairmont State,2026-09-03 22:00:00+00:00,Duvall-Rosier Field,False,,,,,,,,,,,
 401907516,Charleston (WV),California (PA),2026-09-03 22:00:00+00:00,Adamson Stadium,False,,,,,,,,,,,
 401907526,West Virginia Wesleyan,Clarion,2026-09-03 22:00:00+00:00,"Memorial Stadium (Clarion, PA)",False,,,,,,,,,,,
-401907610,Millersville,Glenville State,2026-09-03 22:00:00+00:00,I.L. & Sue Morris Stadium,False,,,,,,,,,,,
+401868269,Kentucky Christian,Morehead State,2026-09-03 22:00:00+00:00,Jayne Stadium,False,,,,,,,,,,,
+401907412,Thomas,Carson Newman,2026-09-03 22:00:00+00:00,Burke-Tarr Stadium,False,,,,,,,,,,,
+401907484,Kutztown,Assumption,2026-09-03 22:00:00+00:00,Multi-Sport Stadium,False,,,,,,,,,,,
 401907838,Millikin,Olivet,2026-09-03 22:00:00+00:00,Cutler Field,False,,,,,,,,,,,
-401907493,Bloomsburg,Fairmont State,2026-09-03 22:00:00+00:00,Duvall-Rosier Field,False,,,,,,,,,,,
-401907644,Augustana (SD),Minnesota Duluth,2026-09-03 23:00:00+00:00,James S. Malosky Stadium,False,,,,,,,,,,,
+401907610,Millersville,Glenville State,2026-09-03 22:00:00+00:00,I.L. & Sue Morris Stadium,False,,,,,,,,,,,
+401867889,Southern Illinois,Samford,2026-09-03 23:00:00+00:00,Seibert Stadium,False,,,,,,,,,,,
+401907697,Winona State,Northern State,2026-09-03 23:00:00+00:00,Swisher Field,False,,,,,,,,,,,
+401907677,Concordia St. Paul,Minnesota St Moorhead,2026-09-03 23:00:00+00:00,Scheels Field at Nemzek Stadium,False,,,,,,,,,,,
+401907666,Chicago,Trine,2026-09-03 23:00:00+00:00,Fred Zollner Athletic Stadium,False,,,,,,,,,,,
 401907003,West Texas,Grand Valley State,2026-09-03 23:00:00+00:00,Lubbers Stadium,False,,,,,,,,,,,
 401906877,IU Pennsylvania,Ashland,2026-09-03 23:00:00+00:00,Jack Miller Stadium,False,,,,,,,,,,,
-401906649,Ohio Dominican,Edinboro,2026-09-03 23:00:00+00:00,Sox Harrison Stadium,False,,,,,,,,,,,
 401907871,Buffalo State,Brockport,2026-09-03 23:00:00+00:00,Bob Boozer Field,False,,,,,,,,,,,
-401906603,Warner,Valdosta State,2026-09-03 23:00:00+00:00,Bazemore-Hyder Stadium,False,,,,,,,,,,,
-401906526,Southeastern Oklahoma State,Arkansas Monticello,2026-09-03 23:00:00+00:00,Convoy Leslie Cotton Boll Stadium,False,,,,,,,,,,,
-401907677,Concordia St. Paul,Minnesota St Moorhead,2026-09-03 23:00:00+00:00,Scheels Field at Nemzek Stadium,False,,,,,,,,,,,
-401907697,Winona State,Northern State,2026-09-03 23:00:00+00:00,Swisher Field,False,,,,,,,,,,,
-401907666,Chicago,Trine,2026-09-03 23:00:00+00:00,Fred Zollner Athletic Stadium,False,,,,,,,,,,,
-401906553,Henderson State,Southern Nazarene,2026-09-03 23:00:00+00:00,Southern Nazarene University Football Stadium,False,,,,,,,,,,,
 401907727,Wayne State (NE),Minot State,2026-09-03 23:00:00+00:00,Herb Parker Stadium,False,,,,,,,,,,,
-401867889,Southern Illinois,Samford,2026-09-03 23:00:00+00:00,Seibert Stadium,False,,,,,,,,,,,
-401866622,Lindenwood,Stony Brook,2026-09-03 23:00:00+00:00,Kenneth P. LaValle Stadium,False,,,,,,,,,,,
+401906545,Northwestern (OK),Harding,2026-09-03 23:00:00+00:00,First Security Stadium,False,,,,,,,,,,,
+401907644,Augustana (SD),Minnesota Duluth,2026-09-03 23:00:00+00:00,James S. Malosky Stadium,False,,,,,,,,,,,
+401906553,Henderson State,Southern Nazarene,2026-09-03 23:00:00+00:00,Southern Nazarene University Football Stadium,False,,,,,,,,,,,
+401906526,Southeastern Oklahoma State,Arkansas Monticello,2026-09-03 23:00:00+00:00,Convoy Leslie Cotton Boll Stadium,False,,,,,,,,,,,
+401906649,Ohio Dominican,Edinboro,2026-09-03 23:00:00+00:00,Sox Harrison Stadium,False,,,,,,,,,,,
+401906603,Warner,Valdosta State,2026-09-03 23:00:00+00:00,Bazemore-Hyder Stadium,False,,,,,,,,,,,
+401908789,Westminster (PA),Marietta,2026-09-03 23:00:00+00:00,Don Drumm Stadium,False,,,,,,,,,,,
+401908216,Bluffton,Ohio Wesleyan,2026-09-03 23:00:00+00:00,Selby Stadium,False,,,,,,,,,,,
 401907995,Southern Virginia,Wisconsin River Falls,2026-09-03 23:00:00+00:00,David Smith Stadium at Ramer Field,False,,,,,,,,,,,
 401908201,Wilkes,King's,2026-09-03 23:00:00+00:00,McCarthy Stadium (Wilkes Barre),False,,,,,,,,,,,
 401908854,Wilmington (OH),Wooster,2026-09-03 23:00:00+00:00,John P. Papp Stadium,False,,,,,,,,,,,
+401866622,Lindenwood,Stony Brook,2026-09-03 23:00:00+00:00,Kenneth P. LaValle Stadium,False,,,,,,,,,,,
 401908346,Gettysburg,Juniata,2026-09-03 23:00:00+00:00,Knox Stadium,False,,,,,,,,,,,
-401908789,Westminster (PA),Marietta,2026-09-03 23:00:00+00:00,Don Drumm Stadium,False,,,,,,,,,,,
-401906545,Northwestern (OK),Harding,2026-09-03 23:00:00+00:00,First Security Stadium,False,,,,,,,,,,,
-401908216,Bluffton,Ohio Wesleyan,2026-09-03 23:00:00+00:00,Selby Stadium,False,,,,,,,,,,,
 401907121,Nebraska Kearney,Chadron State,2026-09-04 00:00:00+00:00,Elliott Field at Don Beebe Stadium,False,,,,,,,,,,,
+401907337,Missouri Western,Central Missouri,2026-09-04 00:00:00+00:00,Audrey J. Walton Stadium at Vernon Kennedy Field,False,,,,,,,,,,,
+401907162,Angelo State,Western Colorado,2026-09-04 00:00:00+00:00,Mountaineer Bowl,False,,,,,,,,,,,
 401907156,New Mexico Highlands,Western New Mexico,2026-09-04 00:00:00+00:00,Ben Altamirano Field,False,,,,,,,,,,,
 401907145,CSU Pueblo,Fort Hays,2026-09-04 00:00:00+00:00,Lewis Field Stadium,False,,,,,,,,,,,
-401908386,Belhaven,Millsaps,2026-09-04 00:00:00+00:00,Harper Davis Field,False,,,,,,,,,,,
 401906566,Southern Arkansas,Oklahoma Baptist,2026-09-04 00:00:00+00:00,Crain Family Stadium,False,,,,,,,,,,,
-401907337,Missouri Western,Central Missouri,2026-09-04 00:00:00+00:00,Audrey J. Walton Stadium at Vernon Kennedy Field,False,,,,,,,,,,,
-401873393,Rockford,Beloit,2026-09-04 00:00:00+00:00,Strong Stadium,False,,,,,,,,,,,
+401908386,Belhaven,Millsaps,2026-09-04 00:00:00+00:00,Harper Davis Field,False,,,,,,,,,,,
 401906515,Southwestern Oklahoma State,Arkansas Tech,2026-09-04 00:00:00+00:00,Thone Stadium at Buerkle Field,False,,,,,,,,,,,
-401907162,Angelo State,Western Colorado,2026-09-04 00:00:00+00:00,Mountaineer Bowl,False,,,,,,,,,,,
+401873393,Rockford,Beloit,2026-09-04 00:00:00+00:00,Strong Stadium,False,,,,,,,,,,,
 401906536,East Central,Ouachita Baptist,2026-09-04 00:00:00+00:00,Cliff Harris Stadium,False,,,,,,,,,,,
-401908537,MIT,Nichols,2026-09-04 22:00:00+00:00,Vendetti Field,False,,,,,,,,,,,
-401908331,Randolph Macon,Dickinson,2026-09-04 22:00:00+00:00,Biddle Field,False,,,,,,,,,,,
-401908318,Mary Hardin Baylor,Rowan,2026-09-04 22:00:00+00:00,Richard Wackar Stadium,False,,,,,,,,,,,
+401908162,Gallaudet,Albright,2026-09-04 22:00:00+00:00,Gene L. Shirk Stadium,False,,,,,,,,,,,
 401908094,Shenandoah,Methodist,2026-09-04 22:00:00+00:00,Monarch Stadium,False,,,,,,,,,,,
 401907008,Bentley,Ferris State,2026-09-04 22:00:00+00:00,Top Taggart Field,False,,,,,,,,,,,
-401908162,Gallaudet,Albright,2026-09-04 22:00:00+00:00,Gene L. Shirk Stadium,False,,,,,,,,,,,
+401908318,Mary Hardin Baylor,Rowan,2026-09-04 22:00:00+00:00,Richard Wackar Stadium,False,,,,,,,,,,,
+401908331,Randolph Macon,Dickinson,2026-09-04 22:00:00+00:00,Biddle Field,False,,,,,,,,,,,
+401908537,MIT,Nichols,2026-09-04 22:00:00+00:00,Vendetti Field,False,,,,,,,,,,,
 401906610,Alvernia,Keystone,2026-09-04 22:30:00+00:00,Athletic Field Complex,False,,,,,,,,,,,
-401908181,Delaware Valley,Ursinus,2026-09-04 23:00:00+00:00,Patterson Field,False,,,,,,,,,,,
-401908263,Lebanon Valley,Franklin & Marshall,2026-09-04 23:00:00+00:00,Shadek Stadium,False,,,,,,,,,,,
-401908517,Western New England,Springfield,2026-09-04 23:00:00+00:00,Stagg Field,False,,,,,,,,,,,
-401908690,St. Lawrence,Norwich,2026-09-04 23:00:00+00:00,Sabine Field at Haynes Family Stadium,False,,,,,,,,,,,
+401868262,Franklin Pierce,Marist,2026-09-04 23:00:00+00:00,Leonidoff Field,False,,,,,,,,,,,
+401907537,East Stroudsburg,Pace,2026-09-04 23:00:00+00:00,Pace Stadium,False,,,,,,,,,,,
 401907736,Case Western Reserve,Rochester (NY),2026-09-04 23:00:00+00:00,Edwin Fauver Stadium,False,,,,,,,,,,,
 401907862,Alfred,Hobart,2026-09-04 23:00:00+00:00,Boswell Field at David J. Urick Stadium,False,,,,,,,,,,,
-401868262,Franklin Pierce,Marist,2026-09-04 23:00:00+00:00,Leonidoff Field,False,,,,,,,,,,,
-401907966,Hartwick,Misericordia,2026-09-04 23:00:00+00:00,Mangelsdorf Field,False,,,,,,,,,,,
+401908263,Lebanon Valley,Franklin & Marshall,2026-09-04 23:00:00+00:00,Shadek Stadium,False,,,,,,,,,,,
 401908309,Bridgewater,Stevenson,2026-09-04 23:00:00+00:00,Mustang Stadium,False,,,,,,,,,,,
+401908517,Western New England,Springfield,2026-09-04 23:00:00+00:00,Stagg Field,False,,,,,,,,,,,
 401908606,Salve Regina,UMass Dartmouth,2026-09-04 23:00:00+00:00,Cressy Field,False,,,,,,,,,,,
-401907537,East Stroudsburg,Pace,2026-09-04 23:00:00+00:00,Pace Stadium,False,,,,,,,,,,,
+401908690,St. Lawrence,Norwich,2026-09-04 23:00:00+00:00,Sabine Field at Haynes Family Stadium,False,,,,,,,,,,,
+401908181,Delaware Valley,Ursinus,2026-09-04 23:00:00+00:00,Patterson Field,False,,,,,,,,,,,
+401907966,Hartwick,Misericordia,2026-09-04 23:00:00+00:00,Mangelsdorf Field,False,,,,,,,,,,,
 401908359,Catholic,McDaniel,2026-09-04 23:30:00+00:00,Kenneth R. Gill Stadium,False,,,,,,,,,,,
 401907818,Lakeland,Carthage,2026-09-05 00:00:00+00:00,Art Keller Field,False,,,,,,,,,,,
 401908292,Howard Payne,Pacific (OR),2026-09-05 02:00:00+00:00,Hanson Stadium,False,,,,,,,,,,,
 401868284,Webber International,Stetson,2026-09-05 15:00:00+00:00,Spec Martin Municipal Stadium,False,,,,,,,,,,,
-401909005,Hampden Sydney,Wabash,2026-09-05 16:00:00+00:00,Little Giant Stadium,False,,,,,,,,,,,
-401908353,Ithaca,Johns Hopkins,2026-09-05 16:00:00+00:00,Homewood Field,False,,,,,,,,,,,
-401908738,Calvin,Otterbein,2026-09-05 16:00:00+00:00,"Memorial Stadium (Westerville, OH)",False,,,,,,,,,,,
+401908475,Curry,Bridgewater State,2026-09-05 16:00:00+00:00,Edward C. Swenson Athletic Complex,False,,,,,,,,,,,
+401907013,Truman State,Davenport,2026-09-05 16:00:00+00:00,Farmers Insurance Athletic Complex,False,,,,,,,,,,,
 401908364,Muhlenberg,Moravian,2026-09-05 16:00:00+00:00,Rocco Calvo Field,False,,,,,,,,,,,
+401908091,Washington & Jefferson,Utica,2026-09-05 16:00:00+00:00,Charles A. Gaetano Stadium,False,,,,,,,,,,,
+401907879,SUNY Cortland,Grove City,2026-09-05 16:00:00+00:00,Robert E. Thorn Field,False,,,,,,,,,,,
+401907832,Illinois Wesleyan,Albion,2026-09-05 16:00:00+00:00,Sprankle-Sprandel Stadium,False,,,,,,,,,,,
+401908557,New England College,Plymouth State,2026-09-05 16:00:00+00:00,Charles L. Currier Memorial Field,False,,,,,,,,,,,
+401906844,McKendree,Hillsdale,2026-09-05 16:00:00+00:00,"Frank ""Muddy"" Waters Stadium",False,,,,,,,,,,,
+401908530,New England,Coast Guard,2026-09-05 16:00:00+00:00,Cadet Memorial Field,False,,,,,,,,,,,
+401908101,Maryville (TN),Heidelberg,2026-09-05 16:00:00+00:00,Hoernemann Stadium,False,,,,,,,,,,,
+401908624,WPI,Rensselaer,2026-09-05 16:00:00+00:00,ECAV Stadium,False,,,,,,,,,,,
 401908568,Fitchburg State,Dean,2026-09-05 16:00:00+00:00,Dale Lippert Field,False,,,,,,,,,,,
 401908563,Maine Maritime,Mass Maritime,2026-09-05 16:00:00+00:00,Clean Harbors Stadium,False,,,,,,,,,,,
-401908557,New England College,Plymouth State,2026-09-05 16:00:00+00:00,Charles L. Currier Memorial Field,False,,,,,,,,,,,
-401908530,New England,Coast Guard,2026-09-05 16:00:00+00:00,Cadet Memorial Field,False,,,,,,,,,,,
-401908475,Curry,Bridgewater State,2026-09-05 16:00:00+00:00,Edward C. Swenson Athletic Complex,False,,,,,,,,,,,
-401908624,WPI,Rensselaer,2026-09-05 16:00:00+00:00,ECAV Stadium,False,,,,,,,,,,,
-401867928,Southern Connecticut State,Wagner,2026-09-05 16:00:00+00:00,Wagner College Stadium,False,,,,,,,,,,,
 401867924,Stonehill,New Haven,2026-09-05 16:00:00+00:00,Ralph F. DellaCamera Stadium,False,,,,,,,,,,,
-401907013,Truman State,Davenport,2026-09-05 16:00:00+00:00,Farmers Insurance Athletic Complex,False,,,,,,,,,,,
-401906844,McKendree,Hillsdale,2026-09-05 16:00:00+00:00,"Frank ""Muddy"" Waters Stadium",False,,,,,,,,,,,
-401907832,Illinois Wesleyan,Albion,2026-09-05 16:00:00+00:00,Sprankle-Sprandel Stadium,False,,,,,,,,,,,
+401908738,Calvin,Otterbein,2026-09-05 16:00:00+00:00,"Memorial Stadium (Westerville, OH)",False,,,,,,,,,,,
+401908353,Ithaca,Johns Hopkins,2026-09-05 16:00:00+00:00,Homewood Field,False,,,,,,,,,,,
 401908189,Eastern,Endicott,2026-09-05 16:00:00+00:00,Hempstead Stadium,False,,,,,,,,,,,
-401907879,SUNY Cortland,Grove City,2026-09-05 16:00:00+00:00,Robert E. Thorn Field,False,,,,,,,,,,,
-401908091,Washington & Jefferson,Utica,2026-09-05 16:00:00+00:00,Charles A. Gaetano Stadium,False,,,,,,,,,,,
-401908101,Maryville (TN),Heidelberg,2026-09-05 16:00:00+00:00,Hoernemann Stadium,False,,,,,,,,,,,
+401867928,Southern Connecticut State,Wagner,2026-09-05 16:00:00+00:00,Wagner College Stadium,False,,,,,,,,,,,
+401909005,Hampden Sydney,Wabash,2026-09-05 16:00:00+00:00,Little Giant Stadium,False,,,,,,,,,,,
 401868017,Lehigh,Georgetown,2026-09-05 16:30:00+00:00,Cooper Field,False,,,,,,,,,,,
-401908285,Chapman,Hardin Simmons,2026-09-05 17:00:00+00:00,Shelton Stadium,False,,,,,,,,,,,
-401908069,Hilbert,Saint Vincent,2026-09-05 17:00:00+00:00,Chuck Noll Field,False,,,,,,,,,,,
-401908470,Hamline,Crown,2026-09-05 17:00:00+00:00,Old National Bank Stadium,False,,,,,,,,,,,
 401908576,Framingham State,Husson,2026-09-05 17:00:00+00:00,Dr. John W. Winkin Sports Complex,False,,,,,,,,,,,
+401908470,Hamline,Crown,2026-09-05 17:00:00+00:00,Old National Bank Stadium,False,,,,,,,,,,,
+401873228,Lewis & Clark,Puget Sound,2026-09-05 17:00:00+00:00,Baker Stadium,False,,,,,,,,,,,
+401868000,Holy Cross,Colgate,2026-09-05 17:00:00+00:00,Andy Kerr Stadium,False,,,,,,,,,,,
 401908609,Western Connecticut State,William Paterson,2026-09-05 17:00:00+00:00,Wightman Stadium,False,,,,,,,,,,,
-401908617,Westfield State,Vermont State Castleton,2026-09-05 17:00:00+00:00,Dave Wolk Stadium,False,,,,,,,,,,,
 401908623,Worcester State,SUNY Maritime,2026-09-05 17:00:00+00:00,Reinhart Field,False,,,,,,,,,,,
+401906118,Bowie State,Virginia State,2026-09-05 17:00:00+00:00,Rogers Stadium (VA),False,,,,,,,,,,,
 401906133,West Chester,Lincoln (PA),2026-09-05 17:00:00+00:00,Lincoln University Stadium,False,,,,,,,,,,,
 401906994,Midwestern State,Michigan Tech,2026-09-05 17:00:00+00:00,Sherman Field,False,,,,,,,,,,,
 401907138,Colorado School of Mines,Washburn,2026-09-05 17:00:00+00:00,Yager Stadium at Moore Bowl,False,,,,,,,,,,,
 401907250,Clark Atlanta,Morehouse,2026-09-05 17:00:00+00:00,B.T. Harvey Stadium,False,,,,,,,,,,,
 401908049,Alma,Wisconsin Eau Claire,2026-09-05 17:00:00+00:00,Carson Park,False,,,,,,,,,,,
-401908965,Wittenberg,Washington and Lee,2026-09-05 17:00:00+00:00,Wilson Field,False,,,,,,,,,,,
-401906118,Bowie State,Virginia State,2026-09-05 17:00:00+00:00,Rogers Stadium (VA),False,,,,,,,,,,,
-401908744,Hope,Denison,2026-09-05 17:00:00+00:00,Deeds Field-Piper Stadium,False,,,,,,,,,,,
-401908684,Susquehanna,Union,2026-09-05 17:00:00+00:00,Frank Bailey Field,False,,,,,,,,,,,
+401908617,Westfield State,Vermont State Castleton,2026-09-05 17:00:00+00:00,Dave Wolk Stadium,False,,,,,,,,,,,
+401908285,Chapman,Hardin Simmons,2026-09-05 17:00:00+00:00,Shelton Stadium,False,,,,,,,,,,,
+401873403,SUNY Morrisville,Kean,2026-09-05 17:00:00+00:00,Kean Alumni Stadium,False,,,,,,,,,,,
 401908662,Capital,Waynesburg,2026-09-05 17:00:00+00:00,John F. Wiley Stadium,False,,,,,,,,,,,
+401907826,Illinois College,Elmhurst,2026-09-05 17:00:00+00:00,Langhorst Field,False,,,,,,,,,,,
+401907604,Frostburg State,Shepherd,2026-09-05 17:00:00+00:00,Ram Stadium (WV),False,,,,,,,,,,,
+401908965,Wittenberg,Washington and Lee,2026-09-05 17:00:00+00:00,Wilson Field,False,,,,,,,,,,,
 401908650,Ohio Northern,Adrian,2026-09-05 17:00:00+00:00,Docking Stadium,False,,,,,,,,,,,
 401908644,Lycoming,The College of New Jersey,2026-09-05 17:00:00+00:00,Lions Stadium,False,,,,,,,,,,,
 401907843,Bethel (MN),North Central College,2026-09-05 17:00:00+00:00,Benedetti-Wehrli Stadium,False,,,,,,,,,,,
-401907826,Illinois College,Elmhurst,2026-09-05 17:00:00+00:00,Langhorst Field,False,,,,,,,,,,,
-401873403,SUNY Morrisville,Kean,2026-09-05 17:00:00+00:00,Kean Alumni Stadium,False,,,,,,,,,,,
-401873228,Lewis & Clark,Puget Sound,2026-09-05 17:00:00+00:00,Baker Stadium,False,,,,,,,,,,,
-401868000,Holy Cross,Colgate,2026-09-05 17:00:00+00:00,Andy Kerr Stadium,False,,,,,,,,,,,
-401907604,Frostburg State,Shepherd,2026-09-05 17:00:00+00:00,Ram Stadium (WV),False,,,,,,,,,,,
 401908805,Kenyon,Kalamazoo,2026-09-05 17:00:00+00:00,Angell Field,False,,,,,,,,,,,
-401868186,Gardner-Webb,Wofford,2026-09-05 17:30:00+00:00,Gibbs Stadium,False,,,,,,,,,,,
+401908744,Hope,Denison,2026-09-05 17:00:00+00:00,Deeds Field-Piper Stadium,False,,,,,,,,,,,
+401908684,Susquehanna,Union,2026-09-05 17:00:00+00:00,Frank Bailey Field,False,,,,,,,,,,,
+401908069,Hilbert,Saint Vincent,2026-09-05 17:00:00+00:00,Chuck Noll Field,False,,,,,,,,,,,
 401908206,Allegheny,Anderson (IN),2026-09-05 17:30:00+00:00,Macholtz Stadium,False,,,,,,,,,,,
-401908247,Concordia (MN),Nebraska Wesleyan,2026-09-05 18:00:00+00:00,Abel Stadium,False,,,,,,,,,,,
-401908257,Westminster (MO),Manchester,2026-09-05 18:00:00+00:00,Carl W. Burt Memorial Stadium,False,,,,,,,,,,,
-401908412,Bethany (WV),Sewanee,2026-09-05 18:00:00+00:00,Hardee-McGee Field,False,,,,,,,,,,,
-401908499,Greenville,Lake Forest,2026-09-05 18:00:00+00:00,Farwell Field,False,,,,,,,,,,,
-401908508,Macalester,Martin Luther,2026-09-05 18:00:00+00:00,MLC Bowl,False,,,,,,,,,,,
-401908765,Concordia (WI),Ripon,2026-09-05 18:00:00+00:00,Ingalls Field,False,,,,,,,,,,,
-401908771,Mount Mercy,Grinnell,2026-09-05 18:00:00+00:00,Rosenbloom Field,False,,,,,,,,,,,
-401908921,Wisconsin Lutheran,St. Scholastica,2026-09-05 18:00:00+00:00,Public Schools Stadium,False,,,,,,,,,,,
-401909047,Hiram,Oberlin,2026-09-05 18:00:00+00:00,Austin E. Knowlton Athletics Complex,False,,,,,,,,,,,
+401868186,Gardner-Webb,Wofford,2026-09-05 17:30:00+00:00,Gibbs Stadium,False,,,,,,,,,,,
 401908759,Lawrence,Luther,2026-09-05 18:00:00+00:00,Legacy Field in Carlson Stadium,False,,,,,,,,,,,
-401907789,Carroll (WI),St. Norbert,2026-09-05 18:00:00+00:00,Donald J. Schneider Stadium,False,,,,,,,,,,,
-401907850,Mount Union,Wheaton (IL),2026-09-05 18:00:00+00:00,McCully Stadium,False,,,,,,,,,,,
-401907886,Carleton,Wisconsin Whitewater,2026-09-05 18:00:00+00:00,Perkins Stadium,False,,,,,,,,,,,
+401908765,Concordia (WI),Ripon,2026-09-05 18:00:00+00:00,Ingalls Field,False,,,,,,,,,,,
+401908257,Westminster (MO),Manchester,2026-09-05 18:00:00+00:00,Carl W. Burt Memorial Stadium,False,,,,,,,,,,,
+401908771,Mount Mercy,Grinnell,2026-09-05 18:00:00+00:00,Rosenbloom Field,False,,,,,,,,,,,
+401908499,Greenville,Lake Forest,2026-09-05 18:00:00+00:00,Farwell Field,False,,,,,,,,,,,
 401908514,Concordia Chicago,Minnesota Morris,2026-09-05 18:00:00+00:00,Big Cat Stadium,False,,,,,,,,,,,
-401908018,Linfield,Wisconsin Oshkosh,2026-09-05 18:00:00+00:00,J.J. Keller Field at Titan Stadium,False,,,,,,,,,,,
-401907691,Sioux Falls,Jamestown,2026-09-05 18:00:00+00:00,Charlotte & Gordon Hansen Stadium,False,,,,,,,,,,,
-401906860,Findlay,Indianapolis,2026-09-05 18:00:00+00:00,Key Stadium,False,,,,,,,,,,,
-401907655,John Carroll,Carnegie Mellon,2026-09-05 18:00:00+00:00,Gesling Stadium,False,,,,,,,,,,,
-401907420,Emory & Henry,Ferrum,2026-09-05 18:00:00+00:00,W.B. Adams Stadium,False,,,,,,,,,,,
-401906929,Roosevelt,Quincy,2026-09-05 18:00:00+00:00,QU Stadium,False,,,,,,,,,,,
-401906049,Bluefield State,Concord,2026-09-05 18:00:00+00:00,Callaghan Stadium,False,,,,,,,,,,,
-401908008,Aurora,Wisconsin Platteville,2026-09-05 18:00:00+00:00,Ralph E. Davis Pioneer Stadium,False,,,,,,,,,,,
-401908231,Centre,Hanover,2026-09-05 18:00:00+00:00,Alumni Stadium (IN),False,,,,,,,,,,,
-401866624,Sacred Heart,Monmouth,2026-09-05 18:00:00+00:00,Kessler Stadium,False,,,,,,,,,,,
-401908150,Cornell (IA),Coe,2026-09-05 18:00:00+00:00,Clark Field,False,,,,,,,,,,,
-401908141,Central College,Gustavus Adolphus,2026-09-05 18:00:00+00:00,Hollingsworth Field,False,,,,,,,,,,,
+401908412,Bethany (WV),Sewanee,2026-09-05 18:00:00+00:00,Hardee-McGee Field,False,,,,,,,,,,,
+401908247,Concordia (MN),Nebraska Wesleyan,2026-09-05 18:00:00+00:00,Abel Stadium,False,,,,,,,,,,,
 401908088,FDU Florham,St. John Fisher,2026-09-05 18:00:00+00:00,Growney Stadium,False,,,,,,,,,,,
+401908018,Linfield,Wisconsin Oshkosh,2026-09-05 18:00:00+00:00,J.J. Keller Field at Titan Stadium,False,,,,,,,,,,,
+401908008,Aurora,Wisconsin Platteville,2026-09-05 18:00:00+00:00,Ralph E. Davis Pioneer Stadium,False,,,,,,,,,,,
+401907886,Carleton,Wisconsin Whitewater,2026-09-05 18:00:00+00:00,Perkins Stadium,False,,,,,,,,,,,
+401907850,Mount Union,Wheaton (IL),2026-09-05 18:00:00+00:00,McCully Stadium,False,,,,,,,,,,,
+401907789,Carroll (WI),St. Norbert,2026-09-05 18:00:00+00:00,Donald J. Schneider Stadium,False,,,,,,,,,,,
+401908508,Macalester,Martin Luther,2026-09-05 18:00:00+00:00,MLC Bowl,False,,,,,,,,,,,
+401907691,Sioux Falls,Jamestown,2026-09-05 18:00:00+00:00,Charlotte & Gordon Hansen Stadium,False,,,,,,,,,,,
 401908039,Wisconsin La Crosse,Saint John's (MN),2026-09-05 18:00:00+00:00,Clemens Stadium,False,,,,,,,,,,,
+401908141,Central College,Gustavus Adolphus,2026-09-05 18:00:00+00:00,Hollingsworth Field,False,,,,,,,,,,,
+401908150,Cornell (IA),Coe,2026-09-05 18:00:00+00:00,Clark Field,False,,,,,,,,,,,
+401908231,Centre,Hanover,2026-09-05 18:00:00+00:00,Alumni Stadium (IN),False,,,,,,,,,,,
+401909047,Hiram,Oberlin,2026-09-05 18:00:00+00:00,Austin E. Knowlton Athletics Complex,False,,,,,,,,,,,
+401908921,Wisconsin Lutheran,St. Scholastica,2026-09-05 18:00:00+00:00,Public Schools Stadium,False,,,,,,,,,,,
 401907758,Benedictine (IL),Buena Vista,2026-09-05 18:00:00+00:00,J. Leslie Rollins Stadium,False,,,,,,,,,,,
+401866624,Sacred Heart,Monmouth,2026-09-05 18:00:00+00:00,Kessler Stadium,False,,,,,,,,,,,
+401906049,Bluefield State,Concord,2026-09-05 18:00:00+00:00,Callaghan Stadium,False,,,,,,,,,,,
+401906860,Findlay,Indianapolis,2026-09-05 18:00:00+00:00,Key Stadium,False,,,,,,,,,,,
+401906929,Roosevelt,Quincy,2026-09-05 18:00:00+00:00,QU Stadium,False,,,,,,,,,,,
+401907420,Emory & Henry,Ferrum,2026-09-05 18:00:00+00:00,W.B. Adams Stadium,False,,,,,,,,,,,
+401907655,John Carroll,Carnegie Mellon,2026-09-05 18:00:00+00:00,Gesling Stadium,False,,,,,,,,,,,
 401906682,Saint Anselm,Lake Erie,2026-09-05 19:00:00+00:00,Jack Britt Memorial Stadium,False,,,,,,,,,,,
 401868111,Drake,Montana,2026-09-05 19:00:00+00:00,Washington-Grizzly Stadium,False,,,,,,,,,,,
-401907159,Southwest Baptist,South Dakota Mines,2026-09-05 19:00:00+00:00,O'Harra Stadium,False,,,,,,,,,,,
-401907475,Lock Haven,American International,2026-09-05 19:00:00+00:00,Ronald J. Abdow Field,False,,,,,,,,,,,
 401908460,Willamette,Pomona Pitzer,2026-09-05 19:00:00+00:00,Merritt Field,False,,,,,,,,,,,
-401906597,West Alabama,Lenoir Rhyne,2026-09-05 19:00:00+00:00,Helen and Leonard Moretz Stadium,False,,,,,,,,,,,
-401907111,Dakota State University,Black Hills State,2026-09-05 19:00:00+00:00,Lyle Hare Stadium,False,,,,,,,,,,,
 401906206,Benedict,Shorter,2026-09-05 19:00:00+00:00,Barron Stadium,False,,,,,,,,,,,
+401907475,Lock Haven,American International,2026-09-05 19:00:00+00:00,Ronald J. Abdow Field,False,,,,,,,,,,,
+401907159,Southwest Baptist,South Dakota Mines,2026-09-05 19:00:00+00:00,O'Harra Stadium,False,,,,,,,,,,,
 401908448,Northwestern (MN),Claremont Mudd Scripps,2026-09-05 19:00:00+00:00,Fritz B. Burns Stadium,False,,,,,,,,,,,
+401906597,West Alabama,Lenoir Rhyne,2026-09-05 19:00:00+00:00,Helen and Leonard Moretz Stadium,False,,,,,,,,,,,
 401908722,Widener,Geneva,2026-09-05 19:00:00+00:00,Reeves Field (PA),False,,,,,,,,,,,
+401907111,Dakota State University,Black Hills State,2026-09-05 19:00:00+00:00,Lyle Hare Stadium,False,,,,,,,,,,,
 401866625,Western Carolina,Campbell,2026-09-05 19:30:00+00:00,Barker-Lane Stadium,False,,,,,,,,,,,
-401907852,Thiel,Alfred State,2026-09-05 20:00:00+00:00,Pioneer Stadium,False,,,,,,,,,,,
-401906921,Florida Memorial University,Allen,2026-09-05 20:00:00+00:00,W.C. Hawkins Stadium,False,,,,,,,,,,,
-401907130,Colorado Mesa,Eastern New Mexico,2026-09-05 20:00:00+00:00,Al Whitehead Field at Greyhound Stadium,False,,,,,,,,,,,
-401907615,West Liberty,Seton Hill,2026-09-05 20:00:00+00:00,Offutt Field,False,,,,,,,,,,,
-401907634,Southwest Minnesota State,Bemidji State,2026-09-05 20:00:00+00:00,Chet Anderson Stadium,False,,,,,,,,,,,
-401908429,Cal Lutheran,Pacific Lutheran,2026-09-05 20:00:00+00:00,Sparks Stadium,False,,,,,,,,,,,
-401867875,St. Thomas (MN),North Dakota,2026-09-05 20:00:00+00:00,Alerus Center,True,,,,,,,,,,,
 401907332,Western Oregon,Southern Oregon,2026-09-05 20:00:00+00:00,,False,,,,,,,,,,,
+401906921,Florida Memorial University,Allen,2026-09-05 20:00:00+00:00,W.C. Hawkins Stadium,False,,,,,,,,,,,
+401907615,West Liberty,Seton Hill,2026-09-05 20:00:00+00:00,Offutt Field,False,,,,,,,,,,,
+401908429,Cal Lutheran,Pacific Lutheran,2026-09-05 20:00:00+00:00,Sparks Stadium,False,,,,,,,,,,,
+401907852,Thiel,Alfred State,2026-09-05 20:00:00+00:00,Pioneer Stadium,False,,,,,,,,,,,
+401907634,Southwest Minnesota State,Bemidji State,2026-09-05 20:00:00+00:00,Chet Anderson Stadium,False,,,,,,,,,,,
+401907130,Colorado Mesa,Eastern New Mexico,2026-09-05 20:00:00+00:00,Al Whitehead Field at Greyhound Stadium,False,,,,,,,,,,,
+401867875,St. Thomas (MN),North Dakota,2026-09-05 20:00:00+00:00,Alerus Center,True,,,,,,,,,,,
 401908275,East Texas Baptist,Lyon,2026-09-05 21:00:00+00:00,Pioneer Stadium,False,,,,,,,,,,,
 401906973,Tuskegee,Fort Valley State,2026-09-05 21:00:00+00:00,Ladd Peebles Stadium,False,,,,,,,,,,,
 401868345,Tusculum,East Tennessee State,2026-09-05 21:30:00+00:00,William B. Greene Jr. Stadium,False,,,,,,,,,,,
-401908076,North Carolina Wesleyan,Averett,2026-09-05 22:00:00+00:00,Daly Field at Frank R. Campbell Stadium,False,,,,,,,,,,,
-401908241,St. Olaf,Loras,2026-09-05 22:00:00+00:00,Rock Bowl,False,,,,,,,,,,,
-401906146,Livingstone,Virginia Union,2026-09-05 22:00:00+00:00,Hovey Field,False,,,,,,,,,,,
-401906152,UNC Pembroke,Fayetteville State,2026-09-05 22:00:00+00:00,"Luther ""Nick"" Jeralds Stadium",False,,,,,,,,,,,
-401908304,Guilford,Greensboro,2026-09-05 22:00:00+00:00,Jamieson Stadium,False,,,,,,,,,,,
-401867989,Villanova,Bucknell,2026-09-05 22:00:00+00:00,Christy Mathewson-Memorial Stadium,False,,,,,,,,,,,
-401867978,Elizabeth City State,North Carolina Central,2026-09-05 22:00:00+00:00,O'Kelly-Riddick Stadium,False,,,,,,,,,,,
-401869127,Richmond,Howard,2026-09-05 22:00:00+00:00,William H. Greene Stadium,False,,,,,,,,,,,
-401868274,Presbyterian,Mercer,2026-09-05 22:00:00+00:00,Five Star Stadium at the Moye Complex,False,,,,,,,,,,,
-401868325,Lane College,Alabama State,2026-09-05 22:00:00+00:00,Hornet Stadium,False,,,,,,,,,,,
-401868336,Tennessee Tech,Chattanooga,2026-09-05 22:00:00+00:00,Finley Stadium,False,,,,,,,,,,,
 401907847,North Park,Franklin,2026-09-05 22:00:00+00:00,"Stewart """"Red"""" Faught Stadium",False,,,,,,,,,,,
-401906632,Tiffin,Northern Michigan,2026-09-05 22:00:00+00:00,Superior Dome,False,,,,,,,,,,,
-401906178,Chowan,UVA Wise,2026-09-05 22:00:00+00:00,Carl Smith Stadium,False,,,,,,,,,,,
-401906199,North Greenville,Catawba,2026-09-05 22:00:00+00:00,Shuford Stadium,False,,,,,,,,,,,
-401906621,Wheeling,Walsh,2026-09-05 22:00:00+00:00,Tom Benson Hall of Fame Stadium,False,,,,,,,,,,,
-401906903,Texas A&M-Kingsville,Saginaw Valley State,2026-09-05 22:00:00+00:00,Harvey Randall Wickes Memorial Stadium,False,,,,,,,,,,,
-401867917,West Virginia State,Robert Morris,2026-09-05 22:00:00+00:00,Joe Walton Stadium,False,,,,,,,,,,,
-401867692,Delaware State,William & Mary,2026-09-05 22:00:00+00:00,Zable Stadium,False,,,,,,,,,,,
-401866626,Elon,Davidson,2026-09-05 22:00:00+00:00,Richardson Stadium,False,,,,,,,,,,,
 401907273,Keiser (Fl),Anderson (SC),2026-09-05 22:00:00+00:00,Spero Financial Field,False,,,,,,,,,,,
+401906903,Texas A&M-Kingsville,Saginaw Valley State,2026-09-05 22:00:00+00:00,Harvey Randall Wickes Memorial Stadium,False,,,,,,,,,,,
+401906632,Tiffin,Northern Michigan,2026-09-05 22:00:00+00:00,Superior Dome,False,,,,,,,,,,,
+401906621,Wheeling,Walsh,2026-09-05 22:00:00+00:00,Tom Benson Hall of Fame Stadium,False,,,,,,,,,,,
+401868336,Tennessee Tech,Chattanooga,2026-09-05 22:00:00+00:00,Finley Stadium,False,,,,,,,,,,,
+401906199,North Greenville,Catawba,2026-09-05 22:00:00+00:00,Shuford Stadium,False,,,,,,,,,,,
+401906178,Chowan,UVA Wise,2026-09-05 22:00:00+00:00,Carl Smith Stadium,False,,,,,,,,,,,
+401906152,UNC Pembroke,Fayetteville State,2026-09-05 22:00:00+00:00,"Luther ""Nick"" Jeralds Stadium",False,,,,,,,,,,,
+401906146,Livingstone,Virginia Union,2026-09-05 22:00:00+00:00,Hovey Field,False,,,,,,,,,,,
+401869127,Richmond,Howard,2026-09-05 22:00:00+00:00,William H. Greene Stadium,False,,,,,,,,,,,
+401867692,Delaware State,William & Mary,2026-09-05 22:00:00+00:00,Zable Stadium,False,,,,,,,,,,,
+401908304,Guilford,Greensboro,2026-09-05 22:00:00+00:00,Jamieson Stadium,False,,,,,,,,,,,
+401908241,St. Olaf,Loras,2026-09-05 22:00:00+00:00,Rock Bowl,False,,,,,,,,,,,
+401867978,Elizabeth City State,North Carolina Central,2026-09-05 22:00:00+00:00,O'Kelly-Riddick Stadium,False,,,,,,,,,,,
+401867989,Villanova,Bucknell,2026-09-05 22:00:00+00:00,Christy Mathewson-Memorial Stadium,False,,,,,,,,,,,
+401908076,North Carolina Wesleyan,Averett,2026-09-05 22:00:00+00:00,Daly Field at Frank R. Campbell Stadium,False,,,,,,,,,,,
+401868325,Lane College,Alabama State,2026-09-05 22:00:00+00:00,Hornet Stadium,False,,,,,,,,,,,
+401866626,Elon,Davidson,2026-09-05 22:00:00+00:00,Richardson Stadium,False,,,,,,,,,,,
+401867917,West Virginia State,Robert Morris,2026-09-05 22:00:00+00:00,Joe Walton Stadium,False,,,,,,,,,,,
+401868274,Presbyterian,Mercer,2026-09-05 22:00:00+00:00,Five Star Stadium at the Moye Complex,False,,,,,,,,,,,
 401907703,Minnesota State,University of Mary,2026-09-05 22:30:00+00:00,MDU Resources Community Bowl,False,,,,,,,,,,,
-401868085,Northern Iowa,Eastern Washington,2026-09-05 23:00:00+00:00,Roos Field,False,,,,,,,,,,,
+401908933,Apprentice School,Christopher Newport,2026-09-05 23:00:00+00:00,TowneBank Stadium,False,,,,,,,,,,,
+401907247,Upper Iowa,Missouri Southern State,2026-09-05 23:00:00+00:00,Fred G. Hughes Stadium,False,,,,,,,,,,,
+401907456,Reinhardt,Newberry,2026-09-05 23:00:00+00:00,Setzler Field,False,,,,,,,,,,,
+401907956,Wisconsin Stout,Dubuque,2026-09-05 23:00:00+00:00,Chalmers Field,False,,,,,,,,,,,
+401907977,Augsburg,Wisconsin Stevens Point,2026-09-05 23:00:00+00:00,Community Stadium at Goerke Park,False,,,,,,,,,,,
+401908553,Westgate Christian University,Centenary (LA),2026-09-05 23:00:00+00:00,Mayo Field,False,,,,,,,,,,,
+401908781,Knox,Eureka,2026-09-05 23:00:00+00:00,Pete FioRito Stadium at McKinzie Field,False,,,,,,,,,,,
+401867684,Chicago State,UT Martin,2026-09-05 23:00:00+00:00,Graham Stadium,False,,,,,,,,,,,
+401868953,Central State,Grambling,2026-09-05 23:00:00+00:00,Eddie Robinson Stadium,False,,,,,,,,,,,
+401906605,Wingate,Delta State,2026-09-05 23:00:00+00:00,Parker Field at McCool Stadium,False,,,,,,,,,,,
+401867845,Illinois State,Western Illinois,2026-09-05 23:00:00+00:00,Hanson Field,False,,,,,,,,,,,
+401906166,Shaw,Barton,2026-09-05 23:00:00+00:00,Electric Supply Company Field,False,,,,,,,,,,,
+401908267,Muskingum,Mount St Joseph,2026-09-05 23:00:00+00:00,Schueler Field,False,,,,,,,,,,,
+401906589,Northeastern State,Missouri S&T,2026-09-05 23:00:00+00:00,Allgood-Bailey Stadium,False,,,,,,,,,,,
 401869136,Texas Wesleyan,McNeese,2026-09-05 23:00:00+00:00,Cowboy Stadium,False,,,,,,,,,,,
 401868970,Kentucky State,Southern,2026-09-05 23:00:00+00:00,Ace W. Mumford Stadium,False,,,,,,,,,,,
 401868958,Edward Waters,Jackson State,2026-09-05 23:00:00+00:00,Mississippi Veterans Memorial Stadium,False,,,,,,,,,,,
-401868953,Central State,Grambling,2026-09-05 23:00:00+00:00,Eddie Robinson Stadium,False,,,,,,,,,,,
-401868297,Miles,Alabama A&M,2026-09-05 23:00:00+00:00,Louis Crews Stadium,False,,,,,,,,,,,
-401908781,Knox,Eureka,2026-09-05 23:00:00+00:00,Pete FioRito Stadium at McKinzie Field,False,,,,,,,,,,,
-401907956,Wisconsin Stout,Dubuque,2026-09-05 23:00:00+00:00,Chalmers Field,False,,,,,,,,,,,
-401907456,Reinhardt,Newberry,2026-09-05 23:00:00+00:00,Setzler Field,False,,,,,,,,,,,
-401907977,Augsburg,Wisconsin Stevens Point,2026-09-05 23:00:00+00:00,Community Stadium at Goerke Park,False,,,,,,,,,,,
-401908553,Westgate Christian University,Centenary (LA),2026-09-05 23:00:00+00:00,Mayo Field,False,,,,,,,,,,,
+401868085,Northern Iowa,Eastern Washington,2026-09-05 23:00:00+00:00,Roos Field,False,,,,,,,,,,,
 401868071,West Florida,Central Arkansas,2026-09-05 23:00:00+00:00,Estes Stadium,False,,,,,,,,,,,
-401906605,Wingate,Delta State,2026-09-05 23:00:00+00:00,Parker Field at McCool Stadium,False,,,,,,,,,,,
-401867684,Chicago State,UT Martin,2026-09-05 23:00:00+00:00,Graham Stadium,False,,,,,,,,,,,
-401907247,Upper Iowa,Missouri Southern State,2026-09-05 23:00:00+00:00,Fred G. Hughes Stadium,False,,,,,,,,,,,
-401906166,Shaw,Barton,2026-09-05 23:00:00+00:00,Electric Supply Company Field,False,,,,,,,,,,,
 401908426,McMurry,Southwestern U,2026-09-05 23:00:00+00:00,Birkelbach Field,False,,,,,,,,,,,
-401908325,Austin,Schreiner,2026-09-05 23:00:00+00:00,Antler Stadium,False,,,,,,,,,,,
-401906589,Northeastern State,Missouri S&T,2026-09-05 23:00:00+00:00,Allgood-Bailey Stadium,False,,,,,,,,,,,
 401908272,DePauw,Rose Hulman,2026-09-05 23:00:00+00:00,Cook Stadium,False,,,,,,,,,,,
-401908267,Muskingum,Mount St Joseph,2026-09-05 23:00:00+00:00,Schueler Field,False,,,,,,,,,,,
-401908933,Apprentice School,Christopher Newport,2026-09-05 23:00:00+00:00,TowneBank Stadium,False,,,,,,,,,,,
-401867845,Illinois State,Western Illinois,2026-09-05 23:00:00+00:00,Hanson Field,False,,,,,,,,,,,
 401908298,Berry,Huntingdon,2026-09-05 23:00:00+00:00,Charles Lee Field at Samford Stadium,False,,,,,,,,,,,
+401908325,Austin,Schreiner,2026-09-05 23:00:00+00:00,Antler Stadium,False,,,,,,,,,,,
+401868297,Miles,Alabama A&M,2026-09-05 23:00:00+00:00,Louis Crews Stadium,False,,,,,,,,,,,
 401908111,Point University,LaGrange,2026-09-05 23:30:00+00:00,Callaway Stadium,False,,,,,,,,,,,
-401907151,Phoenix,Fort Lewis,2026-09-06 00:00:00+00:00,Ray Dennison Memorial Field,False,,,,,,,,,,,
-401907357,Emporia State,Pittsburg State,2026-09-06 00:00:00+00:00,Carnie Smith Stadium,False,,,,,,,,,,,
-401868306,East Texas A&M,Stephen F. Austin,2026-09-06 00:00:00+00:00,Homer Bryce Stadium,False,,,,,,,,,,,
-401907465,Washington St. Louis,Rhodes,2026-09-06 00:00:00+00:00,Crain Field,False,,,,,,,,,,,
-401867883,South Dakota,Northern Colorado,2026-09-06 00:00:00+00:00,Nottingham Field,False,,,,,,,,,,,
-401868158,Weber State,Southern Utah,2026-09-06 00:00:00+00:00,Eccles Coliseum,False,,,,,,,,,,,
-401908254,Wartburg,Monmouth (IL),2026-09-06 00:00:00+00:00,April Zorn Memorial Stadium,False,,,,,,,,,,,
-401907779,Simpson (IA),Augustana (IL),2026-09-06 00:00:00+00:00,Charles D. Lindberg Stadium,False,,,,,,,,,,,
-401908454,Azusa Pacific,La Verne,2026-09-06 00:00:00+00:00,Ortmayer Stadium,False,,,,,,,,,,,
-401906168,Mars Hill,Winston-Salem State,2026-09-06 00:00:00+00:00,Bowman Gray Stadium,False,,,,,,,,,,,
-401907100,Adams State,Sul Ross State,2026-09-06 00:00:00+00:00,Jackson Field,False,,,,,,,,,,,
 401908467,Simpson (CA),Whittier,2026-09-06 00:00:00+00:00,"Memorial Stadium (Whittier, CA)",False,,,,,,,,,,,
+401907100,Adams State,Sul Ross State,2026-09-06 00:00:00+00:00,Jackson Field,False,,,,,,,,,,,
+401906168,Mars Hill,Winston-Salem State,2026-09-06 00:00:00+00:00,Bowman Gray Stadium,False,,,,,,,,,,,
+401867883,South Dakota,Northern Colorado,2026-09-06 00:00:00+00:00,Nottingham Field,False,,,,,,,,,,,
+401908454,Azusa Pacific,La Verne,2026-09-06 00:00:00+00:00,Ortmayer Stadium,False,,,,,,,,,,,
+401907357,Emporia State,Pittsburg State,2026-09-06 00:00:00+00:00,Carnie Smith Stadium,False,,,,,,,,,,,
+401907151,Phoenix,Fort Lewis,2026-09-06 00:00:00+00:00,Ray Dennison Memorial Field,False,,,,,,,,,,,
 401908433,Texas Lutheran,Trinity (TX),2026-09-06 00:00:00+00:00,Trinity University Stadium,False,,,,,,,,,,,
+401868306,East Texas A&M,Stephen F. Austin,2026-09-06 00:00:00+00:00,Homer Bryce Stadium,False,,,,,,,,,,,
+401868158,Weber State,Southern Utah,2026-09-06 00:00:00+00:00,Eccles Coliseum,False,,,,,,,,,,,
+401907779,Simpson (IA),Augustana (IL),2026-09-06 00:00:00+00:00,Charles D. Lindberg Stadium,False,,,,,,,,,,,
+401908254,Wartburg,Monmouth (IL),2026-09-06 00:00:00+00:00,April Zorn Memorial Stadium,False,,,,,,,,,,,
+401907465,Washington St. Louis,Rhodes,2026-09-06 00:00:00+00:00,Crain Field,False,,,,,,,,,,,
 401868074,Central Washington,Cal Poly,2026-09-06 00:00:00+00:00,Alex G. Spanos Stadium,False,,,,,,,,,,,
 401868119,Butler,Montana State,2026-09-06 00:30:00+00:00,Bobcat Stadium,False,,,,,,,,,,,
 401868163,UC Davis,San Diego,2026-09-06 02:00:00+00:00,Torero Stadium,False,,,,,,,,,,,
