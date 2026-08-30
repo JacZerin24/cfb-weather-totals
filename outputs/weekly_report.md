@@ -1,14 +1,14 @@
 # Weekly CFB Weather Totals Report
 
-Generated: 2026-08-29 16:56 UTC
+Generated: 2026-08-30 05:38 UTC
 
 > Paper tracking only. This report is not a guarantee of profit or betting advice.
 
 ## Weekly picks
 
-| status    | decision_reason                                                                                                     | research_tags                                                     | division_track   | model_track   |   season |   week |   game_id | start_date                | start_time_tbd   | away_team     | home_team   | venue_name                 | venue_city   | venue_state   |   venue_latitude |   venue_longitude | game_indoors   |   closing_total | line_provider   | line_source   |   line_provider_count |   line_total_range |   line_total_median |   selected_vs_market_median |   model_projected_total |   pred_market_residual |   abs_pred_edge | model_side   |   temperature_f |   dewpoint_f |   humidity |   wind_mph |   wind_gust_mph |   precip_probability_pct |   precipitation |   snowfall | weather_summary                   | nws_status   | nws_office   | home_conference   | away_conference   | home_classification   | away_classification   | fbs_vs_fbs   |   status_rank |
-|:----------|:--------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------|:-----------------|:--------------|---------:|-------:|----------:|:--------------------------|:-----------------|:--------------|:------------|:---------------------------|:-------------|:--------------|-----------------:|------------------:|:---------------|----------------:|:----------------|:--------------|----------------------:|-------------------:|--------------------:|----------------------------:|------------------------:|-----------------------:|----------------:|:-------------|----------------:|-------------:|-----------:|-----------:|----------------:|-------------------------:|----------------:|-----------:|:----------------------------------|:-------------|:-------------|:------------------|:------------------|:----------------------|:----------------------|:-------------|--------------:|
-| QUALIFIES | FCS-only HGB under edge ≥7.5 with a 56+ total; this screen was positive in each 2023-2025 walk-forward test season. | 5.0+ model edge; FCS-only HGB; FCS 7.5+ under edge; FCS 56+ total | FCS              | FCS-only HGB  |     2026 |      1 | 401868110 | 2026-08-30 01:00:00+00:00 | False            | Southern Utah | Montana     | Washington-Grizzly Stadium | Missoula     | MT            |          46.8639 |          -113.982 | False          |            59.5 | DraftKings      | CFBD          |                     1 |                  0 |                59.5 |                           0 |                 51.6007 |               -7.89932 |         7.89932 | under        |              73 |           49 |         43 |     5.7539 |         11.5078 |                       28 |            0.03 |          0 | Measurable precipitation forecast | ok           | MSO          | Big Sky           | Big Sky           | fcs                   | fcs                   | False        |             0 |
+| status              | note                                                                                           |
+|:--------------------|:-----------------------------------------------------------------------------------------------|
+| no_qualifying_plays | No game currently satisfies the HGB under 3.5+ edge, 56+ total, and forecast-readiness screen. |
 
 ## Starter backtest summary
 
