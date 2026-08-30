@@ -23,7 +23,9 @@ from .utils import ROOT
 def main() -> None:
     validate_frozen_rules()
     protocol = load_protocol()
-    assert protocol['protocol_version'] == '2026.1'
+    assert protocol['protocol_version'] == '2026.2'
+    assert protocol.get('supersedes') == '2026.1'
+    assert int(protocol['closing_benchmark_policy']['capture_window_minutes']) == 90
     assert len(protocol_sha256()) == 64
 
     kickoff = pd.Timestamp('2026-09-05T16:00:00Z')
@@ -176,6 +178,7 @@ def main() -> None:
     close_workflow = (ROOT / '.github/workflows/prospective-close-capture.yml').read_text(encoding='utf-8')
     assert 'workflow_dispatch' not in close_workflow, 'Close benchmark workflow must not allow manual captures.'
     assert 'github.run_attempt == 1' in close_workflow, 'Close benchmark workflow must exclude rerun backfill.'
+    assert 'twice per hour' in close_workflow, 'Protocol 2026.2 close-capture reliability note is missing.'
     for cron in protocol['closing_benchmark_policy']['capture_crons']:
         assert str(cron) in close_workflow, f'Frozen close-capture cron is not scheduled: {cron}'
 
