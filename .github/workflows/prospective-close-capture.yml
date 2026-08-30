@@ -2,10 +2,11 @@ name: Prospective Near-Kickoff Market Capture
 
 on:
   schedule:
-    # Hourly during the main college-football kickoff window Thursday through
-    # Monday. The script writes a file only when a game starts within 90 minutes.
-    - cron: '15 14-23 * * 4,5,6,0,1'
-    - cron: '15 0-5 * * 5,6,0,1,2'
+    # Protocol 2026.2: try twice per hour during the main college-football
+    # kickoff window Thursday through Monday. The script still writes a file
+    # only when a game starts within the frozen 90-minute capture window.
+    - cron: '15,45 14-23 * * 4,5,6,0,1'
+    - cron: '15,45 0-5 * * 5,6,0,1,2'
 
 permissions:
   contents: write
