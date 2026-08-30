@@ -28,6 +28,42 @@ The project is in active **2026 in-season prospective validation**.
 
 The 2026 prospective protocol is versioned in `config/prospective_protocol_2026.yml`. Protocol 2026.2 changes only close-capture reliability; the frozen model thresholds and official-entry rules are unchanged.
 
+### 2026 validation snapshot
+
+As of **August 30, 2026**, the prospective ledger contains:
+
+- 6 immutable official-board snapshots;
+- 4 immutable near-kickoff close captures;
+- 376 official game entries selected from eligible scheduled snapshots;
+- 1 qualifying entry, from the FCS-only track;
+- 1 settled qualifier, graded 1-0;
+- 0 general-track qualifying entries so far;
+- 0 settled qualifiers with a valid CLV benchmark so far.
+
+This is far too little prospective evidence to evaluate the frozen strategy. The dated counts above are only a project-status snapshot. The current source of truth is [`outputs/prospective/2026/prospective_summary.md`](outputs/prospective/2026/prospective_summary.md).
+
+## Research status
+
+The historical work supports **continued prospective testing**, not a claim that the model broadly predicts totals better than the market.
+
+- The useful historical profile is selective: stronger HGB UNDER signals, especially in higher-total games, have performed better than the broad model population.
+- The general residual model does not beat the zero-residual market baseline on unconditional MAE, so the research question is whether it can identify useful conditional subsets rather than forecast every game's residual more accurately than the market.
+- Historical threshold and filter exploration creates post-selection uncertainty. Attractive backtest rows are treated as hypotheses requiring chronological, robustness, and prospective validation rather than as confirmed edges.
+- The FCS track has substantially less evidence than the general track. Its current historical screen is promising enough to paper-track, but the sample is small and the FCS model's unconditional MAE is worse than the zero-residual baseline in each available walk-forward test season.
+- No OVER strategy is operational. Positive predicted residuals can be retained as research context, but they remain `NO PLAY` under the frozen 2026 protocol.
+- Experimental work performed during the 2026 season is kept separate from the official 2026 prospective validation and cannot retroactively change recorded entries.
+
+Useful research summaries on the current main branch include:
+
+- [`outputs/deep_research_summary.md`](outputs/deep_research_summary.md) - historical data quality, weather groups, simple rules, and baseline walk-forward diagnostics.
+- [`outputs/model_bakeoff_summary.md`](outputs/model_bakeoff_summary.md) - chronological model-family comparison.
+- [`outputs/model_edge_validation_summary.md`](outputs/model_edge_validation_summary.md) - edge stability by season, recent period, provider, total range, and weather regime.
+- [`outputs/edge_refinement_summary.md`](outputs/edge_refinement_summary.md) - stability-first screening of HGB UNDER refinements and interaction hypotheses.
+- [`outputs/fcs_research_summary.md`](outputs/fcs_research_summary.md) - dedicated FCS-vs-FCS model results, threshold sensitivity, and uncertainty guardrails.
+- [`outputs/prospective/2026/prospective_summary.md`](outputs/prospective/2026/prospective_summary.md) - current official 2026 prospective results and CLV summary.
+
+Research code or diagnostics in open branches/pull requests should be treated as experimental until reviewed and intentionally merged. They do not alter the frozen production protocol merely by existing.
+
 ## In-season automation
 
 The main automated pieces are:
@@ -38,7 +74,7 @@ The main automated pieces are:
 - `.github/workflows/deploy-pages.yml` - publishes the generated site from `docs/`.
 - `.github/workflows/prospective-ledger-tests.yml` - validates the frozen protocol, selection behavior, cadence, and immutable-file rules.
 
-See `documentation/IN_SEASON_OPERATIONS.md` for the full lifecycle of a game from live-board generation through grading.
+See [`documentation/IN_SEASON_OPERATIONS.md`](documentation/IN_SEASON_OPERATIONS.md) for the full lifecycle of a game from live-board generation through grading.
 
 ## Repository map
 
@@ -52,7 +88,7 @@ See `documentation/IN_SEASON_OPERATIONS.md` for the full lifecycle of a game fro
 - `documentation/` - human-maintained project documentation.
 - `.github/workflows/` - automation, validation, grading, and deployment.
 
-See `documentation/REPOSITORY_MAP.md` for a more detailed guide.
+See [`documentation/REPOSITORY_MAP.md`](documentation/REPOSITORY_MAP.md) for a more detailed guide.
 
 ## Core data sources
 
