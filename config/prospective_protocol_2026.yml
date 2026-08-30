@@ -1,6 +1,9 @@
-protocol_version: "2026.1"
+protocol_version: "2026.2"
 season: 2026
 frozen_at_utc: "2026-08-28T00:38:00Z"
+revision_effective_at_utc: "2026-08-30T06:20:00Z"
+supersedes: "2026.1"
+revision_scope: "Closing-benchmark capture reliability and documentation only; model rules, qualifier thresholds, official-entry timing, grading, and card logic are unchanged."
 purpose: "Prospective paper validation of the frozen 2026 CFB totals research rules."
 
 rules:
@@ -27,12 +30,12 @@ official_entry_policy:
 closing_benchmark_policy:
   capture_event_name: "schedule"
   capture_crons:
-    - "15 14-23 * * 4,5,6,0,1"
-    - "15 0-5 * * 5,6,0,1,2"
+    - "15,45 14-23 * * 4,5,6,0,1"
+    - "15,45 0-5 * * 5,6,0,1,2"
   capture_window_minutes: 90
   allow_manual_capture: false
   allow_rerun_backfill: false
-  selection: "Use the latest immutable first-attempt scheduled market capture before kickoff. Prefer the median total across available books; if a median is unavailable, use the selected current total. Missing captures stay missing and are not manually backfilled."
+  selection: "Use the latest immutable first-attempt scheduled market capture before kickoff and within the 90-minute capture window. Beginning with protocol 2026.2, the capture workflow attempts twice per hour to reduce missed benchmarks caused by delayed GitHub scheduled jobs. Prefer the median total across available books; if a median is unavailable, use the selected current total. Missing captures stay missing and are not manually backfilled."
   clv_definition: "For an under, CLV points = entry total minus benchmark close total. Positive is favorable. For an over, CLV points = benchmark close total minus entry total."
 
 paper_grading:
@@ -47,5 +50,5 @@ paper_grading:
   timing_note: "Derived grades are rebuilt only on postgame mornings or the scheduled pregame model runs, not during the live-game capture window."
 
 freeze_policy:
-  description: "Do not tune production thresholds or retrospectively alter official-entry selection based on 2026 outcomes before the declared review point. Any future protocol change must receive a new protocol_version and applies prospectively only."
+  description: "Do not tune production thresholds or retrospectively alter official-entry selection based on 2026 outcomes before the declared review point. Any future protocol change must receive a new protocol_version and applies prospectively only. Protocol 2026.2 changes only closing-benchmark capture reliability after missed Week 1 CLV opportunities; frozen model and entry rules remain unchanged."
   review_point: "After the 2026 regular season unless a data-integrity bug requires a documented correction."

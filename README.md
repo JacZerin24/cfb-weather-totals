@@ -1,99 +1,108 @@
 # CFB Weather Totals Research
 
-Research project for testing whether weather conditions influence college football totals **after accounting for the betting market**.
+Research and prospective paper-tracking project for testing whether college-football weather and game context can identify **systematic market residuals** in totals.
 
-The main research question is not simply whether weather affects scoring. The main question is:
-
-> Do weather conditions explain **actual total points minus the closing total** enough to create a repeatable edge?
-
-This repository is designed to start as a research and paper-tracking project before any real-money decisions are considered.
-
-## Current status
-
-Phase 1 starter repo.
-
-- Pull historical college football games from CollegeFootballData.
-- Pull historical betting totals/lines from CollegeFootballData.
-- Pull historical game weather from CollegeFootballData.
-- Build a game-level modeling dataset.
-- Research weather impacts on market residuals.
-- Backtest simple totals strategies.
-- Generate a weekly paper-tracking report.
-- Run weekly through GitHub Actions once API secrets are configured.
-
-## Important responsible-use note
-
-This project is for research and paper tracking. It does not guarantee profit, and early model output should not be treated as betting advice. Sports betting has real financial risk. Start with historical validation and paper tracking before risking money.
-
-## API keys
-
-Create these as GitHub Actions repository secrets:
-
-- `CFBD_API_KEY` — required for CollegeFootballData.
-- `ODDS_API_KEY` — optional later if using live sportsbook odds.
-- `NOAA_API_TOKEN` — optional later if using NOAA/NCEI historical data.
-
-For local development, copy `.env.example` to `.env` and fill in your key.
-
-## Local setup
-
-```bash
-python -m venv .venv
-source .venv/bin/activate  # Windows PowerShell: .venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-cp .env.example .env
-```
-
-Then edit `.env` and add your CollegeFootballData key.
-
-## Basic workflow
-
-```bash
-python -m src.pull_historical_games
-python -m src.pull_historical_lines
-python -m src.pull_historical_weather
-python -m src.build_dataset
-python -m src.research_weather_edges
-python -m src.backtest_totals
-python -m src.predict_week
-python -m src.report
-```
-
-## Core target variable
+The target is:
 
 ```text
 market_residual = actual_total_points - closing_total
 ```
 
-Negative residuals mean the game went under market expectation. Positive residuals mean the game went over market expectation.
+A negative predicted residual points toward an UNDER; a positive residual points toward an OVER. The project is not trying to predict scores from scratch. It starts with the sportsbook total and asks whether the game may finish materially above or below that market expectation.
 
-## Suggested preseason timeline
+Live site: https://jaczerin24.github.io/cfb-weather-totals/
 
-With about 11 weeks before Week 1, a realistic path is:
+## Current status
 
-1. Weeks 1-2: Confirm historical data pulls and clean joins.
-2. Weeks 3-4: Research wind, precipitation, cold, heat, and dome/outdoor splits.
-3. Weeks 5-6: Build and validate simple betting-rule backtests.
-4. Weeks 7-8: Add forecast-weather workflow and weekly report.
-5. Weeks 9-10: Paper-test against preseason/Week 0 odds.
-6. Week 11: Finalize Week 1 run and monitor outputs.
+The project is in active **2026 in-season prospective validation**.
 
-## Outputs
+- Historical research covers 2014-2025 regular seasons.
+- The general live model uses the existing HGB residual workflow.
+- FCS-vs-FCS games use a separate FCS-only HGB research model.
+- Current production research rules are UNDER-only; no operational OVER rule has validated.
+- General QUALIFIES require a model under edge of at least 3.5 points and a market total of at least 56.
+- FCS RESEARCH QUALIFIES require a model under edge of at least 7.5 points and a market total of at least 56.
+- The legacy two-leg card uses only the two strongest eligible general qualifiers and never forces a card.
+- Every official 2026 entry is selected from immutable scheduled snapshots before kickoff and later graded against the final score.
+- Near-kickoff market captures are stored separately for CLV tracking.
 
-Generated files are written to `outputs/`.
+The 2026 prospective protocol is versioned in `config/prospective_protocol_2026.yml`. Protocol 2026.2 changes only close-capture reliability; the frozen model thresholds and official-entry rules are unchanged.
 
-- `outputs/research_summary.md`
-- `outputs/backtest_summary.csv`
-- `outputs/weekly_report.md`
-- `outputs/weekly_picks.csv`
+## In-season automation
 
-## Model philosophy
+The main automated pieces are:
 
-Start simple and interpretable:
+- `.github/workflows/weekly-cfb-weather.yml` - builds the live board and creates official-entry snapshots on the frozen Thursday, Friday, and Saturday schedules.
+- `.github/workflows/prospective-close-capture.yml` - captures near-kickoff market totals for CLV without allowing manual backfill.
+- `.github/workflows/prospective-grade.yml` - rebuilds the ledger and grades completed games on safe postgame mornings.
+- `.github/workflows/deploy-pages.yml` - publishes the generated site from `docs/`.
+- `.github/workflows/prospective-ledger-tests.yml` - validates the frozen protocol, selection behavior, cadence, and immutable-file rules.
 
-- Compare actual total points to closing totals.
-- Test weather bins and thresholds.
-- Avoid overfitting.
-- Use walk-forward validation by season.
-- Track closing-line value and ROI separately.
-- Treat parlays as experimental only.
+See `documentation/IN_SEASON_OPERATIONS.md` for the full lifecycle of a game from live-board generation through grading.
+
+## Repository map
+
+- `src/` - model, data, live-board, odds, NWS, research, and prospective-ledger code.
+- `config/` - model/settings configuration and the frozen 2026 prospective protocol.
+- `data/raw/` - locally/generated raw historical inputs; large data are not committed.
+- `data/processed/` - generated model-training inputs; live training data are restored through GitHub Actions artifacts.
+- `outputs/` - generated research, live-board, cache, and prospective-ledger products.
+- `outputs/prospective/2026/` - immutable board snapshots, immutable close captures, manifest, official entries, grades, and prospective summaries.
+- `docs/` - generated GitHub Pages site. Do not treat this as hand-maintained source code.
+- `documentation/` - human-maintained project documentation.
+- `.github/workflows/` - automation, validation, grading, and deployment.
+
+See `documentation/REPOSITORY_MAP.md` for a more detailed guide.
+
+## Core data sources
+
+- CollegeFootballData (CFBD) - games, historical/live totals, team/venue context, and historical source data.
+- National Weather Service - live kickoff weather for outdoor games.
+- OddsPapi - primary FCS fallback when CFBD does not have a usable FCS total.
+- The Odds API - secondary FCS fallback.
+
+The live market pipeline preserves provider count, minimum, maximum, median, and range when available so line-source uncertainty can be audited.
+
+## API keys
+
+GitHub Actions uses repository secrets as needed:
+
+- `CFBD_API_KEY`
+- `ODDSPAPI_API_KEY`
+- `ODDS_API_KEY`
+- `NOAA_API_TOKEN`
+
+For local development, copy `.env.example` to `.env` and add the keys you intend to use.
+
+## Local setup
+
+```bash
+python -m venv .venv
+# Windows PowerShell:
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+## Historical research workflow
+
+A typical full historical build uses the scripts in `src/` to pull source data, build the modeling dataset, run walk-forward research, validate model edges, and generate research dashboards. The dedicated GitHub Actions historical workflow is `.github/workflows/manual-historical-research.yml`.
+
+Historical outputs are intentionally kept separate from the frozen 2026 prospective ledger. Research changes must not rewrite an already-recorded official entry.
+
+## 2026 prospective integrity rules
+
+The prospective system is designed to make hindsight difficult:
+
+- official entries come only from the declared scheduled board snapshots;
+- the selected snapshot must be at least 120 minutes before kickoff;
+- reruns of the same scheduled model run cannot opportunistically replace the first successful attempt;
+- push/manual website refreshes can be archived but cannot become official entries;
+- near-kickoff close captures are schedule-only and first-attempt-only;
+- missing close captures stay missing rather than being reconstructed after the result is known;
+- immutable CSV filenames contain a SHA-256 content-hash prefix and are verified when the ledger rebuilds;
+- postgame grades are derived from the immutable entry plus final score, not from the current live board;
+- production thresholds are not retuned from 2026 outcomes before the declared review point except for documented data-integrity fixes.
+
+## Interpretation
+
+This remains a research and paper-tracking project. Historical threshold selection contains post-selection uncertainty, the broad model does not beat the market total on unconditional MAE, and the FCS track has substantially more validation uncertainty than the general track. A qualifier is therefore a rule-based research signal, not proof of a causal weather effect or a guaranteed profitable wager.
