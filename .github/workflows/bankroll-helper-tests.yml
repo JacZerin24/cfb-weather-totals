@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'src/bankroll_helper.py'
+      - 'src/fcs_research_labels.py'
       - '.github/workflows/bankroll-helper-tests.yml'
       - '.github/workflows/weekly-cfb-weather.yml'
   workflow_dispatch:
@@ -26,11 +27,12 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Validate bankroll plan logic
+      - name: Validate bankroll and FCS label logic
         run: |
           python - <<'PY'
           import pandas as pd
           from src.bankroll_helper import _inject, _qualifier_records, _script, _section_html
+          from src.fcs_research_labels import FCS_LABEL, label_html
 
           board = pd.DataFrame([
               {
@@ -60,12 +62,26 @@ jobs:
           assert [g['game_id'] for g in fcs] == ['3']
           assert [g['game_id'] for g in card] == ['1', '2']
 
-          html = '<html><head><style></style></head><body><nav><a href="#card">2-leg card</a></nav><main><section id="card">card</section></main></body></html>'
+          html = '<html><head><style>    .parlay { padding:20px; }</style></head><body><nav><a href="#card">2-leg card</a></nav><main><section id="card">card</section></main></body></html>'
           rendered = _inject(html, _section_html(2, 1, True), _script(general, fcs, card))
           assert 'id="bankroll"' in rendered
           assert 'href="#bankroll"' in rendered
-          assert 'PAPER ONLY' in rendered
-          assert 'bankrollData' in rendered
+          assert 'FCS research %' in rendered
+          assert 'fcs:0.25' in rendered
+          assert 'fcs:0.50' in rendered
+          assert 'fcsStake * bankrollData.fcs.length' in rendered
+          assert 'FCS RESEARCH' in rendered
+          assert '$0 suggested' not in rendered
           assert rendered.index('id="bankroll"') < rendered.index('id="card"')
-          print('Bankroll helper validation passed.')
+
+          dashboard = '''<html><head><style>    .parlay { padding:20px; }</style></head><body>
+          <article class="target-card"><span class="badge qualifies">QUALIFIES</span><h3>FCS A <span>@</span> FCS B</h3></article>
+          <table><tr data-status="QUALIFIES" data-division="FCS"><td><span class="badge qualifies">QUALIFIES</span></td><td>FCS A @ FCS B</td></tr></table>
+          <script>const x = escapeHtml(game.status + ' · ' + (game.division || 'OTHER'));</script>
+          </body></html>'''
+          labeled = label_html(dashboard, board)
+          assert labeled.count(FCS_LABEL) >= 3
+          assert 'data-status="QUALIFIES" data-division="FCS"' in labeled
+          assert 'fcs-research-qualifies' in labeled
+          print('Bankroll/FCS label validation passed.')
           PY
