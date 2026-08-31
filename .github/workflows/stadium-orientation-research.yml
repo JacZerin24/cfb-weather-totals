@@ -42,26 +42,32 @@ jobs:
             exit 1
           fi
 
-      - name: Build historical modeling dataset and mechanism inputs
+      - name: Restore current historical modeling dataset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/cfb-orientation-base
+          mkdir -p /tmp/cfb-orientation-base data/processed
+          LIVE_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?name=cfb-live-training-data&per_page=100" \
+            --jq '[.artifacts[] | select(.expired == false)] | sort_by(.created_at) | last | .workflow_run.id // empty')
+          if [ -z "$LIVE_RUN_ID" ]; then
+            echo "ERROR: No current live training artifact found."
+            exit 1
+          fi
+          gh run download "$LIVE_RUN_ID" -n cfb-live-training-data -D /tmp/cfb-orientation-base
+          cp /tmp/cfb-orientation-base/modeling_dataset.csv data/processed/modeling_dataset.csv
+          echo "Restored modeling dataset from run ${LIVE_RUN_ID}."
+
+      - name: Pull mechanism inputs and run study
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
-          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
-          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-          NOAA_API_TOKEN: ${{ secrets.NOAA_API_TOKEN }}
         run: |
           python -m src.pull_historical_games
-          python -m src.pull_historical_lines
-          python -m src.pull_historical_weather
-          python -m src.pull_team_season_stats
-          python -m src.pull_team_advanced_stats || echo "Advanced team stats unavailable; continuing."
-          python -m src.build_team_features
-          python -m src.build_dataset
           python -m src.pull_historical_game_team_stats
-          python -m src.stadium_wind_orientation_research
-          python -m src.stadium_wind_orientation_falsification
-          python -m src.stadium_wind_orientation_mechanisms
+          python -m src.stadium_wind_orientation_mechanisms_v2
 
-      - name: Upload orientation research outputs
+      - name: Upload orientation mechanism outputs
         if: always()
         uses: actions/upload-artifact@v4
         with:
