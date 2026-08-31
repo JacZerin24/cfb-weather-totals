@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import os
 from datetime import datetime, timezone
 
@@ -11,10 +12,11 @@ from .deep_research import prep
 from .model_bakeoff import feature_lists, prep_features, reg_models
 from .nws_forecast import NWSClient
 from .predict_week import add_live_categories, merge_prior_team_features
-from .utils import ROOT, ensure_dir, read_df
+from .utils import ROOT, ensure_dir, load_yaml, read_df
 
 ORIENTATION_PATH = ROOT / 'data/reference/stadium_orientations.csv'
 SHADOW_DIR = ROOT / 'outputs/orientation_shadow/2026'
+EVAL_PROTOCOL_PATH = ROOT / 'config/orientation_evaluation_protocol_2026.yml'
 CHALLENGER_VERSION = 'orientation-crosswind-hgb-v0.1'
 
 
@@ -24,6 +26,19 @@ def as_bool(value: object) -> bool:
     if value is None or (isinstance(value, float) and np.isnan(value)):
         return False
     return str(value).strip().lower() in {'true', '1', 'yes', 'y'}
+
+
+def load_eval_protocol() -> dict:
+    protocol = load_yaml('config/orientation_evaluation_protocol_2026.yml')
+    if int(protocol.get('season', 0)) != 2026:
+        raise RuntimeError('Orientation evaluation protocol must remain scoped to 2026.')
+    if str(protocol.get('challenger_version')) != CHALLENGER_VERSION:
+        raise RuntimeError('Orientation evaluation protocol challenger version does not match capture code.')
+    return protocol
+
+
+def eval_protocol_sha256() -> str:
+    return hashlib.sha256(EVAL_PROTOCOL_PATH.read_bytes()).hexdigest()
 
 
 def field_angle(wind_direction: np.ndarray, field_axis: np.ndarray) -> np.ndarray:
@@ -166,6 +181,7 @@ def score_challenger(board: pd.DataFrame) -> pd.DataFrame:
 
 
 def main() -> None:
+    protocol = load_eval_protocol()
     board = read_df('outputs/weekly_board.csv').copy()
     if board.empty:
         raise RuntimeError('weekly_board.csv is empty.')
@@ -195,19 +211,44 @@ def main() -> None:
         board.loc[valid, 'alongwind_mph'] = board.loc[valid, 'wind_mph'].to_numpy(float) * np.cos(np.deg2rad(angle))
 
     scored = score_challenger(board)
+    captured = pd.Timestamp.now(tz='UTC')
+    event_name = os.getenv('ORIENTATION_SHADOW_EVENT_NAME', os.getenv('GITHUB_EVENT_NAME', '')).strip()
+    event_schedule = os.getenv('ORIENTATION_SHADOW_EVENT_SCHEDULE', '').strip()
+    official_policy = protocol['official_entry_policy']
+    official_eligible = (
+        event_name == str(official_policy['eligible_event_name'])
+        and event_schedule in {str(v) for v in official_policy.get('eligible_crons', [])}
+    )
+
     scored['challenger_version'] = CHALLENGER_VERSION
     scored['baseline_status'] = scored['status']
     scored['baseline_pred_market_residual'] = pd.to_numeric(scored['pred_market_residual'], errors='coerce')
     scored['challenger_minus_baseline_edge'] = scored['challenger_pred_market_residual'] - scored['baseline_pred_market_residual']
     scored['status_changed'] = scored['challenger_status'].astype(str) != scored['baseline_status'].astype(str)
-    scored['captured_at_utc'] = datetime.now(timezone.utc).isoformat()
+    scored['captured_at_utc'] = captured.isoformat()
+    scored['github_event_name'] = event_name
+    scored['github_event_schedule'] = event_schedule
     scored['github_run_id'] = os.getenv('GITHUB_RUN_ID', '')
     scored['github_run_attempt'] = os.getenv('GITHUB_RUN_ATTEMPT', '')
     scored['github_sha'] = os.getenv('GITHUB_SHA', '')
+    scored['evaluation_protocol_version'] = str(protocol['protocol_version'])
+    scored['evaluation_protocol_sha256'] = eval_protocol_sha256()
+    scored['official_evaluation_eligible'] = bool(official_eligible)
+    scored['entry_lead_minutes'] = (
+        pd.to_datetime(scored['start_date'], utc=True, errors='coerce') - captured
+    ).dt.total_seconds() / 60.0
+    scored['orientation_ready'] = (
+        scored['division_track'].astype(str).str.upper().eq('FBS')
+        & scored['crosswind_mph'].notna()
+        & scored['baseline_pred_market_residual'].notna()
+        & scored['challenger_pred_market_residual'].notna()
+    )
     scored['research_only'] = True
 
     keep = [c for c in [
-        'captured_at_utc', 'github_run_id', 'github_run_attempt', 'github_sha', 'challenger_version', 'research_only',
+        'captured_at_utc', 'github_event_name', 'github_event_schedule', 'github_run_id', 'github_run_attempt', 'github_sha',
+        'evaluation_protocol_version', 'evaluation_protocol_sha256', 'official_evaluation_eligible', 'entry_lead_minutes',
+        'challenger_version', 'research_only', 'orientation_ready',
         'season', 'week', 'game_id', 'start_date', 'away_team', 'home_team', 'venue_id', 'venue_name', 'division_track',
         'closing_total', 'line_provider', 'baseline_status', 'baseline_pred_market_residual', 'model_projected_total',
         'challenger_status', 'challenger_pred_market_residual', 'challenger_projected_total', 'challenger_abs_edge',
@@ -218,21 +259,30 @@ def main() -> None:
     output = scored[keep].copy()
 
     ensure_dir(SHADOW_DIR)
-    stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+    payload = output.to_csv(index=False, lineterminator='\n').encode('utf-8')
+    digest = hashlib.sha256(payload).hexdigest()
+    stamp = captured.strftime('%Y%m%dT%H%M%SZ')
     run = os.getenv('GITHUB_RUN_ID', 'local')
     attempt = os.getenv('GITHUB_RUN_ATTEMPT', '1')
-    snapshot = SHADOW_DIR / f'shadow_{stamp}_run{run}_a{attempt}.csv'
-    output.to_csv(snapshot, index=False)
+    snapshot = SHADOW_DIR / f'shadow_{stamp}_run{run}_a{attempt}_{digest[:12]}.csv'
+    with open(snapshot, 'xb') as handle:
+        handle.write(payload)
     output.to_csv(SHADOW_DIR / 'latest.csv', index=False)
 
     manifest = SHADOW_DIR / 'manifest.csv'
     row = pd.DataFrame([{
-        'captured_at_utc': output['captured_at_utc'].iloc[0] if len(output) else datetime.now(timezone.utc).isoformat(),
+        'captured_at_utc': captured.isoformat(),
         'snapshot_file': snapshot.name,
+        'snapshot_sha256': digest,
+        'evaluation_protocol_version': str(protocol['protocol_version']),
+        'evaluation_protocol_sha256': eval_protocol_sha256(),
         'challenger_version': CHALLENGER_VERSION,
+        'github_event_name': event_name,
+        'github_event_schedule': event_schedule,
+        'official_evaluation_eligible': bool(official_eligible),
         'games': len(output),
         'fbs_games': int(output['division_track'].astype(str).str.upper().eq('FBS').sum()),
-        'orientation_ready_fbs_games': int((output['division_track'].astype(str).str.upper().eq('FBS') & output['crosswind_mph'].notna()).sum()),
+        'orientation_ready_fbs_games': int(output['orientation_ready'].fillna(False).sum()),
         'status_disagreements': int(output['status_changed'].fillna(False).sum()),
         'github_run_id': run,
         'github_run_attempt': attempt,
@@ -242,7 +292,10 @@ def main() -> None:
         old = pd.read_csv(manifest)
         row = pd.concat([old, row], ignore_index=True)
     row.to_csv(manifest, index=False)
-    print(f'Wrote research-only orientation shadow snapshot: {snapshot}')
+    print(
+        f'Wrote research-only orientation shadow snapshot: {snapshot}; '
+        f'official-evaluation-eligible={official_eligible}'
+    )
 
 
 if __name__ == '__main__':
