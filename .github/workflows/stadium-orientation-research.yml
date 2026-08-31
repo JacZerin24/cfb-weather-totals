@@ -59,13 +59,12 @@ jobs:
           cp /tmp/cfb-orientation-base/modeling_dataset.csv data/processed/modeling_dataset.csv
           echo "Restored modeling dataset from run ${LIVE_RUN_ID}."
 
-      - name: Pull mechanism inputs and run study
+      - name: Pull locked-regime play-by-play and run final mechanism study
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
         run: |
-          python -m src.pull_historical_games
-          python -m src.pull_historical_game_team_stats
-          python -m src.stadium_wind_orientation_mechanisms_v2
+          python -m src.pull_orientation_play_by_play
+          python -m src.stadium_wind_orientation_pbp_mechanism
 
       - name: Upload orientation mechanism outputs
         if: always()
@@ -73,5 +72,5 @@ jobs:
         with:
           name: stadium-wind-orientation-research
           path: |
-            data/raw/cfbd_game_team_stats.csv
+            data/raw/orientation_pbp_10_15.csv
             outputs/orientation_research/*
