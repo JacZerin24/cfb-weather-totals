@@ -1,0 +1,45 @@
+name: Stadium Orientation PBP Parser Sensitivity
+
+on:
+  push:
+    branches:
+      - stadium-wind-orientation-research
+    paths:
+      - '.github/workflows/stadium-orientation-pbp-sensitivity.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  sensitivity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+
+      - name: Restore completed bounded PBP artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/orientation-pbp
+          mkdir -p /tmp/orientation-pbp
+          gh run download 33439608599 -n stadium-wind-orientation-research -D /tmp/orientation-pbp
+          mkdir -p data/raw outputs/orientation_research
+          cp /tmp/orientation-pbp/data/raw/orientation_pbp_10_15.csv data/raw/orientation_pbp_10_15.csv
+          cp /tmp/orientation-pbp/outputs/orientation_research/pbp_target_games.csv outputs/orientation_research/pbp_target_games.csv
+
+      - name: Run parser-integrity sensitivity
+        run: python -m src.stadium_wind_orientation_pbp_sensitivity
+
+      - name: Upload sensitivity outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: stadium-orientation-pbp-parser-sensitivity
+          path: |
+            outputs/orientation_research/pbp_parser_sensitivity_*.csv
+            outputs/orientation_research/pbp_parser_sensitivity.md
