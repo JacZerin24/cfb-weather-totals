@@ -1,2 +1,3 @@
-captured_at_utc,snapshot_file,challenger_version,games,fbs_games,orientation_ready_fbs_games,status_disagreements,github_run_id,github_run_attempt,github_sha
-2026-08-31T20:36:51.868304+00:00,shadow_20260831T203651Z_run33436698690_a1.csv,orientation-crosswind-hgb-v0.1,320,43,40,0,33436698690,1,cb040938b21f1aaef80b278eb538fe9bc67479b7
+captured_at_utc,snapshot_file,challenger_version,games,fbs_games,orientation_ready_fbs_games,status_disagreements,github_run_id,github_run_attempt,github_sha,snapshot_sha256,evaluation_protocol_version,evaluation_protocol_sha256,github_event_name,github_event_schedule,official_evaluation_eligible
+2026-08-31T20:36:51.868304+00:00,shadow_20260831T203651Z_run33436698690_a1.csv,orientation-crosswind-hgb-v0.1,320,43,40,0,33436698690,1,cb040938b21f1aaef80b278eb538fe9bc67479b7,,,,,,
+2026-08-31T21:10:45.458725+00:00,shadow_20260831T211045Z_run33439736588_a1_21722639eece.csv,orientation-crosswind-hgb-v0.1,320,43,41,0,33439736588,1,307978a36af212435a037756e738d05b3999c0b2,21722639eece1e098eb03b3ae5490787a83e85c37048901315f25ab117972cc7,orientation-eval-2026.1,01e174f7ba32ece8a2cbff6754e3aefcf92f5834cd0b7825d7dd69421557998c,push,,False
