@@ -7,6 +7,11 @@ on:
         description: Optional research note
         required: false
         default: orientation-research
+  push:
+    branches:
+      - stadium-wind-orientation-research
+    paths:
+      - .github/workflows/stadium-orientation-research.yml
 
 permissions:
   contents: read
@@ -37,7 +42,7 @@ jobs:
             exit 1
           fi
 
-      - name: Build historical modeling dataset
+      - name: Build historical modeling dataset and mechanism inputs
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
           ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
@@ -51,8 +56,10 @@ jobs:
           python -m src.pull_team_advanced_stats || echo "Advanced team stats unavailable; continuing."
           python -m src.build_team_features
           python -m src.build_dataset
+          python -m src.pull_historical_game_team_stats
           python -m src.stadium_wind_orientation_research
           python -m src.stadium_wind_orientation_falsification
+          python -m src.stadium_wind_orientation_mechanisms
 
       - name: Upload orientation research outputs
         if: always()
@@ -60,4 +67,5 @@ jobs:
         with:
           name: stadium-wind-orientation-research
           path: |
+            data/raw/cfbd_game_team_stats.csv
             outputs/orientation_research/*
