@@ -1,0 +1,81 @@
+protocol_version: "orientation-eval-2026.1"
+season: 2026
+challenger_version: "orientation-crosswind-hgb-v0.1"
+frozen_at_utc: "2026-08-31T20:59:52Z"
+status: "research_only"
+purpose: "Prospective paired evaluation of the existing GENERAL HGB baseline versus the frozen GENERAL HGB + crosswind_mph orientation challenger."
+
+scope:
+  division_track: "FBS"
+  require_orientation_ready: true
+  require_both_predictions: true
+  require_final_game: true
+  comparison_unit: "game"
+  entry_total: "Use the closing_total stored in the selected shadow snapshot for both baseline and challenger."
+
+official_entry_policy:
+  eligible_event_name: "schedule"
+  eligible_crons:
+    - "0 14 * * 4"
+    - "0 14 * * 5"
+    - "0 13 * * 6"
+  minimum_lead_minutes: 120
+  selection: "For each game, use the latest successful eligible scheduled orientation-shadow snapshot at least 120 minutes before kickoff. For duplicate attempts of the same GitHub run, retain the earliest successful attempt. Push/manual snapshots remain archived but are never official evaluation entries."
+
+primary_metric:
+  name: "paired_projected_total_mae"
+  baseline_error: "abs((closing_total + baseline_pred_market_residual) - actual_total_points)"
+  challenger_error: "abs((closing_total + challenger_pred_market_residual) - actual_total_points)"
+  delta_definition: "challenger_mae_minus_baseline_mae"
+  better_direction: "negative"
+  uncertainty: "95% paired bootstrap confidence interval over games"
+  bootstrap_reps: 10000
+  bootstrap_seed: 20260831
+
+secondary_model_metrics:
+  - "paired_projected_total_rmse"
+  - "mean_signed_projection_error_bias"
+  - "observed_market_residual_minus_predicted_residual"
+
+classification_evaluation:
+  strength_order:
+    "QUALIFIES": 2
+    "LEAN": 1
+    "NO PLAY": 0
+    "WATCH": 0
+    "NO LINE": 0
+  migration_rule: "A challenger move toward stronger UNDER support is correct when the game finishes under the selected entry total and incorrect when it finishes over; a move toward weaker UNDER support is correct when the game finishes over and incorrect when it finishes under. Pushes are neutral."
+  report:
+    - "all_status_disagreements"
+    - "qualifier_status_disagreements"
+    - "status_migration_accuracy"
+
+qualifier_economics:
+  direction: "under"
+  price: -110
+  win_profit_units: 0.9090909091
+  loss_profit_units: -1.0
+  push_profit_units: 0.0
+  report_separately_for:
+    - "baseline_QUALIFIES"
+    - "challenger_QUALIFIES"
+  metrics:
+    - "graded_qualifiers"
+    - "wins_losses_pushes"
+    - "hit_rate_excluding_pushes"
+    - "roi_per_1u"
+    - "average_clv_points_when_benchmark_close_is_available"
+  clv_definition: "For an under, CLV points = selected shadow entry total minus the immutable prospective benchmark close total. Positive is favorable."
+
+review_policy:
+  descriptive_updates: "May be rebuilt after completed games without changing the protocol or challenger."
+  formal_review_points:
+    - "after Week 6 is complete"
+    - "after Week 10 is complete"
+    - "after the 2026 regular season"
+  promotion_policy: "No automatic promotion. Any production change requires a separately documented versioned decision using historical robustness plus prospective evidence and applies prospectively only from its declared effective time."
+  interpretation: "Primary paired MAE and its uncertainty take precedence. ROI, hit rate, CLV, and individual disagreement games are supporting evidence and cannot alone justify promotion."
+
+freeze_policy:
+  challenger_tuning: "Do not change orientation-crosswind-hgb-v0.1 features, model specification, or qualifier thresholds based on 2026 outcomes. A changed challenger receives a new version and a new prospective start time."
+  evaluation_tuning: "Do not change official-entry selection, primary metric, classification scoring, or economic grading based on observed 2026 results. Data-integrity bug fixes require a documented protocol revision that preserves prior records."
