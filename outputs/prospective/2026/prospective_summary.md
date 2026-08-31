@@ -23,8 +23,8 @@ The immutable snapshot files are the source of truth. Derived ledgers and summar
 
 ## Data integrity
 
-- Immutable board snapshots: 6
-- Immutable close captures: 4
+- Immutable board snapshots: 7
+- Immutable close captures: 5
 - Official game entries selected: 376
 
 Every immutable CSV filename contains the first 12 characters of its SHA-256 content hash. The workflow verifies those hashes before rebuilding derived results.
