@@ -1,0 +1,35 @@
+name: Orientation Evaluation Branch Test
+
+on:
+  push:
+    branches:
+      - orientation-evaluation-2026-freeze
+    paths:
+      - '.github/workflows/orientation-evaluation-branch-test.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - name: Compile orientation scripts
+        run: python -m py_compile src/orientation_shadow_capture.py src/orientation_shadow_grade.py
+      - name: Validate and build frozen evaluation
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: |
+          python -m src.orientation_shadow_grade validate-protocol
+          python -m src.orientation_shadow_grade build
+      - name: Upload test outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: orientation-evaluation-branch-test
+          path: outputs/orientation_shadow/2026/evaluation/*
