@@ -11,6 +11,10 @@ on:
       - 'data/processed/**'
       - '.github/workflows/weekly-cfb-weather.yml'
   schedule:
+    # Monday early look: refresh the full operational board as a preliminary
+    # baseline only. It is intentionally excluded from frozen official-entry
+    # and orientation-evaluation eligibility.
+    - cron: '0 14 * * 1'
     # Frozen prospective entry snapshots: Thursday/Friday morning plus a
     # Saturday morning update closer to most kickoffs.
     - cron: '0 14 * * 4'
@@ -105,6 +109,8 @@ jobs:
           ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           NOAA_API_TOKEN: ${{ secrets.NOAA_API_TOKEN }}
+          WEEKLY_EVENT_NAME: ${{ github.event_name }}
+          WEEKLY_EVENT_SCHEDULE: ${{ github.event.schedule }}
         run: |
           python -m src.run_live_week
           python -m src.fcs_research
@@ -114,6 +120,7 @@ jobs:
           python -m src.fcs_research_labels
           python -m src.fcs_card_guard
           python -m src.bankroll_helper
+          python -m src.mark_monday_early_look
 
       - name: Archive prospective entry snapshot
         env:
