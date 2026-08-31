@@ -52,6 +52,7 @@ jobs:
           python -m src.build_team_features
           python -m src.build_dataset
           python -m src.stadium_wind_orientation_research
+          python -m src.stadium_wind_orientation_falsification
 
       - name: Upload orientation research outputs
         if: always()
