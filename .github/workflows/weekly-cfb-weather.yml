@@ -12,8 +12,8 @@ on:
       - '.github/workflows/weekly-cfb-weather.yml'
   schedule:
     # Monday early look: refresh the full operational board as a preliminary
-    # baseline only. It is intentionally excluded from frozen official-entry
-    # and orientation-evaluation eligibility.
+    # baseline only. Monday is operational-only and intentionally remains
+    # outside both frozen official-entry eligible_crons lists.
     - cron: '0 14 * * 1'
     # Frozen prospective entry snapshots: Thursday/Friday morning plus a
     # Saturday morning update closer to most kickoffs.
