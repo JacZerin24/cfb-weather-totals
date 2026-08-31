@@ -1,0 +1,2 @@
+captured_at_utc,snapshot_file,challenger_version,games,fbs_games,orientation_ready_fbs_games,status_disagreements,github_run_id,github_run_attempt,github_sha
+2026-08-31T20:36:51.868304+00:00,shadow_20260831T203651Z_run33436698690_a1.csv,orientation-crosswind-hgb-v0.1,320,43,40,0,33436698690,1,cb040938b21f1aaef80b278eb538fe9bc67479b7
