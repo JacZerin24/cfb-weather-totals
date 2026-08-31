@@ -1,0 +1,57 @@
+study_version: "orientation-pbp-mechanism-2026.1"
+frozen_at_utc: "2026-08-31T21:06:00Z"
+status: "historical_research_only"
+purpose: "One final bounded play-by-play mechanism test for the stadium-relative wind hypothesis."
+
+sample:
+  seasons: [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+  division_track: "FBS"
+  outdoor_only: true
+  raw_wind_mph:
+    greater_than: 10.0
+    less_than_or_equal: 15.0
+  alignment:
+    parallel_max_degrees: 30.0
+    cross_min_degrees: 60.0
+  recent_era_secondary_check: [2021, 2022, 2023, 2024, 2025]
+
+outcomes:
+  explosive_passing:
+    primary_metric: "completed passes gaining at least 20 yards divided by pass attempts"
+    explosive_yards_threshold: 20
+    pass_attempt_definition: "CFBD play type/text indicates completed pass, incomplete pass, or interception; sacks are excluded."
+    completion_definition: "CFBD play type/text indicates a completed/reception/pass-touchdown play."
+  field_goals:
+    primary_metric: "field-goal make probability"
+    attempt_definition: "CFBD play type/text identifies a field-goal attempt; extra points are excluded."
+    make_definition: "field-goal play with scoring=true; non-scoring field-goal attempts are misses/blocks."
+    distance_method: "Parse explicit distance from play text first; otherwise use yardsToGoal + 17 as a documented approximation."
+    descriptive_distance_bins:
+      - "<40"
+      - "40-49"
+      - "50+"
+
+controls:
+  common_game_controls:
+    - "wind_mph"
+    - "temperature_f"
+    - "humidity"
+    - "precipitation"
+    - "dewpoint_f"
+    - "pressure"
+    - "closing_total"
+    - "neutral_site"
+    - "venue fixed effects"
+    - "season fixed effects"
+    - "line provider fixed effects"
+  explosive_pass_uncertainty: "cluster by venue at the game level"
+  field_goal_extra_controls:
+    - "attempt distance"
+    - "attempt distance squared"
+  field_goal_uncertainty: "cluster by game at the play level"
+
+interpretation:
+  no_betting_search: true
+  no_new_wind_thresholds: true
+  no_model_promotion_from_this_study_alone: true
+  stopping_rule: "After this study, historical stadium-orientation mechanism research stops. Future evidence comes primarily from the frozen 2026 prospective shadow evaluation unless a data-integrity issue is discovered."
