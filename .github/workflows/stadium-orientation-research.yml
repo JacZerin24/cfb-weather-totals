@@ -1,0 +1,62 @@
+name: Stadium Wind Orientation Research
+
+on:
+  workflow_dispatch:
+    inputs:
+      note:
+        description: Optional research note
+        required: false
+        default: orientation-research
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  orientation-research:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out research branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Confirm required CFBD secret
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: |
+          if [ -z "$CFBD_API_KEY" ]; then
+            echo "ERROR: CFBD_API_KEY is missing."
+            exit 1
+          fi
+
+      - name: Build historical modeling dataset
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          NOAA_API_TOKEN: ${{ secrets.NOAA_API_TOKEN }}
+        run: |
+          python -m src.pull_historical_games
+          python -m src.pull_historical_lines
+          python -m src.pull_historical_weather
+          python -m src.pull_team_season_stats
+          python -m src.pull_team_advanced_stats || echo "Advanced team stats unavailable; continuing."
+          python -m src.build_team_features
+          python -m src.build_dataset
+          python -m src.stadium_wind_orientation_research
+
+      - name: Upload orientation research outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stadium-wind-orientation-research
+          path: |
+            outputs/orientation_research/*
