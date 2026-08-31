@@ -1,0 +1,33 @@
+version: "orientation-crosswind-hgb-v0.1"
+status: "research_only_shadow"
+frozen_at_utc: "2026-08-31T20:30:00Z"
+track: "FBS"
+purpose: "Prospective 2026 shadow evaluation of whether measured stadium-relative crosswind adds incremental value to the existing GENERAL HGB model."
+baseline:
+  model: "GENERAL HGB"
+  production_effect: false
+challenger:
+  model: "GENERAL HGB"
+  added_numeric_features:
+    - crosswind_mph
+  formula: "crosswind_mph = wind_mph * abs(sin(wind_direction_axis_minus_field_axis))"
+  field_axis_modulus_degrees: 180
+  wind_direction_convention: "meteorological FROM direction; absolute crosswind magnitude is invariant to 180-degree reversal"
+  thresholds:
+    qualify_edge_points: 3.5
+    minimum_total: 56.0
+    direction: "under"
+  tuning_policy: "No threshold or feature changes based on 2026 outcomes. Any new challenger specification receives a new version and begins prospectively from its freeze time."
+separation:
+  may_change_weekly_board_status: false
+  may_change_prospective_ledger: false
+  may_change_weekly_picks: false
+  outputs_path: "outputs/orientation_shadow/2026"
+review_metrics:
+  - prediction_mae
+  - calibration
+  - qualifier_hit_rate
+  - qualifier_roi
+  - clv
+  - baseline_challenger_disagreement_games
+  - status_migration_accuracy
