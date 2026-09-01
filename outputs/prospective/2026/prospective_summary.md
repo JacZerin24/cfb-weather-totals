@@ -23,7 +23,7 @@ The immutable snapshot files are the source of truth. Derived ledgers and summar
 
 ## Data integrity
 
-- Immutable board snapshots: 7
+- Immutable board snapshots: 11
 - Immutable close captures: 5
 - Official game entries selected: 376
 

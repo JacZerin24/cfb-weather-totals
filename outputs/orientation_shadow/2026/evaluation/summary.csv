@@ -1,0 +1,2 @@
+protocol_version,protocol_sha256,challenger_version,graded_paired_games,baseline_qualifiers,baseline_wins,baseline_losses,baseline_pushes,baseline_hit_rate,baseline_roi_per_1u,baseline_avg_clv_points,challenger_qualifiers,challenger_wins,challenger_losses,challenger_pushes,challenger_hit_rate,challenger_roi_per_1u,challenger_avg_clv_points
+orientation-eval-2026.1,01e174f7ba32ece8a2cbff6754e3aefcf92f5834cd0b7825d7dd69421557998c,orientation-crosswind-hgb-v0.1,0,0,0,0,0,,,,0,0,0,0,,,
