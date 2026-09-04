@@ -15,6 +15,7 @@ Automation and validation.
 - `test-live-site.yml` - live website and model-output validation.
 - `deploy-pages.yml` - GitHub Pages deployment.
 - `manual-historical-research.yml` - full historical research rebuild when deliberately requested.
+- `manual-climate-context-research.yml` - isolated latitude/local-weather-context run using the latest historical artifact; commits only its dedicated outputs and stadium-location reference.
 - `climate-context-tests.yml` - synthetic end-to-end validation for the latitude and local-weather-context research path.
 
 ### `config/`
