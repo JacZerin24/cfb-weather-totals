@@ -52,6 +52,7 @@ jobs:
           python -m src.pull_team_advanced_stats || echo "Advanced team stats unavailable; continuing."
           python -m src.build_team_features
           python -m src.build_dataset
+          python -m src.climate_context_research
           python -m src.research_weather_edges
           python -m src.backtest_totals
           python -m src.deep_research
@@ -74,6 +75,7 @@ jobs:
           path: |
             data/raw/*.csv
             data/processed/*.csv
+            data/reference/stadium_locations.csv
             outputs/*
             docs/*
 
@@ -82,6 +84,6 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add outputs/ docs/
+          git add outputs/ docs/ data/reference/stadium_locations.csv
           git commit -m "Update historical research outputs" || echo "No changes to commit"
           git push
