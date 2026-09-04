@@ -1,0 +1,32 @@
+name: Validate Joint Core Orientation Reconciliation
+
+on:
+  pull_request:
+    paths:
+      - 'src/joint_core_orientation_reconciliation.py'
+      - 'src/joint_core_orientation_reconciliation_selftest.py'
+      - 'documentation/JOINT_CORE_ORIENTATION_RECONCILIATION.md'
+      - '.github/workflows/joint-core-orientation-reconciliation-tests.yml'
+      - '.github/workflows/manual-joint-core-orientation-reconciliation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run synthetic final reconciliation validation
+        run: python -m src.joint_core_orientation_reconciliation_selftest
