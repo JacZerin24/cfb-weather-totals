@@ -1,0 +1,33 @@
+name: Validate Joint Weather Context Research
+
+on:
+  pull_request:
+    paths:
+      - 'src/joint_weather_context_research.py'
+      - 'src/joint_weather_context_selftest.py'
+      - '.github/workflows/joint-weather-context-tests.yml'
+      - '.github/workflows/manual-joint-weather-context-research.yml'
+      - 'documentation/JOINT_WEATHER_CONTEXT_RESEARCH.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run synthetic joint weather-context validation
+        run: python -m src.joint_weather_context_selftest
