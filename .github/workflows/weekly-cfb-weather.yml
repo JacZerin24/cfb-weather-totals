@@ -2,6 +2,12 @@ name: Weekly CFB Weather Totals
 
 on:
   workflow_dispatch:
+    inputs:
+      watchdog_backup:
+        description: Automated backup requested by the weekly safety watchdog
+        required: false
+        default: false
+        type: boolean
   push:
     branches:
       - main
@@ -11,15 +17,24 @@ on:
       - 'data/processed/**'
       - '.github/workflows/weekly-cfb-weather.yml'
   schedule:
-    # Monday early look: refresh the full operational board as a preliminary
-    # baseline only. Monday is operational-only and intentionally remains
-    # outside both frozen official-entry eligible_crons lists.
-    - cron: '0 14 * * 1'
-    # Frozen prospective entry snapshots: Thursday/Friday morning plus a
-    # Saturday morning update closer to most kickoffs.
-    - cron: '0 14 * * 4'
-    - cron: '0 14 * * 5'
-    - cron: '0 13 * * 6'
+    # GitHub cron is UTC. Paired CDT/CST expressions preserve the requested
+    # America/Chicago clock times. The central-time gate below runs only the
+    # expression matching the current Central offset.
+    # Monday operational early look: 5:17 AM Central.
+    - cron: '17 10 * * 1'    # CDT
+    - cron: '17 11 * * 1'    # CST
+    # Thursday/Friday safety snapshot: 5:17 AM Central.
+    - cron: '17 10 * * 4,5'  # CDT
+    - cron: '17 11 * * 4,5'  # CST
+    # Thursday/Friday freshness snapshot: 8:17 AM Central.
+    - cron: '17 13 * * 4,5'  # CDT
+    - cron: '17 14 * * 4,5'  # CST
+    # Saturday safety snapshot: 2:17 AM Central.
+    - cron: '17 7 * * 6'     # CDT
+    - cron: '17 8 * * 6'     # CST
+    # Saturday freshness snapshot: 6:17 AM Central.
+    - cron: '17 11 * * 6'    # CDT
+    - cron: '17 12 * * 6'    # CST
 
 permissions:
   contents: write
@@ -30,7 +45,48 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  central-time-gate:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.gate.outputs.should_run }}
+    steps:
+      - name: Select the active Central-time cron
+        id: gate
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" != "schedule" ]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          case "$EVENT_SCHEDULE" in
+            "17 10 * * 1"|"17 10 * * 4,5"|"17 13 * * 4,5"|"17 7 * * 6"|"17 11 * * 6")
+              EXPECTED_OFFSET="-0500"
+              ;;
+            "17 11 * * 1"|"17 11 * * 4,5"|"17 14 * * 4,5"|"17 8 * * 6"|"17 12 * * 6")
+              EXPECTED_OFFSET="-0600"
+              ;;
+            *)
+              echo "Unknown scheduled expression: $EVENT_SCHEDULE"
+              exit 1
+              ;;
+          esac
+
+          CENTRAL_OFFSET=$(TZ=America/Chicago date +%z)
+          if [ "$CENTRAL_OFFSET" = "$EXPECTED_OFFSET" ]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "Running $EVENT_SCHEDULE for Central offset $CENTRAL_OFFSET."
+          else
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping inactive seasonal cron $EVENT_SCHEDULE at Central offset $CENTRAL_OFFSET."
+          fi
+
   weekly-paper-run:
+    needs: central-time-gate
+    if: needs.central-time-gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
 
     steps:
