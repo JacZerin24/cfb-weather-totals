@@ -1,0 +1,33 @@
+name: Validate Field Geometry Confirmation Research
+
+on:
+  pull_request:
+    paths:
+      - 'src/field_geometry_confirmation.py'
+      - 'src/field_geometry_confirmation_selftest.py'
+      - '.github/workflows/field-geometry-confirmation-tests.yml'
+      - '.github/workflows/manual-field-geometry-confirmation.yml'
+      - 'documentation/FIELD_GEOMETRY_CONFIRMATION.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run synthetic field-geometry confirmation validation
+        run: python -m src.field_geometry_confirmation_selftest
