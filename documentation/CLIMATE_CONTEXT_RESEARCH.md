@@ -72,7 +72,7 @@ UNDER qualifier hit rate and ROI are reported only as secondary context using th
 
 ## Generated outputs
 
-The manual historical research workflow runs `python -m src.climate_context_research` and writes:
+The dedicated `Manual Climate Context Research` workflow restores the latest successful historical modeling-dataset artifact, runs `python -m src.climate_context_research`, and writes:
 
 - `outputs/climate_context/coordinate_coverage.csv`;
 - `outputs/climate_context/latitude_weather_interactions.csv`;
@@ -83,6 +83,8 @@ The manual historical research workflow runs `python -m src.climate_context_rese
 - `outputs/climate_context/summary.md`.
 
 `src.climate_context_selftest` supplies a deterministic synthetic end-to-end check and runs automatically for relevant pull requests.
+
+The dedicated workflow commits only `data/reference/stadium_locations.csv` and `outputs/climate_context/`. It does not run the live board, rebuild the website, change weekly picks, regenerate the main research summaries, or touch the prospective ledger.
 
 ## Prospective decision boundary
 

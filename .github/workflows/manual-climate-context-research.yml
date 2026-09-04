@@ -1,0 +1,93 @@
+name: Manual Climate Context Research
+
+on:
+  workflow_dispatch:
+    inputs:
+      note:
+        description: Optional research-run note
+        required: false
+        default: initial-climate-context-study
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: cfb-weather-data-writes
+  cancel-in-progress: false
+
+jobs:
+  climate-context:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Confirm CFBD API key
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: |
+          if [ -z "$CFBD_API_KEY" ]; then
+            echo "ERROR: CFBD_API_KEY is missing."
+            exit 1
+          fi
+
+      - name: Restore the latest historical modeling dataset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          SOURCE_DIR=$(mktemp -d)
+          mkdir -p data/processed
+
+          RESEARCH_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/manual-historical-research.yml/runs?status=success&per_page=1" \
+            --jq '.workflow_runs[0].id // empty')
+          if [ -z "$RESEARCH_RUN_ID" ]; then
+            echo "ERROR: No successful historical research run is available."
+            exit 1
+          fi
+
+          echo "Restoring historical data from run ${RESEARCH_RUN_ID}."
+          gh run download "$RESEARCH_RUN_ID" -n cfb-weather-totals-research-output -D "$SOURCE_DIR"
+          MODEL_PATH=$(find "$SOURCE_DIR" -type f -name modeling_dataset.csv -print -quit)
+          if [ -z "$MODEL_PATH" ]; then
+            echo "ERROR: modeling_dataset.csv was not found in the historical artifact."
+            exit 1
+          fi
+          cp "$MODEL_PATH" data/processed/modeling_dataset.csv
+
+      - name: Validate climate-context research code
+        run: python -m src.climate_context_selftest
+
+      - name: Run isolated retrospective climate-context study
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: python -m src.climate_context_research
+
+      - name: Upload climate-context research artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cfb-climate-context-research-${{ github.run_id }}
+          path: |
+            data/reference/stadium_locations.csv
+            outputs/climate_context/
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Commit only climate-context outputs
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add data/reference/stadium_locations.csv outputs/climate_context/
+          git commit -m "Update climate-context research outputs" || echo "No climate-context changes to commit"
+          git pull --rebase origin main
+          git push origin main
