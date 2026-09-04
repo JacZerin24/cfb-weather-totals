@@ -1,9 +1,9 @@
-protocol_version: "2026.2"
+protocol_version: "2026.3"
 season: 2026
 frozen_at_utc: "2026-08-28T00:38:00Z"
-revision_effective_at_utc: "2026-08-30T06:20:00Z"
-supersedes: "2026.1"
-revision_scope: "Closing-benchmark capture reliability and documentation only; model rules, qualifier thresholds, official-entry timing, grading, and card logic are unchanged."
+revision_effective_at_utc: "2026-09-04T05:00:00Z"
+supersedes: "2026.2"
+revision_scope: "Official board scheduling reliability and watchdog automation only; model rules, qualifier thresholds, grading, closing-benchmark policy, and card logic are unchanged. The revised eligible schedules apply prospectively."
 purpose: "Prospective paper validation of the frozen 2026 CFB totals research rules."
 
 rules:
@@ -21,11 +21,26 @@ rules:
 official_entry_policy:
   eligible_event_name: "schedule"
   eligible_crons:
-    - "0 14 * * 4"
-    - "0 14 * * 5"
-    - "0 13 * * 6"
+    - "17 10 * * 4,5"
+    - "17 11 * * 4,5"
+    - "17 13 * * 4,5"
+    - "17 14 * * 4,5"
+    - "17 7 * * 6"
+    - "17 8 * * 6"
+    - "17 11 * * 6"
+    - "17 12 * * 6"
   minimum_lead_minutes: 120
-  selection: "For each game, use the latest successful eligible scheduled snapshot at least 120 minutes before kickoff. For duplicate attempts of the same GitHub run, retain the earliest successful attempt. Manual and push-triggered refreshes are archived but are never official entries."
+  selection: "For each game, use the latest successful eligible scheduled snapshot at least 120 minutes before kickoff. The active CDT or CST expression is selected by the workflow's America/Chicago gate. For duplicate attempts of the same GitHub run, retain the earliest successful attempt. Manual, push-triggered, and watchdog-dispatched refreshes are archived but are never official entries."
+
+schedule_reliability:
+  timezone: "America/Chicago"
+  monday_early_look_local: "05:17"
+  thursday_friday_safety_local: "05:17"
+  thursday_friday_freshness_local: "08:17"
+  saturday_safety_local: "02:17"
+  saturday_freshness_local: "06:17"
+  watchdog_delay_minutes: 30
+  watchdog_policy: "A separate scheduled workflow checks for a successful safety build and dispatches an operational workflow_dispatch backup when none exists. The backup keeps the live board current but is intentionally ineligible for official prospective entry."
 
 closing_benchmark_policy:
   capture_event_name: "schedule"
@@ -50,5 +65,5 @@ paper_grading:
   timing_note: "Derived grades are rebuilt only on postgame mornings or the scheduled pregame model runs, not during the live-game capture window."
 
 freeze_policy:
-  description: "Do not tune production thresholds or retrospectively alter official-entry selection based on 2026 outcomes before the declared review point. Any future protocol change must receive a new protocol_version and applies prospectively only. Protocol 2026.2 changes only closing-benchmark capture reliability after missed Week 1 CLV opportunities; frozen model and entry rules remain unchanged."
+  description: "Do not tune production thresholds or retrospectively alter official-entry selection based on 2026 outcomes before the declared review point. Protocol 2026.3 changes only future scheduled snapshot timing and operational backup reliability after documented GitHub schedule delays. Any future protocol change must receive a new protocol_version and applies prospectively only from its declared effective time."
   review_point: "After the 2026 regular season unless a data-integrity bug requires a documented correction."
