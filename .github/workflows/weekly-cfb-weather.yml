@@ -195,8 +195,8 @@ jobs:
             python -m src.prospective_ledger verify
           fi
 
-      # Research-only challenger runs only after the official prospective step.
-      # It cannot change weekly_board.csv, weekly_picks.csv, or the official ledger.
+      # Research-only challengers run only after the official prospective step.
+      # They cannot change weekly_board.csv, weekly_picks.csv, thresholds, or the official ledger.
       - name: Capture research-only orientation challenger
         continue-on-error: true
         env:
@@ -205,6 +205,16 @@ jobs:
           ORIENTATION_SHADOW_EVENT_SCHEDULE: ${{ github.event.schedule }}
         run: |
           python -m src.orientation_shadow_capture
+
+      - name: Capture research-only joint-core challenger
+        continue-on-error: true
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+          JOINT_CORE_SHADOW_EVENT_NAME: ${{ github.event_name }}
+          JOINT_CORE_SHADOW_EVENT_SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          python -m src.joint_core_shadow_grade validate-protocol
+          python -m src.joint_core_shadow_capture
 
       - name: Commit generated website and outputs
         run: |
