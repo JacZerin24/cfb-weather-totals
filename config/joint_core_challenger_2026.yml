@@ -1,0 +1,68 @@
+version: "joint-core-weather-context-hgb-v0.1"
+status: "research_only_shadow"
+season: 2026
+frozen_at_utc: "2026-09-04T14:00:00Z"
+track: "FBS"
+purpose: "Prospective 2026 shadow evaluation of the exact retrospective joint_core weather-context challenger, with no production effect."
+
+baseline:
+  model: "GENERAL HGB"
+  source: "The production prediction already stored in outputs/weekly_board.csv at capture time."
+  production_effect: false
+
+challenger:
+  model: "GENERAL HGB"
+  estimator: "HistGradientBoostingRegressor"
+  hyperparameters:
+    max_iter: 250
+    learning_rate: 0.04
+    l2_regularization: 0.5
+    min_samples_leaf: 35
+    random_state: 42
+  training_cutoff: "season < 2026"
+  training_policy: "Fit only on the restored historical modeling dataset through 2025. Never train on 2026 outcomes during this shadow version."
+  added_numeric_features:
+    - crosswind_mph
+    - alongwind_mph
+    - venue_latitude
+    - temperature_anomaly_f
+    - wind_local_percentile
+    - temperature_latitude_interaction
+    - wind_latitude_interaction
+  geometry:
+    field_axis_modulus_degrees: 180
+    wind_direction_convention: "meteorological FROM direction"
+    crosswind_formula: "wind_mph * sin(minimum 0-90 degree separation between wind direction and undirected field axis)"
+    alongwind_formula: "wind_mph * cos(minimum 0-90 degree separation between wind direction and undirected field axis)"
+  climate_context:
+    temperature_reference: "Historical outdoor venue-month mean with latitude-band/month, month, then global fallbacks."
+    local_wind_reference: "Historical outdoor venue-month empirical distribution with latitude-band/month, month, then global fallbacks."
+    historical_reference_cutoff: "season < 2026"
+  thresholds:
+    qualify_edge_points: 3.5
+    minimum_total: 56.0
+    direction: "under"
+  tuning_policy: "No feature, hyperparameter, threshold, climate-reference, readiness, or training-cutoff changes based on 2026 outcomes. A changed challenger receives a new version and new prospective start time."
+
+eligibility:
+  division_track: "FBS"
+  require_fbs_vs_fbs: true
+  require_outdoor: true
+  require_context_ready: true
+  require_orientation_ready: true
+  require_both_predictions: true
+
+separation:
+  may_change_weekly_board_status: false
+  may_change_weekly_board_prediction: false
+  may_change_prospective_ledger: false
+  may_change_weekly_picks: false
+  may_change_production_thresholds: false
+  outputs_path: "outputs/joint_core_shadow/2026"
+  run_order: "Only after the official prospective snapshot has completed."
+  failure_policy: "Shadow capture and grading are continue-on-error and cannot block production or the official prospective ledger."
+
+freeze_policy:
+  no_backfill_before: "2026-09-04T14:00:00Z"
+  no_retroactive_reclassification: true
+  no_outcome_based_tuning: true
