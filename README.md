@@ -26,7 +26,7 @@ The project is in active **2026 in-season prospective validation**.
 - Every official 2026 entry is selected from immutable scheduled snapshots before kickoff and later graded against the final score.
 - Near-kickoff market captures are stored separately for CLV tracking.
 
-The 2026 prospective protocol is versioned in `config/prospective_protocol_2026.yml`. Protocol 2026.2 changes only close-capture reliability; the frozen model thresholds and official-entry rules are unchanged.
+The 2026 prospective protocol is versioned in `config/prospective_protocol_2026.yml`. Protocol 2026.3 prospectively adds earlier safety snapshots, later freshness refreshes, Central-time DST handling, and an operational backup watchdog. The frozen model thresholds, grading rules, and close-capture policy are unchanged.
 
 ### 2026 validation snapshot
 
@@ -68,7 +68,8 @@ Research code or diagnostics in open branches/pull requests should be treated as
 
 The main automated pieces are:
 
-- `.github/workflows/weekly-cfb-weather.yml` - builds the live board and creates official-entry snapshots on the frozen Thursday, Friday, and Saturday schedules.
+- `.github/workflows/weekly-cfb-weather.yml` - builds the live board at 5:17 AM Central Monday, at 5:17 and 8:17 AM Thursday/Friday, and at 2:17 and 6:17 AM Saturday. Thursday through Saturday scheduled snapshots can become official entries.
+- `.github/workflows/weekly-safety-watchdog.yml` - checks 30 minutes after each safety run and dispatches an operational backup when no successful build exists.
 - `.github/workflows/prospective-close-capture.yml` - captures near-kickoff market totals for CLV without allowing manual backfill.
 - `.github/workflows/prospective-grade.yml` - rebuilds the ledger and grades completed games on safe postgame mornings.
 - `.github/workflows/deploy-pages.yml` - publishes the generated site from `docs/`.

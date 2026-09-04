@@ -9,7 +9,7 @@ This protocol evaluates `orientation-crosswind-hgb-v0.1` against the existing GE
 The orientation comparison deliberately mirrors the official 2026 prospective-entry timing:
 
 - scheduled weekly workflow only
-- eligible schedules: Thursday 14Z, Friday 14Z, Saturday 13Z
+- eligible schedules: Thursday and Friday at 5:17 and 8:17 AM Central; Saturday at 2:17 and 6:17 AM Central, with paired CDT/CST cron expressions selected by the weekly workflow gate
 - snapshot must be at least 120 minutes before kickoff
 - for each game, use the latest eligible snapshot meeting that lead-time requirement
 - for duplicate attempts of one GitHub run, retain the earliest successful attempt

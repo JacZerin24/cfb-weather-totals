@@ -1,7 +1,10 @@
-protocol_version: "orientation-eval-2026.1"
+protocol_version: "orientation-eval-2026.2"
 season: 2026
 challenger_version: "orientation-crosswind-hgb-v0.1"
 frozen_at_utc: "2026-08-31T20:59:52Z"
+revision_effective_at_utc: "2026-09-04T05:00:00Z"
+supersedes: "orientation-eval-2026.1"
+revision_scope: "Prospective schedule reliability only. The challenger, paired metrics, classification rules, and economic evaluation are unchanged."
 status: "research_only"
 purpose: "Prospective paired evaluation of the existing GENERAL HGB baseline versus the frozen GENERAL HGB + crosswind_mph orientation challenger."
 
@@ -16,11 +19,16 @@ scope:
 official_entry_policy:
   eligible_event_name: "schedule"
   eligible_crons:
-    - "0 14 * * 4"
-    - "0 14 * * 5"
-    - "0 13 * * 6"
+    - "17 10 * * 4,5"
+    - "17 11 * * 4,5"
+    - "17 13 * * 4,5"
+    - "17 14 * * 4,5"
+    - "17 7 * * 6"
+    - "17 8 * * 6"
+    - "17 11 * * 6"
+    - "17 12 * * 6"
   minimum_lead_minutes: 120
-  selection: "For each game, use the latest successful eligible scheduled orientation-shadow snapshot at least 120 minutes before kickoff. For duplicate attempts of the same GitHub run, retain the earliest successful attempt. Push/manual snapshots remain archived but are never official evaluation entries."
+  selection: "For each game, use the latest successful eligible scheduled orientation-shadow snapshot at least 120 minutes before kickoff. The active CDT or CST expression is selected by the weekly workflow's America/Chicago gate. For duplicate attempts of the same GitHub run, retain the earliest successful attempt. Push, manual, and watchdog-dispatched snapshots remain archived but are never official evaluation entries."
 
 primary_metric:
   name: "paired_projected_total_mae"
