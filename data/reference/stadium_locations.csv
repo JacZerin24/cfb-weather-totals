@@ -1,0 +1,853 @@
+venue_id,venue_name,venue_latitude,venue_longitude,venue_city,venue_state,venue_timezone
+5938,Al Whitehead Field at Greyhound Stadium,34.1861922,-103.334397,Portales,NM,
+218,FIU Stadium,25.7525014,-80.3778912,Miami,FL,America/New_York
+4779,Thomas A. Robinson National Stadium,25.055569,-77.358736,Nassau,,
+11591,Lokken Stadium,,,Valley City,ND,
+5220,Garrison Stadium,36.434053,-77.098431,Murfreesboro,TN,
+3884,RAM Stadium,,,East Point,GA,
+11589,Hinchliffe Stadium,,,Paterson,NJ,
+6043,Bethpage Federal Credit Union Stadium,40.816284,-73.589546,Brookville,NY,America/New_York
+11539,Charlotte & Gordon Hansen Stadium,,,Jamestown,ND,
+11712,Bank of Sun Prairie Stadium,,,Sun Prairie,WI,
+11724,Community National Bank and Trust Stadium,,,Corsicana,TX,
+5096,Toyota Stadium,38.204444,-84.545556,Georgetown,KY,
+11723,Brickyard Stadium,,,Hobart,IN,
+5455,Ford Center At The Star,,,Frisco,TX,
+3926,Setzler Field,34.286133,-81.622539,Newberry,SC,
+5015,Turner Stadium,40.456862,-85.501228,Upland,IN,
+5083,New Turner Stadium,40.456848,-85.501181,Upland,IN,
+11797,Nilton Santos Stadium,,,Rio De Janeiro,,
+3827,"Memorial Stadium (Stephenville, TX)",32.2191836,-98.2130634,Stephenville,TX,America/Chicago
+5348,Mercedes-Benz Stadium,33.755578,-84.400881,Atlanta,GA,America/New_York
+3689,Cramton Bowl,32.37949,-86.293002,Montgomery,AL,America/Chicago
+538,StubHub Center,33.8322043,-118.2517547,Carson,CA,
+4258,Dignity Health Sports Park,33.864,-118.261,Carson,CA,America/Los_Angeles
+4205,Petco Park,32.7174202,-117.1627728,San Diego,CA,
+3603,Aggie Stadium,36.0814337,-79.7700391,Greensboro,NC,America/New_York
+3717,Edwin Fauver Stadium,43.157285,-77.615214,Rochester,NY,
+5810,Coyer Field,42.8867166,-78.8783922,Buffalo,NY,
+7065,SoFi Stadium,33.9562003,-118.353132,Inglewood,CA,
+3718,Tom Benson Hall of Fame Stadium,40.7985464,-81.3749508,Canton,OH,
+3927,Sherman Field,46.8591287,-88.7774734,Houghton,MI,
+6269,Globe Life Field,32.7355816,-97.1071186,Arlington,TX,
+3494,The Dome at America's Center,38.6264256,-90.1995853,Saint Louis,MO,
+6177,Alexander Durley Sports Complex,29.7589382,-95.3676974,Houston,TX,
+5831,Dale Lippert Field,34.440962,-87.8339064,Franklin,MA,
+6127,John P. Papp Stadium,40.7980976,-81.9397733,Wooster,OH,
+5863,Don Shula Stadium at Wasmer Field,41.497831,-81.537346,University Heights,OH,
+5907,McCarthy Stadium (Wilkes Barre),41.23369915,-75.85364178943517,Wilkes Barre Township,PA,
+3709,Hempstead Stadium,42.5584284,-70.8800491,Beverly,MA,
+6092,Bishop Stadium,35.9423833,-77.7956949,Rocky Mount,NC,
+6091,Abel Stadium,40.8088861,-96.7077751,Lincoln,NE,
+6123,Jackson Field,30.3573802,-103.6609367,Alpine,TX,
+5816,Art Keller Field,42.5846773,-87.8212263,Kenosha,WI,
+5940,Clean Harbors Stadium,41.745383,-70.618087,Buzzards Bay,MA,
+5820,Amos Alonzo Stagg Field,41.8755616,-87.6244212,Chicago,IL,
+5828,Van Metre Field at Ash Park,41.9222443,-91.4171209,Mount Vernon,IA,
+6141,Corwin Stadium,41.5623178,-72.6509061,Middletown,CT,
+5893,Hollingsworth Field,44.3238384,-93.9585295,Saint Peter,MN,
+6147,"Memorial Stadium (Whittier, CA)",33.9708782,-118.0308396,Whittier,CA,
+5860,Mapleleaf Athletic Complex,40.966312,-91.5539956,Mount Pleasant,IA,
+7232,Children's Health Stadium,33.2385763,-96.7866058,Prosper,TX,
+5115,McCully Stadium,41.8646959,-88.1101709,Wheaton,IL,
+5815,Schneider Stadium,43.0053145,-88.24736430153254,Waukesha,WI,
+6090,Sherman Field at McConagha Stadium,39.9934992,-81.7338559,New Concord,OH,
+5909,Ortmayer Stadium,34.1008426,-117.7678355,La Verne,CA,
+5801,George Finnie Stadium,41.3661614,-81.8543026,Berea,OH,
+5636,Wright Stadium,42.453492,-75.0629531,Oneonta,NY,
+5921,Rock Bowl,42.5006243,-90.6647985,Dubuque,IA,
+5795,Edor Nelson Field,44.9772995,-93.2654692,Minneapolis,MN,
+3716,"Stewart """"Red"""" Faught Stadium",33.704156,-117.75109,Franklin,IN,
+7179,Toyota Field,,,Madison,AL,
+5134,Bearcat Stadium,40.3460468,-94.8723858,Maryville,MO,
+6059,Sanchez Family Stadium,35.5939325,-105.2238969,Las Vegas,NM,
+6071,Jess Dow Field,41.3082138,-72.9250518,New Haven,CT,
+6221,Mitchell Stadium,37.2698395,-81.2223195,Bluefield,WV,
+3885,Harvey Randall Wickes Memorial Stadium,25.71414555,-80.27640498387049,University Center,MI,
+3770,Jack Miller Stadium,40.8686147,-82.3175942,Ashland,OH,
+4436,Adamson Stadium,40.0236854,-79.8839357,Brownsville,PA,
+6032,Hovey Field,37.5385087,-77.43428,Richmond,VA,
+5936,Koi Ishto Stadium,34.7743383,-96.6783651,Ada,OK,
+3875,Paul Laird Field,33.9919761,-96.3776762,Durant,OK,
+5891,Wilkins Stadium,33.2670725,-93.2393341,Magnolia,AR,
+3723,QU Stadium,39.9356016,-91.4098727,Quincy,IL,
+6034,Yager Stadium at Moore Bowl,39.049011,-95.677556,Topeka,KS,
+6212,Bishop Schmitt Field,40.0639616,-80.7209149,Wheeling,WV,
+5874,Chet Anderson Stadium,47.4785418,-94.8907869,Bemidji,MN,
+6051,James S. Malosky Stadium,46.7729322,-92.1251218,Duluth,MN,
+3951,Swisher Field,45.4649805,-98.487813,Aberdeen,SD,
+4441,McConnell Family Stadium,42.1294712,-80.0852695,Erie,PA,
+6066,Pace Stadium,41.1328736,-73.7926335,Pleasantville,NY,
+3960,Top Taggart Field,43.698078,-85.483656,Big Rapids,MI,
+5113,Ruggles Field at Carpenter-Haygood Stadium,34.1209292,-93.053784,Arkadelphia,AR,
+6067,Carnie Smith Stadium,37.4108841,-94.70496,Pittsburg,KS,
+6055,Craig Field at Spratt Memorial Stadium,39.7686055,-94.8466322,Saint Joseph,MO,
+5942,Francis G. Welch Stadium,38.4040054,-96.181623,Emporia,KS,
+4427,John A. Farrell Stadium,39.9597213,-75.6059638,West Chester,PA,
+5807,Brevard Memorial Stadium,35.2334472,-82.7342919,Brevard,NC,
+6056,B.T. Harvey Stadium,33.7489924,-84.3902644,Atlanta,GA,
+6076,Javelina Stadium,27.5158689,-97.856109,Kingsville,TX,
+5917,Ratliff Stadium,31.8457149,-102.367687,Odessa,TX,
+3870,Panther Stadium (OH),39.9622601,-83.0007065,Columbus,OH,
+5873,Bulldogs Stadium,38.9424464,-76.7301718,Bowie,MD,
+3747,Hantz Stadium,43.6155825,-84.2472117,Midland,MI,
+7076,J.W. Babb Stadium,34.1954001,-82.1617883,Greenwood,SC,
+6211,Sodexo Field,42.7517669,-72.01012902437412,Rindge,NH,
+6052,Herb Parker Stadium,48.23251,-101.296273,Minot,ND,
+5782,Mountaineer Bowl,38.6476702,-107.0603126,Gunnison,CO,
+3705,Earl Kitchings Stadium,30.3321838,-81.655651,Jacksonville,FL,
+6553,Helen and Leonard Moretz Stadium,35.7333312,-81.3442915,Hickory,NC,
+6040,Key Stadium,39.7683331,-86.1583502,Indianapolis,IN,
+4430,Mihalik-Thompson Stadium,41.0639506,-80.0564468,Slippery Rock,PA,
+3612,Alumni Memorial Stadium (NC),35.6709727,-80.4742261,Salisbury,NC,
+3638,MDU Resources Community Bowl,46.808327,-100.783739,Bismarck,ND,
+5867,Albany State University Coliseum,31.5782062,-84.1556809,Albany,GA,
+6049,"Memorial Stadium (Wichita Falls, TX)",33.9137085,-98.4933873,Wichita Falls,TX,
+3633,Ben Altamirano Field,32.7751371,-108.2754371,Silver City,NM,
+5943,Duvall-Rosier Field,39.4850848,-80.1425781,Fairmont,WV,
+5890,Lewis Field Stadium,38.8791783,-99.3267702,Hays,KS,
+6057,Ron & Carol Cope Stadium at Foster Field,40.4906216,-98.9472344,Kearney,NE,
+5878,Wantland Stadium,35.6571367,-97.4649038,Edmond,OK,
+6027,Albert J. H. Sloan - Alumni Stadium,33.4859402,-86.9119366,Fairfield,AL,
+5884,Buffalo Stadium,34.9799429,-101.919197,Canyon,TX,
+6044,Lane Field,35.6144446,-88.8177418,Jackson,TN,
+6063,Mueller Field,41.5231076,-81.5184553,South Euclid,OH,
+4432,Andre Reed Stadium,40.5173165,-75.7774177,Kutztown,PA,
+5133,Ram Stadium (WV),39.4300996,-77.804161,Shepherdstown,WV,
+4749,McPherson Memorial Stadium,39.6847822,-83.9296526,Xenia,OH,
+3731,Frost-Kalnow Stadium,41.114485,-83.1779537,Tiffin,OH,
+3618,Apprentice Field,36.9775016,-76.42977,Newport News,VA,
+6053,Robinson-Hale Stadium,32.3410552,-90.3215983,Clinton,MS,
+5881,CAU Panther Stadium,33.7489924,-84.3902644,Atlanta,GA,
+6047,Leemon Field,38.6039375,-89.8073195,Lebanon,IL,
+4439,Eiler-Martin Stadium,40.9995386,-75.1812913,East Stroudsburg,PA,
+5885,First Security Stadium,35.9018987,-92.7098744,Searcy,AR,
+4852,Neta and Eddie DeRose ThunderBowl,38.2544472,-104.609141,Pueblo,CO,
+5879,Tomlinson Stadium,46.9970635,-120.545122,Ellensburg,WA,
+5945,Wildcat Stadium (GA),32.5537585,-83.8874084,Fort Valley,GA,
+5121,University of Charleston Stadium,38.3505995,-81.6332812,Charleston,WV,
+5880,Elliott Field at Don Beebe Stadium,42.8309807,-103.0003729,Chadron,NE,
+5941,Roebuck Stadium,36.2956836,-76.2247697,Elizabeth City,NC,
+5934,Farmers Insurance Athletic Complex,37.763382,-90.7729061,Caledonia,MI,
+4015,Barron Stadium,34.257038,-85.1646726,Rome,GA,
+3859,Offutt Field,40.3014581,-79.5389289,Greensburg,PA,
+6046,Meares Stadium,35.82685585,-82.55057686987725,Mars Hill,NC,
+5872,Kirkeby-Over Stadium,43.5488256,-96.7307737,Sioux Falls,SD,
+5780,Altra Federal Credit Union Stadium,43.9582272,-91.7807784,Winona,MN,
+5944,Ray Dennison Memorial Field,37.2395367,-107.82158179169292,Durango,CO,
+7080,Rocky Mount Athletic Complex,35.9423833,-77.7956949,Rocky Mount,NC,
+3728,Terry Fox Field,35.895335,-78.515105,Burnaby,BC,
+5784,Cebe Ross Field,38.9939426,-80.2322698,Buckhannon,WV,
+5876,Bentley University Football Stadium,42.3756401,-71.2358004,Waltham,MA,
+5783,McArthur Field,44.8486414,-123.2290777,Monmouth,OR,
+3600,Tom Adams Field,42.3315509,-83.0466403,Detroit,MI,
+3904,Rogers Stadium (VA),37.227928,-77.4019268,Petersburg,VA,
+3957,Tiger Stadium (AL),32.5843026,-88.1872474,Livingston,AL,
+3698,Donnell Stadium,41.0413873,-83.6503982,Findlay,OH,
+6072,Schwan Regional Event Center,48.3605336,-96.381968,Marshall,MN,
+3760,Hubert Jack Stadium,41.1369077,-77.4471641,Lock Haven,PA,
+5871,Convoy Leslie Cotton Boll Stadium,33.6293427,-91.7912327,Monticello,AR,
+4763,Ranger Field,36.8030501,-98.6660278,Alva,OK,
+6065,Cliff Harris Stadium,34.1209292,-93.053784,Arkadelphia,AR,
+3729,"Frank ""Muddy"" Waters Stadium",41.8779105,-84.5984396,Hillsdale,MI,
+5866,Rex Stadium,37.5780995,-105.7890452,Alamosa,CO,
+6062,Gable Field at Doc Wadley Stadium,35.91537,-94.969956,Tahlequah,OK,
+3641,Blakeslee Stadium,44.1634663,-93.9993505,Mankato,MN,
+5887,I.L. & Sue Morris Stadium,38.9342573,-80.8376033,Glenville,WV,
+5868,Ronald J. Abdow Field,42.1018764,-72.5886727,Springfield,MA,
+4433,George P. Miller Stadium,40.6214551,-79.1525349,Indiana,PA,
+6070,Bob Young Field,43.5488256,-96.7307737,Sioux Falls,SD,
+5877,Lyle Hare Stadium,44.490817,-103.85937,Spearfish,SD,
+6036,Blue Wahoos Stadium,30.421309,-87.2169149,Pensacola,FL,
+5781,Irwin Belk Stadium,34.9843176,-80.4492319,Wingate,NC,
+5935,Parker Field at McCool Stadium,33.7440023,-90.7248187,Cleveland,MS,
+3915,Charles Lee Field at Samford Stadium,32.3669656,-86.3006485,Montgomery,AL,
+6042,Alumni Stadium (KY),38.2009055,-84.8732836,Frankfort,KY,
+4110,A.J. McClung Stadium,32.4610708,-84.9880449,Columbus,GA,
+6117,Knight Stadium,37.7342962,-79.3539292,Buena Vista,VA,
+5825,Jake Christiansen Stadium,46.8739081,-96.7538674,Moorhead,MN,
+5835,Biddle Field,40.201499,-77.1890783,Carlisle,PA,
+5894,Steuben Field,44.7278943,-73.6686982,Clinton,NY,
+3733,Garcelon Field,44.100351,-70.2147764,Lewiston,ME,
+6108,Crain Field,35.1335022,-89.9668758,Memphis,TN,
+5114,Shelton Stadium,32.44645,-99.7475905,Abilene,TX,
+6106,Ted Runner Stadium,34.0550328,-117.1827445,Redlands,CA,
+5926,Henry G. Steinbrenner '27 Stadium,42.3750997,-71.1056157,Cambridge,MA,
+5930,Carl W. Burt Memorial Stadium,41.0006005,-85.768597,North Manchester,IN,
+5838,Ornelas Stadium,32.5447756,-94.3661004,Marshall,TX,
+7185,"Memorial Stadium (El Dorado, AR)",33.20763,-92.6662674,El Dorado,AR,
+6220,Trojan Stadium,44.006085,-97.11395,Madison,SD,
+4221,Target Field,44.9772995,-93.2654692,Minneapolis,MN,
+6050,Ed Widseth Field,47.7739988,-96.6081167,Crookston,MN,
+5927,Freesen Field,39.7343037,-90.2288356,Jacksonville,IL,
+3848,Multi-Sport Stadium,42.2625621,-71.8018877,Worcester,MA,
+3851,Mustang Stadium,39.4102772,-76.7128314,Stevenson,MD,
+6284,Village of Lisle-Benedictine University Sports Complex,41.801159,-88.0747687,Lisle,IL,
+5903,Community Stadium at Goerke Park,44.5229223,-89.574111,Stevens Point,WI,
+5829,Old National Bank Stadium,,,Saint Bonifacius,MN,
+3677,Chuck Noll Field,40.317287,-79.3840301,Latrobe,PA,
+5856,Boswell Field at David J. Urick Stadium,42.8690271,-76.9786122,Geneva,NY,
+5814,Gesling Stadium,40.4416941,-79.9900861,Pittsburgh,PA,
+7077,Shadek Stadium,40.03813,-76.3056686,Lancaster,PA,
+6144,"Alumni Field (Westfield, MA)",42.1390327,-72.7584859,Westfield,MA,
+6119,Stagg Field,42.1018764,-72.5886727,Springfield,MA,
+5898,John Coughlin Memorial Field,42.2625621,-71.8018877,Worcester,MA,
+5791,Turf Field,40.335345,-75.9279495,Reading,PA,
+5823,Clark Field,41.9758872,-91.6704053,Cedar Rapids,IA,
+5939,Cressy Field,41.6332267,-70.9879928,Dartmouth,MA,
+5822,Cadet Memorial Field,41.3556187,-72.0997804,New London,CT,
+6138,Wilson Field,37.7840208,-79.4428157,Lexington,VA,
+5850,Stoffer Family Stadium,45.300347,-122.972751,Newberg,OR,
+6139,Cameron Stadium,31.3991238,-88.2019828,Washington,PA,
+6080,Frank M. Lindsay Field,39.8454163,-88.9524151,Decatur,IL,
+3675,Charles A. Gaetano Stadium,43.1009031,-75.2326641,Utica,NY,
+6099,Selby Stadium,40.2986724,-83.067965,Delaware,OH,
+5789,Frank B. Fuhrer Field,41.641445,-80.151449,Meadville,PA,
+5125,Stadium Red Field,41.2446453,-73.9259559,Cortland,NY,
+6115,Toppa Field,41.4899827,-71.3137707,Newport,RI,
+6126,Bob Boozer Field,43.213671,-77.93918,Brockport,NY,
+6087,Drake Field (NY),42.8986566,-75.6402204,Morrisville,NY,
+3690,Charles L. Currier Memorial Field,43.757209,-71.688538,Plymouth,NH,
+6125,Bulldog Stadium (TX),29.5688411,-97.9647269,Seguin,TX,
+5786,Sprankle-Sprandel Stadium,42.243097,-84.7530304,Albion,MI,
+5839,Langhorst Field,41.8994745,-87.9403418,Elmhurst,IL,
+3640,Blackstock Stadium,39.6444898,-86.8647316,Greencastle,IN,
+5854,Hoernemann Stadium,41.114485,-83.1779537,Tiffin,OH,
+6098,Dial-Roberson Stadium,38.8398935,-83.5051704,Ada,OH,
+5904,Angell Field,42.291707,-85.5872286,Kalamazoo,MI,
+6109,Ingalls Field,43.8424502,-88.8372972,Ripon,WI,
+5906,McBride Field,40.375643,-82.3970994,Gambier,OH,
+5998,Monarch Stadium,35.0525759,-78.878292,Fayetteville,NC,
+5864,Robert E. Thorn Field,41.1579008,-80.0886631,Grove City,PA,
+6107,ECAV Stadium,42.7284117,-73.6917878,Troy,NY,
+3877,Pioneer Stadium,42.2542334,-77.7906062,Alfred,NY,
+5796,Charles D. Lindberg Stadium,41.4411786,-90.5766144,Rock Island,IL,
+4855,Leslie C. Quick Jr. Stadium,39.849557,-75.3557458,Chester,PA,
+6120,Growney Stadium,43.157285,-77.615214,Rochester,NY,
+5852,Jamieson Stadium,36.0726355,-79.7919754,Greensboro,NC,
+7082,Athletic Field Complex,41.5565738,-75.7551655,La Plume,PA,
+5803,Bison Stadium,40.205627,-80.5567384,Bethany,WV,
+6150,Wightman Stadium,40.9491723,-74.2376802,Wayne,NJ,
+3614,Alumni Stadium (IN),38.7142263,-85.4735707,Hanover,IN,
+4856,Mount Union Stadium,40.9153362,-81.1059309,Alliance,OH,
+5817,Ron and Joyce Schipper Stadium,41.4073138,-92.9174074,Pella,IA,
+3843,MLC Bowl,44.3140261,-94.4614177,New Ulm,MN,
+4423,Young-Wise Memorial Stadium,35.2521996,-92.6888936,Conway,AR,
+5120,J.J. Keller Field at Titan Stadium,44.0206919,-88.5408574,Oshkosh,WI,
+5908,Harley Knosher Bowl,40.9475652,-90.3712169,Galesburg,IL,
+5910,Callaway Stadium,33.039291,-85.0313269,Lagrange,GA,
+5920,Griswold Stadium,45.5202471,-122.6741949,Portland,OR,
+5809,J. Leslie Rollins Stadium,42.6452817,-95.1992726,Storm Lake,IA,
+6132,Trinity University Stadium,29.4246002,-98.4951405,San Antonio,TX,
+6093,Holmgren Athletic Complex,41.8755616,-87.6244212,Chicago,IL,
+4014,Moretz Stadium,35.7333312,-81.3442915,Hickory,NC,
+5403,Orlando City Stadium,26.32122435,-81.69295734906564,Orlanda,FL,
+4750,The Reservation,35.0717945,-81.6498195,Gaffney,SC,
+4752,Jahna Field,28.0222435,-81.7328568,Winter Haven,FL,
+11823,Ryan Field,42.065556,-87.6925,Evanston,IL,America/Chicago
+7365,Blaine High School,,,Blaine,WA,
+4250,Wrigley Field,41.8755616,-87.6244212,Chicago,IL,
+6308,McKinney ISD Stadium,,,Mckinney,TX,
+6037,Woodforest Bank Stadium,,,Shenandoah,TX,
+4829,John Clark Field,,,Plano,TX,
+7422,Municipal Stadium,,,Waterbury,CT,
+3459,Red Bull Arena,,,Harrison,NJ,
+3613,Alumni Stadium,39.189375,-75.5433185,Dover,DE,America/New_York
+3620,Armstrong Stadium,37.0200894,-76.3331555,Hampton,VA,America/New_York
+3605,Alerus Center,47.910622,-97.090996,Grand Forks,ND,America/Chicago
+5843,W.B. Adams Stadium,36.937856999999994,-80.01424992208018,Ferrum,VA,
+3602,Aggie Stadium,38.5365266,-121.7627936,Davis,CA,America/Los_Angeles
+5239,U.S. Bank Stadium,,,Minneapolis,MN,
+7512,St. Francis High School,,,Hamburg,NY,
+7504,Liberty North High School,,,Liberty,MO,
+6129,BB&T Field at Griffin Plaza,,,Crestview Hills,KY,
+7513,O'Hara Field,,,Saint Davids,PA,
+7496,ACU Football Field,,,Glendale,AZ,
+3978,Vigilante Field,,,Dillon,MT,
+4737,Croke Park Stadium,,,Dublin,,
+6128,Alumni Stadium (PA),31.8295972,-86.6177517,Greenville,PA,
+5844,McAfee Field,47.126871,-88.580956,Hancock,MI,
+3599,Ace W. Mumford Stadium,30.5221461,-91.1896087,Baton Rouge,LA,America/Chicago
+1027,Alex G. Spanos Stadium,35.2984123,-120.6650005,San Luis Obispo,CA,America/Los_Angeles
+3607,Alfond Stadium,44.905128,-68.6724718,Orono,ME,America/New_York
+3609,Allgood-Bailey Stadium,37.95037,-91.780444,Rolla,MO,America/Chicago
+5363,Allianz Stadium,-33.888907,151.225343,Sydney,NSW,Australia/Sydney
+3610,Aloha Stadium,21.3728014,-157.9299645,Honolulu,HI,Pacific/Honolulu
+3597,Alumni Memorial Field,37.788983,-79.43505,Lexington,VA,America/New_York
+3617,Andy Kerr Stadium,42.8168991,-75.5452721,Hamilton,NY,America/New_York
+5221,ANZ Stadium,-33.846991,151.063435,Sydney,,Australia/Sydney
+3623,Arthur J. Rooney Athletic Field,40.4355808,-79.9900263,Pittsburgh,PA,America/New_York
+4463,Crusader Stadium,31.0560132,-97.464453,Belton,TX,
+6082,Big Cat Stadium,45.586072,-95.913941,Morris,MN,
+5849,Reeves Field (PA),40.7520097,-80.3192295,Beaver Falls,PA,
+6118,Birkelbach Field,30.6326942,-97.6772311,Georgetown,TX,
+5819,Ernie Chapman Stadium,33.7500378,-117.8704931,Orange,CA,
+5842,Robert T. Shields Field,40.7598227,-74.417097,Madison,NJ,
+6140,John F. Wiley Stadium,39.8964641,-80.1792299,Waynesburg,PA,
+6146,Memorial Field (PA),41.1222812,-80.3328428,New Wilmington,PA,
+4422,Valhalla Stadium,34.275093,-85.1832843,Mount Berry,GA,
+6103,Merritt Field,34.0966764,-117.7197785,Claremont,CA,
+3819,Bowditch Field,42.3095704,-71.4413097,Framingham,MA,
+5794,Caparso Field,42.3122967,-71.934172,Paxton,MA,
+5855,Charles A. Henry Field,41.312555,-81.14371,Hiram,OH,
+6101,"Memorial Stadium (Westerville, OH)",40.126139,-82.9295287,Westerville,OH,
+6095,Sabine Field at Haynes Family Stadium,44.153195,-72.65679528850326,Northfield,VT,
+6136,Patterson Field,40.1856597,-75.451571,Collegeville,PA,
+3995,Dr. John W. Winkin Sports Complex,44.8011821,-68.7778138,Bangor,ME,
+5788,Merrill Field at Yunevich Stadium,42.2542334,-77.7906062,Alfred,NY,
+5787,Docking Stadium,41.8975152,-84.0373054,Adrian,MI,
+5911,Ralph E. Davis Pioneer Stadium,42.7342942,-90.4784451,Platteville,WI,
+4854,Perkins Stadium,42.8336422,-88.7292679,Whitewater,WI,
+5862,Butterfield Stadium,42.4396039,-76.4968019,Ithaca,NY,
+6148,The Pine Bowl,47.6571934,-117.4235106,Spokane,WA,
+6124,Amos Alonzo Stagg Field (PA),40.8062437,-76.8607084,Selinsgrove,PA,
+6083,Mangelsdorf Field,32.3117968,-87.1046643,Dallas,PA,
+6089,Scotty Wood Stadium,40.6022059,-75.4712794,Allentown,PA,
+5902,Knox Stadium,40.4847959,-78.0102813,Huntingdon,PA,
+6152,Wiliams Stadium (OH),39.4453393,-83.8285375,Wilmington,OH,
+3627,Bailey Memorial Stadium,34.46158,-81.861368,Clinton,SC,America/New_York
+5116,O'Shaughnessy Stadium,44.9497487,-93.0931028,Saint Paul,MN,America/Chicago
+150,Jack Coffey Field,40.8466508,-73.8785937,Bronx,NY,America/New_York
+3639,Blackshear Stadium,30.091128,-95.994482,Prairie View,TX,America/Chicago
+5888,University Stadium (GA),33.58006,-85.12064,Carrollton,GA,America/New_York
+3745,Greater Zion Stadium,37.1098868,-113.5674494,Saint George,UT,America/Denver
+3749,Hunter Stadium,38.7946252,-90.519829,Saint Charles,MO,America/Chicago
+4419,Bob Ford Field,42.6808062,-73.8272841,Albany,NY,America/New_York
+4416,Spec Martin Municipal Stadium,29.0208575,-81.2993746,DeLand,FL,America/New_York
+4762,Memorial Stadium (Commerce TX),33.2442615,-95.9006353,Commerce,TX,America/Chicago
+3649,Bowman Gray Stadium,36.083372,-80.222037,Winston-Salem,NC,America/New_York
+3650,Bragg Memorial Stadium,30.4261632,-84.2923095,Tallahassee,FL,America/New_York
+4133,Braly Municipal Stadium,34.810914,-87.670587,Florence,AL,America/Chicago
+5905,Kean Alumni Stadium,40.6976019,-74.2632024,Union,NJ,America/New_York
+6048,Duane Stadium,42.6839894,-71.1127065,North Andover,MA,America/New_York
+6058,Ralph F. DellaCamera Stadium,41.2706527,-72.9470471,West Haven,CT,America/New_York
+6075,W.B. Mason Stadium,42.0667665,-71.1036592,North Easton,MA,America/New_York
+6104,Baker Stadium,47.2495798,-122.4398746,Tacoma,WA,America/Los_Angeles
+3655,Brown Field,41.465642,-87.0479446,Valparaiso,IN,America/Chicago
+3656,Brown Stadium,41.842114,-71.3939416,Providence,RI,America/New_York
+6110,Sam Greeley Field,42.2713945,-89.093966,Rockford,IL,America/Chicago
+3658,Buccaneer Field,32.9810239,-80.0659664,North Charleston,SC,America/New_York
+7003,Houck Field,37.3034933,-89.5230357,Cape Girardeau,MO,America/Chicago
+3661,Bulldog Stadium,41.924206,-71.5385124,Smithfield,RI,America/New_York
+11488,Centreville Bank Stadium,41.868789,-71.382589,Pawtucket,RI,America/New_York
+11553,Shark Stadium,40.816284,-73.589546,Brookville,NY,America/New_York
+4013,Camping World Stadium,28.539167,-81.402778,Orlando,FL,America/New_York
+3453,SeatGeek Stadium,41.764722,-87.806111,Bridgeview,IL,America/Chicago
+4428,Saxon Stadium,42.1294712,-80.0852695,Erie,PA,America/New_York
+2455,Wembley Stadium,51.5556,-0.2794,London,,Europe/London
+3504,Aviva Stadium,53.33523,-6.228447,Dublin,,Europe/Dublin
+3671,Case Field,41.513447,-81.603634,Cleveland,OH,America/New_York
+3945,Strong Stadium,42.5083272,-89.031784,Beloit,WI,America/Chicago
+5119,Maxwell Field,45.2100367,-123.194463,Mcminnville,OR,America/Los_Angeles
+3486,Children's Mercy Park,39.121768,-94.823198,Kansas City,KS,America/Chicago
+3676,Christy Mathewson-Memorial Stadium,40.9519411,-76.884752,Lewisburg,PA,America/New_York
+3681,Coffey Field,40.8615808,-73.8827649,The Bronx,NY,America/New_York
+499,Cotton Bowl,32.779722,-96.759722,Dallas,TX,America/Chicago
+3685,Coughlin-Alumni Stadium,44.32121,-96.780096,Brookings,SD,America/Chicago
+5638,Dave Wolk Stadium,43.6111275,-73.1807089,Castleton,VT,America/New_York
+3871,General Charles C. Krulak Stadium,33.5206824,-86.8024326,Birmingham,AL,
+3691,D. B. Milne Field,30.3568843,-81.605476,Jacksonville,FL,America/New_York
+3694,DeGol Field,40.5063173,-78.637214,Loretto,PA,America/New_York
+5237,Dana J. Dykhouse Stadium,44.3210182,-96.7801386,Brookings,SD,America/Chicago
+3673,Lumen Field,47.595217,-122.33165,Seattle,WA,America/Los_Angeles
+3628,Bank of America Stadium,35.225833,-80.852778,Charlotte,NC,America/New_York
+3647,Elliott T. Bowers Stadium,30.713926,-95.5419802,Huntsville,TX,America/Chicago
+3687,AT&T Stadium,32.747778,-97.092778,Arlington,TX,America/Chicago
+4617,Bristol Motor Speedway,36.516,-82.257,Bristol,TN,America/New_York
+4251,Chase Field,33.445278,-112.066944,Phoenix,AZ,America/Phoenix
+3624,Arute Field,41.6950591,-72.7616197,New Britain,CT,America/New_York
+3686,Cowboy Stadium,30.1804575,-93.2178729,Lake Charles,LA,America/Chicago
+3668,Campus Field,41.2212488,-73.2417431,Fairfield,CT,America/New_York
+3631,BBVA Compass Stadium,29.7521988,-95.3524146,Houston,TX,America/Chicago
+3847,Cooper Field,38.9080248,-77.0753144,Washington,DC,America/New_York
+1905,DakotaDome,42.7911218,-96.9278427,Vermillion,SD,America/Chicago
+3629,Barker-Lane Stadium,35.4047689,-78.7424842,Buies Creek,NC,America/New_York
+3664,Butler Bowl,39.8444694,-86.1659242,Indianapolis,IN,America/Indiana/Indianapolis
+3643,Bobcat Stadium,45.659048,-111.049547,Bozeman,MT,America/Denver
+3695,Delaware Stadium,39.6617428,-75.7488224,Newark,DE,America/New_York
+5811,William Rolland Stadium,34.1705609,-118.8375937,Thousand Oaks,CA,America/Los_Angeles
+5824,Lions Stadium,40.2688105,-74.8006895,Ewing,NJ,America/New_York
+5826,Concordia Stadium,41.8978091,-87.8139483,River Forest,IL,America/Chicago
+5841,Pete FioRito Stadium at McKinzie Field,40.7213015,-89.2726708,Eureka,IL,America/Chicago
+3701,Drake Stadium,41.605,-93.655,Des Moines,IA,America/Chicago
+3902,Eddie Robinson Stadium,32.5258665,-92.7146412,Grambling,LA,America/Chicago
+4757,Edwards-Maurer Field,39.937943,-83.812075,Springfield,OH,America/New_York
+3704,E. J. Whitmire Stadium,35.3048352,-83.1818148,Cullowhee,NC,America/New_York
+5918,Taylor Field,43.7486054,-87.977038,Plymouth,WI,America/Chicago
+6085,Sprague Field,40.8164458,-74.2210643,Montclair,NJ,America/New_York
+6102,Sparks Stadium,47.1849009,-122.29214,Puyallup,WA,America/Los_Angeles
+6112,Richard Wackar Stadium,39.7027677,-75.1119434,Glassboro,NJ,America/New_York
+4245,Fenway Park,42.346389,-71.0975,Boston,MA,America/New_York
+3720,Finley Stadium,35.0363792,-85.3158835,Chattanooga,TN,America/New_York
+3721,Fisher Field,40.7009796,-75.2106499,Easton,PA,America/New_York
+3722,Fitton Field,42.2403564,-71.8111424,Worcester,MA,America/New_York
+6241,Spirit Field,33.6292271,-112.3680189,Surprise,AZ,
+4417,Five Star Stadium at the Moye Complex,32.8262075,-83.6522485,Macon,GA,America/New_York
+3724,Floyd Casey Stadium,31.530206,-97.148358,Waco,TX,America/Chicago
+6142,Westside Athletic Complex,41.394817,-73.4540111,Danbury,CT,America/New_York
+6149,McCulloch Stadium,44.9391565,-123.033121,Salem,OR,America/Los_Angeles
+3730,Franklin Field,39.9501475,-75.1901043,Philadelphia,PA,America/New_York
+3734,Gayle and Tom Benson Stadium,29.4674787,-98.470014,San Antonio,TX,America/Chicago
+6153,Hanson Stadium,45.5197452,-123.1114405,Forest Grove,OR,America/Los_Angeles
+3495,Georgia Dome,33.7576897,-84.4008285,Atlanta,GA,America/New_York
+6274,Audi Field,38.868906,-77.012947,Washington,DC,America/New_York
+7173,TQL Stadium,39.11139,-84.52222,Cincinnati,OH,America/New_York
+3737,Gibbs Stadium,34.9618606,-81.9328915,Spartanburg,SC,America/New_York
+3738,Gillette Stadium,42.0909458,-71.2643465,Foxborough,MA,America/New_York
+11559,Joe Davis Stadium,34.6995806,-86.5884972,Huntsville,AL,America/Chicago
+3740,Golden Lion Stadium,34.253327,-92.0214031,Pine Bluff,AR,America/Chicago
+3741,Goodman Stadium,40.5890837,-75.3553874,Bethlehem,PA,America/New_York
+4293,Guaranteed Rate Field,41.83,-87.633889,Chicago,IL,America/Chicago
+4029,Hale Stadium,36.168056,-86.826944,Nashville,TN,America/Chicago
+3744,Hancock Stadium,40.5125091,-88.9967177,Normal,IL,America/Chicago
+3746,Hanson Field,40.4683928,-90.6841248,Macomb,IL,America/Chicago
+3963,Harry Turpin Stadium,31.747259,-93.0961357,Natchitoches,LA,America/Chicago
+3750,Harvard Stadium,42.366704,-71.1267511,Boston,MA,America/New_York
+3754,High Point Solutions Stadium,40.5136754,-74.4655737,Piscataway,NJ,America/New_York
+4765,Hillsboro Stadium,45.554597,-122.90694,Portland,OR,America/Los_Angeles
+3757,Hornet Stadium,38.5556718,-121.4229607,Sacramento,CA,America/Los_Angeles
+4582,Hornet Stadium,32.3642223,-86.2896902,Montgomery,AL,America/Chicago
+3758,Houck Stadium,37.3095375,-89.5313804,Cape Girardeau,MO,America/Chicago
+3762,Hughes Stadium,39.3439778,-76.5829573,Baltimore,MD,America/New_York
+4424,Husky Stadium,29.6949025,-95.5167353,Houston,TX,America/Chicago
+3771,Jack Spinks Stadium,31.873621,-91.13488,Lorman,MS,America/Chicago
+3719,Northwest Stadium,38.907778,-76.864444,Landover,MD,America/New_York
+3727,Ford Field,42.34,-83.045556,Detroit,MI,America/Detroit
+3766,Independence Stadium,32.475556,-93.791944,Shreveport,FL,America/Chicago
+2068,E. Claiborne Robins Stadium,37.5807765,-77.5372211,Richmond,VA,America/New_York
+1930,Holt Arena,42.8702052,-112.4281274,Pocatello,ID,America/Boise
+3714,Fargodome,46.9029938,-96.8003251,Fargo,ND,America/Chicago
+3756,Homer Bryce Stadium,31.625719,-94.6444034,Nacogdoches,TX,America/Chicago
+3748,Graham Stadium,36.3448341,-88.8616245,Martin,TN,America/Chicago
+3742,Governors Stadium,36.5362559,-87.3525507,Clarksville,TN,America/Chicago
+3710,Ernest W. Spangler Stadium,35.2457593,-81.6739887,Boiling Springs,NC,America/New_York
+3711,Estes Stadium,35.0802599,-92.460045,Conway,AR,America/Chicago
+3706,Eccles Coliseum,37.6757919,-113.0773938,Cedar City,UT,America/Denver
+12022,Oakland Athletic Complex Perham Field,,,Glendive,MT,
+3774,Jayne Stadium,38.1916481,-83.4253315,Morehead,KY,America/New_York
+5799,Daly Field at Frank R. Campbell Stadium,36.5859718,-79.3950228,Danville,VA,
+10464,Walter Butler Stadium,,,Mckenzie,TN,
+11472,The Stadium at Memorial Field,,,Mount Vernon,NY,
+12023,Stallings Field,,,Rocky Mount,NC,
+3777,Joe Walton Stadium,40.521046,-80.2159227,Moon Township,PA,America/New_York
+3778,John F. Kennedy Stadium,37.191041,-93.301713,Springfield,MO,America/Chicago
+11955,PENFED Field at Scranton Memorial Stadium,,,Scranton,PA,
+10459,Jerome Berg Field,,,Mayville,ND,
+11956,Antler Stadium,,,Kerrville,TX,
+7364,Pride Field,,,Greensboro,NC,
+4900,Kermit Tipton Stadium,36.3269334,-82.3710142,Johnson City,TN,America/New_York
+3790,Kessler Field,40.279379,-74.0092635,West Long Branch,NJ,America/New_York
+5389,Kessler Stadium,40.278953,-74.009451,West Long Branch,NJ,America/New_York
+3797,Ladd Peebles Stadium,30.6730374,-88.0755704,Mobile,AL,America/Chicago
+3798,Lambeau Field,44.50131,-88.062273,Greenbay,WI,America/Chicago
+3802,Lawrence A. Wien Stadium,40.8732697,-73.9164594,Manhattan,NY,America/New_York
+36,Leonidoff Field,41.7191409,-73.9329549,Poughkeepsie,NY,America/New_York
+4738,Levi's Stadium,37.403,-121.97,Santa Clara,CA,America/Los_Angeles
+3809,Louis Crews Stadium,34.7835363,-86.5784132,Huntsville,AL,America/Chicago
+3811,Lubbers Stadium,42.968996,-85.894735,Allendale,MI,America/Detroit
+3779,Manning Field at John L. Guidry Stadium,29.7867254,-90.80455,Thibodaux,LA,America/Chicago
+4223,Marlins Park,25.778056,-80.219722,Miami,FL,America/New_York
+3662,AmFirst Stadium,33.8201052,-85.76647,Jacksonville,AL,America/Chicago
+3493,Caesars Superdome,29.950833,-90.081111,New Orleans,LA,America/Chicago
+3803,Legion Field,33.511389,-86.842778,Birmingham,AL,America/Chicago
+3812,Lucas Oil Stadium,39.760056,-86.163806,Indianapolis,IN,America/Indiana/Indianapolis
+3839,MetLife Stadium,40.813611,-74.074444,East Rutherford,NJ,America/New_York
+3829,Memorial Stadium,39.4746858,-87.3669599,Terre Haute,IN,America/Indiana/Indianapolis
+3788,Kenneth P. LaValle Stadium,40.9188829,-73.1242966,Stony Brook,NY,America/New_York
+3791,Kibbie Dome,46.7262921,-117.0173713,Moscow,ID,America/Los_Angeles
+3824,Meade Stadium,41.4879984,-71.5347458,Kingston,RI,America/New_York
+3782,Johnson Hagood Stadium,32.7936975,-79.9558183,Charleston,SC,America/New_York
+3781,Johnny Unitas Stadium,39.3885683,-76.6159716,Towson,MD,America/New_York
+3826,Memorial Field,43.701302,-72.2842781,Hanover,NH,America/New_York
+3976,Mississippi Veterans Memorial Stadium,32.3300053,-90.1795578,Jackson,MS,America/Chicago
+3814,M&T Bank Stadium,39.278056,-76.622778,Baltimore,MD,America/New_York
+3850,Municipal Stadium,29.173466,-81.117511,Daytona Beach,FL,America/New_York
+3858,O'Brien Stadium,39.4804965,-88.1811618,Charleston,IL,America/Chicago
+3862,O'Kelly-Riddick Stadium,35.9738646,-78.896969,Durham,NC,America/New_York
+3864,Oliver C. Dawson Stadium,33.4986313,-80.8446857,Orangeburg,SC,America/New_York
+3868,Paladin Stadium,34.920192,-82.4370917,Greenville,SC,America/New_York
+5238,Panther Stadium,30.0937874,-95.9960913,Prairie View,TX,America/Chicago
+3874,Paul Brown Stadium,39.095555,-84.516071,Cincinnati,OH,America/New_York
+3881,Princeton University Stadium,40.3457928,-74.6500047,Princeton,NJ,America/New_York
+3485,Providence Park,45.5215978,-122.6916811,Portland,OR,America/Los_Angeles
+3882,Provost Umphrey Stadium,30.04313,-94.069963,Beaumont,TX,America/Chicago
+3932,Qualcomm Stadium,32.7831122,-117.1195716,San Diego,CA,America/Los_Angeles
+3889,Reinhart Field,40.807528,-73.797744,Bronx,NY,America/New_York
+3491,RFK Stadium,38.88981,-76.971809,Washington,DC,America/New_York
+3896,Rice-Totten Field,33.5118304,-90.3397718,Itta Bena,MS,America/Chicago
+3897,Richardson Stadium,35.4995744,-80.8428419,Davidson,NC,America/New_York
+453,Robertson Stadium,29.722053,-95.349175,Houston,TX,America/Chicago
+4751,Mewbourne Stadium,32.3512601,-95.3010624,Tyler,TX,
+3908,Roy Kidd Stadium,37.7344109,-84.2972854,Richmond,KY,America/New_York
+3909,Roy Stewart Stadium,36.6215165,-88.3175531,Murray,KY,America/Chicago
+3914,Sam Boyd Stadium,36.085935,-115.01731,Whitney,NV,America/Los_Angeles
+3925,Seibert Stadium,33.463273,-86.795326,Homewood,AL,America/Chicago
+3928,Shotwell Stadium,32.4336917,-99.6986246,Abilene,TX,America/Chicago
+3933,Soldier Field,41.8625,-87.616667,Chicago,IL,America/Chicago
+3761,Sonny Lubick Field at Hughes Stadium,40.5621183,-105.1416248,Fort Collins,CO,America/Denver
+3891,NRG Stadium,29.684722,-95.410833,Houston,TX,America/Chicago
+3937,Sports Authority Field at Mile High,39.743889,-105.02,Denver,CO,America/Denver
+3810,Nissan Stadium,36.166479,-86.7712898,Nashville,TN,America/Chicago
+844,Stambaugh Stadium,41.1092964,-80.6501885,Youngstown,OH,America/New_York
+3894,Rhodes Stadium,36.1101269,-79.5079979,Elon,NC,America/New_York
+3906,Roos Field,47.49278,-117.587353,Cheney,WA,America/Los_Angeles
+3878,Plaster Sports Complex,37.1976229,-93.2798119,Springfield,MO,America/Chicago
+3921,Schoellkopf Field,42.4439016,-76.4785398,Ithaca,NY,America/New_York
+3856,Nottingham Field,40.403493,-104.705139,Greeley,CO,America/Denver
+3913,Saluki Stadium,37.708637,-89.216212,Carbondale,IL,America/Chicago
+3942,Stewart Stadium,41.1918741,-111.9401391,Ogden,UT,America/Denver
+3944,Strawberry Stadium,30.5110264,-90.4685792,Hammond,LA,America/Chicago
+5913,Warrior Field at Raabe Stadium,43.0494122,-88.0079271,Wauwatosa,WI,America/Chicago
+5319,SunTrust Park,33.890817,-84.467656,Atlanta,GA,America/New_York
+3950,Superior Dome,46.560589,-87.393741,Marquette,MI,America/Detroit
+3952,Ted Wright Stadium,32.0274346,-81.0687492,Savannah,GA,America/New_York
+716,Torero Stadium,32.7730674,-117.183721,San Diego,CA,America/Los_Angeles
+1400,Toyota Stadium,33.154444,-96.835278,Frisco,TX,America/Chicago
+4113,Tropicana Field,27.768333,-82.653333,Saint Petersburg,FL,America/New_York
+3962,Tucker Stadium,36.1780555,-85.506183,Cookeville,TN,America/Chicago
+3969,University Field (NY),42.680981,-73.827276,Albany,NY,America/New_York
+717,Villanova Stadium,40.0343329,-75.3367666,Villanova,PA,America/New_York
+3979,Wagner College Stadium,40.614688,-74.090639,Staten Island,NY,America/New_York
+3988,Welcome Stadium,39.7369239,-84.1981068,Dayton,OH,America/New_York
+3688,Wildcat Stadium,43.1386231,-70.9393077,Durham,NH,America/New_York
+5440,Wildcat Stadium (TX),32.472275,-99.710464,Abilene,TX,America/Chicago
+5400,William B. Greene Jr. Stadium,36.299084,-82.374117,Johnson City,TN,America/New_York
+3991,"William Dick"""" Price Stadium""""",36.8469442,-76.2600839,Norfolk,VA,America/New_York
+3997,Yale Bowl,41.3132441,-72.9605333,New Haven,CT,America/New_York
+4102,Yankee Stadium,40.829167,-73.926389,New York,NY,America/New_York
+3983,War Memorial Stadium (AR),34.749848,-92.330127,Little Rock,AR,America/Chicago
+3768,InfoCision Stadium,41.0725534,-81.5083408,Akron,OH,America/New_York
+3712,EverBank Stadium,30.323889,-81.6375,Jacksonville,FL,America/New_York
+3970,State Farm Stadium,33.527607,-112.262559,Glendale,AZ,America/Phoenix
+2023,Walkup Skydome,35.1805483,-111.6528377,Flagstaff,AZ,America/Phoenix
+3998,Zable Stadium,37.2730996,-76.7137202,Williamsburg,VA,America/New_York
+3987,Washington-Grizzly Stadium,46.8638753,-113.9815042,Missoula,MT,America/Denver
+3967,UNI-Dome,42.5156111,-92.4672307,Cedar Falls,IA,America/Chicago
+3990,William H. Greene Stadium,38.925487,-77.021047,Washington,DC,America/New_York
+3879,TowneBank Stadium,36.9775016,-76.42977,Newport News,VA,
+5812,Bernlohr Stadium,39.9692378,-82.936864,Bexley,OH,
+6116,Shentel Stadium,39.1852184,-78.1652404,Winchester,VA,
+5818,Farris Stadium,37.6456488,-84.7721823,Danville,KY,
+5928,Macalester Stadium,44.9497487,-93.0931028,Saint Paul,MN,
+5892,Armfield Athletic Center,36.0726355,-79.7919754,Greensboro,NC,
+5827,Tomasini Stadium,43.2219088,-87.9822969,Mequon,WI,
+5897,Francis Field (MO),38.6264256,-90.1995853,Saint Louis,MO,
+7079,Laird Stadium,44.4582041,-93.161159,Northfield,MN,
+5996,Wilford Moore Stadium,32.44645,-99.7475905,Abilene,TX,
+5858,England Stadium,39.7343037,-90.2288356,Jacksonville,IL,
+5798,Jerry E. Apple Stadium,36.2452294,-101.8858689,Sherman,TX,
+5800,Jopson Athletic Complex,38.3820655,-78.9766975,Bridgewater,VA,
+5821,Fritz B. Burns Stadium,34.0966764,-117.7197785,Claremont,CA,
+6137,Walston-Hoover Stadium,42.7258451,-92.4746033,Waverly,IA,
+5919,Ron Roberts Field at the Banta Bowl,44.2613967,-88.4069744,Appleton,WI,
+5793,Macholtz Stadium,40.1053196,-85.6802541,Anderson,IN,
+6111,Cook Stadium,39.4667025,-87.4139119,Terre Haute,IN,
+5118,Redwood Bowl,,,Aracata,CA,
+5263,Steele Stadium,37.742297,-87.119976,Owensboro,KY,
+3920,Schmidt Stadium,33.707182,-85.51021468718943,Edwardsville,PA,
+7225,Polar Park,42.2625621,-71.8018877,Worcester,MA,
+4435,Robert B. Redman Stadium,41.0044958,-76.4537302,Bloomsburg,PA,
+5802,Belhaven Bowl Stadium,32.2990021,-90.1847691,Jackson,MS,
+5832,Justin F. Coressel Stadium,41.2844933,-84.3557802,Defiance,OH,
+6133,Ellis Oval at Zimman Field,42.4184296,-71.1061639,Medford,MA,
+5806,Whittier Field,43.9145244,-69.9653278,Brunswick,ME,
+5124,Homewood Field,39.2908816,-76.610759,Baltimore,MD,
+5805,Alumni Field (OH),40.8934459,-83.8917849,Bluffton,OH,
+5689,Seaverns Field At Harold Alfond Stadium,44.5520105,-69.6317121,Waterville,ME,
+5792,Pratt Field at Lehrman Stadium,42.3685658,-72.505714,Amherst,MA,
+5901,David Smith Stadium at Ramer Field,44.8595111,-92.6265897,River Falls,WI,
+5900,Don and Nona Williams Stadium,44.8755183,-91.9193422,Menomonie,WI,
+980,Benedetti-Wehrli Stadium,41.7728699,-88.1479278,Naperville,IL,
+5869,LeGrand Stadium at 1st Community Credit Union Field,31.4649685,-100.4405094,San Angelo,TX,
+3642,Bobcat Stadium (MD),39.6581425,-78.928357,Frostburg,MD,
+6078,Pioneer Field (TN),36.1631575,-82.8309861,Greeneville,TN,
+4437,"Memorial Stadium (Clarion, PA)",41.2148975,-79.3857047,Clarion,PA,
+6064,Crain Family Stadium,35.3272928,-96.9253004,Shawnee,OK,
+3934,Southern Nazarene University Football Stadium,35.5186728,-97.6322648,Bethany,OK,
+6074,Grappone Stadium,42.9956397,-71.4547891,Manchester,NH,
+3606,Scheels Field at Nemzek Stadium,46.8739081,-96.7538674,Moorhead,MN,
+6033,Carl Smith Stadium,36.9759345,-82.5757108,Wise,VA,
+5933,Sea Foam Stadium,44.9497487,-93.0931028,Saint Paul,MN,
+6054,Fred G. Hughes Stadium,37.08418,-94.51323,Joplin,MO,
+4753,Greene Stadium,39.246479,-94.419079,Liberty,MO,
+6068,George Williams Athletic Complex,35.7803977,-78.6390989,Raleigh,NC,
+5785,Dickerson Stadium,38.3836097,-81.7654665,Institute,WV,
+6077,Stokes Stadium,40.1948848,-92.5833939,Kirksville,MO,
+4440,Sox Harrison Stadium,41.8742225,-80.1317236,Edinboro,PA,
+3800,Larry Wilcox Stadium,39.545816,-95.3326052,Atchison,KS,
+6031,Urbana University Stadium,40.1083912,-83.7524298,Urbana,OH,
+6223,Lawrence Tech Athletic Field,42.4733689,-83.2218731,Southfield,MI,
+3702,Durham County Memorial Stadium,35.996653,-78.9018053,Durham,NC,
+5847,Sponaugle-Williamson Field,40.03813,-76.3056686,Lancaster,PA,
+6069,Husky Stadium,45.5616075,-94.1642004,Saint Cloud,MN,
+6219,Fred J. Brown Athletic Complex,41.2844933,-84.3557802,Defiance,OH,
+6209,Henry Biesiot Activities Center,46.8791756,-102.7896242,Dickinson,ND,
+3645,Bolstorff Field,43.2626747,-93.6376741,Forest City,IA,
+3684,Citrus Stadium,34.1338751,-117.9056046,Azusa,CA,
+4853,Scott D. Miller Stadium,39.158168,-75.5243682,Dover,DE,
+4420,Florida Tech Panther Stadium,28.106471,-80.6371513,Melbourne,FL,
+6283,A.J. Simeon Stadium,35.9556924,-80.0053176,High Point,NC,
+5922,Wildcat Field,31.3224044,-92.4343035,Pineville,LA,
+3794,Korb Field,41.5231076,-81.5184553,South Euclid,OH,
+3938,Sports Complex (OH),39.1014537,-84.5124602,Cincinnati,OH,
+3807,Lincoln Park Stadium,45.5197452,-123.1114405,Forest Grove,OR,
+3869,Palmetto Ridge High School,26.1421976,-81.7942944,Naples,FL,
+3880,Priest Field,38.8467082,-91.9479586,Fulton,MO,
+3703,Durham County Stadium,35.7803977,-78.6390989,Raleigh,NC,
+4438,O'Shields-Stevenson Stadium,39.9284433,-75.5227033,Cheyney,PA,
+4134,Salem Stadium,37.293378,-80.054667,Salem,VA,
+3659,Bulldog Stadium (NE),40.8695533,-97.1706676,Seward,NE,
+4580,Bulldawg Stadium,31.124062,-97.9030785,Copperas Cove,TX,
+3837,"Memorial Stadium (Selma, AL)",32.4078632,-87.0207473,Selma,AL,
+3943,Stillman Stadium,33.2095614,-87.5675258,Tuscaloosa,AL,
+3939,St. Vincent Health Field,39.7683331,-86.1583502,Indianapolis,IN,
+3804,Legions Field (FL),27.9014133,-81.5859099,Lake Wales,FL,
+4583,Razorback Stadium (Texarkana),33.4254259,-94.0430937,Texarkana,AR,
+6208,Sirrine Stadium,34.851354,-82.3984882,Greenville,SC,
+7505,Keiser Multi-Purpose Field,,,West Palm Beach,FL,
+5840,Fred Selfe Stadium at Nicewonder Field,37.3065238,-80.0267067,Meadowview,VA,
+3769,Jack Britt Memorial Stadium,41.7244885,-81.245657,Painesville,OH,
+5875,Charlie W. Johnson Stadium,34.0007493,-81.0343313,Columbia,SC,
+4421,Multi-Sport Performance Stadium,39.1523198,-80.0403578,Philippi,WV,
+3813,"Luther ""Nick"" Jeralds Stadium",35.0525759,-78.878292,Fayetteville,NC,
+5886,West Family Stadium,40.0639616,-80.7209149,Wheeling,WV,
+4724,Audrey J. Walton Stadium at Vernon Kennedy Field,38.7624373,-93.7409596,Warrensburg,MO,
+3667,Callaghan Stadium,37.366328,-81.1026607,Princeton,WV,
+6060,Grace P. Johnson Stadium,34.6801627,-79.1950373,Pembroke,NC,
+4431,Chryst Field at Biemesderfer Stadium,39.997998,-76.3545372,Millersville,PA,
+4429,Seth Grove Stadium,40.0507198,-77.5205485,Shippensburg,PA,
+3663,Burke-Tarr Stadium,36.122311,-83.4923961,Jefferson City,TN,
+3860,O'Harra Stadium,44.0869329,-103.2274481,Rapid City,SD,
+5883,Marv Kay Stadium at Campbell Field,39.7546349,-105.2205809,Golden,CO,
+6045,Dwight T. Reed Stadium,38.577359,-92.1724265,Jefferson City,MO,
+6030,Harms-Eischeid Stadium,42.8420766,-91.850265,Fayette,IA,
+4851,Bazemore-Hyder Stadium,30.8327022,-83.2784851,Valdosta,GA,
+6217,W.C. Hawkins Stadium,34.0007493,-81.0343313,Columbia,SC,
+5870,Thone Stadium at Buerkle Field,35.2784173,-93.1337856,Russellville,AR,
+6073,Milam Stadium,35.5261633,-98.7075744,Weatherford,OK,
+6061,Younts Stadium,35.0684492,-82.3684509,Tigerville,SC,
+6035,"Memorial Stadium (Wayne, NE)",42.1941294,-97.169623,Wayne,NE,
+3808,Lincoln University Stadium,39.8065518,-75.92870551247694,Lincoln University,PA,
+5882,Ralph Stocker Stadium,39.063956,-108.5507317,Grand Junction,CO,
+6041,Irwin Belk Complex,35.2272086,-80.8430827,Charlotte,NC,
+5122,Shuford Stadium,35.6709727,-80.4742261,Salisbury,NC,
+7075,Electric Supply Company Field,35.7212689,-77.9155395,Wilson,NC,
+5932,Lloyd L. Thornton Stadium,35.7564719,-83.9704593,Maryville,TN,
+6131,Jessee/Miller Field,41.764582,-72.6908547,Hartford,CT,
+6079,Alumni Stadium (VT),44.007273600000005,-73.16330105415423,Middlebury,VT,
+6151,Farley-Lamb Field,42.6889156,-73.2246057,Williamstown,MA,
+6122,Public Schools Stadium,46.7729322,-92.1251218,Duluth,MN,
+3635,Bill Buxton Stadium,41.3604966,-93.5613292,Indianola,IA,
+6210,Bruce R. Deaton Memorial Field,41.8755616,-87.6244212,Chicago,IL,
+6222,Lumpkins Stadium,32.3944908,-96.8439365,Waxahachie,TX,
+3611,Alumni Field (MA),42.2368772,-71.9112404,Leicester,MA,
+6081,Harper Davis Field,32.2990021,-90.1847691,Jackson,MS,
+6130,Fred Zollner Athletic Stadium,41.634874,-84.99928,Angola,IN,
+6114,Sea Gull Stadium,38.366027,-75.6009964,Salisbury,MD,
+5997,Brooks Stadium (NY),40.8197813,-73.7351337,Kings Point,NY,
+5845,Elliot Field Athletic Complex,42.5903661,-71.8119837,Fitchburg,MA,
+5830,Walter M. Katz Field,42.2501425,-71.065573,Milton,MA,
+3755,Ray and Sue Smith Stadium,42.7876022,-86.1090828,Holland,MI,
+3823,Hardee-McGee Field,35.200644,-85.91952368522726,Sewanee,TN,
+5931,Don Drumm Stadium,39.4167742,-81.4548392,Marietta,OH,
+5808,Edward C. Swenson Athletic Complex,41.9903787,-70.9750426,Bridgewater,MA,
+5833,Robert A. Lipinski Field at James Work Memorial Stadium,40.30815835,-75.2164370939226,New Britain,PA,
+5923,Legacy Field in Carlson Stadium,43.3041609,-91.7859098,Decorah,IA,
+6100,Cutler Field,42.4414273,-84.9241542,Olivet,MI,
+5925,David Person Field,41.2493292,-77.0027671,Williamsport,PA,
+5804,Royal Stadium,45.0761409,-93.1666945,Arden Hills,MN,
+5848,Hotchkiss Field,38.8950368,-77.0365427,Washington,DC,
+5123,Little Giant Stadium,40.0401991,-86.8990249,Crawfordsville,IN,
+3922,Kenneth R. Gill Stadium,39.5752639,-76.9959277,Westminster,MD,
+5851,Shirk Field at Musselman Stadium,39.8308973,-77.231012,Gettysburg,PA,
+6094,Reynolds Field,45.0060767,-93.1566107,Roseville,MN,
+6113,Leckonby Stadium,44.5956163,-75.1690942,Canton,NY,
+6088,Schueler Field,39.1014537,-84.5124602,Cincinnati,OH,
+5915,Farwell Field,42.2586342,-87.840625,Lake Forest,IL,
+5916,Carson Park,44.811349,-91.4984941,Eau Claire,WI,
+5117,Clemens Stadium,45.5944117,-94.3622868,Collegeville,MN,
+5914,Veterans Memorial Stadium (WI),43.8122836,-91.2514355,La Crosse,WI,
+6105,Day Field,37.7594012,-77.4806603,Ashland,VA,
+4747,Abbott Memorial Alumni Stadium,32.4240286,-85.6916195,Tuskegee,AL,
+6084,April Zorn Memorial Stadium,40.9127103,-90.6472477,Monmouth,IL,
+5834,Deeds Field-Piper Stadium,40.0681192,-82.5196037,Granville,OH,
+5637,Vendetti Field,42.0572744,-71.9396898,Dudley,MA,
+5899,"Alumni Stadium (Worcester, MA)",42.2625621,-71.8018877,Worcester,MA,
+6202,Cardinal Stadium (DC),38.8950368,-77.0365427,Washington,DC,
+6134,Frank Bailey Field,42.8142432,-73.9395687,Schenectady,NY,
+6096,Austin E. Knowlton Athletics Complex,41.2939386,-82.2173786,Oberlin,OH,
+5836,Chalmers Field,42.5006243,-90.6647985,Dubuque,IA,
+6135,Blue Storm Stadium,43.6610277,-70.2548596,Portland,ME,
+3621,Arnold Field (PA),40.3295901,-76.515226,Annville,PA,
+6086,Rocco Calvo Field,40.6178915,-75.3786521,Bethlehem,PA,
+5896,Lewis C. Everett Stadium,37.3024713,-78.3923813,Farmville,VA,
+6143,Golden Bear Stadium,42.1018764,-72.5886727,Springfield,MA,
+5813,Klein Field at Manitou,44.4582041,-93.161159,Northfield,MN,
+5797,Vago Field,41.7571701,-88.3147539,Aurora,IL,
+5895,Klas Field,44.9497487,-93.0931028,Saint Paul,MN,
+5861,Rosenbloom Field,41.7430237,-92.7239637,Grinnell,IA,
+6121,Donald J. Schneider Stadium,44.4493584,-88.0599986,De Pere,WI,
+5859,Tucci Stadium,40.4797828,-88.9939147,Bloomington,IL,
+6145,Blue Jay Stadium,38.8467082,-91.9479586,Fulton,MO,
+5853,Francis Field (IL),38.8922687,-89.4131356,Greenville,IL,
+5127,Gene L. Shirk Stadium,40.335345,-75.9279495,Reading,PA,
+5790,Bahlke Field,43.37892,-84.659727,Alma,MI,
+5857,Gordon Wood Stadium,31.7070026,-98.9831022,Brownwood,TX,
+5889,Carpenter-Haygood Stadium,34.1209292,-93.053784,Arkadelphia,AR,
+5929,Ritchie Field,44.388164,-68.79982,Castine,ME,
+6231,Lucy Laney Stadium,33.4709714,-81.9748429,Augusta,GA,
+6097,Patterson Field at Jack Kemp Stadium,34.0536909,-118.242766,Los Angeles,CA,
+6218,Garrett-Harrison Stadium,32.4709761,-85.0007653,Phenix City,AL,
+4425,Southwestern Field House,30.6326942,-97.6772311,Georgetown,TX,
+4426,Matador Stadium,29.5688411,-97.9647269,Seguin,TX,
+3818,Malosky Stadium,46.7729322,-92.1251218,Duluth,MN,
+3901,Robert E. Williams Field,37.7342962,-79.3539292,Buena Vista,VA,
+3678,City Stadium (VA),37.4137536,-79.1422464,Lynchburg,VA,
+3767,Indian Bowl,35.6630196,-95.3927706,Muskogee,OK,
+4103,Tiger Stadium (MO),39.3417244,-94.2223507,Excelsior Springs,MO,
+3713,Falcon Stadium,38.9969701,-104.8436165,Colorado Springs,CO,America/Denver
+6526,Hancock Whitney Stadium,30.696904,-88.192013,Mobile,AL,America/Chicago
+3792,Kidd Brewer Stadium,36.2114267,-81.6854278,Boone,NC,America/New_York
+3619,Arizona Stadium,32.2288054,-110.9488677,Tucson,AZ,America/Phoenix
+3625,Centennial Bank Stadium,35.8488977,-90.6677436,Jonesboro,AR,America/Chicago
+3785,Jordan-Hare Stadium,32.6025532,-85.4897479,Auburn,AL,America/Chicago
+3919,Scheumann Stadium,40.2159422,-85.4161148,Muncie,IN,America/Indiana/Indianapolis
+4727,McLane Stadium,31.5582015,-97.1156702,Waco,TX,America/Chicago
+3653,Albertsons Stadium,43.6028839,-116.1958882,Boise,ID,America/Boise
+3965,UB Stadium,42.9991334,-78.7775113,Amherst,NY,America/New_York
+3801,LaVell Edwards Stadium,40.2575347,-111.6545247,Provo,UT,America/Denver
+3831,California Memorial Stadium,37.8710434,-122.2507729,Berkeley,CA,America/Los_Angeles
+3786,Kelly/Shorts Stadium,43.5777313,-84.7709904,Mount Pleasant,MI,America/Detroit
+4418,Jerry Richardson Stadium,35.3105033,-80.7401194,Charlotte,NC,America/New_York
+3854,Nippert Stadium,39.1312495,-84.5161913,Cincinnati,OH,America/New_York
+3726,Folsom Field,40.0094746,-105.266905,Boulder,CO,America/Denver
+5388,Canvas Stadium,40.570015,-105.088435,Fort Collins,CO,America/Denver
+3982,Wallace Wade Stadium,35.9953688,-78.9417564,Durham,NC,America/New_York
+3699,Dowdy-Ficklen Stadium,35.5968486,-77.364564,Greenville,NC,America/New_York
+3912,Rynearson Stadium,42.256126,-83.647285,Ypsilanti,MI,America/Detroit
+3634,Ben Hill Griffin Stadium,29.6499357,-82.3485788,Gainesville,FL,America/New_York
+3715,FAU Stadium,26.3763763,-80.1015759,Boca Raton,FL,America/New_York
+3700,Doyt L. Perry Stadium,41.3780114,-83.6225,Bowling Green,OH,America/New_York
+3817,Malone Stadium,32.5308089,-92.0660602,Monroe,LA,America/Chicago
+6577,SHI Stadium,40.513611,-74.465278,Piscataway,NJ,America/New_York
+3917,Sanford Stadium,33.9498197,-83.3733813,Athens,GA,America/New_York
+7220,Clarence T.C. Ching Athletics Complex,21.294294,-157.819338,Honolulu,HI,Pacific/Honolulu
+3793,Kinnick Stadium,41.6586045,-91.5510829,Iowa City,IA,America/Chicago
+3772,Jack Trice Stadium,42.0139977,-93.6357716,Ames,IA,America/Chicago
+3651,Bridgeforth Stadium,38.4352919,-78.8729349,Harrisonburg,VA,America/New_York
+3833,Memorial Stadium,38.9629418,-95.2463686,Lawrence,KS,America/Chicago
+3696,Dix Stadium,41.1390935,-81.31346,Kent,OH,America/New_York
+3666,Cajun Field,30.2158434,-92.0417371,Lafayette,LA,America/Chicago
+3776,Joe Aillet Stadium,32.5321487,-92.6560019,Ruston,LA,America/Chicago
+3775,Joan C. Edwards Stadium,38.4247042,-82.4214412,Huntington,WV,America/New_York
+3948,Hard Rock Stadium,25.9579665,-80.2388604,Miami Gardens,FL,America/New_York
+3996,Yager Stadium,39.5197009,-84.7330255,Oxford,OH,America/New_York
+3558,Michigan Stadium,42.2658365,-83.7486956,Ann Arbor,MI,America/Detroit
+3936,Spartan Stadium,42.7281474,-84.4848526,East Lansing,MI,America/Detroit
+3693,Davis Wade Stadium,33.4563403,-88.7933652,Starkville,MS,America/Chicago
+3852,Navy-Marine Corps Memorial Stadium,38.9846985,-76.5076335,Annapolis,MD,America/New_York
+3670,Carter-Finley Stadium,35.8008001,-78.7195655,Raleigh,NC,America/New_York
+3816,Mackay Stadium,39.5469459,-119.8175435,Reno,NV,America/Los_Angeles
+3601,Aggie Memorial Stadium,32.2796202,-106.7411148,Las Cruces,NM,America/Denver
+3911,Ryan Field,42.0653994,-87.6924751,Evanston,IL,America/Chicago
+3855,Notre Dame Stadium,41.698378,-86.2339425,Notre Dame,IN,America/Indiana/Indianapolis
+3876,Peden Stadium,39.3212794,-82.1034315,Athens,OH,America/New_York
+3861,Ohio Stadium,40.0016447,-83.0197266,Columbus,OH,America/New_York
+3646,Boone Pickens Stadium,36.125673,-97.066513,Stillwater,OK,America/Chicago
+3974,Vaught-Hemingway Stadium,34.3619837,-89.5342076,Oxford,MS,America/Chicago
+3626,Autzen Stadium,44.0582712,-123.0684883,Eugene,OR,America/Los_Angeles
+3893,Reser Stadium,44.5594559,-123.2814341,Corvallis,OR,America/Los_Angeles
+3632,Beaver Stadium,40.8121958,-77.8561023,University Park,PA,America/New_York
+3907,Ross-Ade Stadium,40.4352253,-86.9186843,West Lafayette,IN,America/Indiana/Indianapolis
+3895,Rice Stadium,29.7163297,-95.4093261,Houston,TX,America/Chicago
+3735,Gerald J. Ford Stadium,32.8377223,-96.7827859,University Park,TX,America/Chicago
+3971,University Stadium (NM),35.0669479,-106.6283225,Albuquerque,NM,America/Denver
+3994,Williams-Brice Stadium,33.9730239,-81.0191726,Columbia,SC,America/New_York
+3815,M. M. Roberts Stadium,31.3289321,-89.3318118,Hattiesburg,MS,America/Chicago
+3886,Raymond James Stadium,27.9758691,-82.5033344,Tampa,FL,America/New_York
+3940,Stanford Stadium,37.4345556,-122.1611271,Stanford,CA,America/Los_Angeles
+6501,Allegiant Stadium,36.09075,-115.183722,Las Vegas,NV,America/Los_Angeles
+3616,Amon G. Carter Stadium,32.7096604,-97.3680835,Fort Worth,TX,America/Chicago
+3806,Lincoln Financial Field,39.9007995,-75.1675414,Philadelphia,PA,America/New_York
+3853,Neyland Stadium,35.9550131,-83.9250128,Knoxville,TN,America/New_York
+7221,Protective Stadium,33.5206824,-86.8024326,Birmingham,AL,America/Chicago
+3795,Kyle Field,30.6098891,-96.3403828,College Station,TX,America/Chicago
+3784,Jones AT&T Stadium,33.5910518,-101.8728824,Lubbock,TX,America/Chicago
+3739,Glass Bowl,41.6574777,-83.6135652,Toledo,OH,America/New_York
+1056,Rose Bowl,34.1613284,-118.1676462,Pasadena,CA,America/Los_Angeles
+3985,Warren McGuirk Alumni Stadium,42.3773244,-72.5360595,Hadley,MA,America/New_York
+477,Los Angeles Memorial Coliseum,34.014167,-118.287778,Los Angeles,CA,America/Los_Angeles
+3604,Alamodome,29.4169834,-98.4788143,San Antonio,TX,America/Chicago
+3923,Scott Stadium,38.0311801,-78.5137897,Charlottesville,VA,America/New_York
+3799,Lane Stadium,37.2199873,-80.4180643,Blacksburg,VA,America/New_York
+3765,Husky Stadium,47.6503235,-122.3015746,Seattle,WA,America/Los_Angeles
+3980,Waldo Stadium,42.2860064,-85.6007573,Kalamazoo,MI,America/Detroit
+347,Camp Randall Stadium,43.06994,-89.4126943,Madison,WI,America/Chicago
+3984,War Memorial Stadium,41.31161,-105.5681384,Laramie,WY,America/Denver
+7311,Snapdragon Stadium,32.784444,-117.122833,San Diego,CA,America/Los_Angeles
+587,Rice-Eccles Stadium,40.7599724,-111.8488255,Salt Lake City,UT,America/Denver
+3630,Allegacy Federal Credit Union Stadium,36.1305507,-80.2545851,Winston-Salem,NC,America/New_York
+3652,FBC Mortgage Stadium,28.6079765,-81.1927233,Orlando,FL,America/New_York
+4729,Yulman Stadium,29.944616,-90.116692,New Orleans,LA,America/Chicago
+3674,Chapman Stadium,36.1489175,-95.9437853,Tulsa,OK,America/Chicago
+3910,DKR-Texas Memorial Stadium,30.2836813,-97.7325345,Austin,TX,America/Chicago
+3842,Milan Puskar Stadium,39.6502744,-79.9551873,Morgantown,WV,America/New_York
+3973,FirstBank Stadium,36.1440455,-86.8088942,Nashville,TN,America/Chicago
+3820,Gesa Field,46.731831,-117.1604991,Pullman,WA,America/Los_Angeles
+1964,JMA Wireless Dome,43.0362269,-76.1363161,Syracuse,NY,America/New_York
+3975,Veterans Memorial Stadium (AL),31.7995565,-85.9518328,Troy,AL,America/Chicago
+3905,Maverik Stadium,41.7517394,-111.8116007,Logan,UT,America/Denver
+3644,Bobcat Stadium (TX),29.8910008,-97.9255735,San Marcos,TX,America/Chicago
+3796,Houchens Industries-L.T. Smith Stadium,36.9847901,-86.4594041,Bowling Green,KY,America/Chicago
+3946,Sun Bowl,31.7733353,-106.507957,El Paso,TX,America/Denver
+7521,Dacotah Bank Stadium,,,Aberdeen,SD,
+7522,Glynn County Stadium,,,Brunswick,GA,
+7555,Wildcat Football Stadium,,,Marion,IN,
+3900,Riverbank Stadium,,,Ann Arbor,MI,
+3637,Bishop John M. D'Arcy Stadium,,,Fort Wayne,IN,
+3789,Kentucky Christian,,,Grayson,KY,
+10461,Spero Financial Field,,,Anderson,SC,
+10463,Grand Rapids Christian High School,,,Grand Rapids,MI,
+10465,Mayo Field,,,Shreveport,LA,
+3844,Morris Field,,,Chicago,IL,
+3838,Memorial Stadium,38.9358491,-92.3332009,Columbia,MO,America/Chicago
+3953,Huntington Bank Stadium,44.976525,-93.2245462,Minneapolis,MN,America/Chicago
+3832,"Memorial Stadium (Champaign, IL)",40.0993268,-88.2359569,Champaign,IL,America/Chicago
+3935,CEFCU Stadium,37.3196675,-121.8682962,San Jose,CA,America/Los_Angeles
+3835,"Memorial Stadium (Norman, OK)",35.2058537,-97.4423145,Norman,OK,America/Chicago
+3841,Michie Stadium,41.3874924,-73.9640891,West Point,NY,America/New_York
+3657,Bryant-Denny Stadium,33.2082752,-87.5503836,Tuscaloosa,AL,America/Chicago
+3636,Bill Snyder Family Stadium,39.2020096,-96.5938395,Manhattan,KS,America/Chicago
+3665,SECU Stadium,38.9903332,-76.9473792,College Park,MD,America/New_York
+3873,L&N Federal Credit Union Stadium,38.2057621,-85.7588141,Louisville,KY,America/Kentucky/Louisville
+3752,Acrisure Stadium,40.4467648,-80.0157603,Pittsburgh,PA,America/New_York
+3830,"Memorial Stadium (Bloomington, IN)",39.1808959,-86.5256217,Bloomington,IN,America/Indiana/Indianapolis
+3834,"Memorial Stadium (Lincoln, NE)",40.820682,-96.705594,Lincoln,NE,America/Chicago
+3764,Huskie Stadium,41.9339586,-88.7778357,DeKalb,IL,America/Chicago
+3608,Allen E. Paulson Stadium,32.4122471,-81.7849296,Statesboro,GA,America/New_York
+3992,Williams Stadium (VA),37.3544305,-79.1750239,Lynchburg,VA,America/New_York
+4728,TDECU Stadium,29.7219885,-95.3491623,Houston,TX,America/Chicago
+3725,"Johnny ""Red"" Floyd Stadium",35.8511463,-86.3681649,Murfreesboro,TN,America/Chicago
+3805,Simmons Bank Liberty Stadium,35.1209429,-89.977147,Memphis,TN,America/Chicago
+3683,Kroger Field,38.0220905,-84.5053408,Lexington,KY,America/New_York
+721,Bobby Dodd Stadium,33.7724449,-84.3928054,Atlanta,GA,America/New_York
+3947,Mountain America Stadium,33.4264471,-111.9325005,Tempe,AZ,America/Phoenix
+3892,Pratt & Whitney Stadium,41.7595675,-72.6187728,East Hartford,CT,America/New_York
+3615,"Alumni Stadium (Chestnut Hill, MA)",42.335104,-71.1664413,Chestnut Hill,MA,America/New_York
+3787,Kenan Stadium,35.9069294,-79.0478889,Chapel Hill,NC,America/New_York
+3918,S.B. Ballard Stadium,36.8889533,-76.3049175,Norfolk,VA,America/New_York
+3654,Brooks Stadium (SC),33.7928506,-79.0166946,Conway,SC,America/New_York
+4246,Center Parc Stadium,33.735267,-84.389949,Atlanta,GA,America/New_York
+3958,Tiger Stadium (LA),30.412035,-91.1838163,Baton Rouge,LA,America/Chicago
+3825,DATCU Stadium,33.203899,-97.159245,Denton,TX,America/Chicago
+3836,"Memorial Stadium (Clemson, SC)",34.6787737,-82.8432428,Clemson,SC,America/New_York
+3660,Valley Children's Stadium,36.8143527,-119.7580092,Fresno,CA,America/Los_Angeles
+3887,Razorback Stadium,36.0680662,-94.1789534,Fayetteville,AR,America/Chicago
+3622,GEHA Field at Arrowhead Stadium,39.048889,-94.483889,Kansas City,MO,America/Chicago
+10460,Betty T. Ferguson Recreational Complex,,,Miami Gardens,FL,
+3697,Doak Campbell Stadium,30.4381692,-84.3044032,Tallahassee,FL,America/New_York
+2031,Pitbull Stadium,25.7525,-80.37778,Miami,FL,America/New_York
+4899,Fifth Third Stadium,34.0289318,-84.5676234,Kennesaw,GA,America/New_York
+6006,Robert and Janet Vackar Stadium,26.2826,-98.1352,Edinburg,TX,America/Chicago
+10803,Pen-Air Field,30.547231,-87.222001,Pensacola,FL,America/Chicago
+5960,Lanny and Sharon Martin Stadium,42.058246,-87.670876,Evanston,IL,America/Chicago
