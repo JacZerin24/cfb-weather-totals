@@ -10,6 +10,7 @@ on:
       - completed
 
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
@@ -19,8 +20,46 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  verify-source:
+    runs-on: ubuntu-latest
+    outputs:
+      should_deploy: ${{ steps.check.outputs.should_deploy }}
+    steps:
+      - name: Verify that a real source build completed
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          SOURCE_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          SOURCE_RUN_ID: ${{ github.event.workflow_run.id }}
+          SOURCE_WORKFLOW: ${{ github.event.workflow_run.name }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [ "$SOURCE_CONCLUSION" != "success" ]; then
+            echo "should_deploy=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [ "$SOURCE_WORKFLOW" = "Manual Historical Research Run" ]; then
+            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          JOBS_JSON=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${SOURCE_RUN_ID}/jobs")
+          if jq -e 'any(.jobs[]; .name == "weekly-paper-run" and .conclusion == "success")' \
+            <<< "$JOBS_JSON" >/dev/null; then
+            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_deploy=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping deployment because the seasonal Central-time gate skipped the weekly build."
+          fi
+
   deploy:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    needs: verify-source
+    if: needs.verify-source.outputs.should_deploy == 'true'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
