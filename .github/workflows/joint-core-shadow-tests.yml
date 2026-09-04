@@ -1,0 +1,41 @@
+name: Validate Joint Core Prospective Shadow
+
+on:
+  pull_request:
+    paths:
+      - 'src/joint_core_shadow_capture.py'
+      - 'src/joint_core_shadow_grade.py'
+      - 'src/joint_core_shadow_selftest.py'
+      - 'config/joint_core_challenger_2026.yml'
+      - 'config/joint_core_evaluation_protocol_2026.yml'
+      - '.github/workflows/joint-core-shadow-tests.yml'
+      - '.github/workflows/weekly-cfb-weather.yml'
+      - '.github/workflows/prospective-grade.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Compile joint-core shadow source
+        run: |
+          python -m py_compile src/joint_core_shadow_capture.py
+          python -m py_compile src/joint_core_shadow_grade.py
+          python -m py_compile src/joint_core_shadow_selftest.py
+
+      - name: Validate frozen prospective shadow logic
+        run: python -m src.joint_core_shadow_selftest
