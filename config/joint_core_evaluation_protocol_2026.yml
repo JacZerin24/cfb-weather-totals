@@ -1,0 +1,98 @@
+protocol_version: "joint-core-eval-2026.1"
+season: 2026
+challenger_version: "joint-core-weather-context-hgb-v0.1"
+frozen_at_utc: "2026-09-04T14:00:00Z"
+status: "research_only"
+purpose: "Prospective paired evaluation of the frozen production GENERAL HGB baseline versus the frozen joint_core weather-context shadow challenger."
+
+scope:
+  division_track: "FBS"
+  require_fbs_vs_fbs: true
+  require_outdoor: true
+  require_joint_core_ready: true
+  require_both_predictions: true
+  require_final_game: true
+  comparison_unit: "game"
+  entry_total: "Use the closing_total stored in the selected joint-core shadow snapshot for both baseline and challenger."
+  no_backfill_before: "2026-09-04T14:00:00Z"
+
+official_entry_policy:
+  eligible_event_name: "schedule"
+  eligible_crons:
+    - "17 10 * * 4,5"
+    - "17 11 * * 4,5"
+    - "17 13 * * 4,5"
+    - "17 14 * * 4,5"
+    - "17 7 * * 6"
+    - "17 8 * * 6"
+    - "17 11 * * 6"
+    - "17 12 * * 6"
+  minimum_lead_minutes: 120
+  selection: "For each game, use the latest successful eligible scheduled joint-core shadow snapshot captured on or after the freeze time and at least 120 minutes before kickoff. The active CDT or CST expression is selected by the weekly workflow's America/Chicago gate. For duplicate attempts of the same GitHub run, retain the earliest successful attempt. Monday, push, manual, and watchdog-dispatched snapshots may be archived but are never official evaluation entries."
+
+primary_metric:
+  name: "paired_projected_total_mae"
+  baseline_error: "abs((closing_total + baseline_pred_market_residual) - actual_total_points)"
+  challenger_error: "abs((closing_total + challenger_pred_market_residual) - actual_total_points)"
+  delta_definition: "challenger_mae_minus_baseline_mae"
+  better_direction: "negative"
+  uncertainty: "95% paired bootstrap confidence interval over games"
+  bootstrap_reps: 10000
+  bootstrap_seed: 20260904
+
+secondary_model_metrics:
+  - "paired_projected_total_rmse"
+  - "mean_signed_projection_error_bias"
+  - "weekly_paired_mae"
+  - "baseline_challenger_prediction_difference"
+
+classification_evaluation:
+  strength_order:
+    "QUALIFIES": 2
+    "LEAN": 1
+    "NO PLAY": 0
+    "WATCH": 0
+    "NO LINE": 0
+  migration_rule: "A challenger move toward stronger UNDER support is correct when the game finishes under the selected entry total and incorrect when it finishes over; a move toward weaker UNDER support is correct when the game finishes over and incorrect when it finishes under. Pushes are neutral."
+  report:
+    - "all_status_disagreements"
+    - "qualifier_status_disagreements"
+    - "status_migration_accuracy"
+
+qualifier_economics:
+  direction: "under"
+  price: -110
+  win_profit_units: 0.9090909091
+  loss_profit_units: -1.0
+  push_profit_units: 0.0
+  report_separately_for:
+    - "baseline_QUALIFIES"
+    - "challenger_QUALIFIES"
+  metrics:
+    - "graded_qualifiers"
+    - "wins_losses_pushes"
+    - "hit_rate_excluding_pushes"
+    - "roi_per_1u"
+    - "average_clv_points_when_benchmark_close_is_available"
+  clv_definition: "For an under, CLV points = selected shadow entry total minus the immutable official prospective benchmark close total. Positive is favorable."
+
+prospective_interpretation:
+  insufficient_sample: "Fewer than 5 graded paired games."
+  supported: "Mean paired MAE delta is negative and the 95% paired bootstrap upper bound is below zero."
+  favorable_uncertain: "Mean paired MAE delta is negative but the 95% paired bootstrap interval still includes zero."
+  not_favorable: "Mean paired MAE delta is zero or positive."
+  note: "These labels summarize the frozen prospective sample only and never trigger automatic promotion."
+
+review_policy:
+  descriptive_updates: "May be rebuilt after completed games without changing the protocol or challenger."
+  formal_review_points:
+    - "after Week 6 is complete, if at least 25 graded paired games exist"
+    - "after Week 10 is complete"
+    - "after the 2026 regular season"
+  primary_decision_metric: "paired_projected_total_mae"
+  promotion_policy: "No automatic promotion. Any 2027 production consideration requires a separately documented versioned decision using both the completed retrospective evidence and this post-freeze prospective evidence."
+  interpretation: "Primary paired MAE and its uncertainty take precedence. ROI, hit rate, CLV, weekly splits, and individual disagreement games are supporting evidence and cannot alone justify promotion."
+
+freeze_policy:
+  challenger_tuning: "Do not change joint-core-weather-context-hgb-v0.1 features, model specification, training cutoff, climate reference construction, readiness rules, or qualifier thresholds based on 2026 outcomes."
+  evaluation_tuning: "Do not change official-entry selection, freeze time, primary metric, bootstrap specification, classification scoring, or economic grading based on observed 2026 results. Data-integrity bug fixes require a documented protocol revision that preserves prior immutable records."
