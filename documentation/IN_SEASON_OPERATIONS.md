@@ -12,11 +12,17 @@ The primary training file is `data/processed/modeling_dataset.csv`. Team prior-f
 
 `.github/workflows/weekly-cfb-weather.yml` builds the live board on the frozen prospective schedules:
 
-- Thursday 14Z
-- Friday 14Z
-- Saturday 13Z
+- Monday 5:17 AM America/Chicago: operational early look only
+- Thursday 5:17 AM: safety snapshot
+- Thursday 8:17 AM: freshness snapshot
+- Friday 5:17 AM: safety snapshot
+- Friday 8:17 AM: freshness snapshot
+- Saturday 2:17 AM: safety snapshot
+- Saturday 6:17 AM: freshness snapshot
 
-Push/manual-style refreshes may also rebuild the website, but only the declared scheduled snapshots can become official prospective entries.
+Paired UTC cron expressions plus a Central-offset gate preserve these local clock times across CDT and CST. Monday remains outside the official-entry eligible cron list.
+
+Push/manual-style refreshes may also rebuild the website, but only the declared scheduled snapshots can become official prospective entries. A separate watchdog checks 30 minutes after each safety time. If no real weekly build has completed, it dispatches and verifies an operational backup. That backup refreshes the live board but remains ineligible for official prospective entry.
 
 `src/run_live_week.py` determines the live season/week slate and keeps games visible even when they do not yet have a market total.
 
@@ -173,6 +179,6 @@ The immutable snapshot/capture files are the source of truth. The derived CSV/Ma
 
 The model thresholds, official-entry timing, and research rules are frozen through the declared review point. A documented data-integrity correction can receive a new protocol version and apply prospectively.
 
-Protocol 2026.2 is such an operational correction: it improves the chance that GitHub Actions records a valid close benchmark but does not change which games qualify, when official model entries are selected, how games are graded, or how the two-leg card is built.
+Protocol 2026.2 improved close-capture reliability. Protocol 2026.3 prospectively revises board timing after documented multi-hour GitHub scheduler delays by adding earlier safety snapshots, later freshness snapshots, Central-time DST handling, and an operational watchdog. It does not change which games qualify, how games are graded, or how the two-leg card is built.
 
 Research branches can continue testing alternatives, but those experiments should not silently alter the frozen live rules.
