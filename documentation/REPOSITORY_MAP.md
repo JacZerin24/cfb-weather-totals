@@ -15,6 +15,7 @@ Automation and validation.
 - `test-live-site.yml` - live website and model-output validation.
 - `deploy-pages.yml` - GitHub Pages deployment.
 - `manual-historical-research.yml` - full historical research rebuild when deliberately requested.
+- `climate-context-tests.yml` - synthetic end-to-end validation for the latitude and local-weather-context research path.
 
 ### `config/`
 Small human-maintained configuration files.
@@ -30,7 +31,7 @@ Python source. Scripts are kept as CLI modules rather than notebooks.
 Main functional groups:
 
 - data/API: `cfbd_client.py`, historical pull scripts, `build_dataset.py`, team feature scripts;
-- models/research: `model_bakeoff.py`, `edge_refinement.py`, `deep_research.py`, `validate_model_edges.py`, backtest modules;
+- models/research: `model_bakeoff.py`, `edge_refinement.py`, `deep_research.py`, `validate_model_edges.py`, `climate_context_research.py`, backtest modules;
 - live market/weather: `predict_week.py`, `nws_forecast.py`, `oddspapi_fallback.py`, `odds_api_fallback.py`, `run_live_week.py`;
 - FCS: `fcs_model.py`, `fcs_research.py`, `fcs_research_labels.py`, `fcs_card_guard.py`;
 - website/reporting: `build_live_dashboard.py`, `augment_dashboard_divisions.py`, `bankroll_helper.py`, `report.py`;
@@ -76,6 +77,7 @@ Human-maintained project documentation.
 - `IN_SEASON_OPERATIONS.md` - end-to-end 2026 live/prospective workflow.
 - `REPOSITORY_MAP.md` - this file.
 - `FCS_REPRODUCIBILITY.md` - FCS environment/reproducibility note.
+- `CLIMATE_CONTEXT_RESEARCH.md` - retrospective latitude/local-weather-context design, outputs, and prospective decision boundary.
 
 ## Cleanup policy
 

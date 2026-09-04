@@ -52,6 +52,7 @@ The historical work supports **continued prospective testing**, not a claim that
 - The FCS track has substantially less evidence than the general track. Its current historical screen is promising enough to paper-track, but the sample is small and the FCS model's unconditional MAE is worse than the zero-residual baseline in each available walk-forward test season.
 - No OVER strategy is operational. Positive predicted residuals can be retained as research context, but they remain `NO PLAY` under the frozen 2026 protocol.
 - Experimental work performed during the 2026 season is kept separate from the official 2026 prospective validation and cannot retroactively change recorded entries.
+- A separate retrospective climate-context study tests whether temperature and wind effects vary by venue latitude or local weather rarity. It cannot alter the production model or 2026 ledger.
 
 Useful research summaries on the current main branch include:
 
@@ -61,6 +62,7 @@ Useful research summaries on the current main branch include:
 - [`outputs/edge_refinement_summary.md`](outputs/edge_refinement_summary.md) - stability-first screening of HGB UNDER refinements and interaction hypotheses.
 - [`outputs/fcs_research_summary.md`](outputs/fcs_research_summary.md) - dedicated FCS-vs-FCS model results, threshold sensitivity, and uncertainty guardrails.
 - [`outputs/prospective/2026/prospective_summary.md`](outputs/prospective/2026/prospective_summary.md) - current official 2026 prospective results and CLV summary.
+- [`documentation/CLIMATE_CONTEXT_RESEARCH.md`](documentation/CLIMATE_CONTEXT_RESEARCH.md) - predeclared retrospective design for latitude and locally normalized weather effects.
 
 Research code or diagnostics in open branches/pull requests should be treated as experimental until reviewed and intentionally merged. They do not alter the frozen production protocol merely by existing.
 

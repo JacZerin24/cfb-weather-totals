@@ -1,0 +1,32 @@
+name: Validate Climate Context Research
+
+on:
+  pull_request:
+    paths:
+      - 'src/climate_context_research.py'
+      - 'src/climate_context_selftest.py'
+      - '.github/workflows/climate-context-tests.yml'
+      - '.github/workflows/manual-historical-research.yml'
+      - 'documentation/CLIMATE_CONTEXT_RESEARCH.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run synthetic climate-context validation
+        run: python -m src.climate_context_selftest
