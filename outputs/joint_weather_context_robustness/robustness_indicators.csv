@@ -1,0 +1,2 @@
+robustness_status,all_window_mean_deltas_negative,all_loso_mean_deltas_negative,all_windows_improve_70pct_seasons,windows_with_season_ci_below_zero,windows_with_full_evidence_support,worst_loso_mean_delta
+ROBUSTNESS_MIXED,True,True,False,2,0,-0.03777177874231096

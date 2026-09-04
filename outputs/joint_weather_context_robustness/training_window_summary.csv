@@ -1,0 +1,4 @@
+training_window,paired_games,test_seasons,mean_mae_delta_challenger_minus_reference,game_bootstrap_ci_low,game_bootstrap_ci_high,season_cluster_ci_low,season_cluster_ci_high,test_seasons_improved,seasons_required_for_support,evidence_status
+expanding,6521,10,-0.058515599503817295,-0.12551642951749467,0.006702777198062765,-0.11418963115681921,-0.015138809533892841,8,7,NOT_PROVEN
+rolling_6_seasons,6521,10,-0.043336169549350635,-0.11719101702431702,0.029515050929812922,-0.10789565094902724,0.01271423159473094,6,7,NOT_PROVEN
+rolling_4_seasons,6521,10,-0.06952522149965422,-0.14772441799344302,0.007213038898456775,-0.13171824353951614,-0.0208976183187885,8,7,NOT_PROVEN
