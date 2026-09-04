@@ -1,8 +1,8 @@
 # 2026 Prospective Validation Ledger
 
-Protocol version: **2026.2**
+Protocol version: **2026.3**
 
-Protocol SHA-256: `274546d49fbbf3133e0e508ab6673d48b67f8100da887556b358d9b437462ac5`
+Protocol SHA-256: `fdb878165a5023cd135a05bcddd58e04356c77c1650acb11647f9972b55ce049`
 
 The immutable snapshot files are the source of truth. Derived ledgers and summaries can be rebuilt from them at any time.
 
@@ -18,13 +18,13 @@ The immutable snapshot files are the source of truth. Derived ledgers and summar
 | scope        |   official_games |   qualifying_entries |   settled_qualifying_entries |   graded_ex_pushes |   wins |   losses |   pushes |   hit_rate_ex_pushes |   net_units_1u_at_-110 |   roi_per_graded_entry |   qualifiers_with_clv |   average_clv_points |   median_clv_points |   positive_clv_rate |
 |:-------------|-----------------:|---------------------:|-----------------------------:|-------------------:|-------:|---------:|---------:|---------------------:|-----------------------:|-----------------------:|----------------------:|---------------------:|--------------------:|--------------------:|
 | ALL          |              376 |                    2 |                            1 |                  1 |      1 |        0 |        0 |                    1 |               0.909091 |               0.909091 |                     0 |                  nan |                 nan |                 nan |
-| FCS-only HGB |               47 |                    2 |                            1 |                  1 |      1 |        0 |        0 |                    1 |               0.909091 |               0.909091 |                     0 |                  nan |                 nan |                 nan |
-| GENERAL HGB  |              329 |                    0 |                            0 |                  0 |      0 |        0 |        0 |                  nan |               0        |             nan        |                     0 |                  nan |                 nan |                 nan |
+| FCS-only HGB |               46 |                    2 |                            1 |                  1 |      1 |        0 |        0 |                    1 |               0.909091 |               0.909091 |                     0 |                  nan |                 nan |                 nan |
+| GENERAL HGB  |              330 |                    0 |                            0 |                  0 |      0 |        0 |        0 |                  nan |               0        |             nan        |                     0 |                  nan |                 nan |                 nan |
 
 ## Data integrity
 
-- Immutable board snapshots: 12
-- Immutable close captures: 5
+- Immutable board snapshots: 20
+- Immutable close captures: 7
 - Official game entries selected: 376
 
 Every immutable CSV filename contains the first 12 characters of its SHA-256 content hash. The workflow verifies those hashes before rebuilding derived results.

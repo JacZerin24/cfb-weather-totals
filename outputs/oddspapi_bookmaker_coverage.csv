@@ -31,10 +31,6 @@ game_id,away_team,home_team,fixture_id,bookmaker,book_present,valid_full_game_to
 401868274,Presbyterian,Mercer,id1402765371530332,draftkings,False,False,
 401868274,Presbyterian,Mercer,id1402765371530332,betrivers,False,False,
 401868274,Presbyterian,Mercer,id1402765371530332,hardrockbet,True,True,57.5
-401867692,Delaware State,William & Mary,id1402765370923650,bet365,False,False,
-401867692,Delaware State,William & Mary,id1402765370923650,draftkings,False,False,
-401867692,Delaware State,William & Mary,id1402765370923650,betrivers,False,False,
-401867692,Delaware State,William & Mary,id1402765370923650,hardrockbet,True,True,55.5|56.5|57.5
 401868336,Tennessee Tech,Chattanooga,id1402765370923662,bet365,False,False,
 401868336,Tennessee Tech,Chattanooga,id1402765370923662,draftkings,False,False,
 401868336,Tennessee Tech,Chattanooga,id1402765370923662,betrivers,False,False,
@@ -43,18 +39,22 @@ game_id,away_team,home_team,fixture_id,bookmaker,book_present,valid_full_game_to
 401869127,Richmond,Howard,id1402765370923640,draftkings,False,False,
 401869127,Richmond,Howard,id1402765370923640,betrivers,False,False,
 401869127,Richmond,Howard,id1402765370923640,hardrockbet,True,True,46.5
+401867692,Delaware State,William & Mary,id1402765370923650,bet365,False,False,
+401867692,Delaware State,William & Mary,id1402765370923650,draftkings,False,False,
+401867692,Delaware State,William & Mary,id1402765370923650,betrivers,False,False,
+401867692,Delaware State,William & Mary,id1402765370923650,hardrockbet,True,True,55.5|56.5|57.5
 401867989,Villanova,Bucknell,id1402765370923652,bet365,False,False,
 401867989,Villanova,Bucknell,id1402765370923652,draftkings,False,False,
 401867989,Villanova,Bucknell,id1402765370923652,betrivers,False,False,
 401867989,Villanova,Bucknell,id1402765370923652,hardrockbet,True,True,57.5
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,bet365,False,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,draftkings,False,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,betrivers,False,False,
-401868085,Northern Iowa,Eastern Washington,id1402765370923626,hardrockbet,True,True,50.5
 401868071,West Florida,Central Arkansas,id1402765370992350,bet365,False,False,
 401868071,West Florida,Central Arkansas,id1402765370992350,draftkings,False,False,
 401868071,West Florida,Central Arkansas,id1402765370992350,betrivers,False,False,
 401868071,West Florida,Central Arkansas,id1402765370992350,hardrockbet,True,True,54.5
+401868085,Northern Iowa,Eastern Washington,id1402765370923626,bet365,False,False,
+401868085,Northern Iowa,Eastern Washington,id1402765370923626,draftkings,False,False,
+401868085,Northern Iowa,Eastern Washington,id1402765370923626,betrivers,False,False,
+401868085,Northern Iowa,Eastern Washington,id1402765370923626,hardrockbet,True,True,50.5
 401867845,Illinois State,Western Illinois,id1402765370923634,bet365,False,False,
 401867845,Illinois State,Western Illinois,id1402765370923634,draftkings,False,False,
 401867845,Illinois State,Western Illinois,id1402765370923634,betrivers,False,False,
@@ -63,14 +63,14 @@ game_id,away_team,home_team,fixture_id,bookmaker,book_present,valid_full_game_to
 401867883,South Dakota,Northern Colorado,id1402765370923630,draftkings,False,False,
 401867883,South Dakota,Northern Colorado,id1402765370923630,betrivers,False,False,
 401867883,South Dakota,Northern Colorado,id1402765370923630,hardrockbet,True,True,57.5
-401868306,East Texas A&M,Stephen F. Austin,id1402765370923668,bet365,False,False,
-401868306,East Texas A&M,Stephen F. Austin,id1402765370923668,draftkings,False,False,
-401868306,East Texas A&M,Stephen F. Austin,id1402765370923668,betrivers,False,False,
-401868306,East Texas A&M,Stephen F. Austin,id1402765370923668,hardrockbet,True,True,55.5
 401868158,Weber State,Southern Utah,id1402765370923680,bet365,False,False,
 401868158,Weber State,Southern Utah,id1402765370923680,draftkings,False,False,
 401868158,Weber State,Southern Utah,id1402765370923680,betrivers,False,False,
 401868158,Weber State,Southern Utah,id1402765370923680,hardrockbet,False,False,
+401868306,East Texas A&M,Stephen F. Austin,id1402765370923668,bet365,False,False,
+401868306,East Texas A&M,Stephen F. Austin,id1402765370923668,draftkings,False,False,
+401868306,East Texas A&M,Stephen F. Austin,id1402765370923668,betrivers,False,False,
+401868306,East Texas A&M,Stephen F. Austin,id1402765370923668,hardrockbet,True,True,55.5
 401868119,Butler,Montana State,id1402765370923682,bet365,False,False,
 401868119,Butler,Montana State,id1402765370923682,draftkings,False,False,
 401868119,Butler,Montana State,id1402765370923682,betrivers,False,False,
