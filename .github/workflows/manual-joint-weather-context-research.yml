@@ -1,0 +1,85 @@
+name: Manual Joint Weather Context Research
+
+on:
+  workflow_dispatch:
+    inputs:
+      note:
+        description: Optional research-run note
+        required: false
+        default: joint-orientation-climate-study
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: cfb-weather-data-writes
+  cancel-in-progress: false
+
+jobs:
+  joint-weather-context:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore the latest historical modeling dataset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          SOURCE_DIR=$(mktemp -d)
+          mkdir -p data/processed
+
+          RESEARCH_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/manual-historical-research.yml/runs?status=success&per_page=1" \
+            --jq '.workflow_runs[0].id // empty')
+          if [ -z "$RESEARCH_RUN_ID" ]; then
+            echo "ERROR: No successful historical research run is available."
+            exit 1
+          fi
+
+          echo "Restoring historical data from run ${RESEARCH_RUN_ID}."
+          gh run download "$RESEARCH_RUN_ID" -n cfb-weather-totals-research-output -D "$SOURCE_DIR"
+          MODEL_PATH=$(find "$SOURCE_DIR" -type f -name modeling_dataset.csv -print -quit)
+          if [ -z "$MODEL_PATH" ]; then
+            echo "ERROR: modeling_dataset.csv was not found in the historical artifact."
+            exit 1
+          fi
+          cp "$MODEL_PATH" data/processed/modeling_dataset.csv
+
+      - name: Confirm frozen research references exist
+        run: |
+          test -s data/reference/stadium_locations.csv
+          test -s data/reference/stadium_orientations.csv
+
+      - name: Validate joint weather-context research code
+        run: python -m src.joint_weather_context_selftest
+
+      - name: Run isolated retrospective joint weather-context study
+        run: python -m src.joint_weather_context_research
+
+      - name: Upload joint weather-context research artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cfb-joint-weather-context-research-${{ github.run_id }}
+          path: outputs/joint_weather_context/
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Commit only joint weather-context outputs
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add outputs/joint_weather_context/
+          git commit -m "Update joint weather-context research outputs" || echo "No joint weather-context changes to commit"
+          git pull --rebase origin main
+          git push origin main
