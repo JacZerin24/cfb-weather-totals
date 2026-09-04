@@ -1,0 +1,2 @@
+challenger,reference,paired_games,test_seasons,mean_mae_delta_challenger_minus_reference,mae_penalty_when_real_along_removed,game_bootstrap_ci_low,game_bootstrap_ci_high,season_cluster_ci_low,season_cluster_ci_high,test_seasons_improved,seasons_required_for_support,evidence_status
+joint_core_real,joint_core_no_along,6521,10,-0.06171703762089004,0.06171703762089004,-0.11706520080695043,-0.0067806702836305235,-0.10638095866110817,-0.007205486926942024,7,7,SUPPORTED_RETROSPECTIVELY

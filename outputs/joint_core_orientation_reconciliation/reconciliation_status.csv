@@ -1,0 +1,2 @@
+reconciliation_status,real_component_evidence_status,conditional_geometry_status,randomization_p_value,interpretation
+CONDITIONAL_REAL_GEOMETRY_RECONCILED,SUPPORTED_RETROSPECTIVELY,REAL_ALONG_DISTINGUISHED_WITHIN_JOINT_CORE,0.025,Real along-field orientation is uniquely informative inside the fixed joint-core context.
