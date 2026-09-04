@@ -1,0 +1,2 @@
+real_along_mean_mae_delta_vs_baseline,placebo_count,placebo_mean_delta,placebo_median_delta,placebo_05_quantile_delta,placebos_as_good_or_better_than_real,randomization_p_value,real_better_than_95pct_placebos,placebo_geometry_status
+-0.021184434226844597,39,-0.0026825726514756836,-0.004130643253132034,-0.04208740426418323,8,0.225,False,REAL_AXIS_NOT_DISTINGUISHED
