@@ -6,6 +6,7 @@ on:
       - 'src/climate_context_research.py'
       - 'src/climate_context_selftest.py'
       - '.github/workflows/climate-context-tests.yml'
+      - '.github/workflows/manual-climate-context-research.yml'
       - '.github/workflows/manual-historical-research.yml'
       - 'documentation/CLIMATE_CONTEXT_RESEARCH.md'
   workflow_dispatch:
