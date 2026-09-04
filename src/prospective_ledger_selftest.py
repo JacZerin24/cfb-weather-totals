@@ -23,8 +23,8 @@ from .utils import ROOT
 def main() -> None:
     validate_frozen_rules()
     protocol = load_protocol()
-    assert protocol['protocol_version'] == '2026.2'
-    assert protocol.get('supersedes') == '2026.1'
+    assert protocol['protocol_version'] == '2026.3'
+    assert protocol.get('supersedes') == '2026.2'
     assert int(protocol['closing_benchmark_policy']['capture_window_minutes']) == 90
     assert len(protocol_sha256()) == 64
 
@@ -33,7 +33,7 @@ def main() -> None:
         {
             'game_id': 1,
             'start_date': kickoff,
-            'snapshot_timestamp_utc': '2026-09-04T14:00:00Z',
+            'snapshot_timestamp_utc': '2026-09-04T13:17:00Z',
             'official_eligible': True,
             'github_run_id': 'friday',
             'github_run_attempt': 1,
@@ -45,7 +45,7 @@ def main() -> None:
         {
             'game_id': 1,
             'start_date': kickoff,
-            'snapshot_timestamp_utc': '2026-09-05T13:00:00Z',
+            'snapshot_timestamp_utc': '2026-09-05T11:17:00Z',
             'official_eligible': True,
             'github_run_id': 'saturday',
             'github_run_attempt': 1,
@@ -59,7 +59,7 @@ def main() -> None:
         {
             'game_id': 1,
             'start_date': kickoff,
-            'snapshot_timestamp_utc': '2026-09-05T13:20:00Z',
+            'snapshot_timestamp_utc': '2026-09-05T11:37:00Z',
             'official_eligible': True,
             'github_run_id': 'saturday',
             'github_run_attempt': 2,
@@ -72,7 +72,7 @@ def main() -> None:
         {
             'game_id': 1,
             'start_date': kickoff,
-            'snapshot_timestamp_utc': '2026-09-05T13:30:00Z',
+            'snapshot_timestamp_utc': '2026-09-05T11:47:00Z',
             'official_eligible': False,
             'github_run_id': 'manual',
             'github_run_attempt': 1,
@@ -103,7 +103,7 @@ def main() -> None:
     assert float(official.iloc[0]['closing_total']) == 59.0
     assert str(official.iloc[0]['github_run_id']) == 'saturday'
     assert int(official.iloc[0]['github_run_attempt']) == 1
-    assert abs(float(official.iloc[0]['entry_lead_minutes']) - 180.0) < 0.01
+    assert abs(float(official.iloc[0]['entry_lead_minutes']) - 283.0) < 0.01
 
     closes = pd.DataFrame([
     {
@@ -208,8 +208,14 @@ def main() -> None:
             raise AssertionError('Immutable writer allowed an overwrite.')
 
     weekly_workflow = (ROOT / '.github/workflows/weekly-cfb-weather.yml').read_text(encoding='utf-8')
+    assert 'central-time-gate' in weekly_workflow, 'Weekly workflow must preserve Central local times across DST.'
     for cron in protocol['official_entry_policy']['eligible_crons']:
         assert str(cron) in weekly_workflow, f'Official protocol cron is not scheduled: {cron}'
+
+    watchdog_workflow = (ROOT / '.github/workflows/weekly-safety-watchdog.yml').read_text(encoding='utf-8')
+    assert 'actions: write' in watchdog_workflow, 'Watchdog must be allowed to dispatch the backup workflow.'
+    assert '/dispatches' in watchdog_workflow, 'Watchdog backup dispatch is missing.'
+    assert 'weekly-paper-run' in watchdog_workflow, 'Watchdog must verify the real weekly build job.'
 
     close_workflow = (ROOT / '.github/workflows/prospective-close-capture.yml').read_text(encoding='utf-8')
     assert 'workflow_dispatch' not in close_workflow, 'Close benchmark workflow must not allow manual captures.'
