@@ -45,7 +45,7 @@ jobs:
           python -m src.prospective_ledger validate-protocol
           python -m src.prospective_ledger build
 
-      # Research-only paired evaluator. A failure here cannot block the official ledger.
+      # Research-only paired evaluators. Failures here cannot block the official ledger.
       - name: Rebuild baseline-vs-orientation shadow evaluation
         continue-on-error: true
         env:
@@ -54,11 +54,19 @@ jobs:
           python -m src.orientation_shadow_grade validate-protocol
           python -m src.orientation_shadow_grade build
 
+      - name: Rebuild baseline-vs-joint-core shadow evaluation
+        continue-on-error: true
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: |
+          python -m src.joint_core_shadow_grade validate-protocol
+          python -m src.joint_core_shadow_grade build
+
       - name: Commit derived prospective results
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add outputs/prospective/2026/ outputs/orientation_shadow/2026/evaluation/
+          git add outputs/prospective/2026/ outputs/orientation_shadow/2026/evaluation/ outputs/joint_core_shadow/2026/evaluation/
           git commit -m "Rebuild prospective CFB research results" || echo "No prospective changes to commit"
           git pull --rebase origin main
           git push origin main
