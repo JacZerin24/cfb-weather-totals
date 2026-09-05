@@ -1,0 +1,48 @@
+name: Site UI Weather Tools
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'site_tools/**'
+      - '.github/workflows/site-ui-weather-tools.yml'
+  workflow_run:
+    workflows:
+      - Weekly CFB Weather Totals
+    types:
+      - completed
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cfb-weather-site-ui
+  cancel-in-progress: true
+
+jobs:
+  augment-site:
+    if: github.event_name == 'push' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out current main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Add sortable weather columns and radar overlay
+        run: python site_tools/augment_weather_ui.py
+
+      - name: Commit website-only update
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add docs/index.html
+          git commit -m "Update weather sorting and radar UI" || echo "No site UI changes to commit"
+          git pull --rebase origin main
+          git push origin main
