@@ -7,9 +7,12 @@ on:
     # Thursday, and Friday.
     - cron: '47 10 * * 1,4,5'  # 5:47 AM CDT
     - cron: '47 11 * * 1,4,5'  # 5:47 AM CST
-    # Check 30 minutes after the 2:17 AM Central Saturday safety run.
-    - cron: '47 7 * * 6'       # 2:47 AM CDT
-    - cron: '47 8 * * 6'       # 2:47 AM CST
+    # Saturday deadline guard: 6:47 AM Central. The normal Saturday full build
+    # is at 1:17 AM, so this guard normally only verifies that it succeeded.
+    # It dispatches one backup full build only if the normal build is missing
+    # or failed, preserving a single normal Saturday run.
+    - cron: '47 11 * * 6'      # 6:47 AM CDT
+    - cron: '47 12 * * 6'      # 6:47 AM CST
 
 permissions:
   actions: write
@@ -38,10 +41,10 @@ jobs:
           fi
 
           case "$EVENT_SCHEDULE" in
-            "47 10 * * 1,4,5"|"47 7 * * 6")
+            "47 10 * * 1,4,5"|"47 11 * * 6")
               EXPECTED_OFFSET="-0500"
               ;;
-            "47 11 * * 1,4,5"|"47 8 * * 6")
+            "47 11 * * 1,4,5"|"47 12 * * 6")
               EXPECTED_OFFSET="-0600"
               ;;
             *)
@@ -77,7 +80,7 @@ jobs:
               SAFETY_MINUTE=17
               ;;
             6)
-              SAFETY_HOUR=2
+              SAFETY_HOUR=1
               SAFETY_MINUTE=17
               ;;
             *)
@@ -133,6 +136,51 @@ jobs:
               echo "A successful weekly build already completed: [run $SUCCESSFUL_RUN](https://github.com/${GITHUB_REPOSITORY}/actions/runs/$SUCCESSFUL_RUN)."
             } >> "$GITHUB_STEP_SUMMARY"
             exit 0
+          fi
+
+          # Avoid launching a duplicate backup if the scheduled build exists but
+          # is merely still running. Give an active run up to 10 more minutes.
+          ACTIVE_RUN_ID=$(jq -r --arg cutoff "$CUTOFF_UTC" '
+            [
+              .workflow_runs[]
+              | select(
+                  (.status == "queued" or .status == "in_progress")
+                  and .created_at >= $cutoff
+                )
+            ]
+            | sort_by(.created_at)
+            | last
+            | .id // empty
+          ' <<< "$RUNS_JSON")
+
+          if [ -n "$ACTIVE_RUN_ID" ]; then
+            echo "Weekly build $ACTIVE_RUN_ID is still active; waiting before considering a backup."
+            for ATTEMPT in $(seq 1 30); do
+              sleep 20
+              ACTIVE_JSON=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${ACTIVE_RUN_ID}")
+              ACTIVE_STATUS=$(jq -r '.status' <<< "$ACTIVE_JSON")
+              ACTIVE_CONCLUSION=$(jq -r '.conclusion // ""' <<< "$ACTIVE_JSON")
+
+              if [ "$ACTIVE_STATUS" != "completed" ]; then
+                continue
+              fi
+
+              if [ "$ACTIVE_CONCLUSION" = "success" ]; then
+                JOBS_JSON=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${ACTIVE_RUN_ID}/jobs")
+                if jq -e 'any(.jobs[]; .name == "weekly-paper-run" and .conclusion == "success")' \
+                  <<< "$JOBS_JSON" >/dev/null; then
+                  echo "Active weekly build $ACTIVE_RUN_ID completed successfully."
+                  {
+                    echo "### Weekly safety watchdog"
+                    echo "The scheduled build was still running when checked and then completed successfully: [run $ACTIVE_RUN_ID](https://github.com/${GITHUB_REPOSITORY}/actions/runs/$ACTIVE_RUN_ID)."
+                  } >> "$GITHUB_STEP_SUMMARY"
+                  exit 0
+                fi
+              fi
+
+              echo "Active weekly build $ACTIVE_RUN_ID completed without a successful weekly-paper-run."
+              break
+            done
           fi
 
           DISPATCHED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)
