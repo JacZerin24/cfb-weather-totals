@@ -29,12 +29,11 @@ on:
     # Thursday/Friday freshness snapshot: 8:17 AM Central.
     - cron: '17 13 * * 4,5'  # CDT
     - cron: '17 14 * * 4,5'  # CST
-    # Saturday safety snapshot: 2:17 AM Central.
-    - cron: '17 7 * * 6'     # CDT
-    - cron: '17 8 * * 6'     # CST
-    # Saturday freshness snapshot: 6:17 AM Central.
-    - cron: '17 11 * * 6'    # CDT
-    - cron: '17 12 * * 6'    # CST
+    # Saturday deadline build: 1:17 AM Central.
+    # This is the only normal Saturday full build and leaves substantial
+    # margin for GitHub scheduler delays before the 8:30 AM target.
+    - cron: '17 6 * * 6'     # CDT
+    - cron: '17 7 * * 6'     # CST
 
 permissions:
   contents: write
@@ -63,10 +62,10 @@ jobs:
           fi
 
           case "$EVENT_SCHEDULE" in
-            "17 10 * * 1"|"17 10 * * 4,5"|"17 13 * * 4,5"|"17 7 * * 6"|"17 11 * * 6")
+            "17 10 * * 1"|"17 10 * * 4,5"|"17 13 * * 4,5"|"17 6 * * 6")
               EXPECTED_OFFSET="-0500"
               ;;
-            "17 11 * * 1"|"17 11 * * 4,5"|"17 14 * * 4,5"|"17 8 * * 6"|"17 12 * * 6")
+            "17 11 * * 1"|"17 11 * * 4,5"|"17 14 * * 4,5"|"17 7 * * 6")
               EXPECTED_OFFSET="-0600"
               ;;
             *)
