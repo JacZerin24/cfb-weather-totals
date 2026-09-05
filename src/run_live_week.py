@@ -76,11 +76,28 @@ def main() -> None:
 
     target_week = int(future.iloc[0]['week']) if pd.notna(future.iloc[0]['week']) else None
     board = future[future['week'].eq(target_week)].copy() if target_week is not None else future.head(100).copy()
+
+    # The live site is scoped to games involving an FBS or FCS team. Pure
+    # lower-division matchups do not have a researched model/market use case
+    # here and otherwise clutter the map and table.
+    home_classification = board.get(
+        'home_classification', pd.Series('', index=board.index)
+    ).astype(str).str.lower()
+    away_classification = board.get(
+        'away_classification', pd.Series('', index=board.index)
+    ).astype(str).str.lower()
+    live_scope = home_classification.isin({'fbs', 'fcs'}) | away_classification.isin({'fbs', 'fcs'})
+    removed_lower_division = int((~live_scope).sum())
+    board = board[live_scope].copy()
+    if board.empty:
+        raise RuntimeError('No FBS/FCS-involved games remain in the current live week.')
+
     board['division_track'] = division_track(board)
     print(
-        f'Upcoming season {season}, week {target_week}: {len(board)} scheduled games '
+        f'Upcoming season {season}, week {target_week}: {len(board)} live-site games '
         f"({int(board['division_track'].eq('FBS').sum())} FBS-vs-FBS, "
-        f"{int(board['division_track'].eq('FCS').sum())} FCS-vs-FCS)"
+        f"{int(board['division_track'].eq('FCS').sum())} FCS-vs-FCS, "
+        f"{removed_lower_division} pure lower-division game(s) omitted)"
     )
 
     line_records = client.get('/lines', {'year': season, 'week': target_week, 'seasonType': season_type}) if target_week is not None else []
