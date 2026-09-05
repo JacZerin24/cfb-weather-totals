@@ -54,6 +54,17 @@ def kickoff_ct(value: object) -> str:
         return "Kickoff TBD"
 
 
+def kickoff_sort_value(value: object) -> str:
+    raw = text(value, "")
+    if not raw:
+        return ""
+    try:
+        dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        return f"{dt.timestamp():.0f}"
+    except Exception:
+        return ""
+
+
 def status_class(status: str) -> str:
     return {
         "QUALIFIES": "qualifies",
@@ -113,10 +124,12 @@ def row_html(row: dict[str, str]) -> str:
     status = text(row.get("status"), "NO PLAY")
     game = f"{text(row.get('away_team'), '')} @ {text(row.get('home_team'), '')}"
     reason = text(row.get("decision_reason"), "")
+    kickoff_value = kickoff_sort_value(row.get("start_date"))
     return "".join([
         f'<tr data-status="{escape(status)}" data-division="{escape(division(row))}">',
         f'<td><span class="badge {status_class(status)}">{escape(status)}</span></td>',
-        f'<td><strong>{escape(game)}</strong><br><span class="small">{escape(kickoff_ct(row.get("start_date")))}</span></td>',
+        f'<td><strong>{escape(game)}</strong></td>',
+        f'<td class="kickoff-num" data-sort-value="{kickoff_value}">{escape(kickoff_ct(row.get("start_date")))}</td>',
         f'<td>{market_html(row)}</td>',
         weather_cell(row.get("temperature_f"), "°F"),
         weather_cell(row.get("wind_mph"), " mph"),
@@ -136,12 +149,14 @@ def read_board() -> list[dict[str, str]]:
 
 def replace_table(html: str, rows: list[dict[str, str]]) -> str:
     headers = (
-        '<thead><tr><th>Status</th><th>Game</th><th>Market</th>'
-        '<th><button class="sort-btn" type="button" data-weather-sort="3">Temp <span>↕</span></button></th>'
-        '<th><button class="sort-btn" type="button" data-weather-sort="4">Wind <span>↕</span></button></th>'
-        '<th><button class="sort-btn" type="button" data-weather-sort="5">Gust <span>↕</span></button></th>'
-        '<th><button class="sort-btn" type="button" data-weather-sort="6">RH <span>↕</span></button></th>'
-        '<th><button class="sort-btn" type="button" data-weather-sort="7" title="Probability of precipitation / chance of precipitation">PoP <span>↕</span></button></th>'
+        '<thead><tr><th>Status</th><th>Game</th>'
+        '<th><button class="sort-btn" type="button" data-weather-sort="2">Kickoff <span>↕</span></button></th>'
+        '<th>Market</th>'
+        '<th><button class="sort-btn" type="button" data-weather-sort="4">Temp <span>↕</span></button></th>'
+        '<th><button class="sort-btn" type="button" data-weather-sort="5">Wind <span>↕</span></button></th>'
+        '<th><button class="sort-btn" type="button" data-weather-sort="6">Gust <span>↕</span></button></th>'
+        '<th><button class="sort-btn" type="button" data-weather-sort="7">RH <span>↕</span></button></th>'
+        '<th><button class="sort-btn" type="button" data-weather-sort="8" title="Probability of precipitation / chance of precipitation">PoP <span>↕</span></button></th>'
         '<th>Model</th><th>Why</th></tr></thead>'
     )
     body = '<tbody id="boardBody">' + "".join(row_html(r) for r in rows) + "</tbody>"
@@ -151,7 +166,11 @@ def replace_table(html: str, rows: list[dict[str, str]]) -> str:
         raise RuntimeError("Could not locate the live-board table for weather-column augmentation.")
     updated = updated.replace(
         '<div class="section-head"><div><div class="eyebrow">Everything, including no-plays and no-lines</div><h2>Full weekly board</h2></div><p>The site shows why games fail the screen instead of hiding them.</p></div>',
+        '<div class="section-head"><div><div class="eyebrow">Everything, including no-plays and no-lines</div><h2>Full weekly board</h2></div><p>Click Kickoff, Temp, Wind, Gust, RH, or PoP to sort. PoP is chance of precipitation.</p></div>',
+    )
+    updated = updated.replace(
         '<div class="section-head"><div><div class="eyebrow">Everything, including no-plays and no-lines</div><h2>Full weekly board</h2></div><p>Click Temp, Wind, Gust, RH, or PoP to sort. PoP is chance of precipitation.</p></div>',
+        '<div class="section-head"><div><div class="eyebrow">Everything, including no-plays and no-lines</div><h2>Full weekly board</h2></div><p>Click Kickoff, Temp, Wind, Gust, RH, or PoP to sort. PoP is chance of precipitation.</p></div>',
     )
     return updated
 
@@ -161,7 +180,7 @@ def add_css(html: str) -> str:
         return html
     css = f"""
     {CSS_MARKER}
-    .weather-num {{ white-space:nowrap; font-variant-numeric:tabular-nums; }}
+    .weather-num,.kickoff-num {{ white-space:nowrap; font-variant-numeric:tabular-nums; }}
     .sort-btn {{ appearance:none; border:0; background:transparent; color:#dbeafe; font:inherit; font-weight:900; padding:0; cursor:pointer; display:inline-flex; align-items:center; gap:5px; }}
     .sort-btn:hover,.sort-btn:focus-visible {{ color:var(--cyan); }}
     .sort-btn span {{ color:var(--muted); font-size:10px; }}
