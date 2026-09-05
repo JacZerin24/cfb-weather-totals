@@ -6,6 +6,7 @@ on:
     workflows:
       - Weekly CFB Weather Totals
       - Manual Historical Research Run
+      - Site UI Weather Tools
     types:
       - completed
 
@@ -43,7 +44,7 @@ jobs:
             echo "should_deploy=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          if [ "$SOURCE_WORKFLOW" = "Manual Historical Research Run" ]; then
+          if [ "$SOURCE_WORKFLOW" = "Manual Historical Research Run" ] || [ "$SOURCE_WORKFLOW" = "Site UI Weather Tools" ]; then
             echo "should_deploy=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
