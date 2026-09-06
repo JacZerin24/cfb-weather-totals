@@ -242,10 +242,6 @@
       // SITE_RADAR_SYNC
       // Use a timestamp-pinned IEM layer rather than the moving "-0" layer.
       // This prevents adjacent cached tiles from representing different 5-minute scans.
-
-      // SITE_RADAR_SYNC
-      // Use a timestamp-pinned IEM layer rather than the moving "-0" layer.
-      // This prevents adjacent cached tiles from representing different 5-minute scans.
       const radarTileUrl = function(validKey) {
         return 'https://mesonet.agron.iastate.edu/c/tile.py/1.0.0/ridge::USCOMP-N0Q-' + validKey + '/{z}/{x}/{y}.png';
       };
@@ -275,9 +271,6 @@
       }
 
       function fallbackRadarValid() {
-        // IEM mosaics are available every 5 minutes and generally finish shortly
-        // afterward. Ten minutes back is a conservative fallback if metadata is
-        // temporarily unavailable or blocked by the browser.
         const dt = new Date(Date.now() - 10 * 60 * 1000);
         dt.setUTCMinutes(Math.floor(dt.getUTCMinutes() / 5) * 5, 0, 0);
         return dt.toISOString();
@@ -358,8 +351,6 @@
 
         nextLayer.once('load', finishSwap);
         nextLayer.addTo(weekMap);
-        // Leaflet can wait on an off-screen/failed tile before emitting load. Do not
-        // leave two complete scans stacked indefinitely in that edge case.
         window.setTimeout(finishSwap, 3500);
       }
 
@@ -381,8 +372,6 @@
           return;
         }
         refreshRadar();
-        // Re-check metadata while the overlay is on. A new timestamp causes the
-        // entire tile layer to swap together, so the map never intentionally mixes scans.
         radarRefreshTimer = window.setInterval(refreshRadar, 5 * 60 * 1000);
       }
 
