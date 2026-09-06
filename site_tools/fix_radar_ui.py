@@ -38,6 +38,17 @@ def add_status_text(html: str) -> str:
     )
 
 
+def separate_radar_from_status_filters(html: str) -> str:
+    # radarToggle shares the map-filter styling class, but it is not a status filter.
+    # Keeping it out of mapFilters prevents a radar click from clearing/highlighting
+    # the game-status buttons or firing filterMap('ALL').
+    return html.replace(
+        "const mapFilters = [...document.querySelectorAll('.map-filter')];",
+        "const mapFilters = [...document.querySelectorAll('.map-filter[data-map-status]')];",
+        1,
+    )
+
+
 def radar_block() -> str:
     return r'''
       // SITE_RADAR_SYNC
@@ -215,6 +226,7 @@ def main() -> None:
     html = INDEX.read_text(encoding="utf-8")
     html = add_css(html)
     html = add_status_text(html)
+    html = separate_radar_from_status_filters(html)
     html = replace_radar_js(html)
     INDEX.write_text(html, encoding="utf-8")
     print("Replaced moving latest radar tiles with one-time-pinned, auto-refreshing radar layers.")
