@@ -39,6 +39,9 @@ jobs:
       - name: Add sortable weather columns and radar overlay
         run: python site_tools/augment_weather_ui.py
 
+      - name: Synchronize radar mosaic tiles
+        run: python site_tools/fix_radar_ui.py
+
       - name: Apply site-only postponed/stale overrides
         run: python site_tools/apply_stale_status.py
 
