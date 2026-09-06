@@ -130,7 +130,7 @@
       <div class="map-panel">
         <div class="map-toolbar"><div class="division-filters" id="divisionFilters"><button type="button" class="division-filter active" data-division="ALL">All <strong>109</strong></button><button type="button" class="division-filter" data-division="FBS">FBS <strong>34</strong></button><button type="button" class="division-filter" data-division="FCS">FCS <strong>25</strong></button><button type="button" class="division-filter" data-division="OTHER">Other <strong>50</strong></button></div><div class="map-filters"><button type="button" class="map-filter active" data-map-status="ALL"><span class="map-dot all-dot"></span>All <strong>109</strong></button><button type="button" class="map-filter" data-map-status="QUALIFIES"><span class="map-dot" style="background:#22c55e"></span>QUALIFIES <strong>0</strong></button><button type="button" class="map-filter" data-map-status="LEAN"><span class="map-dot" style="background:#8b5cf6"></span>LEAN <strong>0</strong></button><button type="button" class="map-filter" data-map-status="WATCH"><span class="map-dot" style="background:#f59e0b"></span>WATCH <strong>0</strong></button><button type="button" class="map-filter" data-map-status="NO PLAY"><span class="map-dot" style="background:#ef4444"></span>NO PLAY <strong>95</strong></button><button type="button" class="map-filter" data-map-status="NO LINE"><span class="map-dot" style="background:#64748b"></span>NO LINE <strong>12</strong></button><button type="button" class="map-filter" data-map-status="POSTPONED / STALE"><span class="map-dot" style="background:#f97316"></span>POSTPONED / STALE <strong>1</strong></button></div><button type="button" class="map-filter radar-toggle" id="radarToggle" aria-pressed="false">Radar: Off</button><div class="map-count" id="mapCount">Showing 109 mapped games</div></div>
         <div id="weekMap" role="region" aria-label="Interactive map of this week's college football games by model status"></div>
-        <div class="map-note">Marker colors: green qualifies · purple lean · amber watch · red no play · gray no line. Every scheduled game currently has usable venue coordinates. Radar overlay: IEM / NWS CONUS NEXRAD base reflectivity. All visible tiles are pinned to one radar valid time so neighboring tiles cannot mix scans. <span id="radarStatus">Radar off.</span></div>
+        <div class="map-note">Marker colors: green qualifies · purple lean · amber watch · red no play · gray no line. Every scheduled game currently has usable venue coordinates. Radar overlay: IEM / NWS CONUS NEXRAD base reflectivity. All visible tiles are pinned to one radar valid time so neighboring tiles cannot mix scans. <span id="radarStatus">Radar off.</span> Radar overlay: latest CONUS NEXRAD base reflectivity from the Iowa Environmental Mesonet / NWS.</div>
       </div>
     </section>
     <section id="targets">
@@ -226,7 +226,7 @@
 
     const mapElement = document.getElementById('weekMap');
     const mapCount = document.getElementById('mapCount');
-    const mapFilters = [...document.querySelectorAll('.map-filter')];
+    const mapFilters = [...document.querySelectorAll('.map-filter[data-map-status]')];
     const divisionFilters = [...document.querySelectorAll('.division-filter')];
     let activeMapStatus = 'ALL';
     let activeDivision = 'ALL';
@@ -238,6 +238,10 @@
         maxZoom:19,
         attribution:'&copy; OpenStreetMap contributors'
       }).addTo(weekMap);
+
+      // SITE_RADAR_SYNC
+      // Use a timestamp-pinned IEM layer rather than the moving "-0" layer.
+      // This prevents adjacent cached tiles from representing different 5-minute scans.
 
       // SITE_RADAR_SYNC
       // Use a timestamp-pinned IEM layer rather than the moving "-0" layer.
