@@ -38,11 +38,14 @@ jobs:
       - name: Add sortable weather columns and radar overlay
         run: python site_tools/augment_weather_ui.py
 
+      - name: Apply site-only postponed/stale overrides
+        run: python site_tools/apply_stale_status.py
+
       - name: Commit website-only update
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add docs/index.html
-          git commit -m "Update weather sorting and radar UI" || echo "No site UI changes to commit"
+          git commit -m "Update weather UI and stale-game status" || echo "No site UI changes to commit"
           git pull --rebase origin main
           git push origin main
