@@ -1,0 +1,61 @@
+name: Campbell Postponement Diagnostic
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'diagnostics/campbell_postponement_20260906.py'
+      - '.github/workflows/campbell-postponement-diagnostic.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  rescore-campbell-only:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install pinned model environment
+        run: pip install -r requirements.txt
+
+      - name: Restore latest live training data artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p data/processed /tmp/cfb-training
+          artifact_id=$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?per_page=100" --jq '[.artifacts[] | select(.name == "cfb-live-training-data" and .expired == false)] | sort_by(.created_at) | reverse | .[0].id')
+          if [ -z "$artifact_id" ] || [ "$artifact_id" = "null" ]; then
+            echo "No non-expired cfb-live-training-data artifact found." >&2
+            exit 1
+          fi
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}/zip" > /tmp/cfb-training.zip
+          unzip -o /tmp/cfb-training.zip -d /tmp/cfb-training
+          model_file=$(find /tmp/cfb-training -type f -name modeling_dataset.csv | head -n 1)
+          team_file=$(find /tmp/cfb-training -type f -name team_prior_features.csv | head -n 1 || true)
+          if [ -z "$model_file" ]; then
+            echo "modeling_dataset.csv missing from training artifact." >&2
+            exit 1
+          fi
+          cp "$model_file" data/processed/modeling_dataset.csv
+          if [ -n "$team_file" ]; then cp "$team_file" data/processed/team_prior_features.csv; fi
+          echo "Restored artifact ${artifact_id}."
+
+      - name: Re-score only Western Carolina at Campbell
+        run: python diagnostics/campbell_postponement_20260906.py
+
+      - name: Upload diagnostic result
+        uses: actions/upload-artifact@v4
+        with:
+          name: campbell-postponement-diagnostic
+          path: outputs/postponement_diagnostics/campbell_20260906.json
+          retention-days: 30
