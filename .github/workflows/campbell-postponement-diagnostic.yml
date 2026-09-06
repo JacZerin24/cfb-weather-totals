@@ -51,7 +51,7 @@ jobs:
           echo "Restored artifact ${artifact_id}."
 
       - name: Re-score only Western Carolina at Campbell
-        run: python diagnostics/campbell_postponement_20260906.py
+        run: PYTHONPATH=. python diagnostics/campbell_postponement_20260906.py
 
       - name: Upload diagnostic result
         uses: actions/upload-artifact@v4
