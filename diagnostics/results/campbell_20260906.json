@@ -1,0 +1,41 @@
+{
+  "diagnostic_type": "postponement_ticket_line_rescore",
+  "fresh_nws_weather": {
+    "dewpoint_f": 72.0,
+    "humidity_pct": 79.0,
+    "nws_office": "RAH",
+    "nws_status": "ok",
+    "pop_pct": 7.0,
+    "precipitation_in": 0.0,
+    "snowfall_in": 0.0,
+    "temperature_f": 79.0,
+    "weather_summary": "No meaningful precipitation signal",
+    "wind_gust_mph": 9.206232736,
+    "wind_mph": 6.904674552
+  },
+  "fresh_ticket_line_rescore": {
+    "abs_edge": 2.9206377550948415,
+    "classification_if_scored_fresh": "NO PLAY",
+    "classification_reason": "FCS-only model does not meet the conservative under-edge screen.",
+    "model_side": "over",
+    "pred_market_residual": 2.9206377550948415,
+    "projected_total": 70.42063775509484
+  },
+  "game_id": "401866625",
+  "line_provider_anchor": "DraftKings",
+  "matchup": "Western Carolina @ Campbell",
+  "new_kickoff_utc": "2026-09-06T15:00:00+00:00",
+  "official_record_unchanged": true,
+  "original_reproduction_check": {
+    "absolute_residual_difference_vs_stored": 0.0,
+    "pred_market_residual": -8.721497885469075,
+    "projected_total": 58.77850211453092
+  },
+  "stored_original": {
+    "kickoff_utc": "2026-09-05 19:30:00+00:00",
+    "pred_market_residual": -8.721497885469075,
+    "projected_total": 58.77850211453092,
+    "status": "QUALIFIES"
+  },
+  "ticket_total": 67.5
+}
