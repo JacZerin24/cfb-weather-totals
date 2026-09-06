@@ -30,7 +30,6 @@ def add_status_text(html: str) -> str:
         return html
     if OLD_NOTE in html:
         return html.replace(OLD_NOTE, NEW_NOTE, 1)
-    # Fallback for a regenerated map note whose wording changed.
     return html.replace(
         "</div>\n      </div>\n    </section>\n    <section id=\"targets\">",
         f" {NEW_NOTE}</div>\n      </div>\n    </section>\n    <section id=\"targets\">",
@@ -39,9 +38,6 @@ def add_status_text(html: str) -> str:
 
 
 def separate_radar_from_status_filters(html: str) -> str:
-    # radarToggle shares the map-filter styling class, but it is not a status filter.
-    # Keeping it out of mapFilters prevents a radar click from clearing/highlighting
-    # the game-status buttons or firing filterMap('ALL').
     return html.replace(
         "const mapFilters = [...document.querySelectorAll('.map-filter')];",
         "const mapFilters = [...document.querySelectorAll('.map-filter[data-map-status]')];",
@@ -83,9 +79,6 @@ def radar_block() -> str:
       }
 
       function fallbackRadarValid() {
-        // IEM mosaics are available every 5 minutes and generally finish shortly
-        // afterward. Ten minutes back is a conservative fallback if metadata is
-        // temporarily unavailable or blocked by the browser.
         const dt = new Date(Date.now() - 10 * 60 * 1000);
         dt.setUTCMinutes(Math.floor(dt.getUTCMinutes() / 5) * 5, 0, 0);
         return dt.toISOString();
@@ -166,8 +159,6 @@ def radar_block() -> str:
 
         nextLayer.once('load', finishSwap);
         nextLayer.addTo(weekMap);
-        // Leaflet can wait on an off-screen/failed tile before emitting load. Do not
-        // leave two complete scans stacked indefinitely in that edge case.
         window.setTimeout(finishSwap, 3500);
       }
 
@@ -189,8 +180,6 @@ def radar_block() -> str:
           return;
         }
         refreshRadar();
-        // Re-check metadata while the overlay is on. A new timestamp causes the
-        // entire tile layer to swap together, so the map never intentionally mixes scans.
         radarRefreshTimer = window.setInterval(refreshRadar, 5 * 60 * 1000);
       }
 
@@ -207,12 +196,16 @@ def radar_block() -> str:
 
 
 def replace_radar_js(html: str) -> str:
-    # Replace either the original moving latest-tile block or a previous version of
-    # this synchronized block. Keep the game marker code immediately afterward.
-    pattern = re.compile(
-        r"\n\s*(?:" + re.escape(JS_MARKER) + r"\n\s*)?const radarTileUrl\s*=.*?\n\s*gamePoints\.forEach",
-        flags=re.S,
-    )
+    if JS_MARKER in html:
+        pattern = re.compile(
+            r"\n\s*" + re.escape(JS_MARKER) + r".*?\n\s*gamePoints\.forEach",
+            flags=re.S,
+        )
+    else:
+        pattern = re.compile(
+            r"\n\s*const radarTileUrl\s*=.*?\n\s*gamePoints\.forEach",
+            flags=re.S,
+        )
     replacement = "\n" + radar_block().rstrip() + "\n\n      gamePoints.forEach"
     updated, count = pattern.subn(lambda _: replacement, html, count=1)
     if count != 1:
