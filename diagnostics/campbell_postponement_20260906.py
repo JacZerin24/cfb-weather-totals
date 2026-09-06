@@ -143,3 +143,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+# This comment intentionally triggers the isolated diagnostic workflow after workflow registration.
