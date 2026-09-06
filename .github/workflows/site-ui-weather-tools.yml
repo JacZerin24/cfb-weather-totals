@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'site_tools/**'
+      - 'diagnostics/results/**'
       - '.github/workflows/site-ui-weather-tools.yml'
   workflow_run:
     workflows:
@@ -41,11 +42,14 @@ jobs:
       - name: Apply site-only postponed/stale overrides
         run: python site_tools/apply_stale_status.py
 
+      - name: Display updated postponement diagnostics
+        run: python site_tools/apply_postponement_diagnostics.py
+
       - name: Commit website-only update
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add docs/index.html
-          git commit -m "Update weather UI and stale-game status" || echo "No site UI changes to commit"
+          git commit -m "Update weather UI and stale-game diagnostics" || echo "No site UI changes to commit"
           git pull --rebase origin main
           git push origin main
