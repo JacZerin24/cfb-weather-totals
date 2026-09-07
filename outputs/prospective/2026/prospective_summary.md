@@ -17,14 +17,14 @@ The immutable snapshot files are the source of truth. Derived ledgers and summar
 
 | scope        |   official_games |   qualifying_entries |   settled_qualifying_entries |   graded_ex_pushes |   wins |   losses |   pushes |   hit_rate_ex_pushes |   net_units_1u_at_-110 |   roi_per_graded_entry |   qualifiers_with_clv |   average_clv_points |   median_clv_points |   positive_clv_rate |
 |:-------------|-----------------:|---------------------:|-----------------------------:|-------------------:|-------:|---------:|---------:|---------------------:|-----------------------:|-----------------------:|----------------------:|---------------------:|--------------------:|--------------------:|
-| ALL          |              376 |                    2 |                            1 |                  1 |      1 |        0 |        0 |                    1 |               0.909091 |               0.909091 |                     0 |                  nan |                 nan |                 nan |
-| FCS-only HGB |               46 |                    2 |                            1 |                  1 |      1 |        0 |        0 |                    1 |               0.909091 |               0.909091 |                     0 |                  nan |                 nan |                 nan |
-| GENERAL HGB  |              330 |                    0 |                            0 |                  0 |      0 |        0 |        0 |                  nan |               0        |             nan        |                     0 |                  nan |                 nan |                 nan |
+| ALL          |              376 |                    2 |                            2 |                  2 |      2 |        0 |        0 |                    1 |                1.81818 |               0.909091 |                     1 |                   -1 |                  -1 |                   0 |
+| FCS-only HGB |               46 |                    2 |                            2 |                  2 |      2 |        0 |        0 |                    1 |                1.81818 |               0.909091 |                     1 |                   -1 |                  -1 |                   0 |
+| GENERAL HGB  |              330 |                    0 |                            0 |                  0 |      0 |        0 |        0 |                  nan |                0       |             nan        |                     0 |                  nan |                 nan |                 nan |
 
 ## Data integrity
 
-- Immutable board snapshots: 24
-- Immutable close captures: 9
+- Immutable board snapshots: 25
+- Immutable close captures: 16
 - Official game entries selected: 376
 
 Every immutable CSV filename contains the first 12 characters of its SHA-256 content hash. The workflow verifies those hashes before rebuilding derived results.
