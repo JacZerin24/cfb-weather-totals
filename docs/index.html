@@ -70,6 +70,36 @@
     @media(max-width:1100px) { .bankroll-grid { grid-template-columns:1fr; } .bankroll-controls { grid-template-columns:repeat(2,1fr); } .bankroll-metrics { grid-template-columns:repeat(3,1fr); } }
     @media(max-width:650px) { .bankroll-controls,.bankroll-metrics { grid-template-columns:1fr; } .plan-head { align-items:start; flex-direction:column; } .stake-table { min-width:640px; } .plan-panel { overflow:auto; } }
 
+
+    /* SITE_WEATHER_TOOLS */
+    .weather-num,.kickoff-num { white-space:nowrap; font-variant-numeric:tabular-nums; }
+    .sort-btn { appearance:none; border:0; background:transparent; color:#dbeafe; font:inherit; font-weight:900; padding:0; cursor:pointer; display:inline-flex; align-items:center; gap:5px; }
+    .sort-btn:hover,.sort-btn:focus-visible { color:var(--cyan); }
+    .sort-btn span { color:var(--muted); font-size:10px; }
+    .radar-toggle { border-color:rgba(125,211,252,.4); }
+    .radar-toggle.active { background:rgba(125,211,252,.14); border-color:rgba(125,211,252,.8); }
+    
+
+    /* SITE_RADAR_SYNC */
+    #radarStatus { color:#bfdbfe; font-weight:800; }
+    
+
+    /* SITE_STALE_STATUS */
+    .stale { color:#fed7aa; background:rgba(249,115,22,.14); border:1px solid rgba(249,115,22,.42); }
+    
+
+    /* SITE_POSTPONEMENT_DIAGNOSTICS */
+    .postponement-diagnostic-row td { padding:0 12px 14px; background:rgba(249,115,22,.035); }
+    .postponement-diagnostic { margin:0; padding:14px 15px; border:1px solid rgba(249,115,22,.34); border-radius:13px; background:linear-gradient(135deg,rgba(249,115,22,.11),rgba(125,211,252,.045)); }
+    .postponement-diagnostic-head { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+    .postponement-diagnostic-title { font-weight:950; color:#ffedd5; }
+    .postponement-diagnostic-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; }
+    .postponement-diagnostic-item { border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.035); border-radius:10px; padding:9px 10px; }
+    .postponement-diagnostic-item span { display:block; color:var(--muted); font-size:9px; font-weight:900; letter-spacing:.07em; text-transform:uppercase; }
+    .postponement-diagnostic-item strong { display:block; margin-top:3px; font-size:12px; color:#f8fbff; }
+    .postponement-diagnostic-note { margin-top:10px; color:#c9d7ea; font-size:11px; }
+    @media(max-width:900px) { .postponement-diagnostic-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    
   </style>
 </head>
 <body>
@@ -98,9 +128,9 @@
     <section id="map">
       <div class="section-head"><div><div class="eyebrow">Geographic slate overview</div><h2>Weekly status map</h2></div><p>Every scheduled game stays visible, including games without a current total.</p></div>
       <div class="map-panel">
-        <div class="map-toolbar"><div class="division-filters" id="divisionFilters"><button type="button" class="division-filter active" data-division="ALL">All <strong>1</strong></button><button type="button" class="division-filter" data-division="FBS">FBS <strong>1</strong></button><button type="button" class="division-filter" data-division="FCS">FCS <strong>0</strong></button><button type="button" class="division-filter" data-division="OTHER">Other <strong>0</strong></button></div><div class="map-filters"><button type="button" class="map-filter active" data-map-status="ALL"><span class="map-dot all-dot"></span>All <strong>1</strong></button><button type="button" class="map-filter" data-map-status="QUALIFIES"><span class="map-dot" style="background:#22c55e"></span>QUALIFIES <strong>0</strong></button><button type="button" class="map-filter" data-map-status="LEAN"><span class="map-dot" style="background:#8b5cf6"></span>LEAN <strong>0</strong></button><button type="button" class="map-filter" data-map-status="WATCH"><span class="map-dot" style="background:#f59e0b"></span>WATCH <strong>0</strong></button><button type="button" class="map-filter" data-map-status="NO PLAY"><span class="map-dot" style="background:#ef4444"></span>NO PLAY <strong>1</strong></button><button type="button" class="map-filter" data-map-status="NO LINE"><span class="map-dot" style="background:#64748b"></span>NO LINE <strong>0</strong></button></div><div class="map-count" id="mapCount">Showing 1 mapped games</div></div>
+        <div class="map-toolbar"><div class="division-filters" id="divisionFilters"><button type="button" class="division-filter active" data-division="ALL">All <strong>1</strong></button><button type="button" class="division-filter" data-division="FBS">FBS <strong>1</strong></button><button type="button" class="division-filter" data-division="FCS">FCS <strong>0</strong></button><button type="button" class="division-filter" data-division="OTHER">Other <strong>0</strong></button></div><div class="map-filters"><button type="button" class="map-filter active" data-map-status="ALL"><span class="map-dot all-dot"></span>All <strong>1</strong></button><button type="button" class="map-filter" data-map-status="QUALIFIES"><span class="map-dot" style="background:#22c55e"></span>QUALIFIES <strong>0</strong></button><button type="button" class="map-filter" data-map-status="LEAN"><span class="map-dot" style="background:#8b5cf6"></span>LEAN <strong>0</strong></button><button type="button" class="map-filter" data-map-status="WATCH"><span class="map-dot" style="background:#f59e0b"></span>WATCH <strong>0</strong></button><button type="button" class="map-filter" data-map-status="NO PLAY"><span class="map-dot" style="background:#ef4444"></span>NO PLAY <strong>1</strong></button><button type="button" class="map-filter" data-map-status="NO LINE"><span class="map-dot" style="background:#64748b"></span>NO LINE <strong>0</strong></button><button type="button" class="map-filter" data-map-status="POSTPONED / STALE"><span class="map-dot" style="background:#f97316"></span>POSTPONED / STALE <strong>1</strong></button></div><button type="button" class="map-filter radar-toggle" id="radarToggle" aria-pressed="false">Radar: Off</button><div class="map-count" id="mapCount">Showing 1 mapped games</div></div>
         <div id="weekMap" role="region" aria-label="Interactive map of this week's college football games by model status"></div>
-        <div class="map-note">Marker colors: green qualifies · purple lean · amber watch · red no play · gray no line. Every scheduled game currently has usable venue coordinates.</div>
+        <div class="map-note">Marker colors: green qualifies · purple lean · amber watch · red no play · gray no line. Every scheduled game currently has usable venue coordinates. Radar overlay: IEM / NWS CONUS NEXRAD base reflectivity. All visible tiles are pinned to one radar valid time so neighboring tiles cannot mix scans. <span id="radarStatus">Radar off.</span></div>
       </div>
     </section>
     <section id="targets">
@@ -159,19 +189,10 @@
     
     <section id="card"><div class="section-head"><div><div class="eyebrow">Historical weekly-card method</div><h2>Top two-leg card</h2></div></div><div class="parlay"><span class="eyebrow">Top weekly 2-leg research card</span><h3>No card</h3><p>Fewer than two non-FCS qualifying targets are available, so the original weekly-card method does not force a parlay.</p></div></section>
     <section id="board">
-      <div class="section-head"><div><div class="eyebrow">Everything, including no-plays and no-lines</div><h2>Full weekly board</h2></div><p>The site shows why games fail the screen instead of hiding them.</p></div>
+      <div class="section-head"><div><div class="eyebrow">Everything, including no-plays and no-lines</div><h2>Full weekly board</h2></div><p>Click Kickoff, Temp, Wind, Gust, RH, or PoP to sort. PoP is chance of precipitation.</p></div>
       <div class="panel">
-        <div class="toolbar"><input id="search" type="search" placeholder="Search matchup, weather, reason…"><select id="divisionFilter"><option value="ALL">All divisions</option><option value="FBS">FBS vs FBS</option><option value="FCS">FCS vs FCS</option><option value="OTHER">Other / cross-division</option></select><select id="statusFilter"><option value="ALL">All statuses</option><option>QUALIFIES</option><option>LEAN</option><option>WATCH</option><option>NO PLAY</option><option>NO LINE</option></select></div>
-        <div class="table-wrap"><table><thead><tr><th>Status</th><th>Game</th><th>Market</th><th>NWS kickoff forecast</th><th>Model</th><th>Why</th></tr></thead><tbody id="boardBody">
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>SMU @ Florida State</strong><br><span class="small">Mon Sep 7 · 6:30 PM CT</span></td>
-            <td>O/U 54.5 · DraftKings · 2 providers</td>
-            <td>84°F · wind 3 mph, gust 8 · RH 74% · PoP 29%</td>
-            <td>OVER edge 0.5 · projected total 55.0</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        </tbody></table></div>
+        <div class="toolbar"><input id="search" type="search" placeholder="Search matchup, weather, reason…"><select id="divisionFilter"><option value="ALL">All divisions</option><option value="FBS">FBS vs FBS</option><option value="FCS">FCS vs FCS</option><option value="OTHER">Other / cross-division</option></select><select id="statusFilter"><option value="ALL">All statuses</option><option>QUALIFIES</option><option>LEAN</option><option>WATCH</option><option>POSTPONED / STALE</option><option>NO PLAY</option><option>NO LINE</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>Status</th><th>Game</th><th><button class="sort-btn" type="button" data-weather-sort="2">Kickoff <span>↕</span></button></th><th>Market</th><th><button class="sort-btn" type="button" data-weather-sort="4">Temp <span>↕</span></button></th><th><button class="sort-btn" type="button" data-weather-sort="5">Wind <span>↕</span></button></th><th><button class="sort-btn" type="button" data-weather-sort="6">Gust <span>↕</span></button></th><th><button class="sort-btn" type="button" data-weather-sort="7">RH <span>↕</span></button></th><th><button class="sort-btn" type="button" data-weather-sort="8" title="Probability of precipitation / chance of precipitation">PoP <span>↕</span></button></th><th>Model</th><th>Why</th></tr></thead><tbody id="boardBody"><tr data-status="NO PLAY" data-division="FBS"><td><span class="badge no-play">NO PLAY</span></td><td><strong>SMU @ Florida State</strong></td><td class="kickoff-num" data-sort-value="1788823800">Mon Sep 7 · 6:30 PM CT</td><td>O/U 54.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="84.000000">84°F</td><td class="weather-num" data-sort-value="3.452337">3 mph</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="74.000000">74%</td><td class="weather-num" data-sort-value="29.000000">29%</td><td>OVER edge 0.5 · projected total 55.0</td><td>Model edge is below the 3.5-point production threshold.</td></tr></tbody></table></div>
       </div>
     </section>
   </main>
@@ -179,7 +200,7 @@
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     const gamePoints = [{"game_id": "401858212", "lat": 30.4381692, "lon": -84.3044032, "status": "NO PLAY", "away": "SMU", "home": "Florida State", "kickoff": "Mon Sep 7 · 6:30 PM CT", "venue": "Doak Campbell Stadium", "location": "Tallahassee, FL", "market": "O/U 54.5 · DraftKings", "model": "OVER edge 0.5 · projected total 55.0", "weather": "84°F · wind 3 mph, gust 8 · RH 74% · PoP 29%", "reason": "Model edge is below the 3.5-point production threshold.", "division": "FBS", "model_track": "GENERAL HGB"}];
-    const statusColors = { 'QUALIFIES':'#22c55e', 'LEAN':'#8b5cf6', 'WATCH':'#f59e0b', 'NO PLAY':'#ef4444', 'NO LINE':'#64748b' };
+    const statusColors = { 'POSTPONED / STALE':'#f97316', 'QUALIFIES':'#22c55e', 'LEAN':'#8b5cf6', 'WATCH':'#f59e0b', 'NO PLAY':'#ef4444', 'NO LINE':'#64748b' };
 
     function escapeHtml(value) {
       return String(value == null ? '' : value).replace(/[&<>'"]/g, function(ch) {
@@ -189,7 +210,7 @@
 
     const mapElement = document.getElementById('weekMap');
     const mapCount = document.getElementById('mapCount');
-    const mapFilters = [...document.querySelectorAll('.map-filter')];
+    const mapFilters = [...document.querySelectorAll('.map-filter[data-map-status]')];
     const divisionFilters = [...document.querySelectorAll('.division-filter')];
     let activeMapStatus = 'ALL';
     let activeDivision = 'ALL';
@@ -201,6 +222,152 @@
         maxZoom:19,
         attribution:'&copy; OpenStreetMap contributors'
       }).addTo(weekMap);
+
+      // SITE_RADAR_SYNC
+      // Use a timestamp-pinned IEM layer rather than the moving "-0" layer.
+      // This prevents adjacent cached tiles from representing different 5-minute scans.
+      const radarTileUrl = function(validKey) {
+        return 'https://mesonet.agron.iastate.edu/c/tile.py/1.0.0/ridge::USCOMP-N0Q-' + validKey + '/{z}/{x}/{y}.png';
+      };
+      const radarMetaUrl = 'https://mesonet.agron.iastate.edu/data/gis/images/4326/USCOMP/n0q_0.json';
+      const radarToggle = document.getElementById('radarToggle');
+      const radarStatus = document.getElementById('radarStatus');
+      let radarLayer = null;
+      let radarValid = null;
+      let radarEnabled = false;
+      let radarRefreshTimer = null;
+
+      if (!weekMap.getPane('radarPane')) {
+        weekMap.createPane('radarPane');
+        weekMap.getPane('radarPane').style.zIndex = 250;
+        weekMap.getPane('radarPane').style.pointerEvents = 'none';
+      }
+
+      function radarKeyFromIso(valid) {
+        const dt = new Date(valid);
+        if (Number.isNaN(dt.getTime())) return null;
+        const y = dt.getUTCFullYear();
+        const mo = String(dt.getUTCMonth() + 1).padStart(2, '0');
+        const d = String(dt.getUTCDate()).padStart(2, '0');
+        const h = String(dt.getUTCHours()).padStart(2, '0');
+        const m = String(dt.getUTCMinutes()).padStart(2, '0');
+        return '' + y + mo + d + h + m;
+      }
+
+      function fallbackRadarValid() {
+        const dt = new Date(Date.now() - 10 * 60 * 1000);
+        dt.setUTCMinutes(Math.floor(dt.getUTCMinutes() / 5) * 5, 0, 0);
+        return dt.toISOString();
+      }
+
+      function formatRadarValid(valid, approximate) {
+        const dt = new Date(valid);
+        if (Number.isNaN(dt.getTime())) return approximate ? 'Radar time approximate.' : 'Radar time unavailable.';
+        const label = new Intl.DateTimeFormat('en-US', {
+          timeZone:'America/Chicago',
+          month:'short', day:'numeric', hour:'numeric', minute:'2-digit',
+          timeZoneName:'short'
+        }).format(dt);
+        return 'Radar valid ' + label + (approximate ? ' (approx.)' : '') + '.';
+      }
+
+      async function latestRadarValid() {
+        try {
+          const response = await fetch(radarMetaUrl + '?_=' + Date.now(), { cache:'no-store' });
+          if (!response.ok) throw new Error('Radar metadata HTTP ' + response.status);
+          const payload = await response.json();
+          const valid = payload && payload.meta && payload.meta.valid;
+          if (!valid || !radarKeyFromIso(valid)) throw new Error('Radar metadata missing valid time');
+          return { valid:valid, approximate:false };
+        } catch (error) {
+          console.warn('Using conservative radar-time fallback:', error);
+          return { valid:fallbackRadarValid(), approximate:true };
+        }
+      }
+
+      function makeRadarLayer(valid) {
+        const key = radarKeyFromIso(valid);
+        return L.tileLayer(radarTileUrl(key), {
+          opacity:0.58,
+          pane:'radarPane',
+          maxNativeZoom:12,
+          maxZoom:19,
+          noWrap:true,
+          updateWhenIdle:true,
+          keepBuffer:2,
+          bounds:[[20, -130], [55, -60]],
+          attribution:'NEXRAD: Iowa Environmental Mesonet / NWS'
+        });
+      }
+
+      async function refreshRadar() {
+        if (!radarEnabled) return;
+        if (radarStatus) radarStatus.textContent = 'Checking latest radar scan…';
+        const latest = await latestRadarValid();
+        if (!radarEnabled) return;
+
+        const latestKey = radarKeyFromIso(latest.valid);
+        const currentKey = radarValid ? radarKeyFromIso(radarValid) : null;
+        if (radarLayer && latestKey === currentKey) {
+          if (!weekMap.hasLayer(radarLayer)) radarLayer.addTo(weekMap);
+          if (radarStatus) radarStatus.textContent = formatRadarValid(latest.valid, latest.approximate);
+          return;
+        }
+
+        const nextLayer = makeRadarLayer(latest.valid);
+        const previousLayer = radarLayer;
+        let swapped = false;
+
+        function finishSwap() {
+          if (swapped) return;
+          swapped = true;
+          if (!radarEnabled) {
+            if (weekMap.hasLayer(nextLayer)) weekMap.removeLayer(nextLayer);
+            return;
+          }
+          radarLayer = nextLayer;
+          radarValid = latest.valid;
+          if (previousLayer && previousLayer !== nextLayer && weekMap.hasLayer(previousLayer)) {
+            weekMap.removeLayer(previousLayer);
+          }
+          if (radarStatus) radarStatus.textContent = formatRadarValid(latest.valid, latest.approximate);
+        }
+
+        nextLayer.once('load', finishSwap);
+        nextLayer.addTo(weekMap);
+        window.setTimeout(finishSwap, 3500);
+      }
+
+      function setRadarEnabled(enabled) {
+        radarEnabled = enabled;
+        try { localStorage.setItem('cfbRadarEnabled', enabled ? '1' : '0'); } catch (e) {}
+        if (radarToggle) {
+          radarToggle.classList.toggle('active', enabled);
+          radarToggle.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+          radarToggle.textContent = enabled ? 'Radar: On' : 'Radar: Off';
+        }
+        if (radarRefreshTimer) {
+          window.clearInterval(radarRefreshTimer);
+          radarRefreshTimer = null;
+        }
+        if (!enabled) {
+          if (radarLayer && weekMap.hasLayer(radarLayer)) weekMap.removeLayer(radarLayer);
+          if (radarStatus) radarStatus.textContent = 'Radar off.';
+          return;
+        }
+        refreshRadar();
+        radarRefreshTimer = window.setInterval(refreshRadar, 5 * 60 * 1000);
+      }
+
+      if (radarToggle) {
+        radarToggle.addEventListener('click', function() {
+          setRadarEnabled(!radarEnabled);
+        });
+      }
+
+      let restoreRadar = false;
+      try { restoreRadar = localStorage.getItem('cfbRadarEnabled') === '1'; } catch (e) {}
+      if (restoreRadar) setRadarEnabled(true);
 
       gamePoints.forEach(function(game) {
         const color = statusColors[game.status] || '#64748b';
@@ -285,6 +452,39 @@
     search.addEventListener('input', filterRows);
     if (divisionFilter) divisionFilter.addEventListener('change', filterRows);
     statusFilter.addEventListener('change', filterRows);
+
+
+    // SITE_WEATHER_TOOLS
+    const weatherSortButtons = [...document.querySelectorAll('[data-weather-sort]')];
+    let activeWeatherSortColumn = null;
+    let activeWeatherSortAscending = true;
+    weatherSortButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        const column = Number(button.dataset.weatherSort);
+        if (activeWeatherSortColumn === column) {
+          activeWeatherSortAscending = !activeWeatherSortAscending;
+        } else {
+          activeWeatherSortColumn = column;
+          activeWeatherSortAscending = true;
+        }
+        const tbody = document.getElementById('boardBody');
+        const currentRows = [...tbody.querySelectorAll('tr')];
+        currentRows.sort(function(a, b) {
+          const av = Number(a.children[column].dataset.sortValue);
+          const bv = Number(b.children[column].dataset.sortValue);
+          const aMissing = Number.isNaN(av) || a.children[column].dataset.sortValue === '';
+          const bMissing = Number.isNaN(bv) || b.children[column].dataset.sortValue === '';
+          if (aMissing && bMissing) return 0;
+          if (aMissing) return 1;
+          if (bMissing) return -1;
+          return activeWeatherSortAscending ? av - bv : bv - av;
+        });
+        currentRows.forEach(function(row) { tbody.appendChild(row); });
+        weatherSortButtons.forEach(function(other) { other.querySelector('span').textContent = '↕'; });
+        button.querySelector('span').textContent = activeWeatherSortAscending ? '▲' : '▼';
+      });
+    });
+
   </script>
 
   <script>
