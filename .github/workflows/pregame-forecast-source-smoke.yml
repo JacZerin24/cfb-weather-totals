@@ -1,0 +1,44 @@
+name: Pregame Forecast Source Feasibility
+
+on:
+  push:
+    branches:
+      - research/pregame-forecast-realism
+    paths:
+      - documentation/PREGAME_FORECAST_REALISM_PROTOCOL.md
+      - src/pregame_forecast_source_smoke.py
+      - .github/workflows/pregame-forecast-source-smoke.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  source-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run NBM/NBS archive source smoke
+        run: python -m src.pregame_forecast_source_smoke
+      - name: Print summary
+        if: always()
+        run: |
+          if [ -s outputs/pregame_forecast_realism/source_smoke/source_smoke_summary.csv ]; then
+            cat outputs/pregame_forecast_realism/source_smoke/source_smoke_summary.csv
+          fi
+      - name: Upload source-feasibility artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pregame-forecast-source-smoke-${{ github.run_id }}
+          path: outputs/pregame_forecast_realism/source_smoke/
+          if-no-files-found: error
+          retention-days: 30
