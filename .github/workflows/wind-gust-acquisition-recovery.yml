@@ -1,3 +1,4 @@
+# Recovery protocol v2: corrected deterministic location-unit guardrail test.
 name: Wind Gust Acquisition Recovery
 
 on:
