@@ -2,11 +2,28 @@
 
 **Research only. This report cannot alter the operational weekly board or official prospective ledger.**
 
-Protocol: `orientation-eval-2026.1`  
+Protocol: `orientation-eval-2026.2`  
 Challenger: `orientation-crosswind-hgb-v0.1`  
-Graded paired orientation-ready games: **0**
+Graded paired orientation-ready games: **37**
 
-No completed official orientation-shadow entries are available yet.
+## Primary paired model metric
+
+- Baseline MAE: **11.887** points
+- Challenger MAE: **11.801** points
+- Challenger minus baseline MAE: **-0.085** points (negative is better)
+- 95% paired bootstrap interval: **[-0.207, +0.024]**
+
+## Decision-support diagnostics
+
+- Status disagreements: **0**
+- Qualifier disagreements: **0**
+- Scorable status migrations: **0**
+- Status-migration accuracy: **nan**
+
+## Qualifier economics (supporting evidence)
+
+- Baseline: 0-0-0, ROI +nan, avg CLV +nan
+- Challenger: 0-0-0, ROI +nan, avg CLV +nan
 
 ## Interpretation guardrail
 
