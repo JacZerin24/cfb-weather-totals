@@ -1,4 +1,4 @@
-# Recovery protocol v3: second paced recovery chunk.
+# Recovery protocol v4: third paced recovery chunk.
 name: Wind Gust Acquisition Recovery
 
 on:
