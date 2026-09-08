@@ -1,0 +1,130 @@
+name: Manual Wind Gust Value Research
+
+on:
+  workflow_dispatch:
+    inputs:
+      note:
+        description: Optional retrospective research note
+        required: false
+        default: ifs-gust-incremental-value
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: wind-gust-value-research
+  cancel-in-progress: false
+
+jobs:
+  gust-value-research:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out research branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore latest historical modeling dataset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          SOURCE_DIR=$(mktemp -d)
+          mkdir -p data/processed
+
+          RESEARCH_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/manual-historical-research.yml/runs?status=success&per_page=1" \
+            --jq '.workflow_runs[0].id // empty')
+          if [ -z "$RESEARCH_RUN_ID" ]; then
+            echo "ERROR: No successful historical research run is available."
+            exit 1
+          fi
+
+          gh run download "$RESEARCH_RUN_ID" -n cfb-weather-totals-research-output -D "$SOURCE_DIR"
+          MODEL_PATH=$(find "$SOURCE_DIR" -type f -name modeling_dataset.csv -print -quit)
+          if [ -z "$MODEL_PATH" ]; then
+            echo "ERROR: modeling_dataset.csv was not found in the historical artifact."
+            exit 1
+          fi
+          cp "$MODEL_PATH" data/processed/modeling_dataset.csv
+          test -s data/reference/stadium_locations.csv
+
+      - name: Restore latest successful full IFS gust acquisition
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          SOURCE_DIR=$(mktemp -d)
+
+          FULL_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/wind-gust-full-acquisition.yml/runs?branch=research%2Fwind-gust-value&status=success&per_page=1" \
+            --jq '.workflow_runs[0].id // empty')
+          if [ -z "$FULL_RUN_ID" ]; then
+            echo "ERROR: No successful full IFS gust acquisition exists; refusing model run."
+            exit 1
+          fi
+
+          echo "Restoring full gust acquisition from run ${FULL_RUN_ID}."
+          gh run download "$FULL_RUN_ID" -n "wind-gust-full-acquisition-${FULL_RUN_ID}" -D "$SOURCE_DIR"
+          GUST_PATH=$(find "$SOURCE_DIR" -type f -name wind_gust_kickoff.csv -print -quit)
+          VALIDATION_PATH=$(find "$SOURCE_DIR" -type f -name full_acquisition_validation.csv -print -quit)
+          if [ -z "$GUST_PATH" ] || [ -z "$VALIDATION_PATH" ]; then
+            echo "ERROR: Full acquisition artifact is missing required data/QC files."
+            exit 1
+          fi
+          cp "$GUST_PATH" data/processed/wind_gust_kickoff.csv
+          cp "$VALIDATION_PATH" data/processed/wind_gust_full_acquisition_validation.csv
+
+          python - <<'PY'
+          import pandas as pd
+          validation = pd.read_csv('data/processed/wind_gust_full_acquisition_validation.csv')
+          if validation.empty:
+              raise SystemExit('ERROR: Full acquisition validation file is empty.')
+          row = validation.iloc[0]
+          if float(row['complete_pct_fetchable']) < 0.99:
+              raise SystemExit('ERROR: Restored full acquisition no longer satisfies 99% coverage gate.')
+          if int(row['request_failures']) != 0:
+              raise SystemExit('ERROR: Restored full acquisition contains request failures.')
+          print('Full acquisition QC gate reconfirmed before modeling.')
+          PY
+
+      - name: Run model integrity self-tests
+        run: python -m src.wind_gust_value_selftest
+
+      - name: Run frozen retrospective gust-value ladder
+        run: python -m src.wind_gust_value_research
+
+      - name: Enforce research-only output boundary
+        run: |
+          set -euo pipefail
+          test -s outputs/wind_gust_value/incremental_comparisons.csv
+          test -s outputs/wind_gust_value/model_summary.csv
+          test -s outputs/wind_gust_value/summary.md
+          if git status --porcelain -- outputs/weekly_board.csv outputs/weekly_picks.csv outputs/weekly_card.csv | grep -q .; then
+            echo "ERROR: Wind-gust research modified live weekly outputs."
+            exit 1
+          fi
+          echo "Research-only boundary verified."
+
+      - name: Print primary evidence
+        run: |
+          echo "--- incremental comparisons ---"
+          cat outputs/wind_gust_value/incremental_comparisons.csv
+          echo "--- model summary ---"
+          cat outputs/wind_gust_value/model_summary.csv
+          echo "--- coverage ---"
+          cat outputs/wind_gust_value/coverage.csv
+
+      - name: Upload isolated wind-gust value research artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wind-gust-value-research-${{ github.run_id }}
+          path: outputs/wind_gust_value/
+          if-no-files-found: error
+          retention-days: 90
