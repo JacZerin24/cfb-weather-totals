@@ -1,6 +1,12 @@
+# Frozen retrospective gust-value run using the validated resumable IFS acquisition.
 name: Manual Wind Gust Value Research
 
 on:
+  push:
+    branches:
+      - research/wind-gust-value
+    paths:
+      - .github/workflows/manual-wind-gust-value-research.yml
   workflow_dispatch:
     inputs:
       note:
@@ -56,42 +62,86 @@ jobs:
           cp "$MODEL_PATH" data/processed/modeling_dataset.csv
           test -s data/reference/stadium_locations.csv
 
-      - name: Restore latest successful full IFS gust acquisition
+      - name: Restore latest validated IFS gust recovery artifact
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           SOURCE_DIR=$(mktemp -d)
 
-          FULL_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/wind-gust-full-acquisition.yml/runs?branch=research%2Fwind-gust-value&status=success&per_page=1" \
+          RECOVERY_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/wind-gust-acquisition-recovery.yml/runs?branch=research%2Fwind-gust-value&status=success&per_page=1" \
             --jq '.workflow_runs[0].id // empty')
-          if [ -z "$FULL_RUN_ID" ]; then
-            echo "ERROR: No successful full IFS gust acquisition exists; refusing model run."
+          if [ -z "$RECOVERY_RUN_ID" ]; then
+            echo "ERROR: No successful IFS gust recovery artifact exists; refusing model run."
             exit 1
           fi
 
-          echo "Restoring full gust acquisition from run ${FULL_RUN_ID}."
-          gh run download "$FULL_RUN_ID" -n "wind-gust-full-acquisition-${FULL_RUN_ID}" -D "$SOURCE_DIR"
+          echo "Restoring validated gust recovery from run ${RECOVERY_RUN_ID}."
+          gh run download "$RECOVERY_RUN_ID" -n "wind-gust-recovery-${RECOVERY_RUN_ID}" -D "$SOURCE_DIR"
           GUST_PATH=$(find "$SOURCE_DIR" -type f -name wind_gust_kickoff.csv -print -quit)
-          VALIDATION_PATH=$(find "$SOURCE_DIR" -type f -name full_acquisition_validation.csv -print -quit)
-          if [ -z "$GUST_PATH" ] || [ -z "$VALIDATION_PATH" ]; then
-            echo "ERROR: Full acquisition artifact is missing required data/QC files."
+          VALIDATION_PATH=$(find "$SOURCE_DIR" -type f -name recovery_validation.csv -print -quit)
+          MANIFEST_PATH=$(find "$SOURCE_DIR" -type f -name wind_gust_full_candidate_manifest.csv -print -quit)
+          if [ -z "$GUST_PATH" ] || [ -z "$VALIDATION_PATH" ] || [ -z "$MANIFEST_PATH" ]; then
+            echo "ERROR: Recovery artifact is missing required data/QC files."
             exit 1
           fi
           cp "$GUST_PATH" data/processed/wind_gust_kickoff.csv
-          cp "$VALIDATION_PATH" data/processed/wind_gust_full_acquisition_validation.csv
+          cp "$VALIDATION_PATH" data/processed/wind_gust_recovery_validation.csv
+          cp "$MANIFEST_PATH" data/processed/wind_gust_full_candidate_manifest.csv
 
           python - <<'PY'
           import pandas as pd
-          validation = pd.read_csv('data/processed/wind_gust_full_acquisition_validation.csv')
+
+          rows = pd.read_csv('data/processed/wind_gust_kickoff.csv', low_memory=False)
+          validation = pd.read_csv('data/processed/wind_gust_recovery_validation.csv')
+          manifest = pd.read_csv('data/processed/wind_gust_full_candidate_manifest.csv', low_memory=False)
+
           if validation.empty:
-              raise SystemExit('ERROR: Full acquisition validation file is empty.')
-          row = validation.iloc[0]
-          if float(row['complete_pct_fetchable']) < 0.99:
-              raise SystemExit('ERROR: Restored full acquisition no longer satisfies 99% coverage gate.')
-          if int(row['request_failures']) != 0:
-              raise SystemExit('ERROR: Restored full acquisition contains request failures.')
-          print('Full acquisition QC gate reconfirmed before modeling.')
+              raise SystemExit('ERROR: Recovery validation file is empty.')
+          v = validation.iloc[0]
+          ready = str(v['ready_for_modeling']).strip().lower() in {'true', '1', 'yes'}
+          if not ready:
+              raise SystemExit('ERROR: Recovery artifact is not marked ready_for_modeling.')
+          if float(v['complete_pct_fetchable']) < 0.99:
+              raise SystemExit('ERROR: Recovery artifact does not satisfy 99% coverage gate.')
+          if int(v['missing_coordinate_games']) != 0:
+              raise SystemExit('ERROR: Recovery artifact contains coordinate omissions.')
+          if int(v['recovery_attempt_request_failures']) != 0:
+              raise SystemExit('ERROR: Final recovery attempt contains request failures.')
+
+          if len(rows) != len(manifest):
+              raise SystemExit(
+                  f'ERROR: Gust rows {len(rows)} != frozen manifest rows {len(manifest)}.'
+              )
+          if rows.duplicated(['source_stack', 'game_id']).any():
+              raise SystemExit('ERROR: Duplicate source_stack/game_id rows in gust artifact.')
+          if set(rows['source_stack'].dropna().astype(str)) != {'ecmwf_ifs'}:
+              raise SystemExit('ERROR: Gust artifact contains a non-IFS source stack.')
+          if not rows['fetch_status'].eq('ok').all():
+              raise SystemExit('ERROR: Gust artifact contains incomplete fetch rows.')
+
+          required_numeric = ['wind_mph', 'wind_direction_degrees', 'gust_mph', 'gust_spread_mph']
+          for col in required_numeric:
+              if pd.to_numeric(rows[col], errors='coerce').isna().any():
+                  raise SystemExit(f'ERROR: Gust artifact contains missing {col}.')
+
+          kickoff = pd.to_datetime(rows['kickoff_utc'], utc=True, errors='coerce')
+          if kickoff.isna().any():
+              raise SystemExit('ERROR: Gust artifact contains invalid kickoff timestamps.')
+          for col in ['wind_valid_time_utc', 'gust_valid_time_utc']:
+              valid = pd.to_datetime(rows[col], utc=True, errors='coerce')
+              if valid.isna().any():
+                  raise SystemExit(f'ERROR: Gust artifact contains invalid {col}.')
+              if (valid > kickoff).any():
+                  raise SystemExit(f'ERROR: Gust artifact contains future {col}.')
+          if (pd.to_numeric(rows['wind_age_minutes'], errors='coerce') > 120).any():
+              raise SystemExit('ERROR: Gust artifact contains stale wind data.')
+          if (pd.to_numeric(rows['gust_age_minutes'], errors='coerce') > 120).any():
+              raise SystemExit('ERROR: Gust artifact contains stale gust data.')
+
+          print(
+              f'Validated recovery QC gate before modeling: {len(rows):,}/{len(manifest):,} complete.'
+          )
           PY
 
       - name: Run model integrity self-tests
