@@ -60,32 +60,101 @@ jobs:
           cp "$MODEL_PATH" data/processed/modeling_dataset.csv
           test -s data/reference/stadium_locations.csv
 
+      - name: Build geographically distributed 2022 outdoor FBS pilot
+        run: |
+          python - <<'PY'
+          import pandas as pd
+
+          model_path = 'data/processed/modeling_dataset.csv'
+          df = pd.read_csv(model_path, low_memory=False)
+          loc = pd.read_csv('data/reference/stadium_locations.csv', low_memory=False)
+
+          for col in ['season', 'venue_id']:
+              df[col] = pd.to_numeric(df[col], errors='coerce')
+          loc['venue_id'] = pd.to_numeric(loc['venue_id'], errors='coerce')
+          loc['venue_latitude'] = pd.to_numeric(loc['venue_latitude'], errors='coerce')
+          loc['venue_longitude'] = pd.to_numeric(loc['venue_longitude'], errors='coerce')
+
+          season = df[df['season'].eq(2022)].copy()
+          if {'home_classification', 'away_classification'} <= set(season.columns):
+              season = season[
+                  season['home_classification'].astype(str).str.lower().eq('fbs')
+                  & season['away_classification'].astype(str).str.lower().eq('fbs')
+              ]
+          if 'game_indoors' in season.columns:
+              indoor = season['game_indoors'].astype(str).str.lower().isin(['true', '1', 'yes'])
+              season = season[~indoor]
+
+          venues = (
+              season[['venue_id']]
+              .dropna()
+              .drop_duplicates()
+              .merge(
+                  loc[['venue_id', 'venue_latitude', 'venue_longitude']].drop_duplicates('venue_id'),
+                  on='venue_id', how='left'
+              )
+              .dropna(subset=['venue_latitude', 'venue_longitude'])
+          )
+          if len(venues) < 30:
+              raise SystemExit(f'ERROR: Only {len(venues)} eligible pilot venues found.')
+
+          venues['lat_bin'] = pd.qcut(venues['venue_latitude'], q=5, labels=False, duplicates='drop')
+          venues['lon_bin'] = pd.qcut(venues['venue_longitude'], q=6, labels=False, duplicates='drop')
+          selected = (
+              venues.sort_values(['lat_bin', 'lon_bin', 'venue_id'])
+              .groupby(['lat_bin', 'lon_bin'], observed=True, as_index=False)
+              .first()
+          )
+          if len(selected) < 20:
+              raise SystemExit(f'ERROR: Geographic grid produced only {len(selected)} pilot venues.')
+
+          selected_ids = set(selected['venue_id'])
+          pilot = season[season['venue_id'].isin(selected_ids)].copy()
+          pilot.to_csv(model_path, index=False)
+          selected.to_csv('data/processed/wind_gust_pilot_venues.csv', index=False)
+          print(
+              f'Pilot contains {len(pilot)} games at {pilot.venue_id.nunique()} venues; '
+              f'lat={selected.venue_latitude.min():.2f}..{selected.venue_latitude.max():.2f}, '
+              f'lon={selected.venue_longitude.min():.2f}..{selected.venue_longitude.max():.2f}'
+          )
+          PY
+
       - name: Run deterministic acquisition and QC self-test
         run: python -m src.wind_gust_data_selftest
 
-      - name: Run same-model ECMWF IFS five-group smoke acquisition
+      - name: Run same-model ECMWF IFS geographic pilot acquisition
         run: |
           python -m src.pull_historical_gusts \
             --stack ecmwf_ifs \
-            --max-groups 5 \
             --request-delay 0.10 \
             --strict \
             --no-resume
 
-      - name: Require usable wind and gust rows in smoke sample
+      - name: Require usable wind and gust coverage in pilot
         run: |
           python - <<'PY'
           import pandas as pd
-          df = pd.read_csv('data/processed/wind_gust_kickoff.csv')
+          df = pd.read_csv('data/processed/wind_gust_kickoff.csv', low_memory=False)
+          eligible = df[
+              df['fetch_status'].isin(['ok', 'partial', 'missing', 'not_fetched'])
+              & df['latitude'].notna()
+              & df['longitude'].notna()
+          ]
           complete = df[df['fetch_status'].eq('ok')]
           if complete.empty:
-              raise SystemExit('ERROR: Smoke source returned zero complete wind+gust game rows.')
+              raise SystemExit('ERROR: Pilot source returned zero complete wind+gust game rows.')
+          coverage = len(complete) / len(eligible) if len(eligible) else 0.0
+          if coverage < 0.95:
+              raise SystemExit(
+                  f'ERROR: Complete wind+gust coverage {coverage:.1%} is below 95% pilot gate.'
+              )
           if complete['wind_mph'].notna().sum() == 0 or complete['gust_mph'].notna().sum() == 0:
-              raise SystemExit('ERROR: Smoke source did not return usable wind and gust values.')
-          print(f'Usable complete smoke rows: {len(complete)}')
+              raise SystemExit('ERROR: Pilot source did not return usable wind and gust values.')
+          print(f'Usable complete pilot rows: {len(complete)} / {len(eligible)} ({coverage:.1%})')
+          print(f'Pilot venues represented: {complete.venue_id.nunique()}')
           PY
 
-      - name: Print smoke QC summaries
+      - name: Print pilot QC summaries
         if: always()
         run: |
           if [ -s outputs/wind_gust/data_coverage.csv ]; then
@@ -100,19 +169,24 @@ jobs:
             echo "--- source_comparison.csv ---"
             cat outputs/wind_gust/source_comparison.csv
           fi
+          if [ -s outputs/wind_gust/distribution_summary.csv ]; then
+            echo "--- distribution_summary.csv ---"
+            cat outputs/wind_gust/distribution_summary.csv
+          fi
           if [ -s outputs/wind_gust/request_log.csv ]; then
             echo "--- request_log.csv ---"
             cat outputs/wind_gust/request_log.csv
           fi
 
-      - name: Upload smoke data and QC artifact
+      - name: Upload pilot data and QC artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: wind-gust-data-qc-smoke-${{ github.run_id }}
+          name: wind-gust-data-qc-pilot-${{ github.run_id }}
           path: |
             data/processed/wind_gust_kickoff.csv
             data/processed/wind_gust_kickoff_cache.csv
+            data/processed/wind_gust_pilot_venues.csv
             outputs/wind_gust/
           if-no-files-found: warn
           retention-days: 30
