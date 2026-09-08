@@ -54,9 +54,9 @@ jobs:
       # The two research-only shadow graders still rely on pandas 2.x's
       # permissive bool-into-float assignment behavior. Keep the production
       # ledger on the repository-pinned pandas version above, then isolate the
-      # compatibility pin to these non-production evaluators only.
+      # compatibility environment to these non-production evaluators only.
       - name: Use pandas 2.x for research-only shadow graders
-        run: pip install --no-deps 'pandas==2.3.3'
+        run: pip install --no-deps 'pandas==2.3.3' && pip install 'pytz>=2020.1'
 
       # Research-only paired evaluators. Failures here cannot block the official ledger.
       - name: Rebuild baseline-vs-orientation shadow evaluation
