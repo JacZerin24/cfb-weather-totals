@@ -1,0 +1,229 @@
+name: Wind Gust Batch Validation
+
+on:
+  push:
+    branches:
+      - research/wind-gust-value
+    paths:
+      - src/pull_historical_gusts_batched.py
+      - src/wind_gust_batch_selftest.py
+      - .github/workflows/wind-gust-batch-validation.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: wind-gust-batch-validation
+  cancel-in-progress: true
+
+jobs:
+  batch-validation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out research branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore latest historical modeling dataset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          SOURCE_DIR=$(mktemp -d)
+          mkdir -p data/processed
+
+          RESEARCH_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/manual-historical-research.yml/runs?status=success&per_page=1" \
+            --jq '.workflow_runs[0].id // empty')
+          if [ -z "$RESEARCH_RUN_ID" ]; then
+            echo "ERROR: No successful historical research run is available."
+            exit 1
+          fi
+
+          echo "Restoring historical data from run ${RESEARCH_RUN_ID}."
+          gh run download "$RESEARCH_RUN_ID" -n cfb-weather-totals-research-output -D "$SOURCE_DIR"
+          MODEL_PATH=$(find "$SOURCE_DIR" -type f -name modeling_dataset.csv -print -quit)
+          if [ -z "$MODEL_PATH" ]; then
+            echo "ERROR: modeling_dataset.csv was not found in the historical artifact."
+            exit 1
+          fi
+          cp "$MODEL_PATH" data/processed/modeling_dataset.csv
+          test -s data/reference/stadium_locations.csv
+
+      - name: Build identical geographically distributed 2022 pilot
+        run: |
+          python - <<'PY'
+          import pandas as pd
+
+          model_path = 'data/processed/modeling_dataset.csv'
+          df = pd.read_csv(model_path, low_memory=False)
+          loc = pd.read_csv('data/reference/stadium_locations.csv', low_memory=False)
+
+          for col in ['season', 'venue_id']:
+              df[col] = pd.to_numeric(df[col], errors='coerce')
+          loc['venue_id'] = pd.to_numeric(loc['venue_id'], errors='coerce')
+          loc['venue_latitude'] = pd.to_numeric(loc['venue_latitude'], errors='coerce')
+          loc['venue_longitude'] = pd.to_numeric(loc['venue_longitude'], errors='coerce')
+
+          season = df[df['season'].eq(2022)].copy()
+          if {'home_classification', 'away_classification'} <= set(season.columns):
+              season = season[
+                  season['home_classification'].astype(str).str.lower().eq('fbs')
+                  & season['away_classification'].astype(str).str.lower().eq('fbs')
+              ]
+          if 'game_indoors' in season.columns:
+              indoor = season['game_indoors'].astype(str).str.lower().isin(['true', '1', 'yes'])
+              season = season[~indoor]
+
+          venues = (
+              season[['venue_id']]
+              .dropna()
+              .drop_duplicates()
+              .merge(
+                  loc[['venue_id', 'venue_latitude', 'venue_longitude']].drop_duplicates('venue_id'),
+                  on='venue_id', how='left'
+              )
+              .dropna(subset=['venue_latitude', 'venue_longitude'])
+          )
+          venues['lat_bin'] = pd.qcut(venues['venue_latitude'], q=5, labels=False, duplicates='drop')
+          venues['lon_bin'] = pd.qcut(venues['venue_longitude'], q=6, labels=False, duplicates='drop')
+          selected = (
+              venues.sort_values(['lat_bin', 'lon_bin', 'venue_id'])
+              .groupby(['lat_bin', 'lon_bin'], observed=True, as_index=False)
+              .first()
+          )
+          if len(selected) < 20:
+              raise SystemExit(f'ERROR: Geographic grid produced only {len(selected)} venues.')
+
+          pilot = season[season['venue_id'].isin(set(selected['venue_id']))].copy()
+          pilot.to_csv(model_path, index=False)
+          selected.to_csv('data/processed/wind_gust_batch_validation_venues.csv', index=False)
+          print(f'Validation pilot: {len(pilot)} games at {pilot.venue_id.nunique()} venues')
+          PY
+
+      - name: Run deterministic self-tests
+        run: |
+          python -m src.wind_gust_data_selftest
+          python -m src.wind_gust_batch_selftest
+
+      - name: Run legacy one-venue-season acquisition
+        run: |
+          python -m src.pull_historical_gusts \
+            --stack ecmwf_ifs \
+            --request-delay 0.05 \
+            --strict \
+            --no-resume
+          cp data/processed/wind_gust_kickoff.csv data/processed/wind_gust_legacy_reference.csv
+          cp outputs/wind_gust/request_log.csv outputs/wind_gust/legacy_request_log.csv
+
+      - name: Run weekly multi-location batched acquisition
+        run: |
+          rm -f data/processed/wind_gust_kickoff_cache.csv data/processed/wind_gust_kickoff.csv
+          python -m src.pull_historical_gusts_batched \
+            --batch-size 20 \
+            --request-delay 0.05 \
+            --strict \
+            --no-resume
+          cp data/processed/wind_gust_kickoff.csv data/processed/wind_gust_batched_validation.csv
+          cp outputs/wind_gust/request_log.csv outputs/wind_gust/batched_request_log.csv
+
+      - name: Require exact legacy-vs-batched equivalence
+        run: |
+          python - <<'PY'
+          import numpy as np
+          import pandas as pd
+
+          legacy = pd.read_csv('data/processed/wind_gust_legacy_reference.csv', low_memory=False)
+          batched = pd.read_csv('data/processed/wind_gust_batched_validation.csv', low_memory=False)
+          legacy_log = pd.read_csv('outputs/wind_gust/legacy_request_log.csv', low_memory=False)
+          batch_log = pd.read_csv('outputs/wind_gust/batched_request_log.csv', low_memory=False)
+
+          key = ['source_stack', 'game_id']
+          if legacy.duplicated(key).any() or batched.duplicated(key).any():
+              raise SystemExit('ERROR: Duplicate source_stack/game_id rows in validation data.')
+
+          merged = legacy.merge(batched, on=key, suffixes=('_legacy', '_batch'), how='outer', indicator=True)
+          if not merged['_merge'].eq('both').all():
+              raise SystemExit('ERROR: Legacy and batched game sets differ.')
+
+          numeric = [
+              'wind_age_minutes', 'gust_age_minutes', 'component_time_delta_minutes',
+              'wind_grid_latitude', 'wind_grid_longitude', 'wind_grid_elevation_m',
+              'gust_grid_latitude', 'gust_grid_longitude', 'gust_grid_elevation_m',
+              'component_grid_distance_km', 'wind_mph', 'wind_direction_degrees',
+              'gust_mph', 'gust_spread_mph', 'gust_factor',
+          ]
+          for col in numeric:
+              a = pd.to_numeric(merged[f'{col}_legacy'], errors='coerce').to_numpy(float)
+              b = pd.to_numeric(merged[f'{col}_batch'], errors='coerce').to_numpy(float)
+              if not np.allclose(a, b, rtol=0, atol=1e-9, equal_nan=True):
+                  delta = np.nanmax(np.abs(a - b))
+                  raise SystemExit(f'ERROR: {col} differs between legacy and batch; max delta={delta}')
+
+          exact = ['wind_valid_time_utc', 'gust_valid_time_utc', 'fetch_status']
+          for col in exact:
+              a = merged[f'{col}_legacy'].fillna('').astype(str)
+              b = merged[f'{col}_batch'].fillna('').astype(str)
+              if not a.equals(b):
+                  raise SystemExit(f'ERROR: {col} differs between legacy and batch.')
+
+          legacy_requests = len(legacy_log)
+          batched_requests = len(batch_log)
+          if batched_requests >= legacy_requests:
+              raise SystemExit(
+                  f'ERROR: Batching did not reduce HTTP requests: legacy={legacy_requests}, batch={batched_requests}'
+              )
+          if pd.to_numeric(batch_log['window_days'], errors='coerce').max() > 14:
+              raise SystemExit('ERROR: A batched request exceeded the 14-day window boundary.')
+          if pd.to_numeric(batch_log['venue_count'], errors='coerce').max() > 20:
+              raise SystemExit('ERROR: A batched request exceeded the configured venue batch size.')
+          if not batch_log['status'].eq('ok').all():
+              raise SystemExit('ERROR: At least one batched request failed.')
+
+          complete = batched[batched['fetch_status'].eq('ok')]
+          if len(complete) != len(batched):
+              raise SystemExit(
+                  f'ERROR: Batched coverage incomplete: {len(complete)}/{len(batched)} complete.'
+              )
+
+          print(f'Equivalent game rows: {len(merged)}')
+          print(f'Legacy HTTP requests: {legacy_requests}')
+          print(f'Batched HTTP requests: {batched_requests}')
+          print(f'HTTP request reduction: {1 - batched_requests / legacy_requests:.1%}')
+          print(f'Max batch venues: {int(pd.to_numeric(batch_log.venue_count).max())}')
+          print(f'Max request window: {int(pd.to_numeric(batch_log.window_days).max())} days')
+          PY
+
+      - name: Print batched QC summaries
+        if: always()
+        run: |
+          echo "--- batched request log ---"
+          cat outputs/wind_gust/batched_request_log.csv || true
+          echo "--- coverage ---"
+          cat outputs/wind_gust/data_coverage.csv || true
+          echo "--- QC ---"
+          cat outputs/wind_gust/qc_summary.csv || true
+          echo "--- source comparison ---"
+          cat outputs/wind_gust/source_comparison.csv || true
+
+      - name: Upload validation artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wind-gust-batch-validation-${{ github.run_id }}
+          path: |
+            data/processed/wind_gust_legacy_reference.csv
+            data/processed/wind_gust_batched_validation.csv
+            data/processed/wind_gust_batch_validation_venues.csv
+            outputs/wind_gust/
+          if-no-files-found: error
+          retention-days: 30
