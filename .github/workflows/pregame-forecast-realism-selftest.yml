@@ -1,0 +1,30 @@
+name: Pregame Forecast Realism Model Self-Test
+
+on:
+  push:
+    branches:
+      - research/pregame-forecast-realism
+    paths:
+      - src/pregame_forecast_realism_research.py
+      - src/pregame_forecast_realism_selftest.py
+      - .github/workflows/pregame-forecast-realism-selftest.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  selftest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run model integrity tests
+        run: python -m src.pregame_forecast_realism_selftest
