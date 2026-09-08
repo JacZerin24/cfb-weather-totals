@@ -1,6 +1,12 @@
 name: Rebuild Prospective Results
 
 on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/prospective-grade.yml'
   schedule:
     # Postgame morning rebuilds. These times are intentionally well after the
     # prior night's games so in-progress scores are not treated as final.
@@ -45,6 +51,13 @@ jobs:
           python -m src.prospective_ledger validate-protocol
           python -m src.prospective_ledger build
 
+      # The two research-only shadow graders still rely on pandas 2.x's
+      # permissive bool-into-float assignment behavior. Keep the production
+      # ledger on the repository-pinned pandas version above, then isolate the
+      # compatibility pin to these non-production evaluators only.
+      - name: Use pandas 2.x for research-only shadow graders
+        run: pip install --no-deps 'pandas==2.3.3'
+
       # Research-only paired evaluators. Failures here cannot block the official ledger.
       - name: Rebuild baseline-vs-orientation shadow evaluation
         continue-on-error: true
@@ -66,7 +79,13 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add outputs/prospective/2026/ outputs/orientation_shadow/2026/evaluation/ outputs/joint_core_shadow/2026/evaluation/
+          git add outputs/prospective/2026/
+          if [ -d outputs/orientation_shadow/2026/evaluation ]; then
+            git add outputs/orientation_shadow/2026/evaluation/
+          fi
+          if [ -d outputs/joint_core_shadow/2026/evaluation ]; then
+            git add outputs/joint_core_shadow/2026/evaluation/
+          fi
           git commit -m "Rebuild prospective CFB research results" || echo "No prospective changes to commit"
           git pull --rebase origin main
           git push origin main
