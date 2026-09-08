@@ -9,11 +9,13 @@ This protocol evaluates `orientation-crosswind-hgb-v0.1` against the existing GE
 The orientation comparison deliberately mirrors the official 2026 prospective-entry timing:
 
 - scheduled weekly workflow only
-- eligible schedules: Thursday and Friday at 5:17 and 8:17 AM Central; Saturday at 2:17 and 6:17 AM Central, with paired CDT/CST cron expressions selected by the weekly workflow gate
+- eligible schedules: Thursday and Friday at 5:17 and 8:17 AM Central; Saturday once at 1:17 AM Central, with paired CDT/CST cron expressions selected by the weekly workflow gate
 - snapshot must be at least 120 minutes before kickoff
 - for each game, use the latest eligible snapshot meeting that lead-time requirement
 - for duplicate attempts of one GitHub run, retain the earliest successful attempt
-- push/manual snapshots are archived but never count as official comparison entries
+- push/manual/watchdog snapshots are archived but never count as official comparison entries
+
+A Sep. 8 data-integrity correction restores the preserved Sep. 5 scheduled run `33961120017` for evaluation because the production workflow had already moved to Saturday 1:17 AM Central while the evaluation cron configuration still contained the superseded Saturday times. The entire run is restored in memory from its immutable shadow snapshot; no individual game is cherry-picked and the challenger itself is unchanged.
 
 The baseline and challenger are scored from the **same selected shadow snapshot and same stored market total**. Only FBS games with a usable measured field orientation, wind direction/crosswind value, and both model predictions enter the paired comparison.
 
