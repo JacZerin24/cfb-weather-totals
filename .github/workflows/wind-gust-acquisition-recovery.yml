@@ -1,4 +1,4 @@
-# Recovery protocol v4: third paced recovery chunk.
+# Recovery protocol v5: final residual recovery chunk.
 name: Wind Gust Acquisition Recovery
 
 on:
