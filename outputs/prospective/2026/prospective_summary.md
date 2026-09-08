@@ -29,7 +29,7 @@ Immutable board snapshots and close captures remain the source of truth. Derived
 
 ## Data integrity
 
-- Immutable board snapshots: 26
+- Immutable board snapshots: 27
 - Immutable close captures: 16
 - Official game entries selected: 376
 
