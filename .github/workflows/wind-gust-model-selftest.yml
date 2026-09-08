@@ -1,0 +1,37 @@
+name: Wind Gust Model Selftest
+
+on:
+  push:
+    branches:
+      - research/wind-gust-value
+    paths:
+      - src/wind_gust_value_research.py
+      - src/wind_gust_value_selftest.py
+      - documentation/WIND_GUST_MODEL_PREREGISTRATION.md
+      - .github/workflows/wind-gust-model-selftest.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wind-gust-model-selftest
+  cancel-in-progress: true
+
+jobs:
+  selftest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out research branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run wind-gust model integrity tests
+        run: python -m src.wind_gust_value_selftest
