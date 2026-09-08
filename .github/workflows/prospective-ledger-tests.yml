@@ -4,9 +4,12 @@ on:
   pull_request:
     paths:
       - 'src/prospective_ledger.py'
+      - 'src/prospective_integrity_rebuild.py'
+      - 'src/shadow_integrity_rebuild.py'
       - 'src/prospective_ledger_selftest.py'
       - 'config/prospective_protocol_2026.yml'
       - 'config/orientation_evaluation_protocol_2026.yml'
+      - 'config/joint_core_evaluation_protocol_2026.yml'
       - '.github/workflows/weekly-cfb-weather.yml'
       - '.github/workflows/weekly-safety-watchdog.yml'
       - '.github/workflows/deploy-pages.yml'
@@ -16,6 +19,22 @@ on:
       - 'src/predict_week.py'
       - 'src/fcs_model.py'
       - 'requirements.txt'
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/prospective_ledger.py'
+      - 'src/prospective_integrity_rebuild.py'
+      - 'src/shadow_integrity_rebuild.py'
+      - 'src/prospective_ledger_selftest.py'
+      - 'config/prospective_protocol_2026.yml'
+      - 'config/orientation_evaluation_protocol_2026.yml'
+      - 'config/joint_core_evaluation_protocol_2026.yml'
+      - '.github/workflows/weekly-cfb-weather.yml'
+      - '.github/workflows/weekly-safety-watchdog.yml'
+      - '.github/workflows/prospective-close-capture.yml'
+      - '.github/workflows/prospective-grade.yml'
+      - '.github/workflows/prospective-ledger-tests.yml'
   workflow_dispatch:
 
 permissions:
@@ -39,5 +58,5 @@ jobs:
       - name: Compile prospective source
         run: python -m compileall -q src
 
-      - name: Validate frozen prospective methodology
+      - name: Validate prospective methodology and integrity guards
         run: python -m src.prospective_ledger_selftest

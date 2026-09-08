@@ -26,21 +26,21 @@ The project is in active **2026 in-season prospective validation**.
 - Every official 2026 entry is selected from immutable scheduled snapshots before kickoff and later graded against the final score.
 - Near-kickoff market captures are stored separately for CLV tracking.
 
-The 2026 prospective protocol is versioned in `config/prospective_protocol_2026.yml`. Protocol 2026.3 prospectively adds earlier safety snapshots, later freshness refreshes, Central-time DST handling, and an operational backup watchdog. The frozen model thresholds, grading rules, and close-capture policy are unchanged.
+The 2026 prospective protocol is versioned in `config/prospective_protocol_2026.yml`. Protocol 2026.4 is a data-integrity-only correction: it aligns the ledger with the already-deployed single Saturday 1:17 AM Central production run, restores the preserved Sep. 5 scheduled run whose eligibility metadata was stamped incorrectly, and prevents a postponed/stale game from being counted as a settled result. Frozen model thresholds, minimum lead time, grading economics, and close-capture policy are unchanged.
 
 ### 2026 validation snapshot
 
-As of **August 30, 2026**, the prospective ledger contains:
+As of **August 30, 2026**, the prospective ledger contained:
 
 - 6 immutable official-board snapshots;
 - 4 immutable near-kickoff close captures;
 - 376 official game entries selected from eligible scheduled snapshots;
 - 1 qualifying entry, from the FCS-only track;
 - 1 settled qualifier, graded 1-0;
-- 0 general-track qualifying entries so far;
-- 0 settled qualifiers with a valid CLV benchmark so far.
+- 0 general-track qualifying entries at that time;
+- 0 settled qualifiers with a valid CLV benchmark at that time.
 
-This is far too little prospective evidence to evaluate the frozen strategy. The dated counts above are only a project-status snapshot. The current source of truth is [`outputs/prospective/2026/prospective_summary.md`](outputs/prospective/2026/prospective_summary.md).
+Those counts are intentionally preserved as a dated historical snapshot, not as the current record. The current source of truth is [`outputs/prospective/2026/prospective_summary.md`](outputs/prospective/2026/prospective_summary.md).
 
 ## Research status
 
@@ -70,12 +70,12 @@ Research code or diagnostics in open branches/pull requests should be treated as
 
 The main automated pieces are:
 
-- `.github/workflows/weekly-cfb-weather.yml` - builds the live board at 5:17 AM Central Monday, at 5:17 and 8:17 AM Thursday/Friday, and at 2:17 and 6:17 AM Saturday. Thursday through Saturday scheduled snapshots can become official entries.
-- `.github/workflows/weekly-safety-watchdog.yml` - checks 30 minutes after each safety run and dispatches an operational backup when no successful build exists.
+- `.github/workflows/weekly-cfb-weather.yml` - builds the live board at 5:17 AM Central Monday, at 5:17 and 8:17 AM Thursday/Friday, and once at 1:17 AM Saturday. Thursday through Saturday scheduled snapshots can become official entries; Monday remains an operational early look only.
+- `.github/workflows/weekly-safety-watchdog.yml` - checks Monday/Thursday/Friday 30 minutes after the 5:17 AM safety run. On Saturday it checks at 6:47 AM Central that the 1:17 AM full build succeeded and dispatches one operational backup only when needed.
 - `.github/workflows/prospective-close-capture.yml` - captures near-kickoff market totals for CLV without allowing manual backfill.
-- `.github/workflows/prospective-grade.yml` - rebuilds the ledger and grades completed games on safe postgame mornings.
+- `.github/workflows/prospective-grade.yml` - rebuilds the derived ledger and grades only completed games, while applying documented integrity exclusions, on safe postgame mornings or an explicit derived-only rebuild.
 - `.github/workflows/deploy-pages.yml` - publishes the generated site from `docs/`.
-- `.github/workflows/prospective-ledger-tests.yml` - validates the frozen protocol, selection behavior, cadence, and immutable-file rules.
+- `.github/workflows/prospective-ledger-tests.yml` - validates the protocol, schedule alignment, selection behavior, completed-game guard, exclusions, cadence, and immutable-file rules on pull requests and relevant main-branch changes.
 
 See [`documentation/IN_SEASON_OPERATIONS.md`](documentation/IN_SEASON_OPERATIONS.md) for the full lifecycle of a game from live-board generation through grading.
 
@@ -132,13 +132,15 @@ Historical outputs are intentionally kept separate from the frozen 2026 prospect
 
 The prospective system is designed to make hindsight difficult:
 
-- official entries come only from the declared scheduled board snapshots;
+- official entries come only from the declared scheduled board snapshots, plus a narrowly documented metadata correction tied to an already-preserved scheduled run when automation metadata itself was wrong;
 - the selected snapshot must be at least 120 minutes before kickoff;
 - reruns of the same scheduled model run cannot opportunistically replace the first successful attempt;
 - push/manual website refreshes can be archived but cannot become official entries;
 - near-kickoff close captures are schedule-only and first-attempt-only;
 - missing close captures stay missing rather than being reconstructed after the result is known;
 - immutable CSV filenames contain a SHA-256 content-hash prefix and are verified when the ledger rebuilds;
+- normal settlement requires CFBD to mark the game completed;
+- a documented postponed/stale entry can remain in the immutable prospective sample while being explicitly excluded from wins, losses, units, ROI, and CLV;
 - postgame grades are derived from the immutable entry plus final score, not from the current live board;
 - production thresholds are not retuned from 2026 outcomes before the declared review point except for documented data-integrity fixes.
 

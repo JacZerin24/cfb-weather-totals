@@ -7,9 +7,14 @@ on:
       - main
     paths:
       - '.github/workflows/prospective-grade.yml'
+      - 'src/prospective_integrity_rebuild.py'
+      - 'src/shadow_integrity_rebuild.py'
+      - 'config/prospective_protocol_2026.yml'
+      - 'config/orientation_evaluation_protocol_2026.yml'
+      - 'config/joint_core_evaluation_protocol_2026.yml'
   schedule:
-    # Postgame morning rebuilds. These times are intentionally well after the
-    # prior night's games so in-progress scores are not treated as final.
+    # Postgame morning rebuilds. The integrity-safe grader only accepts games
+    # explicitly marked completed by CFBD and applies documented exclusions.
     - cron: '0 12 * * 0,1,2'
 
 permissions:
@@ -49,7 +54,7 @@ jobs:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
         run: |
           python -m src.prospective_ledger validate-protocol
-          python -m src.prospective_ledger build
+          python -m src.prospective_integrity_rebuild
 
       # The two research-only shadow graders still rely on pandas 2.x's
       # permissive bool-into-float assignment behavior. Keep the production
@@ -64,16 +69,14 @@ jobs:
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
         run: |
-          python -m src.orientation_shadow_grade validate-protocol
-          python -m src.orientation_shadow_grade build
+          python -m src.shadow_integrity_rebuild orientation
 
       - name: Rebuild baseline-vs-joint-core shadow evaluation
         continue-on-error: true
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
         run: |
-          python -m src.joint_core_shadow_grade validate-protocol
-          python -m src.joint_core_shadow_grade build
+          python -m src.shadow_integrity_rebuild joint-core
 
       - name: Commit derived prospective results
         run: |

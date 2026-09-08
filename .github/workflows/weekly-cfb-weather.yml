@@ -190,7 +190,7 @@ jobs:
           python -m src.prospective_ledger validate-protocol
           python -m src.prospective_ledger snapshot-board
           if [ "$PROSPECTIVE_EVENT_NAME" = "schedule" ]; then
-            python -m src.prospective_ledger build
+            python -m src.prospective_integrity_rebuild
           else
             python -m src.prospective_ledger verify
           fi

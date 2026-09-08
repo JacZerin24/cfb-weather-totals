@@ -1,6 +1,6 @@
 # 2026 In-Season Operations
 
-This document describes the live 2026 workflow from a scheduled board refresh through prospective grading. The prospective ledger is designed so an already-recorded entry cannot be replaced after kickoff based on what happened in the game.
+This document describes the live 2026 workflow from a scheduled board refresh through prospective grading. The prospective system is designed so an already-recorded entry cannot be replaced after kickoff based on what happened in the game.
 
 ## 1. Historical training state
 
@@ -10,19 +10,18 @@ The primary training file is `data/processed/modeling_dataset.csv`. Team prior-f
 
 ## 2. Scheduled live-board refresh
 
-`.github/workflows/weekly-cfb-weather.yml` builds the live board on the frozen prospective schedules:
+`.github/workflows/weekly-cfb-weather.yml` builds the live board on these Central-time schedules:
 
-- Monday 5:17 AM America/Chicago: operational early look only
+- Monday 5:17 AM: operational early look only
 - Thursday 5:17 AM: safety snapshot
 - Thursday 8:17 AM: freshness snapshot
 - Friday 5:17 AM: safety snapshot
 - Friday 8:17 AM: freshness snapshot
-- Saturday 2:17 AM: safety snapshot
-- Saturday 6:17 AM: freshness snapshot
+- Saturday 1:17 AM: the single normal Saturday full build
 
-Paired UTC cron expressions plus a Central-offset gate preserve these local clock times across CDT and CST. Monday remains outside the official-entry eligible cron list.
+Paired UTC cron expressions plus an `America/Chicago` offset gate preserve these local clock times across CDT and CST. Monday remains outside the official-entry eligible cron list.
 
-Push/manual-style refreshes may also rebuild the website, but only the declared scheduled snapshots can become official prospective entries. A separate watchdog checks 30 minutes after each safety time. If no real weekly build has completed, it dispatches and verifies an operational backup. That backup refreshes the live board but remains ineligible for official prospective entry.
+Push/manual refreshes may rebuild the website, but they are not eligible to create official prospective entries. The watchdog checks Monday, Thursday, and Friday 30 minutes after the 5:17 AM safety build. On Saturday it checks at 6:47 AM Central that the 1:17 AM full build succeeded. If no qualifying full build exists, it dispatches one operational backup. A watchdog backup refreshes operations but remains ineligible for official entry.
 
 `src/run_live_week.py` determines the live season/week slate and keeps games visible even when they do not yet have a market total.
 
@@ -77,7 +76,7 @@ FCS-vs-FCS games use the separate FCS-only HGB model. The frozen research screen
 
 FCS is labeled `FCS RESEARCH QUALIFIES` on the public site to distinguish its higher validation uncertainty. The underlying prospective status remains `QUALIFIES` so the frozen ledger logic is unchanged.
 
-There is no operational OVER strategy. A large positive model residual can still appear as useful research context, but it remains `NO PLAY` under the current method.
+There is no operational OVER strategy. A large positive model residual can appear as research context but remains `NO PLAY` under the current method.
 
 ## 6. Live status labels
 
@@ -88,8 +87,9 @@ The board can show:
 - `WATCH`: forecast or kickoff-time limitation prevents a clean decision.
 - `NO PLAY`: does not meet the current under rule or points to an unsupported OVER.
 - `NO LINE`: no current market total is available.
+- `POSTPONED / STALE`: website-only status used when the preserved prospective snapshot no longer represents the current event context.
 
-The website is a presentation layer. The prospective ledger uses the archived board data, not whatever the current website happens to show later.
+The website is a presentation layer. The prospective ledger uses archived board data, not whatever the current website happens to show later.
 
 ## 7. Dashboard and staking helper
 
@@ -111,31 +111,23 @@ After the scheduled board is built, `src/prospective_ledger.py snapshot-board` w
 
 The snapshot records the protocol version/hash, GitHub event, exact schedule string, run ID, run attempt, source commit SHA, game data, line state, model state, and weather state.
 
-The filename contains the first 12 characters of the SHA-256 hash of the CSV contents. The manifest later recalculates the hash and refuses silently altered immutable files.
+The filename contains the first 12 characters of the SHA-256 hash of the CSV contents. The manifest recalculates the hash and rejects silently altered immutable files.
 
 ## 9. Selecting the official entry
 
-When the ledger rebuilds, each game is evaluated across all archived board snapshots.
+For each game, the derived ledger normally uses the latest eligible scheduled snapshot at least 120 minutes before kickoff. For repeated attempts of one scheduled GitHub run, the first successful attempt wins. Push, manual, and watchdog-dispatched refreshes do not become official entries.
 
-The official entry is the latest eligible scheduled snapshot that is at least 120 minutes before kickoff. For repeated attempts of the same scheduled GitHub run, the first successful attempt wins. Push/manual refreshes are not official entries.
+Protocol 2026.4 adds one narrowly scoped integrity correction. The Sep. 5, 2026 Saturday run `33961120017` was the intentionally deployed 1:17 AM CDT production build, but its immutable snapshot was stamped `official_eligible=False` because the protocol configuration still listed the superseded Saturday schedules. The immutable file is not changed. `src/prospective_integrity_rebuild.py` applies the documented run-level metadata correction in memory and then performs normal latest-eligible selection across the entire preserved run. This prevents cherry-picking an individual game after the result.
 
-This selection is performed from the immutable history, so a later website refresh does not replace an earlier official entry after the fact.
+Future Saturday snapshots are stamped correctly because the active protocol now exactly mirrors the production workflow's 1:17 AM Central CDT/CST crons.
 
 ## 10. Near-kickoff market capture and CLV
 
 `.github/workflows/prospective-close-capture.yml` records market totals separately from model-entry snapshots.
 
-Protocol 2026.1 attempted this once per hour. After Week 1 exposed misses caused by GitHub schedule delays just outside the 90-minute window, protocol 2026.2 changed only capture reliability:
+Protocol 2026.2 increased capture reliability to twice per hour while keeping the official 90-minute pre-kickoff window, schedule-only rule, and first-run-attempt requirement. The ledger independently re-checks those restrictions before selecting a CLV benchmark.
 
-- attempts occur twice per hour at minute 15 and minute 45;
-- the official capture window remains 90 minutes before kickoff;
-- the workflow remains schedule-only;
-- only GitHub run attempt 1 is allowed to capture;
-- no postgame/manual backfill is allowed.
-
-The ledger independently re-checks the capture window, scheduled-event status, and first-run-attempt rule before selecting a CLV benchmark, so those integrity rules do not rely only on the workflow definition.
-
-The script writes a close-capture file only when at least one game starts within the next 90 minutes. Multiple pregame captures of the same game are allowed; the ledger selects the latest valid pre-kickoff benchmark. The preferred benchmark is the median across available books, with the selected current total as fallback when a median is unavailable.
+The preferred benchmark is the median across available books, with the selected current total as fallback when a median is unavailable. Missing CLV remains missing and is never reconstructed after the game.
 
 For an UNDER:
 
@@ -145,21 +137,25 @@ CLV points = entry total - benchmark close total
 
 Positive CLV means the entry captured a higher total than the later benchmark.
 
-Missing CLV is kept missing. It is not reconstructed after the game.
-
 ## 11. Postgame grading
 
-`.github/workflows/prospective-grade.yml` rebuilds grades on safe postgame mornings at 12Z Sunday, Monday, and Tuesday.
+`.github/workflows/prospective-grade.yml` rebuilds derived grades at 12Z Sunday, Monday, and Tuesday. It may also be manually dispatched because a rebuild changes only derived products from preserved immutable inputs.
 
-The grader fetches final scores, combines them with the immutable official entry, and determines win/loss/push against the entry total. It also joins the selected near-kickoff benchmark when one exists and calculates CLV.
+The canonical automated rebuild is `src/prospective_integrity_rebuild.py`.
+
+Two protections now apply before an entry can affect performance statistics:
+
+1. CFBD must explicitly mark the game `completed=true`; an incomplete/postponed 0-0 placeholder cannot be settled.
+2. A documented event-level integrity exclusion can preserve the original prospective entry while excluding it from wins, losses, units, ROI, and CLV.
+
+The Western Carolina at Campbell game (`401866625`) is the first such exclusion. Its original Saturday qualifier remains auditable, but the game was postponed to a different kickoff/weather context and is labeled `POSTPONED / STALE` for grading rather than being counted as a model result.
 
 At -110 paper pricing:
 
 - win: +0.9090909091 units
 - loss: -1 unit
 - push: 0 units
-
-Grading is intentionally not performed continuously during live games.
+- excluded/stale: no units and no performance CLV
 
 ## 12. Derived ledger products
 
@@ -169,16 +165,29 @@ Grading is intentionally not performed continuously during live games.
 - `close_captures/`: immutable near-kickoff market captures
 - `manifest.csv`: hashes and sizes of immutable files
 - `official_entries.csv`: one selected official entry per eligible game
-- `graded_entries.csv`: official entries plus final scores, result, units, and CLV
-- `summary.csv`: aggregate prospective results
+- `graded_entries.csv`: official entries plus final scores, result, units, CLV, and grading disposition
+- `summary.csv`: aggregate prospective results including settled/excluded/pending qualifier counts
 - `prospective_summary.md`: human-readable current summary
 
 The immutable snapshot/capture files are the source of truth. The derived CSV/Markdown files can be rebuilt.
 
-## 13. What can change during 2026
+## 13. Research-only shadow evaluations
 
-The model thresholds, official-entry timing, and research rules are frozen through the declared review point. A documented data-integrity correction can receive a new protocol version and apply prospectively.
+Orientation/crosswind and joint-core challengers remain isolated from production. Their evaluation schedules mirror the production official-entry timing. The same preserved Sep. 5 run-level eligibility correction is applied by `src/shadow_integrity_rebuild.py` so the research evaluators do not silently use an older Friday snapshot when the real Saturday production run existed.
 
-Protocol 2026.2 improved close-capture reliability. Protocol 2026.3 prospectively revises board timing after documented multi-hour GitHub scheduler delays by adding earlier safety snapshots, later freshness snapshots, Central-time DST handling, and an operational watchdog. It does not change which games qualify, how games are graded, or how the two-leg card is built.
+Their graders already require completed games. Shadow failures remain `continue-on-error` and cannot block the official production ledger.
 
-Research branches can continue testing alternatives, but those experiments should not silently alter the frozen live rules.
+## 14. Validation and change control
+
+`.github/workflows/prospective-ledger-tests.yml` runs on relevant pull requests and main-branch changes. The self-test checks:
+
+- frozen production thresholds still match code;
+- official cron lists match the weekly workflow;
+- the Sep. 5 run-level correction is narrow and does not make manual snapshots eligible;
+- close captures remain schedule-only and first-attempt-only;
+- incomplete 0-0 games cannot grade;
+- postponed/stale exclusions do not contribute units/ROI/CLV;
+- shadow evaluations receive the same documented schedule correction;
+- immutable writer behavior remains append-only.
+
+Protocol 2026.4 does not change model science. Production thresholds, direction rules, minimum lead time, pricing assumptions, and historical research conclusions remain frozen through the declared review point unless a separate evidence-backed, versioned decision is made.
