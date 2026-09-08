@@ -1,4 +1,4 @@
-# Recovery protocol v2: corrected deterministic location-unit guardrail test.
+# Recovery protocol v3: second paced recovery chunk.
 name: Wind Gust Acquisition Recovery
 
 on:
