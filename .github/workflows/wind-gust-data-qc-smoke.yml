@@ -1,0 +1,99 @@
+name: Wind Gust Data QC Smoke
+
+on:
+  push:
+    branches:
+      - research/wind-gust-value
+    paths:
+      - src/pull_historical_gusts.py
+      - src/wind_gust_data_selftest.py
+      - documentation/WIND_GUST_RESEARCH_PROTOCOL.md
+      - .github/workflows/wind-gust-data-qc-smoke.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: wind-gust-data-qc-smoke
+  cancel-in-progress: true
+
+jobs:
+  smoke-qc:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out research branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore latest historical modeling dataset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          SOURCE_DIR=$(mktemp -d)
+          mkdir -p data/processed
+
+          RESEARCH_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/manual-historical-research.yml/runs?status=success&per_page=1" \
+            --jq '.workflow_runs[0].id // empty')
+          if [ -z "$RESEARCH_RUN_ID" ]; then
+            echo "ERROR: No successful historical research run is available."
+            exit 1
+          fi
+
+          echo "Restoring historical data from run ${RESEARCH_RUN_ID}."
+          gh run download "$RESEARCH_RUN_ID" -n cfb-weather-totals-research-output -D "$SOURCE_DIR"
+          MODEL_PATH=$(find "$SOURCE_DIR" -type f -name modeling_dataset.csv -print -quit)
+          if [ -z "$MODEL_PATH" ]; then
+            echo "ERROR: modeling_dataset.csv was not found in the historical artifact."
+            exit 1
+          fi
+          cp "$MODEL_PATH" data/processed/modeling_dataset.csv
+          test -s data/reference/stadium_locations.csv
+
+      - name: Run deterministic acquisition and QC self-test
+        run: python -m src.wind_gust_data_selftest
+
+      - name: Run real-source five-group smoke acquisition
+        run: |
+          python -m src.pull_historical_gusts \
+            --max-groups 5 \
+            --request-delay 0.10 \
+            --strict
+
+      - name: Print smoke QC summaries
+        if: always()
+        run: |
+          if [ -s outputs/wind_gust/data_coverage.csv ]; then
+            echo "--- data_coverage.csv ---"
+            cat outputs/wind_gust/data_coverage.csv
+          fi
+          if [ -s outputs/wind_gust/qc_summary.csv ]; then
+            echo "--- qc_summary.csv ---"
+            cat outputs/wind_gust/qc_summary.csv
+          fi
+          if [ -s outputs/wind_gust/request_log.csv ]; then
+            echo "--- request_log.csv ---"
+            cat outputs/wind_gust/request_log.csv
+          fi
+
+      - name: Upload smoke data and QC artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wind-gust-data-qc-smoke-${{ github.run_id }}
+          path: |
+            data/processed/wind_gust_kickoff.csv
+            data/processed/wind_gust_kickoff_cache.csv
+            outputs/wind_gust/
+          if-no-files-found: warn
+          retention-days: 30
