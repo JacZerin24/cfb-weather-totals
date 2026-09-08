@@ -8,10 +8,10 @@ Graded paired orientation-ready games: **37**
 
 ## Primary paired model metric
 
-- Baseline MAE: **11.887** points
-- Challenger MAE: **11.801** points
-- Challenger minus baseline MAE: **-0.085** points (negative is better)
-- 95% paired bootstrap interval: **[-0.207, +0.024]**
+- Baseline MAE: **11.850** points
+- Challenger MAE: **11.795** points
+- Challenger minus baseline MAE: **-0.055** points (negative is better)
+- 95% paired bootstrap interval: **[-0.191, +0.064]**
 
 ## Decision-support diagnostics
 
