@@ -1,0 +1,71 @@
+name: Pregame Forecast Station Coverage Audit
+
+on:
+  push:
+    branches:
+      - research/pregame-forecast-realism
+    paths:
+      - src/pregame_forecast_station_audit.py
+      - .github/workflows/pregame-forecast-station-audit.yml
+      - documentation/PREGAME_FORECAST_SOURCE_FEASIBILITY.md
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  station-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Restore latest historical modeling dataset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          SOURCE_DIR=$(mktemp -d)
+          mkdir -p data/processed
+          RESEARCH_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/manual-historical-research.yml/runs?status=success&per_page=1" --jq '.workflow_runs[0].id // empty')
+          if [ -z "$RESEARCH_RUN_ID" ]; then
+            echo "ERROR: No successful historical research run is available."
+            exit 1
+          fi
+          gh run download "$RESEARCH_RUN_ID" -n cfb-weather-totals-research-output -D "$SOURCE_DIR"
+          MODEL_PATH=$(find "$SOURCE_DIR" -type f -name modeling_dataset.csv -print -quit)
+          if [ -z "$MODEL_PATH" ]; then
+            echo "ERROR: modeling_dataset.csv was not found in the historical artifact."
+            exit 1
+          fi
+          cp "$MODEL_PATH" data/processed/modeling_dataset.csv
+          test -s data/reference/stadium_locations.csv
+      - name: Audit stadium-to-NBM station coverage
+        run: python -m src.pregame_forecast_station_audit
+      - name: Print primary QC
+        if: always()
+        run: |
+          for path in \
+            outputs/pregame_forecast_realism/station_audit/coverage.csv \
+            outputs/pregame_forecast_realism/station_audit/distance_bands.csv \
+            outputs/pregame_forecast_realism/station_audit/network_request_log.csv; do
+            if [ -s "$path" ]; then
+              echo "--- $path ---"
+              cat "$path"
+            fi
+          done
+      - name: Upload station-audit artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pregame-forecast-station-audit-${{ github.run_id }}
+          path: outputs/pregame_forecast_realism/station_audit/
+          if-no-files-found: error
+          retention-days: 30
