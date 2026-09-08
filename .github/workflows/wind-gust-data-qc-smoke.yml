@@ -63,12 +63,27 @@ jobs:
       - name: Run deterministic acquisition and QC self-test
         run: python -m src.wind_gust_data_selftest
 
-      - name: Run real-source five-group smoke acquisition
+      - name: Run same-model ECMWF IFS five-group smoke acquisition
         run: |
           python -m src.pull_historical_gusts \
+            --stack ecmwf_ifs \
             --max-groups 5 \
             --request-delay 0.10 \
-            --strict
+            --strict \
+            --no-resume
+
+      - name: Require usable wind and gust rows in smoke sample
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          df = pd.read_csv('data/processed/wind_gust_kickoff.csv')
+          complete = df[df['fetch_status'].eq('ok')]
+          if complete.empty:
+              raise SystemExit('ERROR: Smoke source returned zero complete wind+gust game rows.')
+          if complete['wind_mph'].notna().sum() == 0 or complete['gust_mph'].notna().sum() == 0:
+              raise SystemExit('ERROR: Smoke source did not return usable wind and gust values.')
+          print(f'Usable complete smoke rows: {len(complete)}')
+          PY
 
       - name: Print smoke QC summaries
         if: always()
@@ -80,6 +95,10 @@ jobs:
           if [ -s outputs/wind_gust/qc_summary.csv ]; then
             echo "--- qc_summary.csv ---"
             cat outputs/wind_gust/qc_summary.csv
+          fi
+          if [ -s outputs/wind_gust/source_comparison.csv ]; then
+            echo "--- source_comparison.csv ---"
+            cat outputs/wind_gust/source_comparison.csv
           fi
           if [ -s outputs/wind_gust/request_log.csv ]; then
             echo "--- request_log.csv ---"
