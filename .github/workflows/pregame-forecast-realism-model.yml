@@ -1,0 +1,106 @@
+name: Pregame Forecast Realism Model Research
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/pregame-forecast-realism
+    paths:
+      - documentation/PREGAME_FORECAST_MODEL_RUN_TRIGGER.md
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore historical modeling dataset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          SOURCE_DIR=$(mktemp -d)
+          mkdir -p data/processed
+          RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/manual-historical-research.yml/runs?status=success&per_page=1" --jq '.workflow_runs[0].id // empty')
+          if [ -z "$RUN_ID" ]; then
+            echo "ERROR: No successful historical research run exists."
+            exit 1
+          fi
+          gh run download "$RUN_ID" -n cfb-weather-totals-research-output -D "$SOURCE_DIR"
+          MODEL_PATH=$(find "$SOURCE_DIR" -type f -name modeling_dataset.csv -print -quit)
+          if [ -z "$MODEL_PATH" ]; then
+            echo "ERROR: Historical artifact did not contain modeling_dataset.csv."
+            exit 1
+          fi
+          cp "$MODEL_PATH" data/processed/modeling_dataset.csv
+
+      - name: Restore validated full NBM acquisition
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          SOURCE_DIR=$(mktemp -d)
+          mkdir -p data/processed outputs/pregame_forecast_realism/full_acquisition
+          RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/pregame-forecast-full-acquisition.yml/runs?branch=research%2Fpregame-forecast-realism&status=success&per_page=1" --jq '.workflow_runs[0].id // empty')
+          if [ -z "$RUN_ID" ]; then
+            echo "ERROR: No successful full NBM acquisition run exists."
+            exit 1
+          fi
+          gh run download "$RUN_ID" -n "pregame-forecast-full-acquisition-${RUN_ID}" -D "$SOURCE_DIR"
+          FCST=$(find "$SOURCE_DIR" -type f -name pregame_forecast_full.csv -print -quit)
+          VALID=$(find "$SOURCE_DIR" -type f -name validation.csv -path '*full_acquisition*' -print -quit)
+          COVERAGE=$(find "$SOURCE_DIR" -type f -name coverage.csv -path '*full_acquisition*' -print -quit)
+          if [ -z "$FCST" ] || [ -z "$VALID" ]; then
+            echo "ERROR: Full acquisition artifact is missing forecast or validation data."
+            exit 1
+          fi
+          cp "$FCST" data/processed/pregame_forecast_full.csv
+          cp "$VALID" outputs/pregame_forecast_realism/full_acquisition/validation.csv
+          if [ -n "$COVERAGE" ]; then
+            cp "$COVERAGE" outputs/pregame_forecast_realism/full_acquisition/coverage.csv
+          fi
+          python - <<'PY'
+          import pandas as pd
+          p='outputs/pregame_forecast_realism/full_acquisition/validation.csv'
+          v=pd.read_csv(p)
+          ready=str(v.iloc[0].get('ready_for_modeling', '')).strip().lower() in {'true','1','yes'}
+          if not ready:
+              raise SystemExit('ERROR: Full acquisition artifact is not ready_for_modeling.')
+          print(v.to_string(index=False))
+          PY
+
+      - name: Run frozen model self-tests
+        run: python -m src.pregame_forecast_realism_selftest
+
+      - name: Run preregistered realism experiments
+        run: python -m src.pregame_forecast_realism_research
+
+      - name: Print primary model evidence
+        run: |
+          echo '--- variant summary ---'
+          cat outputs/pregame_forecast_realism/model_results/variant_summary.csv
+          echo '--- paired comparisons ---'
+          cat outputs/pregame_forecast_realism/model_results/paired_comparisons.csv
+          echo '--- weather-effect persistence ---'
+          cat outputs/pregame_forecast_realism/model_results/weather_effect_persistence.csv
+
+      - name: Upload model research artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pregame-forecast-realism-model-${{ github.run_id }}
+          path: outputs/pregame_forecast_realism/model_results/
+          if-no-files-found: error
+          retention-days: 90
