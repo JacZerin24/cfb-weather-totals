@@ -9,7 +9,7 @@ from .wind_gust_recovery import select_recovery_batches
 def _candidates() -> pd.DataFrame:
     rows = []
     game_id = 1
-    for week, start in enumerate(["2024-09-07", "2024-09-14", "2024-09-21"]):
+    for start in ["2024-09-07", "2024-09-14", "2024-09-21"]:
         for venue_id in range(100, 130):
             rows.append(
                 {
@@ -30,7 +30,9 @@ def test_recovery_chunk_never_exceeds_location_unit_cap() -> None:
     selected = select_recovery_batches(batches, max_location_units=45)
     units = sum(batch.games["venue_id"].nunique() for batch in selected)
     assert units <= 45
-    assert units == 40
+    # Oldest week is 30 venues split 20 + 10. The next 20-venue batch would
+    # exceed the cap, so selection stops at 30 rather than skipping ahead.
+    assert units == 30
 
 
 def test_recovery_chunk_is_oldest_first() -> None:
