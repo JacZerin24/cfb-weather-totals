@@ -1,0 +1,136 @@
+name: Pregame Forecast Full Acquisition
+
+on:
+  push:
+    branches:
+      - research/pregame-forecast-realism
+    paths:
+      - src/pregame_forecast_full_acquisition.py
+      - src/pregame_forecast_full_selftest.py
+      - .github/workflows/pregame-forecast-full-acquisition.yml
+  workflow_dispatch:
+    inputs:
+      max_games:
+        description: Maximum missing games to attempt this run
+        required: false
+        default: '5000'
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+concurrency:
+  group: pregame-forecast-full-acquisition
+  cancel-in-progress: false
+
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore latest station-audit artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          SOURCE_DIR=$(mktemp -d)
+          mkdir -p outputs/pregame_forecast_realism/station_audit data/processed
+          RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/pregame-forecast-station-audit.yml/runs?branch=research%2Fpregame-forecast-realism&status=success&per_page=1" --jq '.workflow_runs[0].id // empty')
+          if [ -z "$RUN_ID" ]; then
+            echo "ERROR: No successful station-audit run exists."
+            exit 1
+          fi
+          gh run download "$RUN_ID" -n "pregame-forecast-station-audit-${RUN_ID}" -D "$SOURCE_DIR"
+          for file in research_scope.csv venue_season_station_mapping.csv venue_season_station_candidates.csv coverage.csv; do
+            FOUND=$(find "$SOURCE_DIR" -type f -name "$file" -print -quit)
+            if [ -z "$FOUND" ]; then
+              echo "ERROR: Station-audit artifact missing $file"
+              exit 1
+            fi
+            cp "$FOUND" "outputs/pregame_forecast_realism/station_audit/$file"
+          done
+
+      - name: Restore prior resumable cache when available
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          PRIOR_DIR=$(mktemp -d)
+          PRIOR_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/pregame-forecast-full-acquisition.yml/runs?branch=research%2Fpregame-forecast-realism&per_page=10" \
+            --jq --arg current "$GITHUB_RUN_ID" '[.workflow_runs[] | select((.id|tostring) != $current)][0].id // empty')
+          if [ -z "$PRIOR_RUN_ID" ]; then
+            echo "No prior full-acquisition run; starting with an empty cache."
+            exit 0
+          fi
+          echo "Checking prior run ${PRIOR_RUN_ID} for resumable artifact."
+          if gh run download "$PRIOR_RUN_ID" -n "pregame-forecast-full-acquisition-${PRIOR_RUN_ID}" -D "$PRIOR_DIR"; then
+            CACHE=$(find "$PRIOR_DIR" -type f -name pregame_forecast_full_cache.csv -print -quit)
+            if [ -n "$CACHE" ]; then
+              cp "$CACHE" data/processed/pregame_forecast_full_cache.csv
+              echo "Restored prior acquisition cache."
+            else
+              echo "Prior artifact did not contain a cache; starting empty."
+            fi
+          else
+            echo "Prior run had no downloadable acquisition artifact; starting empty."
+          fi
+
+      - name: Run deterministic acquisition guardrails
+        run: |
+          python -m src.pregame_forecast_selftest
+          python -m src.pregame_forecast_full_selftest
+
+      - name: Acquire full archived NBM common sample
+        env:
+          INPUT_MAX_GAMES: ${{ github.event.inputs.max_games }}
+        run: |
+          MAX_GAMES="${INPUT_MAX_GAMES:-5000}"
+          python -m src.pregame_forecast_full_acquisition \
+            --max-games "$MAX_GAMES" \
+            --request-delay 0.10 \
+            --checkpoint-every 100 \
+            --strict
+
+      - name: Print full-acquisition evidence
+        if: always()
+        run: |
+          for path in \
+            outputs/pregame_forecast_realism/full_acquisition/progress.csv \
+            outputs/pregame_forecast_realism/full_acquisition/coverage.csv \
+            outputs/pregame_forecast_realism/full_acquisition/validation.csv; do
+            if [ -s "$path" ]; then
+              echo "--- $path ---"
+              cat "$path"
+            fi
+          done
+          if [ -s outputs/pregame_forecast_realism/full_acquisition/verification_metrics.csv ]; then
+            echo "--- overall verification ---"
+            python - <<'PY'
+          import pandas as pd
+          p='outputs/pregame_forecast_realism/full_acquisition/verification_metrics.csv'
+          df=pd.read_csv(p)
+          print(df[df['scope'].astype(str).eq('overall')].to_string(index=False))
+          PY
+          fi
+
+      - name: Upload resumable acquisition artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pregame-forecast-full-acquisition-${{ github.run_id }}
+          path: |
+            data/processed/pregame_forecast_full_cache.csv
+            data/processed/pregame_forecast_full.csv
+            outputs/pregame_forecast_realism/full_acquisition/
+          if-no-files-found: warn
+          retention-days: 90
