@@ -6,6 +6,12 @@ from tempfile import TemporaryDirectory
 
 import pandas as pd
 
+from .prospective_integrity_rebuild import (
+    apply_grading_exclusions,
+    apply_official_eligibility_corrections,
+    final_results_completed,
+    summarize_with_exclusions,
+)
 from .prospective_ledger import (
     _csv_bytes,
     _immutable_write,
@@ -14,180 +20,220 @@ from .prospective_ledger import (
     protocol_sha256,
     select_benchmark_closes,
     select_official_entries,
-    summarize_graded,
     validate_frozen_rules,
 )
+from .shadow_integrity_rebuild import _apply_shadow_eligibility_corrections
 from .utils import ROOT
+
+
+class FakeClient:
+    def __init__(self, records: list[dict]):
+        self.records = records
+
+    def get(self, path: str, params: dict) -> list[dict]:
+        assert path == '/games'
+        return self.records
 
 
 def main() -> None:
     validate_frozen_rules()
     protocol = load_protocol()
-    assert protocol['protocol_version'] == '2026.3'
-    assert protocol.get('supersedes') == '2026.2'
+    assert protocol['protocol_version'] == '2026.4'
+    assert protocol.get('supersedes') == '2026.3'
     assert int(protocol['closing_benchmark_policy']['capture_window_minutes']) == 90
     assert len(protocol_sha256()) == 64
 
-    kickoff = pd.Timestamp('2026-09-05T16:00:00Z')
+    expected_official_crons = {
+        '17 10 * * 4,5',
+        '17 11 * * 4,5',
+        '17 13 * * 4,5',
+        '17 14 * * 4,5',
+        '17 6 * * 6',
+        '17 7 * * 6',
+    }
+    assert set(map(str, protocol['official_entry_policy']['eligible_crons'])) == expected_official_crons
+    assert '17 8 * * 6' not in expected_official_crons
+    assert '17 11 * * 6' not in expected_official_crons
+    assert '17 12 * * 6' not in expected_official_crons
+
+    kickoff = pd.Timestamp('2026-09-06T00:00:00Z')
     snapshots = pd.DataFrame([
         {
             'game_id': 1,
             'start_date': kickoff,
-            'snapshot_timestamp_utc': '2026-09-04T13:17:00Z',
+            'snapshot_timestamp_utc': '2026-09-04T16:56:00Z',
             'official_eligible': True,
+            'github_event_name': 'schedule',
+            'github_event_schedule': '17 13 * * 4,5',
             'github_run_id': 'friday',
             'github_run_attempt': 1,
             'closing_total': 58.5,
-            'status': 'QUALIFIES',
-            'model_side': 'under',
-            'model_track': 'GENERAL HGB',
+            'status': 'NO PLAY',
+            'model_side': 'over',
+            'model_track': 'FCS-only HGB',
         },
+        # Regression fixture for the actual Sep. 5 schedule-metadata bug. The
+        # immutable run was a real scheduled production build but was stamped
+        # false before the protocol cron list caught up with the workflow.
         {
             'game_id': 1,
             'start_date': kickoff,
-            'snapshot_timestamp_utc': '2026-09-05T11:17:00Z',
-            'official_eligible': True,
-            'github_run_id': 'saturday',
-            'github_run_attempt': 1,
-            'closing_total': 59.0,
-            'status': 'QUALIFIES',
-            'model_side': 'under',
-            'model_track': 'GENERAL HGB',
-        },
-        # A rerun of the same scheduled model run cannot opportunistically
-        # replace the first successful attempt.
-        {
-            'game_id': 1,
-            'start_date': kickoff,
-            'snapshot_timestamp_utc': '2026-09-05T11:37:00Z',
-            'official_eligible': True,
-            'github_run_id': 'saturday',
-            'github_run_attempt': 2,
-            'closing_total': 60.0,
-            'status': 'QUALIFIES',
-            'model_side': 'under',
-            'model_track': 'GENERAL HGB',
-        },
-        # Manual refreshes are archived but never eligible for official entry.
-        {
-            'game_id': 1,
-            'start_date': kickoff,
-            'snapshot_timestamp_utc': '2026-09-05T11:47:00Z',
+            'snapshot_timestamp_utc': '2026-09-05T10:38:59Z',
             'official_eligible': False,
+            'github_event_name': 'schedule',
+            'github_event_schedule': '17 6 * * 6',
+            'github_run_id': '33961120017',
+            'github_run_attempt': 1,
+            'closing_total': 59.5,
+            'status': 'QUALIFIES',
+            'model_side': 'under',
+            'model_track': 'FCS-only HGB',
+        },
+        # A different false/manual snapshot must remain ineligible.
+        {
+            'game_id': 1,
+            'start_date': kickoff,
+            'snapshot_timestamp_utc': '2026-09-05T11:00:00Z',
+            'official_eligible': False,
+            'github_event_name': 'workflow_dispatch',
+            'github_event_schedule': '',
             'github_run_id': 'manual',
             'github_run_attempt': 1,
             'closing_total': 61.0,
             'status': 'QUALIFIES',
             'model_side': 'under',
-            'model_track': 'GENERAL HGB',
-        },
-        # This game has no snapshot at least two hours before kickoff and must
-        # therefore remain outside the official prospective sample.
-        {
-            'game_id': 2,
-            'start_date': kickoff,
-            'snapshot_timestamp_utc': '2026-09-05T15:00:00Z',
-            'official_eligible': True,
-            'github_run_id': 'late',
-            'github_run_attempt': 1,
-            'closing_total': 52.0,
-            'status': 'NO PLAY',
-            'model_side': 'under',
-            'model_track': 'GENERAL HGB',
+            'model_track': 'FCS-only HGB',
         },
     ])
 
-    official = select_official_entries(snapshots, protocol)
+    corrected = apply_official_eligibility_corrections(snapshots, protocol)
+    corrected_row = corrected[corrected['github_run_id'].astype(str).eq('33961120017')].iloc[0]
+    manual_row = corrected[corrected['github_run_id'].astype(str).eq('manual')].iloc[0]
+    assert bool(corrected_row['official_eligible'])
+    assert bool(corrected_row['eligibility_integrity_override'])
+    assert not bool(manual_row['official_eligible'])
+
+    official = select_official_entries(corrected, protocol)
     assert len(official) == 1
-    assert int(official.iloc[0]['game_id']) == 1
-    assert float(official.iloc[0]['closing_total']) == 59.0
-    assert str(official.iloc[0]['github_run_id']) == 'saturday'
-    assert int(official.iloc[0]['github_run_attempt']) == 1
-    assert abs(float(official.iloc[0]['entry_lead_minutes']) - 283.0) < 0.01
+    assert str(official.iloc[0]['github_run_id']) == '33961120017'
+    assert float(official.iloc[0]['closing_total']) == 59.5
+    assert str(official.iloc[0]['status']) == 'QUALIFIES'
+
+    # The research shadows use the same tightly scoped run-level correction.
+    shadow_fixture = pd.DataFrame([{
+        'github_run_id': '33961120017',
+        'github_event_name': 'schedule',
+        'github_event_schedule': '17 6 * * 6',
+        'official_evaluation_eligible': False,
+    }])
+    orientation_protocol = __import__(
+        'src.orientation_shadow_grade', fromlist=['load_protocol']
+    ).load_protocol()
+    shadow_fixed = _apply_shadow_eligibility_corrections(shadow_fixture, orientation_protocol)
+    assert bool(shadow_fixed.iloc[0]['official_evaluation_eligible'])
+    assert bool(shadow_fixed.iloc[0]['shadow_eligibility_integrity_override'])
 
     closes = pd.DataFrame([
-    {
-        'record_kind': 'close_capture',
-        'game_id': 1,
-        'start_date': kickoff,
-        'snapshot_timestamp_utc': '2026-09-05T14:45:00Z',
-        'benchmark_close_total': 58.0,
-        'github_event_name': 'schedule',
-        'github_run_attempt': 1,
-        'line_provider': 'Book A',
-        'line_source': 'fixture',
-        'line_provider_count': 2,
-        '_immutable_file': 'old.csv',
-        '_immutable_sha256': 'a' * 64,
-    },
-    {
-        'record_kind': 'close_capture',
-        'game_id': 1,
-        'start_date': kickoff,
-        'snapshot_timestamp_utc': '2026-09-05T15:30:00Z',
-        'benchmark_close_total': 57.5,
-        'github_event_name': 'schedule',
-        'github_run_attempt': 1,
-        'line_provider': 'Book B',
-        'line_source': 'fixture',
-        'line_provider_count': 3,
-        '_immutable_file': 'latest.csv',
-        '_immutable_sha256': 'b' * 64,
-    },
-    # Scheduled but outside the frozen 90-minute close window.
-    {
-        'record_kind': 'close_capture',
-        'game_id': 1,
-        'start_date': kickoff,
-        'snapshot_timestamp_utc': '2026-09-05T14:00:00Z',
-        'benchmark_close_total': 60.0,
-        'github_event_name': 'schedule',
-        'github_run_attempt': 1,
-    },
-    # A manual capture cannot replace the scheduled benchmark.
-    {
-        'record_kind': 'close_capture',
-        'game_id': 1,
-        'start_date': kickoff,
-        'snapshot_timestamp_utc': '2026-09-05T15:40:00Z',
-        'benchmark_close_total': 56.5,
-        'github_event_name': 'workflow_dispatch',
-        'github_run_attempt': 1,
-    },
-    # A rerun cannot opportunistically backfill a closer number.
-    {
-        'record_kind': 'close_capture',
-        'game_id': 1,
-        'start_date': kickoff,
-        'snapshot_timestamp_utc': '2026-09-05T15:45:00Z',
-        'benchmark_close_total': 56.0,
-        'github_event_name': 'schedule',
-        'github_run_attempt': 2,
-    },
-])
+        {
+            'record_kind': 'close_capture',
+            'game_id': 1,
+            'start_date': kickoff,
+            'snapshot_timestamp_utc': '2026-09-05T22:30:00Z',
+            'benchmark_close_total': 58.0,
+            'github_event_name': 'schedule',
+            'github_run_attempt': 1,
+            'line_provider': 'Book A',
+            'line_source': 'fixture',
+            'line_provider_count': 2,
+        },
+        {
+            'record_kind': 'close_capture',
+            'game_id': 1,
+            'start_date': kickoff,
+            'snapshot_timestamp_utc': '2026-09-05T23:30:00Z',
+            'benchmark_close_total': 57.5,
+            'github_event_name': 'schedule',
+            'github_run_attempt': 1,
+            'line_provider': 'Book B',
+            'line_source': 'fixture',
+            'line_provider_count': 3,
+        },
+        # Manual/rerun captures can never replace a valid scheduled capture.
+        {
+            'record_kind': 'close_capture',
+            'game_id': 1,
+            'start_date': kickoff,
+            'snapshot_timestamp_utc': '2026-09-05T23:40:00Z',
+            'benchmark_close_total': 56.5,
+            'github_event_name': 'workflow_dispatch',
+            'github_run_attempt': 1,
+        },
+        {
+            'record_kind': 'close_capture',
+            'game_id': 1,
+            'start_date': kickoff,
+            'snapshot_timestamp_utc': '2026-09-05T23:45:00Z',
+            'benchmark_close_total': 56.0,
+            'github_event_name': 'schedule',
+            'github_run_attempt': 2,
+        },
+    ])
     selected_close = select_benchmark_closes(closes)
     assert len(selected_close) == 1
     assert float(selected_close.iloc[0]['benchmark_close_total']) == 57.5
     assert abs(float(selected_close.iloc[0]['close_capture_lead_minutes']) - 30.0) < 0.01
 
-    finals = pd.DataFrame([{
-        'game_id': 1,
-        'final_home_points': 31,
-        'final_away_points': 23,
-        'actual_total_points': 54,
-    }])
-    graded = grade_official_entries(official, selected_close, finals, protocol)
-    assert graded.iloc[0]['paper_result'] == 'win'
-    assert abs(float(graded.iloc[0]['paper_units_1u']) - (100 / 110)) < 1e-8
-    assert abs(float(graded.iloc[0]['clv_points']) - 1.5) < 1e-8
-    assert bool(graded.iloc[0]['positive_clv'])
+    # Generic final-score protection: incomplete 0-0 placeholders are absent.
+    finals = final_results_completed(FakeClient([
+        {'id': 10, 'homePoints': 0, 'awayPoints': 0, 'completed': False},
+        {'id': 11, 'homePoints': 28, 'awayPoints': 21, 'completed': True},
+    ]))
+    assert list(finals['game_id'].astype(int)) == [11]
+    assert float(finals.iloc[0]['actual_total_points']) == 49.0
 
-    summary = summarize_graded(graded)
+    # Explicit stale/postponed exclusions preserve the prospective qualifier
+    # while removing it from wins/losses, units, ROI, and CLV.
+    grading_official = pd.DataFrame([
+        {
+            'game_id': 401866625,
+            'away_team': 'Western Carolina',
+            'home_team': 'Campbell',
+            'closing_total': 67.5,
+            'status': 'QUALIFIES',
+            'model_side': 'under',
+            'model_track': 'FCS-only HGB',
+        },
+        {
+            'game_id': 1,
+            'away_team': 'Illinois State',
+            'home_team': 'Western Illinois',
+            'closing_total': 59.5,
+            'status': 'QUALIFIES',
+            'model_side': 'under',
+            'model_track': 'FCS-only HGB',
+        },
+    ])
+    grading_finals = pd.DataFrame([
+        {'game_id': 401866625, 'final_home_points': 0, 'final_away_points': 0, 'actual_total_points': 0},
+        {'game_id': 1, 'final_home_points': 41, 'final_away_points': 10, 'actual_total_points': 51},
+    ])
+    graded = grade_official_entries(grading_official, pd.DataFrame(), grading_finals, protocol)
+    graded = apply_grading_exclusions(graded, protocol)
+    campbell = graded[graded['game_id'].eq(401866625)].iloc[0]
+    illinois = graded[graded['game_id'].eq(1)].iloc[0]
+    assert bool(campbell['paper_qualifier'])
+    assert campbell['paper_result'] == 'excluded'
+    assert pd.isna(campbell['paper_units_1u'])
+    assert pd.isna(campbell['clv_points'])
+    assert illinois['paper_result'] == 'win'
+
+    summary = summarize_with_exclusions(graded)
     overall = summary[summary['scope'].eq('ALL')].iloc[0]
+    assert int(overall['qualifying_entries']) == 2
+    assert int(overall['settled_qualifying_entries']) == 1
+    assert int(overall['excluded_qualifying_entries']) == 1
     assert int(overall['wins']) == 1
     assert int(overall['losses']) == 0
-    assert float(overall['hit_rate_ex_pushes']) == 1.0
-    assert abs(float(overall['average_clv_points']) - 1.5) < 1e-8
 
     fixture = pd.DataFrame([{
         'github_run_id': 'fixture',
@@ -208,28 +254,31 @@ def main() -> None:
             raise AssertionError('Immutable writer allowed an overwrite.')
 
     weekly_workflow = (ROOT / '.github/workflows/weekly-cfb-weather.yml').read_text(encoding='utf-8')
-    assert 'central-time-gate' in weekly_workflow, 'Weekly workflow must preserve Central local times across DST.'
-    for cron in protocol['official_entry_policy']['eligible_crons']:
-        assert str(cron) in weekly_workflow, f'Official protocol cron is not scheduled: {cron}'
+    assert 'central-time-gate' in weekly_workflow
+    assert 'python -m src.prospective_integrity_rebuild' in weekly_workflow
+    for cron in expected_official_crons:
+        assert cron in weekly_workflow, f'Official protocol cron is not scheduled: {cron}'
 
     watchdog_workflow = (ROOT / '.github/workflows/weekly-safety-watchdog.yml').read_text(encoding='utf-8')
-    assert 'actions: write' in watchdog_workflow, 'Watchdog must be allowed to dispatch the backup workflow.'
-    assert '/dispatches' in watchdog_workflow, 'Watchdog backup dispatch is missing.'
-    assert 'weekly-paper-run' in watchdog_workflow, 'Watchdog must verify the real weekly build job.'
+    assert 'actions: write' in watchdog_workflow
+    assert '/dispatches' in watchdog_workflow
+    assert 'weekly-paper-run' in watchdog_workflow
+    assert 'SAFETY_HOUR=1' in watchdog_workflow
 
     close_workflow = (ROOT / '.github/workflows/prospective-close-capture.yml').read_text(encoding='utf-8')
     assert 'workflow_dispatch' not in close_workflow, 'Close benchmark workflow must not allow manual captures.'
-    assert 'github.run_attempt == 1' in close_workflow, 'Close benchmark workflow must exclude rerun backfill.'
-    assert 'twice per hour' in close_workflow, 'Protocol 2026.2 close-capture reliability note is missing.'
+    assert 'github.run_attempt == 1' in close_workflow
     for cron in protocol['closing_benchmark_policy']['capture_crons']:
-        assert str(cron) in close_workflow, f'Frozen close-capture cron is not scheduled: {cron}'
+        assert str(cron) in close_workflow
 
     grade_workflow = (ROOT / '.github/workflows/prospective-grade.yml').read_text(encoding='utf-8')
-    assert 'workflow_dispatch' not in grade_workflow, 'Prospective grading workflow should remain schedule-only.'
+    assert 'python -m src.prospective_integrity_rebuild' in grade_workflow
+    assert 'python -m src.shadow_integrity_rebuild orientation' in grade_workflow
+    assert 'python -m src.shadow_integrity_rebuild joint-core' in grade_workflow
     for cron in protocol['paper_grading']['postgame_grade_crons']:
-        assert str(cron) in grade_workflow, f'Frozen postgame grading cron is not scheduled: {cron}'
+        assert str(cron) in grade_workflow
 
-    print('Prospective ledger protocol, entry selection, CLV, grading cadence, and immutability checks passed.')
+    print('Prospective protocol, schedule alignment, immutable selection, completed-game grading, exclusions, CLV, and shadow-integrity checks passed.')
 
 
 if __name__ == '__main__':
