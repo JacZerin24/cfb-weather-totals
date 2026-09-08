@@ -1,0 +1,202 @@
+name: Wind Gust Acquisition Recovery
+
+on:
+  push:
+    branches:
+      - research/wind-gust-value
+    paths:
+      - .github/workflows/wind-gust-acquisition-recovery.yml
+  workflow_dispatch:
+    inputs:
+      max_location_units:
+        description: Maximum missing venue-week location units to attempt this run
+        required: false
+        default: '400'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: wind-gust-acquisition-recovery
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out research branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore latest historical modeling dataset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          SOURCE_DIR=$(mktemp -d)
+          mkdir -p data/processed outputs/wind_gust
+
+          RESEARCH_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/manual-historical-research.yml/runs?status=success&per_page=1" \
+            --jq '.workflow_runs[0].id // empty')
+          if [ -z "$RESEARCH_RUN_ID" ]; then
+            echo "ERROR: No successful historical research run is available."
+            exit 1
+          fi
+          gh run download "$RESEARCH_RUN_ID" -n cfb-weather-totals-research-output -D "$SOURCE_DIR"
+          MODEL_PATH=$(find "$SOURCE_DIR" -type f -name modeling_dataset.csv -print -quit)
+          if [ -z "$MODEL_PATH" ]; then
+            echo "ERROR: modeling_dataset.csv was not found in the historical artifact."
+            exit 1
+          fi
+          cp "$MODEL_PATH" data/processed/modeling_dataset.csv
+          test -s data/reference/stadium_locations.csv
+
+      - name: Restore latest partial gust acquisition state
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          PARTIAL_DIR=$(mktemp -d)
+
+          RECOVERY_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/wind-gust-acquisition-recovery.yml/runs?branch=research%2Fwind-gust-value&status=success&per_page=1" \
+            --jq '.workflow_runs[0].id // empty')
+
+          if [ -n "$RECOVERY_RUN_ID" ]; then
+            echo "Restoring prior recovery state from run ${RECOVERY_RUN_ID}."
+            gh run download "$RECOVERY_RUN_ID" -n "wind-gust-recovery-${RECOVERY_RUN_ID}" -D "$PARTIAL_DIR"
+          else
+            FULL_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/wind-gust-full-acquisition.yml/runs?branch=research%2Fwind-gust-value&per_page=1" \
+              --jq '.workflow_runs[0].id // empty')
+            if [ -z "$FULL_RUN_ID" ]; then
+              echo "ERROR: No full acquisition seed run exists."
+              exit 1
+            fi
+            echo "No prior recovery state; seeding from full acquisition run ${FULL_RUN_ID}."
+            gh run download "$FULL_RUN_ID" -n "wind-gust-full-acquisition-${FULL_RUN_ID}" -D "$PARTIAL_DIR"
+          fi
+
+          CACHE_PATH=$(find "$PARTIAL_DIR" -type f -name wind_gust_kickoff_cache.csv -print -quit)
+          MANIFEST_PATH=$(find "$PARTIAL_DIR" -type f -name wind_gust_full_candidate_manifest.csv -print -quit)
+          if [ -z "$CACHE_PATH" ] || [ -z "$MANIFEST_PATH" ]; then
+            echo "ERROR: Partial artifact is missing cache or frozen candidate manifest."
+            exit 1
+          fi
+          cp "$CACHE_PATH" data/processed/wind_gust_kickoff_cache.csv
+          cp "$MANIFEST_PATH" data/processed/wind_gust_full_candidate_manifest.csv
+
+          python - <<'PY'
+          import pandas as pd
+
+          model_path = 'data/processed/modeling_dataset.csv'
+          manifest_path = 'data/processed/wind_gust_full_candidate_manifest.csv'
+          raw = pd.read_csv(model_path, low_memory=False)
+          manifest = pd.read_csv(manifest_path, low_memory=False)
+          ids = set(pd.to_numeric(manifest['game_id'], errors='coerce').dropna().astype(int))
+          raw_ids = pd.to_numeric(raw['game_id'], errors='coerce')
+          scoped = raw[raw_ids.isin(ids)].copy()
+          if len(scoped) != len(ids):
+              raise SystemExit(
+                  f'ERROR: Frozen manifest/model mismatch: ids={len(ids)}, rows={len(scoped)}.'
+              )
+          scoped.to_csv(model_path, index=False)
+          print(f'Restored frozen recovery scope: {len(scoped)} games')
+          PY
+
+      - name: Run acquisition and recovery self-tests
+        run: |
+          python -m src.wind_gust_data_selftest
+          python -m src.wind_gust_batch_selftest
+          python -m src.wind_gust_recovery_selftest
+
+      - name: Recover a conservatively paced missing-data chunk
+        env:
+          INPUT_MAX_LOCATION_UNITS: ${{ github.event.inputs.max_location_units }}
+        run: |
+          MAX_UNITS="${INPUT_MAX_LOCATION_UNITS:-400}"
+          python -m src.wind_gust_recovery \
+            --batch-size 20 \
+            --max-location-units "$MAX_UNITS" \
+            --request-delay 2.5
+
+      - name: Validate monotonic recovery and source integrity
+        run: |
+          python - <<'PY'
+          import pandas as pd
+
+          rows = pd.read_csv('data/processed/wind_gust_kickoff.csv', low_memory=False)
+          manifest = pd.read_csv('data/processed/wind_gust_full_candidate_manifest.csv', low_memory=False)
+          progress = pd.read_csv('outputs/wind_gust/recovery_progress.csv')
+          if progress.empty:
+              raise SystemExit('ERROR: Recovery progress is empty.')
+          p = progress.iloc[0]
+          if int(p['ending_complete_games']) < int(p['starting_complete_games']):
+              raise SystemExit('ERROR: Recovery regressed the number of complete games.')
+          if len(rows) != len(manifest):
+              raise SystemExit(
+                  f'ERROR: Recovery row count {len(rows)} != frozen manifest {len(manifest)}.'
+              )
+          if rows.duplicated(['source_stack', 'game_id']).any():
+              raise SystemExit('ERROR: Duplicate source_stack/game_id rows after recovery.')
+          if set(rows['source_stack'].dropna().astype(str)) != {'ecmwf_ifs'}:
+              raise SystemExit('ERROR: Recovery contains a non-IFS source stack.')
+
+          complete = rows[rows['fetch_status'].eq('ok')].copy()
+          complete['kickoff_utc'] = pd.to_datetime(complete['kickoff_utc'], utc=True, errors='coerce')
+          for col in ['wind_valid_time_utc', 'gust_valid_time_utc']:
+              valid = pd.to_datetime(complete[col], utc=True, errors='coerce')
+              if (valid > complete['kickoff_utc']).fillna(False).any():
+                  raise SystemExit(f'ERROR: Recovery introduced future {col}.')
+          if (pd.to_numeric(complete['wind_age_minutes'], errors='coerce') > 120).any():
+              raise SystemExit('ERROR: Recovery contains stale wind data.')
+          if (pd.to_numeric(complete['gust_age_minutes'], errors='coerce') > 120).any():
+              raise SystemExit('ERROR: Recovery contains stale gust data.')
+
+          ready = str(p['ready_for_modeling']).strip().lower() in {'true', '1', 'yes'}
+          validation = pd.DataFrame([{
+              'eligible_games': len(rows),
+              'fetchable_games': len(rows),
+              'complete_games': int(rows['fetch_status'].eq('ok').sum()),
+              'complete_pct_fetchable': float(rows['fetch_status'].eq('ok').mean()),
+              'missing_coordinate_games': int((rows['fetch_status'] == 'missing_venue_coordinates').sum()),
+              'recovery_attempt_request_failures': int(p['request_failures']),
+              'ready_for_modeling': ready,
+          }])
+          validation.to_csv('outputs/wind_gust/recovery_validation.csv', index=False)
+          print(validation.to_string(index=False))
+          PY
+
+      - name: Print recovery progress
+        if: always()
+        run: |
+          for path in \
+            outputs/wind_gust/recovery_progress.csv \
+            outputs/wind_gust/recovery_validation.csv \
+            outputs/wind_gust/recovery_request_log.csv \
+            outputs/wind_gust/data_coverage.csv; do
+            if [ -s "$path" ]; then
+              echo "--- $path ---"
+              cat "$path"
+            fi
+          done
+
+      - name: Upload resumable recovery artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wind-gust-recovery-${{ github.run_id }}
+          path: |
+            data/processed/wind_gust_kickoff.csv
+            data/processed/wind_gust_kickoff_cache.csv
+            data/processed/wind_gust_full_candidate_manifest.csv
+            outputs/wind_gust/
+          if-no-files-found: error
+          retention-days: 90
