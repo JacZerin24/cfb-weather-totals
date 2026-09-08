@@ -1,6 +1,7 @@
 name: Weekly CFB Weather Totals
 
 on:
+  # Manual runs are permitted for a post-rollover early look once the prior week's final kickoff has passed.
   workflow_dispatch:
     inputs:
       watchdog_backup:
