@@ -1,0 +1,315 @@
+name: Wind Gust Full Acquisition
+
+on:
+  push:
+    branches:
+      - research/wind-gust-value
+    paths:
+      - .github/workflows/wind-gust-full-acquisition.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: wind-gust-full-acquisition
+  cancel-in-progress: false
+
+jobs:
+  full-acquisition:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out research branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore latest historical modeling dataset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          SOURCE_DIR=$(mktemp -d)
+          mkdir -p data/processed outputs/wind_gust
+
+          RESEARCH_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/manual-historical-research.yml/runs?status=success&per_page=1" \
+            --jq '.workflow_runs[0].id // empty')
+          if [ -z "$RESEARCH_RUN_ID" ]; then
+            echo "ERROR: No successful historical research run is available."
+            exit 1
+          fi
+
+          echo "Restoring historical data from run ${RESEARCH_RUN_ID}."
+          gh run download "$RESEARCH_RUN_ID" -n cfb-weather-totals-research-output -D "$SOURCE_DIR"
+          MODEL_PATH=$(find "$SOURCE_DIR" -type f -name modeling_dataset.csv -print -quit)
+          if [ -z "$MODEL_PATH" ]; then
+            echo "ERROR: modeling_dataset.csv was not found in the historical artifact."
+            exit 1
+          fi
+          cp "$MODEL_PATH" data/processed/modeling_dataset.csv
+          test -s data/reference/stadium_locations.csv
+
+      - name: Freeze exact GENERAL-HGB gust research population and budget
+        run: |
+          python - <<'PY'
+          import math
+          import pandas as pd
+
+          from src.deep_research import prep
+
+          model_path = 'data/processed/modeling_dataset.csv'
+          location_path = 'data/reference/stadium_locations.csv'
+          raw = pd.read_csv(model_path, low_memory=False)
+          locations = pd.read_csv(location_path, low_memory=False)
+
+          prepared = prep(raw)
+          prepared['season'] = pd.to_numeric(prepared['season'], errors='coerce')
+          prepared['game_id'] = pd.to_numeric(prepared['game_id'], errors='coerce')
+          prepared['venue_id'] = pd.to_numeric(prepared.get('venue_id'), errors='coerce')
+          prepared['kickoff_utc'] = pd.to_datetime(prepared['start_date'], utc=True, errors='coerce')
+
+          scope = prepared[
+              prepared['season'].between(2017, 2025, inclusive='both')
+              & prepared['outdoor'].astype(bool)
+              & prepared['fbs_vs_fbs'].astype(bool)
+              & prepared['kickoff_utc'].notna()
+          ].copy()
+
+          if scope.empty:
+              raise SystemExit('ERROR: No 2017-2025 outdoor FBS-vs-FBS modeling rows found.')
+          if scope['game_id'].duplicated().any():
+              raise SystemExit('ERROR: Duplicate game_id values in full gust research scope.')
+
+          ids = set(scope['game_id'].dropna().astype(int))
+          raw_ids = pd.to_numeric(raw['game_id'], errors='coerce')
+          filtered = raw[raw_ids.isin(ids)].copy()
+          if len(filtered) != len(scope):
+              raise SystemExit(
+                  f'ERROR: Scope/raw row mismatch: prepared={len(scope)}, raw={len(filtered)}.'
+              )
+
+          locations['venue_id'] = pd.to_numeric(locations['venue_id'], errors='coerce')
+          locations['venue_latitude'] = pd.to_numeric(locations['venue_latitude'], errors='coerce')
+          locations['venue_longitude'] = pd.to_numeric(locations['venue_longitude'], errors='coerce')
+          coords = locations[
+              ['venue_id', 'venue_latitude', 'venue_longitude']
+          ].drop_duplicates('venue_id')
+          scope = scope.merge(coords, on='venue_id', how='left')
+          scope['has_coordinates'] = scope[
+              ['venue_latitude', 'venue_longitude']
+          ].notna().all(axis=1)
+          scope['request_week_start'] = (
+              scope['kickoff_utc'].dt.floor('D')
+              - pd.to_timedelta(scope['kickoff_utc'].dt.weekday, unit='D')
+          )
+
+          fetchable = scope[scope['has_coordinates']].copy()
+          venue_weeks = fetchable[
+              ['request_week_start', 'venue_id']
+          ].drop_duplicates()
+          estimated_http_requests = int(
+              venue_weeks.groupby('request_week_start', observed=True)
+              .size()
+              .map(lambda n: math.ceil(n / 20))
+              .sum()
+          )
+          conservative_location_units = int(len(venue_weeks))
+
+          # Stay comfortably below the current unauthenticated/free daily allowance.
+          # This is intentionally conservative because Open-Meteo call accounting
+          # scales with request size as well as raw HTTP request count.
+          LOCATION_UNIT_CAP = 8000
+          HTTP_REQUEST_CAP = 1000
+          if conservative_location_units > LOCATION_UNIT_CAP:
+              raise SystemExit(
+                  f'ERROR: Planned location-week units {conservative_location_units} '
+                  f'exceed safety cap {LOCATION_UNIT_CAP}; refusing full acquisition.'
+              )
+          if estimated_http_requests > HTTP_REQUEST_CAP:
+              raise SystemExit(
+                  f'ERROR: Estimated HTTP requests {estimated_http_requests} '
+                  f'exceed safety cap {HTTP_REQUEST_CAP}; refusing full acquisition.'
+              )
+
+          filtered.to_csv(model_path, index=False)
+
+          manifest_cols = [c for c in [
+              'game_id', 'season', 'week', 'start_date', 'kickoff_utc', 'venue_id',
+              'venue_name', 'away_team', 'home_team', 'closing_total',
+              'actual_total_points', 'cfbd_wind_mph', 'has_coordinates',
+              'venue_latitude', 'venue_longitude', 'request_week_start',
+          ] if c in scope.columns]
+          scope[manifest_cols].to_csv(
+              'data/processed/wind_gust_full_candidate_manifest.csv', index=False
+          )
+
+          season_rows = []
+          for season, group in scope.groupby('season', observed=True):
+              usable = group[group['has_coordinates']]
+              vw = usable[['request_week_start', 'venue_id']].drop_duplicates()
+              season_rows.append({
+                  'season': int(season),
+                  'eligible_games': len(group),
+                  'games_with_coordinates': int(group['has_coordinates'].sum()),
+                  'missing_coordinate_games': int((~group['has_coordinates']).sum()),
+                  'unique_venues': int(group['venue_id'].nunique()),
+                  'location_week_units': len(vw),
+              })
+          season_rows.append({
+              'season': 'OVERALL',
+              'eligible_games': len(scope),
+              'games_with_coordinates': int(scope['has_coordinates'].sum()),
+              'missing_coordinate_games': int((~scope['has_coordinates']).sum()),
+              'unique_venues': int(scope['venue_id'].nunique()),
+              'location_week_units': conservative_location_units,
+          })
+          pd.DataFrame(season_rows).to_csv(
+              'outputs/wind_gust/full_acquisition_scope.csv', index=False
+          )
+          pd.DataFrame([{
+              'batch_size': 20,
+              'eligible_games': len(scope),
+              'fetchable_games': len(fetchable),
+              'unique_location_week_units': conservative_location_units,
+              'estimated_http_requests': estimated_http_requests,
+              'location_unit_safety_cap': LOCATION_UNIT_CAP,
+              'http_request_safety_cap': HTTP_REQUEST_CAP,
+          }]).to_csv('outputs/wind_gust/full_acquisition_budget.csv', index=False)
+
+          print(f'Eligible GENERAL-HGB gust games: {len(scope)}')
+          print(f'Fetchable games with coordinates: {len(fetchable)}')
+          print(f'Unique venue-week location units: {conservative_location_units}')
+          print(f'Estimated batched HTTP requests: {estimated_http_requests}')
+          print('--- scope by season ---')
+          print(pd.DataFrame(season_rows).to_string(index=False))
+          PY
+
+      - name: Run deterministic acquisition tests
+        run: |
+          python -m src.wind_gust_data_selftest
+          python -m src.wind_gust_batch_selftest
+
+      - name: Run full 2017-2025 batched ECMWF IFS acquisition
+        run: |
+          rm -f data/processed/wind_gust_kickoff_cache.csv data/processed/wind_gust_kickoff.csv
+          python -m src.pull_historical_gusts_batched \
+            --batch-size 20 \
+            --request-delay 0.05 \
+            --strict \
+            --no-resume
+          cp outputs/wind_gust/request_log.csv outputs/wind_gust/full_request_log.csv
+
+      - name: Enforce full-sample QC gates
+        run: |
+          python - <<'PY'
+          import pandas as pd
+
+          rows = pd.read_csv('data/processed/wind_gust_kickoff.csv', low_memory=False)
+          manifest = pd.read_csv('data/processed/wind_gust_full_candidate_manifest.csv', low_memory=False)
+          log = pd.read_csv('outputs/wind_gust/full_request_log.csv', low_memory=False)
+
+          if rows.empty:
+              raise SystemExit('ERROR: Full gust acquisition produced no rows.')
+          if rows.duplicated(['source_stack', 'game_id']).any():
+              raise SystemExit('ERROR: Duplicate source_stack/game_id rows in full gust acquisition.')
+          if set(rows['source_stack'].dropna().astype(str)) != {'ecmwf_ifs'}:
+              raise SystemExit('ERROR: Full acquisition contains a non-IFS source stack.')
+          if not log['status'].eq('ok').all():
+              bad = int((~log['status'].eq('ok')).sum())
+              raise SystemExit(f'ERROR: {bad} full-acquisition batch request(s) failed.')
+          if pd.to_numeric(log['window_days'], errors='coerce').max() > 14:
+              raise SystemExit('ERROR: A full-acquisition request exceeded 14 days.')
+          if pd.to_numeric(log['venue_count'], errors='coerce').max() > 20:
+              raise SystemExit('ERROR: A full-acquisition request exceeded 20 venues.')
+
+          rows['kickoff_utc'] = pd.to_datetime(rows['kickoff_utc'], utc=True, errors='coerce')
+          for col in ['wind_valid_time_utc', 'gust_valid_time_utc']:
+              valid = pd.to_datetime(rows[col], utc=True, errors='coerce')
+              future = valid.notna() & rows['kickoff_utc'].notna() & (valid > rows['kickoff_utc'])
+              if future.any():
+                  raise SystemExit(f'ERROR: {int(future.sum())} rows have future {col}.')
+
+          manifest['has_coordinates'] = manifest['has_coordinates'].astype(str).str.lower().isin(
+              ['true', '1', 'yes']
+          )
+          fetchable_ids = set(
+              pd.to_numeric(
+                  manifest.loc[manifest['has_coordinates'], 'game_id'], errors='coerce'
+              ).dropna().astype(int)
+          )
+          row_ids = pd.to_numeric(rows['game_id'], errors='coerce')
+          fetchable = rows[row_ids.isin(fetchable_ids)].copy()
+          complete = fetchable[fetchable['fetch_status'].eq('ok')]
+          coverage = len(complete) / len(fetchable) if len(fetchable) else 0.0
+          if coverage < 0.99:
+              raise SystemExit(
+                  f'ERROR: Complete full-sample wind+gust coverage {coverage:.2%} '
+                  'is below the 99% source-QC gate.'
+              )
+
+          incomplete = fetchable[~fetchable['fetch_status'].eq('ok')][
+              ['game_id', 'season', 'venue_id', 'fetch_status', 'fetch_detail']
+          ]
+          incomplete.to_csv('outputs/wind_gust/full_incomplete_rows.csv', index=False)
+
+          if (pd.to_numeric(complete['wind_age_minutes'], errors='coerce') > 120).any():
+              raise SystemExit('ERROR: Complete row contains wind older than 120 minutes.')
+          if (pd.to_numeric(complete['gust_age_minutes'], errors='coerce') > 120).any():
+              raise SystemExit('ERROR: Complete row contains gust older than 120 minutes.')
+
+          summary = pd.DataFrame([{
+              'eligible_games': len(rows),
+              'fetchable_games': len(fetchable),
+              'complete_games': len(complete),
+              'complete_pct_fetchable': coverage,
+              'missing_coordinate_games': int((rows['fetch_status'] == 'missing_venue_coordinates').sum()),
+              'http_requests': len(log),
+              'request_failures': int((log['status'] != 'ok').sum()),
+              'max_batch_venues': int(pd.to_numeric(log['venue_count']).max()),
+              'max_window_days': int(pd.to_numeric(log['window_days']).max()),
+              'negative_gust_spread_rows': int((pd.to_numeric(rows['gust_spread_mph'], errors='coerce') < 0).sum()),
+          }])
+          summary.to_csv('outputs/wind_gust/full_acquisition_validation.csv', index=False)
+          print(summary.to_string(index=False))
+          if len(incomplete):
+              print('--- incomplete fetchable rows ---')
+              print(incomplete.to_string(index=False))
+          PY
+
+      - name: Print full acquisition QC summaries
+        if: always()
+        run: |
+          for path in \
+            outputs/wind_gust/full_acquisition_scope.csv \
+            outputs/wind_gust/full_acquisition_budget.csv \
+            outputs/wind_gust/full_acquisition_validation.csv \
+            outputs/wind_gust/data_coverage.csv \
+            outputs/wind_gust/qc_summary.csv \
+            outputs/wind_gust/source_comparison.csv \
+            outputs/wind_gust/distribution_summary.csv; do
+            if [ -s "$path" ]; then
+              echo "--- $path ---"
+              cat "$path"
+            fi
+          done
+
+      - name: Upload full acquisition artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wind-gust-full-acquisition-${{ github.run_id }}
+          path: |
+            data/processed/wind_gust_kickoff.csv
+            data/processed/wind_gust_kickoff_cache.csv
+            data/processed/wind_gust_full_candidate_manifest.csv
+            outputs/wind_gust/
+          if-no-files-found: error
+          retention-days: 90
