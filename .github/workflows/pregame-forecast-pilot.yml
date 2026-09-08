@@ -1,0 +1,82 @@
+name: Pregame Forecast Lead-Time Pilot
+
+on:
+  push:
+    branches:
+      - research/pregame-forecast-realism
+    paths:
+      - src/pregame_forecast_pilot.py
+      - src/pregame_forecast_selftest.py
+      - .github/workflows/pregame-forecast-pilot.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Restore latest station-audit artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          SOURCE_DIR=$(mktemp -d)
+          mkdir -p outputs/pregame_forecast_realism/station_audit
+          RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/pregame-forecast-station-audit.yml/runs?branch=research%2Fpregame-forecast-realism&status=success&per_page=1" --jq '.workflow_runs[0].id // empty')
+          if [ -z "$RUN_ID" ]; then
+            echo "ERROR: No successful station-audit run exists."
+            exit 1
+          fi
+          gh run download "$RUN_ID" -n "pregame-forecast-station-audit-${RUN_ID}" -D "$SOURCE_DIR"
+          for file in research_scope.csv venue_season_station_mapping.csv venue_season_station_candidates.csv coverage.csv; do
+            FOUND=$(find "$SOURCE_DIR" -type f -name "$file" -print -quit)
+            if [ -z "$FOUND" ]; then
+              echo "ERROR: Station-audit artifact missing $file"
+              exit 1
+            fi
+            cp "$FOUND" "outputs/pregame_forecast_realism/station_audit/$file"
+          done
+          python - <<'PY'
+          import pandas as pd
+          c = pd.read_csv('outputs/pregame_forecast_realism/station_audit/coverage.csv')
+          overall = c[c['scope'].astype(str).eq('overall')].iloc[0]
+          if float(overall['coverage_pct']) < 0.90:
+              raise SystemExit('ERROR: Restored station coverage no longer passes 90% gate.')
+          print(f"Station coverage gate reconfirmed: {float(overall['coverage_pct']):.3%}")
+          PY
+      - name: Run deterministic leak/alignment self-tests
+        run: python -m src.pregame_forecast_selftest
+      - name: Run geographically distributed 24h/12h/6h pilot
+        run: python -m src.pregame_forecast_pilot
+      - name: Print pilot evidence
+        if: always()
+        run: |
+          for path in \
+            outputs/pregame_forecast_realism/pilot/pilot_coverage.csv \
+            outputs/pregame_forecast_realism/pilot/pilot_verification_metrics.csv \
+            outputs/pregame_forecast_realism/pilot/pilot_game_status.csv; do
+            if [ -s "$path" ]; then
+              echo "--- $path ---"
+              cat "$path"
+            fi
+          done
+      - name: Upload pilot artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pregame-forecast-pilot-${{ github.run_id }}
+          path: outputs/pregame_forecast_realism/pilot/
+          if-no-files-found: error
+          retention-days: 30
