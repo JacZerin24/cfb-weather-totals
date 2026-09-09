@@ -1,0 +1,59 @@
+name: FCS Live Attribution Diagnostic
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/live-week-attribution
+    paths:
+      - 'src/fcs_live_attribution.py'
+      - '.github/workflows/fcs-live-attribution.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out diagnostic branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install pinned project dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore exact run-61 live training artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/live-training
+          mkdir -p /tmp/live-training data/processed
+          gh run download 34323765968 -n cfb-live-training-data -D /tmp/live-training
+          MODEL_PATH=$(find /tmp/live-training -type f -name modeling_dataset.csv -print -quit)
+          if [ -z "$MODEL_PATH" ]; then
+            echo 'ERROR: exact live training artifact lacks modeling_dataset.csv'
+            exit 1
+          fi
+          cp "$MODEL_PATH" data/processed/modeling_dataset.csv
+          TEAM_PATH=$(find /tmp/live-training -type f -name team_prior_features.csv -print -quit)
+          if [ -n "$TEAM_PATH" ]; then
+            cp "$TEAM_PATH" data/processed/team_prior_features.csv
+          fi
+
+      - name: Reproduce and attribute lone qualifying FCS game
+        run: python -m src.fcs_live_attribution
+
+      - name: Upload attribution evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: fcs-live-attribution-${{ github.run_id }}
+          path: outputs/diagnostics/fcs_live_attribution/
+          if-no-files-found: error
+          retention-days: 30
