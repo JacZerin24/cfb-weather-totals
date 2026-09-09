@@ -13,6 +13,7 @@ from .fcs_model import (
     fcs_research_tags,
     score_fcs_rows,
 )
+from .market_line_cache import apply_market_line_cache, cached_market_reason
 from .odds_api_fallback import apply_fcs_odds_fallback
 from .oddspapi_fallback import apply_fcs_oddspapi_fallback
 from .predict_week import (
@@ -36,8 +37,10 @@ DISPLAY_COLUMNS = [
     'season', 'week', 'game_id', 'start_date', 'start_time_tbd',
     'away_team', 'home_team', 'venue_name', 'venue_city', 'venue_state', 'venue_latitude', 'venue_longitude',
     'game_indoors', 'closing_total', 'line_provider', 'line_source', 'line_provider_count', 'line_total_range',
-    'line_total_median', 'selected_vs_market_median', 'odds_match_confidence', 'model_projected_total', 'pred_market_residual',
-    'abs_pred_edge', 'model_side', 'temperature_f', 'dewpoint_f', 'humidity', 'wind_mph', 'wind_gust_mph',
+    'line_total_median', 'selected_vs_market_median', 'odds_match_confidence',
+    'line_cache_status', 'line_is_cached', 'line_last_seen_utc', 'line_age_hours',
+    'model_projected_total', 'pred_market_residual', 'abs_pred_edge', 'model_side',
+    'temperature_f', 'dewpoint_f', 'humidity', 'wind_mph', 'wind_gust_mph',
     'precip_probability_pct', 'precipitation', 'snowfall', 'weather_summary', 'nws_status', 'nws_office',
     'home_conference', 'away_conference', 'home_classification', 'away_classification', 'fbs_vs_fbs',
 ]
@@ -119,11 +122,24 @@ def main() -> None:
     board, oddspapi_stats = apply_fcs_oddspapi_fallback(board, preferred)
     board, odds_api_stats = apply_fcs_odds_fallback(board, preferred)
 
-    games_with_lines = int(board['closing_total'].notna().sum()) if 'closing_total' in board.columns else 0
     fcs_mask = board['division_track'].eq('FCS')
     fcs_games = int(fcs_mask.sum())
+    fresh_games_with_lines = int(board['closing_total'].notna().sum()) if 'closing_total' in board.columns else 0
+    fresh_fcs_with_lines = int(board.loc[fcs_mask, 'closing_total'].notna().sum()) if fcs_games else 0
+
+    # Preserve the most recently observed total for every current live-site
+    # game. Cache-restored rows stay visible and scoreable for orientation, but
+    # are forced to WATCH below until a live source confirms the market again.
+    board, cache_stats = apply_market_line_cache(board, now=now)
+    games_with_lines = int(board['closing_total'].notna().sum()) if 'closing_total' in board.columns else 0
     fcs_with_lines = int(board.loc[fcs_mask, 'closing_total'].notna().sum()) if fcs_games else 0
-    print(f'Games with a usable current total: {games_with_lines}')
+    cached_fcs = int((fcs_mask & board['line_cache_status'].eq('CACHED')).sum()) if fcs_games else 0
+
+    print(
+        f"Market line cache: {fresh_games_with_lines} fresh total(s), "
+        f"{cache_stats.get('restored_lines', 0)} restored last-known total(s), "
+        f"{games_with_lines} usable total(s), {cache_stats.get('cached_entries', 0)} cached game(s)."
+    )
     print(
         f"OddsPapi: status={oddspapi_stats.get('oddspapi_status', 'unknown')}; "
         f"filled={oddspapi_stats.get('fcs_oddspapi_filled', 0)} FCS game(s); "
@@ -140,8 +156,9 @@ def main() -> None:
     if oddspapi_stats.get('oddspapi_error_detail'):
         print(f"OddsPapi response detail: {oddspapi_stats['oddspapi_error_detail']}")
     print(
-        f"FCS line coverage: {fcs_with_lines}/{fcs_games}; "
-        f"secondary Odds API filled {odds_api_stats.get('fcs_fallback_filled', 0)} game(s) "
+        f"FCS line coverage: {fresh_fcs_with_lines}/{fcs_games} fresh; "
+        f"{cached_fcs} restored from cache; {fcs_with_lines}/{fcs_games} usable. "
+        f"Secondary Odds API filled {odds_api_stats.get('fcs_fallback_filled', 0)} game(s) "
         f"(status={odds_api_stats.get('odds_api_status', 'unknown')})."
     )
 
@@ -158,8 +175,8 @@ def main() -> None:
         board['status'] = 'NO LINE'
         board['decision_reason'] = np.where(
             board['division_track'].eq('FCS'),
-            'No current FCS market total is available from CFBD, OddsPapi, or the secondary odds fallback.',
-            'No current market total is available.',
+            'No current or last-known FCS market total is available from CFBD, OddsPapi, the secondary odds fallback, or the market-line cache.',
+            'No current or last-known market total is available.',
         )
         board['research_tags'] = ''
         board['model_track'] = np.where(board['division_track'].eq('FCS'), 'FCS-only HGB', 'GENERAL HGB')
@@ -170,7 +187,7 @@ def main() -> None:
         board['nws_status'] = ''
         board = finalize_board(board)
         write_outputs(board, season, target_week)
-        print('Wrote the full weekly slate with no current market totals.')
+        print('Wrote the full weekly slate with no fresh or cached market totals.')
         return
 
     board = merge_prior_team_features(board)
@@ -185,7 +202,13 @@ def main() -> None:
     board['model_track'] = 'GENERAL HGB'
     board = score_fcs_rows(board)
 
-    statuses = board.apply(classify_division_row, axis=1)
+    statuses: list[tuple[str, str]] = []
+    for _, row in board.iterrows():
+        cache_reason = cached_market_reason(row)
+        if cache_reason:
+            statuses.append(('WATCH', cache_reason))
+        else:
+            statuses.append(classify_division_row(row))
     board['status'] = [s[0] for s in statuses]
     board['decision_reason'] = [s[1] for s in statuses]
     board['research_tags'] = board.apply(combined_research_tags, axis=1)
@@ -193,8 +216,9 @@ def main() -> None:
 
     write_outputs(board, season, target_week)
     print(
-        f"Wrote {len(board)} weekly games with {games_with_lines} current totals, "
-        f"{fcs_games} FCS-vs-FCS games ({fcs_with_lines} with totals), and "
+        f"Wrote {len(board)} weekly games with {games_with_lines} usable totals "
+        f"({fresh_games_with_lines} fresh, {cache_stats.get('restored_lines', 0)} cached), "
+        f"{fcs_games} FCS-vs-FCS games ({fcs_with_lines} with usable totals), and "
         f"{int(board['status'].eq('QUALIFIES').sum())} qualifying target(s)."
     )
 
