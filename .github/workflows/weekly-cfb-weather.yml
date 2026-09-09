@@ -1,11 +1,18 @@
 name: Weekly CFB Weather Totals
 
 on:
-  # Manual runs are permitted for a post-rollover early look once the prior week's final kickoff has passed.
+  # Manual runs rebuild from current CFBD plus the persisted line cache by
+  # default. Turn on refresh_fcs_odds only when a fresh FCS market pull is
+  # intentionally needed. Watchdog backups always refresh FCS odds.
   workflow_dispatch:
     inputs:
       watchdog_backup:
         description: Automated backup requested by the weekly safety watchdog
+        required: false
+        default: false
+        type: boolean
+      refresh_fcs_odds:
+        description: Spend FCS odds-provider quota to refresh FCS totals now
         required: false
         default: false
         type: boolean
@@ -167,18 +174,26 @@ jobs:
           NOAA_API_TOKEN: ${{ secrets.NOAA_API_TOKEN }}
           WEEKLY_EVENT_NAME: ${{ github.event_name }}
           WEEKLY_EVENT_SCHEDULE: ${{ github.event.schedule }}
+          WEEKLY_REFRESH_FCS_ODDS: ${{ github.event.inputs.refresh_fcs_odds }}
+          WEEKLY_WATCHDOG_BACKUP: ${{ github.event.inputs.watchdog_backup }}
         run: |
           set -euo pipefail
           python -m src.market_line_cache_selftest
 
-          # Source/config pushes are implementation checks, not operational odds
-          # refreshes. Preserve scarce FCS-provider quota for scheduled snapshots
-          # and intentional manual runs; the persisted market cache supplies the
-          # last-known FCS lines during a push-triggered site rebuild.
-          if [ "$WEEKLY_EVENT_NAME" = "push" ]; then
+          REFRESH_FCS_ODDS=false
+          if [ "$WEEKLY_EVENT_NAME" = "schedule" ]; then
+            REFRESH_FCS_ODDS=true
+          elif [ "$WEEKLY_EVENT_NAME" = "workflow_dispatch" ] && \
+               { [ "${WEEKLY_WATCHDOG_BACKUP:-false}" = "true" ] || [ "${WEEKLY_REFRESH_FCS_ODDS:-false}" = "true" ]; }; then
+            REFRESH_FCS_ODDS=true
+          fi
+
+          if [ "$REFRESH_FCS_ODDS" != "true" ]; then
             unset ODDSPAPI_API_KEY
             unset ODDS_API_KEY
-            echo "Push-triggered build: external FCS odds refresh disabled; using CFBD plus persisted market cache."
+            echo "FCS odds refresh disabled for this run; using CFBD plus persisted market cache."
+          else
+            echo "FCS odds refresh enabled for this operational run."
           fi
 
           python -m src.run_live_week
