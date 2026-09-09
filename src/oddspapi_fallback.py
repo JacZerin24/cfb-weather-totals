@@ -20,12 +20,14 @@ COVERAGE_PATH = Path('outputs/oddspapi_bookmaker_coverage.csv')
 
 # Live FCS coverage audit on 2026-08-27 found bet365 and Hard Rock Bet on
 # all 30 FCS fixtures that had an active two-sided full-game total, while
-# DraftKings and BetRivers each covered 28/30. Querying these four preserves
-# the observed union while providing independent main-line corroboration and
-# reducing a normal refresh from 19 OddsPapi requests to 6 total requests
-# (fixtures + markets + four one-book odds calls).
+# DraftKings and BetRivers each covered 28/30. On 2026-09-09, the successful
+# four-book live pull recovered 24 FCS totals and Hard Rock supplied every
+# selected line, while a later quota-constrained one-book bet365 pull recovered
+# none. Put Hard Rock first so a low-quota run spends its first bookmaker call
+# on the source with the strongest most-recent observed live coverage. Querying
+# all four still preserves the broader observed union and corroboration.
 NCAA_BOOKMAKER_PRIORITY = [
-    'bet365', 'draftkings', 'betrivers', 'hardrockbet',
+    'hardrockbet', 'bet365', 'draftkings', 'betrivers',
 ]
 
 
