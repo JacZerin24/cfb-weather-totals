@@ -1,14 +1,14 @@
 # Weekly CFB Weather Totals Report
 
-Generated: 2026-09-08 07:23 UTC
+Generated: 2026-09-09 07:28 UTC
 
 > Paper tracking only. This report is not a guarantee of profit or betting advice.
 
 ## Weekly picks
 
-| status              | note                                                                                           |
-|:--------------------|:-----------------------------------------------------------------------------------------------|
-| no_qualifying_plays | No game currently satisfies the HGB under 3.5+ edge, 56+ total, and forecast-readiness screen. |
+| status    | decision_reason                                                                                                     | research_tags                                                     | division_track   | model_track   |   season |   week |   game_id | start_date                | start_time_tbd   | away_team      | home_team   | venue_name        | venue_city   | venue_state   |   venue_latitude |   venue_longitude | game_indoors   |   closing_total | line_provider          | line_source   |   line_provider_count |   line_total_range |   line_total_median |   selected_vs_market_median |   odds_match_confidence |   model_projected_total |   pred_market_residual |   abs_pred_edge | model_side   |   temperature_f |   dewpoint_f |   humidity |   wind_mph |   wind_gust_mph |   precip_probability_pct |   precipitation |   snowfall | weather_summary          | nws_status   | nws_office   | home_conference   | away_conference   | home_classification   | away_classification   | fbs_vs_fbs   |   status_rank |
+|:----------|:--------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------|:-----------------|:--------------|---------:|-------:|----------:|:--------------------------|:-----------------|:---------------|:------------|:------------------|:-------------|:--------------|-----------------:|------------------:|:---------------|----------------:|:-----------------------|:--------------|----------------------:|-------------------:|--------------------:|----------------------------:|------------------------:|------------------------:|-----------------------:|----------------:|:-------------|----------------:|-------------:|-----------:|-----------:|----------------:|-------------------------:|----------------:|-----------:|:-------------------------|:-------------|:-------------|:------------------|:------------------|:----------------------|:----------------------|:-------------|--------------:|
+| QUALIFIES | FCS-only HGB under edge ≥7.5 with a 56+ total; this screen was positive in each 2023-2025 walk-forward test season. | 5.0+ model edge; FCS-only HGB; FCS 7.5+ under edge; FCS 56+ total | FCS              | FCS-only HGB  |     2026 |      2 | 401868061 | 2026-09-12 21:00:00+00:00 | False            | Morehead State | Austin Peay | Governors Stadium | Clarksville  | TN            |          36.5363 |          -87.3526 | False          |            63.5 | hardrockbet (OddsPapi) | OddsPapi      |                     1 |                  0 |                63.5 |                           0 |                    0.97 |                 55.2386 |               -8.26144 |         8.26144 | under        |              91 |           73 |         56 |    4.60312 |         8.05545 |                       27 |               0 |          0 | Low precipitation chance | ok           | OHX          | UAC               | Pioneer           | fcs                   | fcs                   | False        |             0 |
 
 ## Starter backtest summary
 
