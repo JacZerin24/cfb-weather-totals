@@ -168,6 +168,19 @@ jobs:
           WEEKLY_EVENT_NAME: ${{ github.event_name }}
           WEEKLY_EVENT_SCHEDULE: ${{ github.event.schedule }}
         run: |
+          set -euo pipefail
+          python -m src.market_line_cache_selftest
+
+          # Source/config pushes are implementation checks, not operational odds
+          # refreshes. Preserve scarce FCS-provider quota for scheduled snapshots
+          # and intentional manual runs; the persisted market cache supplies the
+          # last-known FCS lines during a push-triggered site rebuild.
+          if [ "$WEEKLY_EVENT_NAME" = "push" ]; then
+            unset ODDSPAPI_API_KEY
+            unset ODDS_API_KEY
+            echo "Push-triggered build: external FCS odds refresh disabled; using CFBD plus persisted market cache."
+          fi
+
           python -m src.run_live_week
           python -m src.fcs_research
           python -m src.report
