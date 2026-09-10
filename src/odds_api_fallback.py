@@ -26,6 +26,7 @@ TEAM_ALIASES = {
     'ualbany': 'albany',
     'albany great danes': 'albany',
     'long island university': 'liu',
+    'long island': 'liu',
     'liu sharks': 'liu',
     'elon phoenix': 'elon',
     'vmi keydets': 'vmi',
