@@ -9,64 +9,15 @@ on:
 
 permissions:
   contents: read
+  actions: write
 
 jobs:
   diagnose:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install minimal dependencies
-        run: pip install pandas numpy requests
-
-      - name: Inspect OddsPapi account reset metadata (unmetered)
+      - name: Trigger production board refresh after FCS alias repair
         env:
-          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
+          GH_TOKEN: ${{ github.token }}
         run: |
-          set -euo pipefail
-          RESP=$(curl -fsS "https://api.oddspapi.io/v4/account?apiKey=${ODDSPAPI_API_KEY}")
-          echo "OddsPapi account fields relevant to quota/reset:"
-          echo "$RESP" | jq '[paths(scalars) as $p | select(($p | map(tostring) | join(".") | test("reset|renew|valid|request|period|plan"; "i"))) | {path: ($p | map(tostring) | join(".")), value: getpath($p)}]'
-
-      - name: Compare live The Odds API FCS feed to production board
-        env:
-          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        run: |
-          set -euo pipefail
-          rm -f /tmp/headers.txt /tmp/fcs.json
-          CODE=$(curl -sS -D /tmp/headers.txt -o /tmp/fcs.json -w "%{http_code}" \
-            "https://api.the-odds-api.com/v4/sports/americanfootball_ncaaf_fcs/odds?regions=us&markets=totals&oddsFormat=american&dateFormat=iso&apiKey=${ODDS_API_KEY}")
-          echo "The Odds API FCS HTTP status: $CODE"
-          grep -iE '^x-requests-(remaining|used|last):' /tmp/headers.txt || true
-          test "$CODE" = "200"
-          python - <<'PY'
-          import json
-          import pandas as pd
-          from src.odds_api_fallback import match_odds_event, select_total_market
-
-          board = pd.read_csv('outputs/weekly_board.csv')
-          fcs = board[board['division_track'].astype(str).str.upper().eq('FCS')].copy()
-          events = json.load(open('/tmp/fcs.json'))
-          print(f'Board FCS games: {len(fcs)}; live API events: {len(events)}')
-          matched_ids = set()
-          unmatched = []
-          for _, game in fcs.iterrows():
-              event, confidence = match_odds_event(game, events)
-              if event is None:
-                  unmatched.append((game['away_team'], game['home_team'], confidence))
-                  continue
-              matched_ids.add(str(event.get('id')))
-          print('UNMATCHED BOARD GAMES:')
-          for away, home, score in unmatched:
-              print(f'  {away} @ {home} | best_score={score:.4f}')
-          print('UNUSED LIVE API EVENTS:')
-          for event in events:
-              if str(event.get('id')) not in matched_ids:
-                  print(f"  {event.get('away_team')} @ {event.get('home_team')} | {event.get('commence_time')}")
-          PY
+          gh workflow run weekly-cfb-weather.yml --repo "$GITHUB_REPOSITORY" --ref main
+          echo "Triggered Weekly CFB Weather Totals on main."
