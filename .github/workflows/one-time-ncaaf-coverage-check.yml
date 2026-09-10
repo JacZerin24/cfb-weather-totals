@@ -1,0 +1,48 @@
+name: One-Time NCAAF Coverage Check
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/one-time-ncaaf-coverage-check.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas numpy requests
+      - name: Test normal NCAAF feed against current missing FBS-involved games
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: |
+          set -euo pipefail
+          curl -sS -D /tmp/headers.txt -o /tmp/ncaaf.json \
+            "https://api.the-odds-api.com/v4/sports/americanfootball_ncaaf/odds?regions=us&markets=totals&oddsFormat=american&dateFormat=iso&apiKey=${ODDS_API_KEY}"
+          grep -iE '^x-requests-(remaining|used|last):' /tmp/headers.txt || true
+          python - <<'PY'
+          import csv, json
+          import pandas as pd
+          from src.odds_api_fallback import match_odds_event, select_total_market
+          rows=list(csv.DictReader(open('outputs/weekly_board.csv',encoding='utf-8')))
+          events=json.load(open('/tmp/ncaaf.json'))
+          print('NCAAF live events:', len(events))
+          targets=[]
+          for r in rows:
+              hc=r.get('home_classification','').lower(); ac=r.get('away_classification','').lower()
+              if not r.get('closing_total') and ('fbs' in {hc,ac}):
+                  targets.append(r)
+          print('Missing FBS-involved board games:', len(targets))
+          for r in targets:
+              s=pd.Series(r)
+              event,conf=match_odds_event(s,events)
+              market=select_total_market(event,[]) if event else None
+              print(f"{r['away_team']} @ {r['home_team']} -> matched={bool(event)} confidence={conf:.4f} total={market.get('closing_total') if market else None} provider={market.get('line_provider') if market else None}")
+          PY
