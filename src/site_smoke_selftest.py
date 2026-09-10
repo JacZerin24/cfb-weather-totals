@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from html import escape
 import re
 
 import pandas as pd
@@ -57,7 +58,12 @@ def main() -> None:
     if not board.empty:
         sample = board.iloc[0]
         matchup = f"{sample.get('away_team', '')} @ {sample.get('home_team', '')}"
-        if matchup not in html:
+        # The dashboard correctly HTML-escapes team names (for example,
+        # "East Texas A&M" renders as "East Texas A&amp;M"). Compare against
+        # the escaped representation so the smoke test validates content
+        # without falsely rejecting safe HTML encoding.
+        rendered_matchup = escape(matchup)
+        if rendered_matchup not in html:
             raise AssertionError(f'Final website does not contain first board matchup: {matchup}')
 
     print(
