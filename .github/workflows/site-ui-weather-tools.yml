@@ -31,8 +31,8 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install lightweight validation dependency
-        run: pip install 'pandas==3.0.5'
+      - name: Install pinned project dependencies
+        run: pip install -r requirements.txt
 
       - name: Rebuild presentation-only weather tools from current board
         run: |
