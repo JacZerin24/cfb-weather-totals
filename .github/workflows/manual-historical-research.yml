@@ -51,6 +51,7 @@ jobs:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           NOAA_API_TOKEN: ${{ secrets.NOAA_API_TOKEN }}
         run: |
+          set -euo pipefail
           python -m src.pull_historical_games
           python -m src.pull_historical_lines
           python -m src.pull_historical_weather
@@ -65,12 +66,31 @@ jobs:
           python -m src.validate_model_edges
           python -m src.combo_backtest
           python -m src.weekly_card_backtest
+
+          # Refresh the operational board from the newly rebuilt training data,
+          # then build the research page before index.html is regenerated.
           python -m src.run_live_week
+          python -m src.fcs_research
           python -m src.report
           python -m src.build_research_dashboard
           python -m src.enrich_research_dashboard_explainer
           cp docs/index.html docs/research.html
+
+          # Keep this alternate site-writing path identical to the normal weekly
+          # presentation pipeline. Otherwise a manual research run could publish
+          # a base dashboard that drops radar, weather filtering/sorting, FCS
+          # labels, bankroll guidance, or stale/postponement diagnostics.
           python -m src.build_live_dashboard
+          python -m src.augment_dashboard_divisions
+          python site_tools/augment_weather_ui.py
+          python site_tools/fix_radar_ui.py
+          python -m src.fcs_research_labels
+          python -m src.fcs_card_guard
+          python -m src.bankroll_helper
+          python -m src.mark_monday_early_look
+          python site_tools/apply_stale_status.py
+          python site_tools/apply_postponement_diagnostics.py
+          python -m src.site_smoke_selftest
 
       - name: Upload data and outputs as artifact
         if: always()
