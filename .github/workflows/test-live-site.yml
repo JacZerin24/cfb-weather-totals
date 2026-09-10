@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'src/**'
+      - 'site_tools/**'
       - '.github/workflows/**'
       - 'requirements.txt'
       - 'config/**'
@@ -27,16 +28,24 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Compile Python source
-        run: python -m compileall -q src
+      - name: Compile production and site source
+        run: python -m compileall -q src site_tools
 
-      - name: Validate live decision logic
+      - name: Validate market cache safety
+        run: python -m src.market_line_cache_selftest
+
+      - name: Validate live decision and integration logic
         run: |
           python - <<'PY'
+          from datetime import datetime, timezone
+
+          import numpy as np
           import pandas as pd
-          from src.predict_week import classify_row
+
+          from site_tools.augment_weather_ui import weather_types
           from src.fcs_model import classify_division_row
-          from src.nws_forecast import _c_to_f, _kph_to_mph
+          from src.model_bakeoff import feature_lists
+          from src.nws_forecast import _c_to_f, _kph_to_mph, _value_at
           from src.odds_api_fallback import apply_fcs_odds_fallback, match_odds_event, select_total_market
           from src.oddspapi_fallback import (
               NCAA_BOOKMAKER_PRIORITY,
@@ -45,8 +54,10 @@ jobs:
               match_oddspapi_fixture,
               select_oddspapi_total,
           )
+          from src.predict_week import classify_row
+          from src.run_live_week import active_cfb_season, calendar_slate_window
 
-          assert NCAA_BOOKMAKER_PRIORITY == ['bet365', 'draftkings', 'betrivers', 'hardrockbet']
+          assert NCAA_BOOKMAKER_PRIORITY == ['hardrockbet', 'bet365', 'draftkings', 'betrivers']
 
           qualifying = pd.Series({
               'closing_total': 60.0,
@@ -58,6 +69,12 @@ jobs:
               'closing_total': 60.0,
               'pred_market_residual': -4.2,
               'nws_status': 'missing_coordinates',
+              'start_time_tbd': False,
+          })
+          incomplete = pd.Series({
+              'closing_total': 60.0,
+              'pred_market_residual': -4.2,
+              'nws_status': 'incomplete_forecast',
               'start_time_tbd': False,
           })
           no_play = pd.Series({
@@ -90,12 +107,65 @@ jobs:
 
           assert classify_row(qualifying)[0] == 'QUALIFIES'
           assert classify_row(watch)[0] == 'WATCH'
+          assert classify_row(incomplete)[0] == 'WATCH'
           assert classify_row(no_play)[0] == 'NO PLAY'
           assert classify_division_row(fcs_qualifying)[0] == 'QUALIFIES'
           assert classify_division_row(fcs_lean)[0] == 'LEAN'
           assert classify_division_row(fcs_no_play)[0] == 'NO PLAY'
           assert round(_c_to_f(0), 1) == 32.0
           assert round(_kph_to_mph(16.0934), 1) == 10.0
+
+          # NWS nearest-value fallback must not reach arbitrarily far outside
+          # the grid's valid kickoff support.
+          grid_series = {'values': [{
+              'validTime': '2026-09-10T00:00:00Z/PT1H',
+              'value': 12.0,
+          }]}
+          inside = datetime(2026, 9, 10, 0, 30, tzinfo=timezone.utc)
+          far = datetime(2026, 9, 10, 10, 0, tzinfo=timezone.utc)
+          assert _value_at(grid_series, inside) == 12.0
+          assert _value_at(grid_series, far) is None
+
+          # January/February postseason games stay attached to the prior CFB
+          # season, and slate selection is based on the actual calendar week
+          # rather than one possibly stale CFBD week label.
+          assert active_cfb_season('2026-09-10T00:00:00Z') == 2026
+          assert active_cfb_season('2027-01-10T00:00:00Z') == 2026
+          slate_fixture = pd.DataFrame({
+              'start_date': pd.to_datetime([
+                  '2026-09-14T00:00:00Z',
+                  '2026-09-17T23:00:00Z',
+                  '2026-09-19T23:00:00Z',
+              ], utc=True),
+              'week': [2, 3, 3],
+          })
+          start, end = calendar_slate_window(slate_fixture)
+          assert start < slate_fixture.iloc[0]['start_date'] < end
+          assert (slate_fixture['start_date'] < end).all()
+
+          # All-missing historical numeric columns are explicitly excluded
+          # instead of being silently dropped by sklearn's imputer.
+          feature_fixture = pd.DataFrame({
+              'closing_total': [55.0, 56.0],
+              'wind_mph': [5.0, 6.0],
+              'home_prior_sacks': [np.nan, np.nan],
+              'home_prior_points': [24.0, 27.0],
+              'game_indoors_bool': [False, False],
+          })
+          nums, _ = feature_lists(feature_fixture)
+          assert 'home_prior_sacks' not in nums
+          assert 'home_prior_points' in nums
+
+          assert weather_types({
+              'game_indoors': False,
+              'temperature_f': 90,
+              'wind_mph': 16,
+              'wind_gust_mph': 28,
+              'precip_probability_pct': 45,
+              'precipitation': 0.0,
+              'snowfall': 0.0,
+          }) == ['RAIN', 'WIND', 'HOT']
+          assert weather_types({'game_indoors': True}) == ['INDOOR']
 
           odds_fixture = [{
               'id': 'fixture-game',
@@ -314,5 +384,5 @@ jobs:
           assert op_filled.loc[0, 'closing_total'] == 44.5
           assert op_filled.loc[0, 'line_source'] == 'OddsPapi'
           assert op_stats['fcs_oddspapi_filled'] == 1
-          print('Live FBS/FCS decision, weather conversion, and both FCS odds fallback checks passed.')
+          print('Live decision, NWS horizon, slate rollover, feature-shape, weather UI, and odds fallback checks passed.')
           PY
