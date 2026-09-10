@@ -25,18 +25,24 @@ on:
     - cron: '17 13 * * 4,5'  # CDT
     - cron: '17 14 * * 4,5'  # CST
     # Saturday deadline build: 1:17 AM Central.
-    # This is the only normal Saturday full build and leaves substantial
-    # margin for GitHub scheduler delays before the 8:30 AM target.
     - cron: '17 6 * * 6'     # CDT
     - cron: '17 7 * * 6'     # CST
+    # November MAC midweek coverage. November is CST in the 2026 season.
+    # These are official prospective snapshots under protocol 2026.5.
+    - cron: '17 11 * 11 2,3' # Tue/Wed 5:17 AM CST
+    - cron: '17 14 * 11 2,3' # Tue/Wed 8:17 AM CST
+    # December/January Tue/Wed bowl/CFP operational coverage. These refresh the
+    # public board but are intentionally outside the 2026 regular-season
+    # prospective-entry cron list.
+    - cron: '17 11 * 12,1 2,3' # Tue/Wed 5:17 AM CST
+    - cron: '17 14 * 12,1 2,3' # Tue/Wed 8:17 AM CST
+    - cron: '17 14 * 12,1 1'   # Monday postseason 8:17 AM CST freshness
 
 permissions:
   contents: write
   actions: read
-
-concurrency:
-  group: cfb-weather-data-writes
-  cancel-in-progress: false
+  pages: write
+  id-token: write
 
 jobs:
   central-time-gate:
@@ -60,7 +66,9 @@ jobs:
             "17 10 * * 1"|"17 10 * * 4,5"|"17 13 * * 4,5"|"17 6 * * 6")
               EXPECTED_OFFSET="-0500"
               ;;
-            "17 11 * * 1"|"17 11 * * 4,5"|"17 14 * * 4,5"|"17 7 * * 6")
+            "17 11 * * 1"|"17 11 * * 4,5"|"17 14 * * 4,5"|"17 7 * * 6"|\
+            "17 11 * 11 2,3"|"17 14 * 11 2,3"|\
+            "17 11 * 12,1 2,3"|"17 14 * 12,1 2,3"|"17 14 * 12,1 1")
               EXPECTED_OFFSET="-0600"
               ;;
             *)
@@ -82,6 +90,8 @@ jobs:
     needs: central-time-gate
     if: needs.central-time-gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
+    outputs:
+      site_sha: ${{ steps.commit.outputs.site_sha }}
 
     steps:
       - name: Check out repository
@@ -153,7 +163,7 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
-      - name: Build live weekly board
+      - name: Build complete live board and website
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
           ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
@@ -172,10 +182,15 @@ jobs:
           python -m src.report
           python -m src.build_live_dashboard
           python -m src.augment_dashboard_divisions
+          python site_tools/augment_weather_ui.py
+          python site_tools/fix_radar_ui.py
           python -m src.fcs_research_labels
           python -m src.fcs_card_guard
           python -m src.bankroll_helper
           python -m src.mark_monday_early_look
+          python site_tools/apply_stale_status.py
+          python site_tools/apply_postponement_diagnostics.py
+          python -m src.site_smoke_selftest
 
       - name: Archive prospective entry snapshot
         env:
@@ -215,11 +230,55 @@ jobs:
           python -m src.joint_core_shadow_grade validate-protocol
           python -m src.joint_core_shadow_capture
 
-      - name: Commit generated website and outputs
+      - name: Commit complete generated website and outputs
+        id: commit
         run: |
+          set -euo pipefail
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add outputs/ docs/
           git commit -m "Update live CFB weather totals board" || echo "No changes to commit"
           git pull --rebase origin main
           git push origin main
+          FINAL_SHA=$(git rev-parse HEAD)
+          echo "site_sha=$FINAL_SHA" >> "$GITHUB_OUTPUT"
+          echo "Committed complete site at $FINAL_SHA."
+
+  deploy-site:
+    needs:
+      - central-time-gate
+      - weekly-paper-run
+    if: needs.central-time-gate.outputs.should_run == 'true' && needs.weekly-paper-run.result == 'success'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: github-pages
+      cancel-in-progress: true
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out exact completed site commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.weekly-paper-run.outputs.site_sha }}
+
+      - name: Verify exact deployed source contains required UI
+        run: |
+          set -euo pipefail
+          grep -q 'SITE_WEATHER_TOOLS' docs/index.html
+          grep -q 'SITE_RADAR_SYNC' docs/index.html
+          grep -q 'id="radarToggle"' docs/index.html
+          grep -q 'id="weatherFilter"' docs/index.html
+          grep -q 'data-weather-sort="2"' docs/index.html
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload exact website artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
