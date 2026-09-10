@@ -13,9 +13,13 @@ on:
 permissions:
   contents: write
 
+# This workflow still commits docs/index.html, so it must serialize with every
+# other generated-data/site writer. Using the shared lock prevents a manual or
+# path-triggered presentation refresh from colliding with the weekly board,
+# close-capture, or prospective writer during pull --rebase / push.
 concurrency:
-  group: cfb-weather-site-ui
-  cancel-in-progress: true
+  group: cfb-weather-data-writes
+  cancel-in-progress: false
 
 jobs:
   augment-site:
