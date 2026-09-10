@@ -11,6 +11,7 @@ game_id,away_team,home_team,start_date,venue_name,game_indoors,nws_status,nws_of
 401868093,Lamar,Idaho,2026-09-12 20:00:00+00:00,Kibbie Dome,True,indoor,,,,,,,,,,Indoor/dome game
 401866629,Bryant,Hampton,2026-09-12 22:00:00+00:00,Armstrong Stadium,False,ok,AKQ,81.0,75.0,82.0,9.206232736,13.809349104,69.0,0.27,0.0,Measurable precipitation forecast
 401868112,Utah Tech,Montana,2026-09-12 19:00:00+00:00,Washington-Grizzly Stadium,False,ok,MSO,59.0,47.0,64.0,6.904674552,12.658570012,27.0,0.0,0.0,Low precipitation chance
+401866632,UAlbany,Long Island University,2026-09-12 16:00:00+00:00,Shark Stadium,False,ok,OKX,76.0,62.0,62.0,5.75389546,6.904674552,0.0,0.0,0.0,No meaningful precipitation signal
 401868236,Tarleton State,McNeese,2026-09-12 23:00:00+00:00,Cowboy Stadium,False,ok,LCH,85.0,77.0,77.0,5.75389546,9.206232736,73.0,0.1,0.0,Measurable precipitation forecast
 401868246,UT Rio Grande Valley,Nicholls,2026-09-12 23:00:00+00:00,Manning Field at John L. Guidry Stadium,False,ok,LIX,83.0,79.0,88.0,1.150779092,4.603116368,87.0,0.30000000000000004,0.0,Measurable precipitation forecast
 401867867,Valparaiso,Murray State,2026-09-12 23:00:00+00:00,Roy Stewart Stadium,False,ok,PAH,85.0,75.0,72.0,1.150779092,5.75389546,38.0,0.04,0.0,Measurable precipitation forecast
@@ -75,8 +76,8 @@ game_id,away_team,home_team,start_date,venue_name,game_indoors,nws_status,nws_of
 401858215,Villanova,Louisville,2026-09-11 23:00:00+00:00,L&N Federal Credit Union Stadium,False,ok,LMK,79.0,73.0,82.0,3.452337276,4.603116368,49.0,0.07,0.0,Measurable precipitation forecast
 401858214,Rutgers,Boston College,2026-09-11 23:30:00+00:00,"Alumni Stadium (Chestnut Hill, MA)",False,ok,BOX,68.0,48.0,49.0,8.055453644,10.357011828,0.0,0.0,0.0,No meaningful precipitation signal
 401856678,Missouri,Kansas,2026-09-12 00:00:00+00:00,Memorial Stadium,False,ok,TOP,82.0,71.0,69.0,4.603116368,9.206232736,5.0,0.0,0.0,No meaningful precipitation signal
-401858218,East Tennessee State,North Carolina,2026-09-12 16:00:00+00:00,Kenan Stadium,False,ok,RAH,83.0,76.0,80.0,3.452337276,6.904674552,39.0,0.04,0.0,Measurable precipitation forecast
 401858442,Penn State,Temple,2026-09-12 16:00:00+00:00,Lincoln Financial Field,False,ok,PHI,77.0,65.0,67.0,4.603116368,8.055453644,4.0,0.0,0.0,No meaningful precipitation signal
+401858218,East Tennessee State,North Carolina,2026-09-12 16:00:00+00:00,Kenan Stadium,False,ok,RAH,83.0,76.0,80.0,3.452337276,6.904674552,39.0,0.04,0.0,Measurable precipitation forecast
 401856786,Western Carolina,Cincinnati,2026-09-12 23:00:00+00:00,Nippert Stadium,False,ok,ILN,81.0,73.0,76.0,2.301558184,5.75389546,53.0,0.04,0.0,Measurable precipitation forecast
 401862703,Navy,Florida Atlantic,2026-09-12 23:30:00+00:00,FAU Stadium,False,ok,MFL,84.0,77.0,80.0,8.055453644,12.658570012,79.0,0.08,0.0,Measurable precipitation forecast
 401869955,Georgia State,Kennesaw State,2026-09-12 23:00:00+00:00,Fifth Third Stadium,False,ok,FFC,81.0,74.0,81.0,2.301558184,6.904674552,84.0,0.19,0.0,Measurable precipitation forecast
@@ -118,15 +119,14 @@ game_id,away_team,home_team,start_date,venue_name,game_indoors,nws_status,nws_of
 401860883,Sacramento State,Fresno State,2026-09-13 02:30:00+00:00,Valley Children's Stadium,False,ok,HNX,85.0,51.0,31.0,10.357011828,21.864802748000002,0.0,0.0,0.0,No meaningful precipitation signal
 401870822,Dickinson,Davidson,2026-09-12 16:00:00+00:00,Richardson Stadium,False,,,,,,,,,,,
 401868227,Thomas More,Dayton,2026-09-12 16:00:00+00:00,Welcome Stadium,False,,,,,,,,,,,
-401866632,UAlbany,Long Island University,2026-09-12 16:00:00+00:00,Shark Stadium,False,,,,,,,,,,,
 401867685,Kentucky Christian,Chicago State,2026-09-12 17:00:00+00:00,SeatGeek Stadium,False,,,,,,,,,,,
 401868280,Northern Michigan,St. Thomas (MN),2026-09-12 18:00:00+00:00,O'Shaughnessy Stadium,False,,,,,,,,,,,
 401867953,Bowie State,Delaware State,2026-09-12 19:00:00+00:00,Alumni Stadium,False,,,,,,,,,,,
 401868963,Lincoln (PA),Mississippi Valley State,2026-09-12 20:00:00+00:00,Soldier Field,False,,,,,,,,,,,
-401867966,Virginia Lynchburg,Morgan State,2026-09-12 22:00:00+00:00,Hughes Stadium,False,,,,,,,,,,,
 401867983,Virginia State,South Carolina State,2026-09-12 22:00:00+00:00,Oliver C. Dawson Stadium,False,,,,,,,,,,,
 401868210,Franklin,Butler,2026-09-12 22:00:00+00:00,Butler Bowl,False,,,,,,,,,,,
-401868072,Central Oklahoma,Central Arkansas,2026-09-12 23:00:00+00:00,Estes Stadium,False,,,,,,,,,,,
-401868150,North Alabama,SE Louisiana,2026-09-12 23:00:00+00:00,Strawberry Stadium,False,,,,,,,,,,,
-401869150,Arkansas Baptist,Houston Christian,2026-09-12 23:00:00+00:00,Husky Stadium,False,,,,,,,,,,,
+401867966,Virginia Lynchburg,Morgan State,2026-09-12 22:00:00+00:00,Hughes Stadium,False,,,,,,,,,,,
 401868241,West Georgia,Arkansas State,2026-09-12 23:00:00+00:00,Centennial Bank Stadium,False,,,,,,,,,,,
+401868150,North Alabama,SE Louisiana,2026-09-12 23:00:00+00:00,Strawberry Stadium,False,,,,,,,,,,,
+401868072,Central Oklahoma,Central Arkansas,2026-09-12 23:00:00+00:00,Estes Stadium,False,,,,,,,,,,,
+401869150,Arkansas Baptist,Houston Christian,2026-09-12 23:00:00+00:00,Husky Stadium,False,,,,,,,,,,,

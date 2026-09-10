@@ -1376,6 +1376,15 @@
     "grid_y": 58,
     "office": "CTP"
   },
+  "40.8163,-73.5895": {
+    "checked_at": "2026-09-10T04:35:13.129931+00:00",
+    "forecast_hourly_url": "https://api.weather.gov/gridpoints/OKX/47,49/forecast/hourly",
+    "forecast_url": "https://api.weather.gov/gridpoints/OKX/47,49/forecast",
+    "grid_data_url": "https://api.weather.gov/gridpoints/OKX/47,49",
+    "grid_x": 47,
+    "grid_y": 49,
+    "office": "OKX"
+  },
   "40.8207,-96.7056": {
     "checked_at": "2026-08-27T16:44:29.120697+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/OAX/56,40/forecast/hourly",
