@@ -1,0 +1,38 @@
+name: OddsPapi Account Diagnostic
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/oddspapi-account-diagnostic.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  account:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - name: Query safe account timing fields
+        env:
+          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json, os, requests
+          key=os.environ['ODDSPAPI_API_KEY'].strip()
+          r=requests.get('https://api.oddspapi.io/v4/account', params={'apiKey':key}, headers={'User-Agent':'cfb-weather-totals/1.0'}, timeout=30)
+          print('HTTP', r.status_code)
+          r.raise_for_status()
+          p=r.json(); subs=p.get('subscriptions') or []
+          active=[s for s in subs if isinstance(s,dict) and s.get('is_active')]
+          cid=p.get('current_subscription_id')
+          sub=active[-1] if active else next((s for s in subs if isinstance(s,dict) and s.get('subscription_id')==cid), (subs[-1] if subs else {}))
+          keys=['valid_from','valid_until','auto_renew','is_active','request_limit','request_count','last_request']
+          print('SAFE_ACCOUNT='+json.dumps({k:sub.get(k) for k in keys},sort_keys=True))
+          print('TIMING_KEYS='+','.join(k for k in sorted(sub) if any(x in k.lower() for x in ('reset','valid','renew','period'))))
+          PY
