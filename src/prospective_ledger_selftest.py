@@ -6,6 +6,7 @@ from tempfile import TemporaryDirectory
 
 import pandas as pd
 
+from .close_capture_gate import should_capture
 from .prospective_integrity_rebuild import (
     apply_grading_exclusions,
     apply_official_eligibility_corrections,
@@ -38,9 +39,10 @@ class FakeClient:
 def main() -> None:
     validate_frozen_rules()
     protocol = load_protocol()
-    assert protocol['protocol_version'] == '2026.4'
-    assert protocol.get('supersedes') == '2026.3'
+    assert protocol['protocol_version'] == '2026.5'
+    assert protocol.get('supersedes') == '2026.4'
     assert int(protocol['closing_benchmark_policy']['capture_window_minutes']) == 90
+    assert int(protocol['closing_benchmark_policy']['preflight_window_minutes']) == 105
     assert len(protocol_sha256()) == 64
 
     expected_official_crons = {
@@ -50,11 +52,17 @@ def main() -> None:
         '17 14 * * 4,5',
         '17 6 * * 6',
         '17 7 * * 6',
+        '17 11 * 11 2,3',
+        '17 14 * 11 2,3',
     }
     assert set(map(str, protocol['official_entry_policy']['eligible_crons'])) == expected_official_crons
     assert '17 8 * * 6' not in expected_official_crons
     assert '17 11 * * 6' not in expected_official_crons
     assert '17 12 * * 6' not in expected_official_crons
+    # Bowl/CFP-only operational crons must not accidentally become official
+    # regular-season prospective entries.
+    assert '17 11 * 12,1 2,3' not in expected_official_crons
+    assert '17 14 * 12,1 2,3' not in expected_official_crons
 
     kickoff = pd.Timestamp('2026-09-06T00:00:00Z')
     snapshots = pd.DataFrame([
@@ -132,6 +140,12 @@ def main() -> None:
     shadow_fixed = _apply_shadow_eligibility_corrections(shadow_fixture, orientation_protocol)
     assert bool(shadow_fixed.iloc[0]['official_evaluation_eligible'])
     assert bool(shadow_fixed.iloc[0]['shadow_eligibility_integrity_override'])
+    assert set(map(str, orientation_protocol['official_entry_policy']['eligible_crons'])) == expected_official_crons
+
+    joint_protocol = __import__(
+        'src.joint_core_shadow_grade', fromlist=['load_protocol']
+    ).load_protocol()
+    assert set(map(str, joint_protocol['official_entry_policy']['eligible_crons'])) == expected_official_crons
 
     closes = pd.DataFrame([
         {
@@ -253,9 +267,26 @@ def main() -> None:
         else:
             raise AssertionError('Immutable writer allowed an overwrite.')
 
+    # Zero-API close-capture gate: no nearby kickoff means no expensive API
+    # call; a tracked game within the guard window opens the authoritative path.
+    with TemporaryDirectory() as tmp:
+        gate_path = Path(tmp) / 'weekly_board.csv'
+        pd.DataFrame([{
+            'game_id': 99,
+            'start_date': '2026-11-03T23:00:00Z',
+            'away_team': 'Away',
+            'home_team': 'Home',
+        }]).to_csv(gate_path, index=False)
+        sources = (gate_path,)
+        assert not should_capture('2026-11-03T20:00:00Z', 105, sources)
+        assert should_capture('2026-11-03T21:30:00Z', 105, sources)
+
     weekly_workflow = (ROOT / '.github/workflows/weekly-cfb-weather.yml').read_text(encoding='utf-8')
     assert 'central-time-gate' in weekly_workflow
     assert 'python -m src.prospective_integrity_rebuild' in weekly_workflow
+    assert 'python -m src.site_smoke_selftest' in weekly_workflow
+    assert 'deploy-site:' in weekly_workflow
+    assert "ref: ${{ needs.weekly-paper-run.outputs.site_sha }}" in weekly_workflow
     for cron in expected_official_crons:
         assert cron in weekly_workflow, f'Official protocol cron is not scheduled: {cron}'
 
@@ -264,10 +295,13 @@ def main() -> None:
     assert '/dispatches' in watchdog_workflow
     assert 'weekly-paper-run' in watchdog_workflow
     assert 'SAFETY_HOUR=1' in watchdog_workflow
+    assert '47 11 * 11,12,1 2,3' in watchdog_workflow
 
     close_workflow = (ROOT / '.github/workflows/prospective-close-capture.yml').read_text(encoding='utf-8')
     assert 'workflow_dispatch' not in close_workflow, 'Close benchmark workflow must not allow manual captures.'
     assert 'github.run_attempt == 1' in close_workflow
+    assert 'python -m src.close_capture_gate --window-minutes 105' in close_workflow
+    assert "steps.preflight.outputs.should_capture == 'true'" in close_workflow
     for cron in protocol['closing_benchmark_policy']['capture_crons']:
         assert str(cron) in close_workflow
 
@@ -278,7 +312,7 @@ def main() -> None:
     for cron in protocol['paper_grading']['postgame_grade_crons']:
         assert str(cron) in grade_workflow
 
-    print('Prospective protocol, schedule alignment, immutable selection, completed-game grading, exclusions, CLV, and shadow-integrity checks passed.')
+    print('Prospective protocol 2026.5, schedule alignment, API preflight, immutable selection, completed-game grading, exclusions, CLV, and shadow-integrity checks passed.')
 
 
 if __name__ == '__main__':
