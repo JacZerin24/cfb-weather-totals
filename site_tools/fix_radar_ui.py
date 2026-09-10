@@ -45,6 +45,16 @@ def separate_radar_from_status_filters(html: str) -> str:
     )
 
 
+def enable_scroll_wheel_zoom(html: str) -> str:
+    old = "L.map('weekMap', { scrollWheelZoom:false, preferCanvas:true })"
+    new = "L.map('weekMap', { scrollWheelZoom:true, preferCanvas:true })"
+    if new in html:
+        return html
+    if old not in html:
+        raise RuntimeError("Could not locate the weekly map initialization in docs/index.html.")
+    return html.replace(old, new, 1)
+
+
 def radar_block() -> str:
     return r'''
       // SITE_RADAR_SYNC
@@ -220,9 +230,10 @@ def main() -> None:
     html = add_css(html)
     html = add_status_text(html)
     html = separate_radar_from_status_filters(html)
+    html = enable_scroll_wheel_zoom(html)
     html = replace_radar_js(html)
     INDEX.write_text(html, encoding="utf-8")
-    print("Replaced moving latest radar tiles with one-time-pinned, auto-refreshing radar layers.")
+    print("Updated radar synchronization and enabled mouse-wheel map zoom.")
 
 
 if __name__ == "__main__":
