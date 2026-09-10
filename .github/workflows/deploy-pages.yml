@@ -67,6 +67,16 @@ jobs:
         with:
           ref: main
 
+      - name: Verify website artifact contains required production UI
+        run: |
+          set -euo pipefail
+          test -s docs/index.html
+          grep -q 'SITE_WEATHER_TOOLS' docs/index.html
+          grep -q 'SITE_RADAR_SYNC' docs/index.html
+          grep -q 'id="radarToggle"' docs/index.html
+          grep -q 'id="weatherFilter"' docs/index.html
+          grep -q 'data-weather-sort="2"' docs/index.html
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
