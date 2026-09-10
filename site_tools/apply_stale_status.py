@@ -29,6 +29,11 @@ def load_board_statuses() -> dict[str, str]:
         return {str(row.get("game_id") or "").strip(): str(row.get("status") or "").strip() for row in csv.DictReader(f)}
 
 
+def current_overrides(overrides: list[dict[str, str]], board_statuses: dict[str, str]) -> list[dict[str, str]]:
+    current_ids = set(board_statuses)
+    return [o for o in overrides if str(o.get("game_id") or "").strip() in current_ids]
+
+
 def add_css(html: str) -> str:
     if CSS_MARKER in html:
         return html
@@ -47,6 +52,18 @@ def add_table_filter_option(html: str) -> str:
         f'<option>WATCH</option><option>{STALE_STATUS}</option><option>NO PLAY</option>',
         1,
     )
+
+
+def remove_stale_controls(html: str) -> str:
+    """Remove stale-only controls when the stale game is not on this slate."""
+    html = html.replace(f'<option>{STALE_STATUS}</option>', '')
+    html = re.sub(
+        rf'<button type="button" class="map-filter" data-map-status="{re.escape(STALE_STATUS)}">.*?</button>',
+        '',
+        html,
+        flags=re.S,
+    )
+    return html
 
 
 def update_table_row(html: str, matchup: str, status: str, reason: str) -> str:
@@ -138,10 +155,12 @@ def remove_stale_target_card(html: str, matchup: str) -> str:
 
 def renumber_target_cards(html: str) -> str:
     counter = 0
+
     def repl(match: re.Match) -> str:
         nonlocal counter
         counter += 1
         return f'<span class="rank">#{counter}</span>'
+
     return re.sub(r'<span class="rank">#\d+</span>', repl, html)
 
 
@@ -178,27 +197,32 @@ def main() -> None:
     if not INDEX.exists():
         raise RuntimeError("docs/index.html is missing.")
     overrides = load_overrides()
-    if not overrides:
-        print("No site status overrides to apply.")
+    board_statuses = load_board_statuses()
+    active = current_overrides(overrides, board_statuses)
+
+    html = INDEX.read_text(encoding="utf-8")
+    if not active:
+        cleaned = remove_stale_controls(html)
+        if cleaned != html:
+            INDEX.write_text(cleaned, encoding="utf-8")
+        print("No stale-game override applies to the current weekly board.")
         return
 
-    board_statuses = load_board_statuses()
     stale_qualifiers = sum(
-        1 for o in overrides
+        1 for o in active
         if (o.get("status") or STALE_STATUS) == STALE_STATUS
         and board_statuses.get(str(o.get("game_id") or "").strip()) == "QUALIFIES"
     )
 
-    html = INDEX.read_text(encoding="utf-8")
     html = add_css(html)
     html = add_table_filter_option(html)
-    html = update_map_json(html, overrides)
+    html = update_map_json(html, active)
     html = add_map_color(html)
-    html = add_map_filter(html, len(overrides))
+    html = add_map_filter(html, len(active))
     html = decrement_qualifies_map_count(html, stale_qualifiers)
 
     stale_matchups: list[str] = []
-    for override in overrides:
+    for override in active:
         status = override.get("status") or STALE_STATUS
         reason = override.get("reason") or "Original model status is stale after postponement."
         matchup = override.get("matchup") or ""
@@ -212,7 +236,10 @@ def main() -> None:
     html = patch_research_card(html, stale_matchups)
     html = decrement_target_metric(html, stale_qualifiers)
     INDEX.write_text(html, encoding="utf-8")
-    print(f"Applied {len(overrides)} site-only status override(s); official board/prospective files were not modified.")
+    print(
+        f"Applied {len(active)} current-slate site-only status override(s); "
+        "official board/prospective files were not modified."
+    )
 
 
 if __name__ == "__main__":
