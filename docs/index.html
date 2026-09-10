@@ -70,6 +70,32 @@
     @media(max-width:1100px) { .bankroll-grid { grid-template-columns:1fr; } .bankroll-controls { grid-template-columns:repeat(2,1fr); } .bankroll-metrics { grid-template-columns:repeat(3,1fr); } }
     @media(max-width:650px) { .bankroll-controls,.bankroll-metrics { grid-template-columns:1fr; } .plan-head { align-items:start; flex-direction:column; } .stake-table { min-width:640px; } .plan-panel { overflow:auto; } }
 
+
+    /* SITE_WEATHER_TOOLS */
+    .weather-num,.kickoff-num { white-space:nowrap; font-variant-numeric:tabular-nums; }
+    .sort-btn { appearance:none; border:0; background:transparent; color:#dbeafe; font:inherit; font-weight:900; padding:0; cursor:pointer; display:inline-flex; align-items:center; gap:5px; }
+    .sort-btn:hover,.sort-btn:focus-visible { color:var(--cyan); }
+    .sort-btn span { color:var(--muted); font-size:10px; }
+    .radar-toggle { border-color:rgba(125,211,252,.4); }
+    .radar-toggle.active { background:rgba(125,211,252,.14); border-color:rgba(125,211,252,.8); }
+    
+
+    /* SITE_RADAR_SYNC */
+    #radarStatus { color:#bfdbfe; font-weight:800; }
+    
+
+    /* SITE_POSTPONEMENT_DIAGNOSTICS */
+    .postponement-diagnostic-row td { padding:0 12px 14px; background:rgba(249,115,22,.035); }
+    .postponement-diagnostic { margin:0; padding:14px 15px; border:1px solid rgba(249,115,22,.34); border-radius:13px; background:linear-gradient(135deg,rgba(249,115,22,.11),rgba(125,211,252,.045)); }
+    .postponement-diagnostic-head { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+    .postponement-diagnostic-title { font-weight:950; color:#ffedd5; }
+    .postponement-diagnostic-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; }
+    .postponement-diagnostic-item { border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.035); border-radius:10px; padding:9px 10px; }
+    .postponement-diagnostic-item span { display:block; color:var(--muted); font-size:9px; font-weight:900; letter-spacing:.07em; text-transform:uppercase; }
+    .postponement-diagnostic-item strong { display:block; margin-top:3px; font-size:12px; color:#f8fbff; }
+    .postponement-diagnostic-note { margin-top:10px; color:#c9d7ea; font-size:11px; }
+    @media(max-width:900px) { .postponement-diagnostic-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    
   </style>
 </head>
 <body>
@@ -98,9 +124,9 @@
     <section id="map">
       <div class="section-head"><div><div class="eyebrow">Geographic slate overview</div><h2>Weekly status map</h2></div><p>Every scheduled game stays visible, including games without a current total.</p></div>
       <div class="map-panel">
-        <div class="map-toolbar"><div class="division-filters" id="divisionFilters"><button type="button" class="division-filter active" data-division="ALL">All <strong>131</strong></button><button type="button" class="division-filter" data-division="FBS">FBS <strong>49</strong></button><button type="button" class="division-filter" data-division="FCS">FCS <strong>34</strong></button><button type="button" class="division-filter" data-division="OTHER">Other <strong>48</strong></button></div><div class="map-filters"><button type="button" class="map-filter active" data-map-status="ALL"><span class="map-dot all-dot"></span>All <strong>131</strong></button><button type="button" class="map-filter" data-map-status="QUALIFIES"><span class="map-dot" style="background:#22c55e"></span>QUALIFIES <strong>0</strong></button><button type="button" class="map-filter" data-map-status="LEAN"><span class="map-dot" style="background:#8b5cf6"></span>LEAN <strong>2</strong></button><button type="button" class="map-filter" data-map-status="WATCH"><span class="map-dot" style="background:#f59e0b"></span>WATCH <strong>0</strong></button><button type="button" class="map-filter" data-map-status="NO PLAY"><span class="map-dot" style="background:#ef4444"></span>NO PLAY <strong>117</strong></button><button type="button" class="map-filter" data-map-status="NO LINE"><span class="map-dot" style="background:#64748b"></span>NO LINE <strong>12</strong></button></div><div class="map-count" id="mapCount">Showing 131 mapped games</div></div>
+        <div class="map-toolbar"><div class="division-filters" id="divisionFilters"><button type="button" class="division-filter active" data-division="ALL">All <strong>131</strong></button><button type="button" class="division-filter" data-division="FBS">FBS <strong>49</strong></button><button type="button" class="division-filter" data-division="FCS">FCS <strong>34</strong></button><button type="button" class="division-filter" data-division="OTHER">Other <strong>48</strong></button></div><div class="map-filters"><button type="button" class="map-filter active" data-map-status="ALL"><span class="map-dot all-dot"></span>All <strong>131</strong></button><button type="button" class="map-filter" data-map-status="QUALIFIES"><span class="map-dot" style="background:#22c55e"></span>QUALIFIES <strong>0</strong></button><button type="button" class="map-filter" data-map-status="LEAN"><span class="map-dot" style="background:#8b5cf6"></span>LEAN <strong>2</strong></button><button type="button" class="map-filter" data-map-status="WATCH"><span class="map-dot" style="background:#f59e0b"></span>WATCH <strong>0</strong></button><button type="button" class="map-filter" data-map-status="NO PLAY"><span class="map-dot" style="background:#ef4444"></span>NO PLAY <strong>117</strong></button><button type="button" class="map-filter" data-map-status="NO LINE"><span class="map-dot" style="background:#64748b"></span>NO LINE <strong>12</strong></button></div><button type="button" class="map-filter radar-toggle" id="radarToggle" aria-pressed="false">Radar: Off</button><div class="map-count" id="mapCount">Showing 131 mapped games</div></div>
         <div id="weekMap" role="region" aria-label="Interactive map of this week's college football games by model status"></div>
-        <div class="map-note">Marker colors: green qualifies · purple lean · amber watch · red no play · gray no line. Every scheduled game currently has usable venue coordinates.</div>
+        <div class="map-note">Marker colors: green qualifies · purple lean · amber watch · red no play · gray no line. Every scheduled game currently has usable venue coordinates. Radar overlay: IEM / NWS CONUS NEXRAD base reflectivity. All visible tiles are pinned to one radar valid time so neighboring tiles cannot mix scans. <span id="radarStatus">Radar off.</span></div>
       </div>
     </section>
     <section id="targets">
@@ -159,1189 +185,10 @@
     
     <section id="card"><div class="section-head"><div><div class="eyebrow">Historical weekly-card method</div><h2>Top two-leg card</h2></div></div><div class="parlay"><span class="eyebrow">Top weekly 2-leg research card</span><h3>No card</h3><p>Fewer than two non-FCS qualifying targets are available, so the original weekly-card method does not force a parlay.</p></div></section>
     <section id="board">
-      <div class="section-head"><div><div class="eyebrow">Everything, including no-plays and no-lines</div><h2>Full weekly board</h2></div><p>The site shows why games fail the screen instead of hiding them.</p></div>
+      <div class="section-head"><div><div class="eyebrow">Everything, including no-plays and no-lines</div><h2>Full weekly board</h2></div><p>Filter by weather type or click Kickoff, Temp, Wind, Gust, RH, or PoP to sort. PoP is chance of precipitation.</p></div>
       <div class="panel">
-        <div class="toolbar"><input id="search" type="search" placeholder="Search matchup, weather, reason…"><select id="divisionFilter"><option value="ALL">All divisions</option><option value="FBS">FBS vs FBS</option><option value="FCS">FCS vs FCS</option><option value="OTHER">Other / cross-division</option></select><select id="statusFilter"><option value="ALL">All statuses</option><option>QUALIFIES</option><option>LEAN</option><option>WATCH</option><option>NO PLAY</option><option>NO LINE</option></select></div>
-        <div class="table-wrap"><table><thead><tr><th>Status</th><th>Game</th><th>Market</th><th>NWS kickoff forecast</th><th>Model</th><th>Why</th></tr></thead><tbody id="boardBody">
-          <tr data-status="LEAN" data-division="FCS">
-            <td><span class="badge lean">LEAN</span></td>
-            <td><strong>Northwestern State @ East Texas A&amp;M</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 51.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>97°F · wind 8 mph, gust 13 · RH 39% · PoP 4%</td>
-            <td>UNDER edge 11.2 · projected total 40.3<br><span class="small">5.0+ model edge; FCS-only HGB; FCS 7.5+ under edge</span></td>
-            <td>FCS-only HGB has a strong under edge, but the market total is below the preferred 56+ qualifying screen.</td>
-          </tr>
-        
-          <tr data-status="LEAN" data-division="FCS">
-            <td><span class="badge lean">LEAN</span></td>
-            <td><strong>New Haven @ South Dakota State</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 56.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>70°F · wind 6 mph, gust 13 · RH 44% · PoP 0%</td>
-            <td>UNDER edge 5.8 · projected total 50.7<br><span class="small">5.0+ model edge; FCS-only HGB; FCS 56+ total</span></td>
-            <td>FCS-only HGB points under with a 5.0+ edge and 56+ total, but it does not meet the 7.5-point qualifying edge.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>William &amp; Mary @ Lehigh</strong><br><span class="small">Sat Sep 12 · 1:00 PM CT</span></td>
-            <td>O/U 46.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>78°F · wind 5 mph, gust 12 · RH 60% · PoP 22%</td>
-            <td>OVER edge 14.5 · projected total 61.0<br><span class="small">5.0+ model edge; FCS-only HGB</span></td>
-            <td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>North Carolina A&amp;T @ North Carolina Central</strong><br><span class="small">Sat Sep 12 · 5:00 PM CT</span></td>
-            <td>O/U 54.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>82°F · wind 5 mph, gust 8 · RH 79% · PoP 73%</td>
-            <td>OVER edge 11.2 · projected total 65.7<br><span class="small">5.0+ model edge; FCS-only HGB</span></td>
-            <td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Duquesne @ Youngstown State</strong><br><span class="small">Sat Sep 12 · 1:00 PM CT</span></td>
-            <td>O/U 52.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>80°F · wind 5 mph, gust 10 · RH 67% · PoP 44%</td>
-            <td>OVER edge 10.8 · projected total 63.3<br><span class="small">5.0+ model edge; FCS-only HGB</span></td>
-            <td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Furman @ Mercer</strong><br><span class="small">Sat Sep 12 · 5:00 PM CT</span></td>
-            <td>O/U 54.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>86°F · wind 5 mph, gust 9 · RH 69% · PoP 70%</td>
-            <td>OVER edge 10.3 · projected total 64.8<br><span class="small">5.0+ model edge; FCS-only HGB</span></td>
-            <td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Southeast Missouri State @ Southern Illinois</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 52.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>86°F · wind 1 mph, gust 3 · RH 68% · PoP 18%</td>
-            <td>OVER edge 8.1 · projected total 60.6<br><span class="small">5.0+ model edge; FCS-only HGB</span></td>
-            <td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Incarnate Word @ Northern Arizona</strong><br><span class="small">Sat Sep 12 · 4:00 PM CT</span></td>
-            <td>O/U 55.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>Indoor / dome</td>
-            <td>OVER edge 7.5 · projected total 63.0<br><span class="small">5.0+ model edge; FCS-only HGB</span></td>
-            <td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Chattanooga @ Eastern Kentucky</strong><br><span class="small">Sat Sep 12 · 5:00 PM CT</span></td>
-            <td>O/U 47.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>82°F · wind 3 mph, gust 7 · RH 77% · PoP 68%</td>
-            <td>OVER edge 7.1 · projected total 54.6<br><span class="small">5.0+ model edge; FCS-only HGB</span></td>
-            <td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Lamar @ Idaho</strong><br><span class="small">Sat Sep 12 · 3:00 PM CT</span></td>
-            <td>O/U 49.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>Indoor / dome</td>
-            <td>OVER edge 7.0 · projected total 56.5<br><span class="small">5.0+ model edge; FCS-only HGB</span></td>
-            <td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Bryant @ Hampton</strong><br><span class="small">Sat Sep 12 · 5:00 PM CT</span></td>
-            <td>O/U 48.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>81°F · wind 9 mph, gust 14 · RH 82% · PoP 69%</td>
-            <td>OVER edge 6.8 · projected total 55.3<br><span class="small">5.0+ model edge; FCS-only HGB</span></td>
-            <td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Utah Tech @ Montana</strong><br><span class="small">Sat Sep 12 · 2:00 PM CT</span></td>
-            <td>O/U 57.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>59°F · wind 7 mph, gust 13 · RH 64% · PoP 27%</td>
-            <td>OVER edge 6.3 · projected total 63.8<br><span class="small">5.0+ model edge; FCS-only HGB; FCS 56+ total</span></td>
-            <td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>UAlbany @ Long Island University</strong><br><span class="small">Sat Sep 12 · 11:00 AM CT</span></td>
-            <td>O/U 44.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>76°F · wind 6 mph, gust 7 · RH 62% · PoP 0%</td>
-            <td>OVER edge 5.6 · projected total 50.1<br><span class="small">5.0+ model edge; FCS-only HGB</span></td>
-            <td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Tarleton State @ McNeese</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 56.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>85°F · wind 6 mph, gust 9 · RH 77% · PoP 73%</td>
-            <td>OVER edge 5.6 · projected total 62.1<br><span class="small">5.0+ model edge; FCS-only HGB; FCS 56+ total</span></td>
-            <td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>UT Rio Grande Valley @ Nicholls</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 51.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>83°F · wind 1 mph, gust 5 · RH 88% · PoP 87%</td>
-            <td>OVER edge 3.8 · projected total 55.3<br><span class="small">FCS-only HGB</span></td>
-            <td>FCS-only model does not meet the conservative under-edge screen.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Valparaiso @ Murray State</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 50.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>85°F · wind 1 mph, gust 6 · RH 72% · PoP 38%</td>
-            <td>OVER edge 3.4 · projected total 53.9<br><span class="small">FCS-only HGB</span></td>
-            <td>FCS-only model does not meet the conservative under-edge screen.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Arkansas-Pine Bluff @ Alcorn State</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 49.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>90°F · wind 3 mph, gust 7 · RH 60% · PoP 21%</td>
-            <td>UNDER edge 3.2 · projected total 46.3<br><span class="small">FCS-only HGB</span></td>
-            <td>FCS-only model does not meet the conservative under-edge screen.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Stetson @ Bethune-Cookman</strong><br><span class="small">Sat Sep 12 · 3:00 PM CT</span></td>
-            <td>O/U 57.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>87°F · wind 7 mph, gust 14 · RH 75% · PoP 70%</td>
-            <td>UNDER edge 3.1 · projected total 54.4<br><span class="small">FCS-only HGB; FCS 56+ total</span></td>
-            <td>FCS-only model does not meet the conservative under-edge screen.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Samford @ Tennessee Tech</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 48.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>78°F · wind 1 mph, gust 7 · RH 91% · PoP 79%</td>
-            <td>OVER edge 2.7 · projected total 51.2<br><span class="small">FCS-only HGB</span></td>
-            <td>FCS-only model does not meet the conservative under-edge screen.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>North Dakota @ Portland State</strong><br><span class="small">Sat Sep 12 · 9:00 PM CT</span></td>
-            <td>O/U 59.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>59°F · wind 2 mph, gust 7 · RH 84% · PoP 44%</td>
-            <td>OVER edge 2.3 · projected total 61.8<br><span class="small">FCS-only HGB; FCS 56+ total</span></td>
-            <td>FCS-only model does not meet the conservative under-edge screen.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Drake @ Northern Iowa</strong><br><span class="small">Sat Sep 12 · 1:00 PM CT</span></td>
-            <td>O/U 55.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>Indoor / dome</td>
-            <td>OVER edge 2.1 · projected total 57.6<br><span class="small">FCS-only HGB</span></td>
-            <td>FCS-only model does not meet the conservative under-edge screen.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Stonehill @ New Hampshire</strong><br><span class="small">Sat Sep 12 · 5:00 PM CT</span></td>
-            <td>O/U 42.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>69°F · wind 6 mph, gust 12 · RH 66% · PoP 0%</td>
-            <td>UNDER edge 2.1 · projected total 40.4<br><span class="small">FCS-only HGB</span></td>
-            <td>FCS-only model does not meet the conservative under-edge screen.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Marist @ Lafayette</strong><br><span class="small">Sat Sep 12 · 11:30 AM CT</span></td>
-            <td>O/U 46.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>74°F · wind 2 mph, gust 8 · RH 64% · PoP 2%</td>
-            <td>UNDER edge 1.9 · projected total 44.6<br><span class="small">FCS-only HGB</span></td>
-            <td>FCS-only model does not meet the conservative under-edge screen.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Eastern Michigan @ Michigan State</strong><br><span class="small">Sat Sep 12 · 2:30 PM CT</span></td>
-            <td>O/U 49.5 · DraftKings · 2 providers</td>
-            <td>81°F · wind 10 mph, gust 22 · RH 63% · PoP 8%</td>
-            <td>OVER edge 1.9 · projected total 51.4</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Texas Southern @ UTEP</strong><br><span class="small">Sat Sep 12 · 8:00 PM CT</span></td>
-            <td>O/U 52.5 · DraftKings · 1 providers</td>
-            <td>96°F · wind 5 mph, gust 8 · RH 21% · PoP 3%</td>
-            <td>OVER edge 1.6 · projected total 54.1</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>UCF @ Pittsburgh</strong><br><span class="small">Sat Sep 12 · 2:30 PM CT</span></td>
-            <td>O/U 56.5 · DraftKings · 2 providers</td>
-            <td>79°F · wind 8 mph, gust 14 · RH 82% · PoP 74%</td>
-            <td>OVER edge 1.6 · projected total 58.1</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Merrimack @ Maine</strong><br><span class="small">Sat Sep 12 · 4:00 PM CT</span></td>
-            <td>O/U 46.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>74°F · wind 9 mph, gust 17 · RH 48% · PoP 0%</td>
-            <td>OVER edge 1.6 · projected total 48.1<br><span class="small">FCS-only HGB</span></td>
-            <td>FCS-only model does not meet the conservative under-edge screen.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Charleston Southern @ The Citadel</strong><br><span class="small">Sat Sep 12 · 5:00 PM CT</span></td>
-            <td>O/U 46.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>84°F · wind 8 mph, gust 15 · RH 85% · PoP 66%</td>
-            <td>OVER edge 1.5 · projected total 48.0<br><span class="small">FCS-only HGB</span></td>
-            <td>FCS-only model does not meet the conservative under-edge screen.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Memphis @ Boise State</strong><br><span class="small">Sat Sep 12 · 5:00 PM CT</span></td>
-            <td>O/U 54.5 · DraftKings · 2 providers</td>
-            <td>79°F · wind 10 mph, gust 23 · RH 30% · PoP 7%</td>
-            <td>OVER edge 1.5 · projected total 56.0</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Indiana State @ Eastern Illinois</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 48.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>83°F · wind 2 mph, gust 6 · RH 67% · PoP 16%</td>
-            <td>OVER edge 1.4 · projected total 49.9<br><span class="small">FCS-only HGB</span></td>
-            <td>FCS-only model does not meet the conservative under-edge screen.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Bucknell @ VMI</strong><br><span class="small">Sat Sep 12 · 12:30 PM CT</span></td>
-            <td>O/U 48.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>77°F · wind 2 mph, gust 9 · RH 90% · PoP 22%</td>
-            <td>UNDER edge 1.3 · projected total 47.2<br><span class="small">FCS-only HGB</span></td>
-            <td>FCS-only model does not meet the conservative under-edge screen.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>San Diego @ Idaho State</strong><br><span class="small">Sat Sep 12 · 5:00 PM CT</span></td>
-            <td>O/U 59.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>Indoor / dome</td>
-            <td>UNDER edge 1.2 · projected total 58.3<br><span class="small">FCS-only HGB; FCS 56+ total</span></td>
-            <td>FCS-only model does not meet the conservative under-edge screen.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Norfolk State @ Virginia</strong><br><span class="small">Fri Sep 11 · 6:00 PM CT</span></td>
-            <td>O/U 54.5 · DraftKings · 1 providers</td>
-            <td>78°F · wind 3 mph, gust 8 · RH 79% · PoP 34%</td>
-            <td>OVER edge 1.2 · projected total 55.7</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>West Georgia @ Arkansas State</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 56.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>91°F · wind 5 mph, gust 6 · RH 52% · PoP 12%</td>
-            <td>OVER edge 1.2 · projected total 57.7</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Robert Morris @ Akron</strong><br><span class="small">Sat Sep 12 · 2:30 PM CT</span></td>
-            <td>O/U 41.5 · DraftKings · 1 providers</td>
-            <td>80°F · wind 6 mph, gust 12 · RH 69% · PoP 37%</td>
-            <td>OVER edge 1.1 · projected total 42.6</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Illinois State @ Northern Illinois</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 48.5 · DraftKings · 1 providers</td>
-            <td>78°F · wind 6 mph, gust 9 · RH 73% · PoP 12%</td>
-            <td>OVER edge 1.1 · projected total 49.6</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Elon @ Rhode Island</strong><br><span class="small">Sat Sep 12 · 11:00 AM CT</span></td>
-            <td>O/U 47.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>73°F · wind 6 mph, gust 8 · RH 55% · PoP 0%</td>
-            <td>OVER edge 1.1 · projected total 48.6<br><span class="small">FCS-only HGB</span></td>
-            <td>FCS-only model does not meet the conservative under-edge screen.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Southern @ Houston</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 60.5 · DraftKings · 1 providers</td>
-            <td>88°F · wind 8 mph, gust 10 · RH 66% · PoP 48%</td>
-            <td>OVER edge 1.1 · projected total 61.6</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Morehead State @ Austin Peay</strong><br><span class="small">Sat Sep 12 · 4:00 PM CT</span></td>
-            <td>O/U 63.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>88°F · wind 5 mph, gust 8 · RH 66% · PoP 55%</td>
-            <td>UNDER edge 1.1 · projected total 62.4<br><span class="small">FCS-only HGB; FCS 56+ total</span></td>
-            <td>FCS-only model does not meet the conservative under-edge screen.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Weber State @ Colorado</strong><br><span class="small">Sat Sep 12 · 2:30 PM CT</span></td>
-            <td>O/U 53.5 · DraftKings · 1 providers</td>
-            <td>77°F · wind 5 mph, gust 7 · RH 37% · PoP 27%</td>
-            <td>OVER edge 1.1 · projected total 54.6</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Western Illinois @ Wisconsin</strong><br><span class="small">Sat Sep 12 · 6:15 PM CT</span></td>
-            <td>O/U 48.5 · DraftKings · 1 providers</td>
-            <td>76°F · wind 6 mph, gust 10 · RH 64% · PoP 12%</td>
-            <td>OVER edge 1.1 · projected total 49.6</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Stony Brook @ Ball State</strong><br><span class="small">Sat Sep 12 · 1:00 PM CT</span></td>
-            <td>O/U 57.5 · DraftKings · 1 providers</td>
-            <td>80°F · wind 6 mph, gust 12 · RH 70% · PoP 25%</td>
-            <td>OVER edge 1.0 · projected total 58.5</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Wofford @ Kent State</strong><br><span class="small">Sat Sep 12 · 11:00 AM CT</span></td>
-            <td>O/U 47.5 · DraftKings · 1 providers</td>
-            <td>75°F · wind 5 mph, gust 9 · RH 73% · PoP 16%</td>
-            <td>OVER edge 1.0 · projected total 48.5</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Sacred Heart @ Massachusetts</strong><br><span class="small">Sat Sep 12 · 2:30 PM CT</span></td>
-            <td>O/U 53.5 · DraftKings · 1 providers</td>
-            <td>76°F · wind 7 mph, gust 12 · RH 50% · PoP 0%</td>
-            <td>OVER edge 1.0 · projected total 54.5</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Tennessee State @ Alabama A&amp;M</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 48.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>82°F · wind 2 mph, gust 7 · RH 78% · PoP 72%</td>
-            <td>OVER edge 1.0 · projected total 49.5<br><span class="small">FCS-only HGB</span></td>
-            <td>FCS-only model does not meet the conservative under-edge screen.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Arizona State @ Texas A&amp;M</strong><br><span class="small">Sat Sep 12 · 11:00 AM CT</span></td>
-            <td>O/U 50.5 · DraftKings · 2 providers</td>
-            <td>88°F · wind 8 mph, gust 12 · RH 65% · PoP 8%</td>
-            <td>OVER edge 1.0 · projected total 51.5</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Ohio State @ Texas</strong><br><span class="small">Sat Sep 12 · 6:30 PM CT</span></td>
-            <td>O/U 49.5 · DraftKings · 2 providers</td>
-            <td>98°F · wind 9 mph, gust 18 · RH 41% · PoP 2%</td>
-            <td>OVER edge 0.9 · projected total 50.4</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Lindenwood @ Missouri State</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 52.5 · DraftKings · 1 providers</td>
-            <td>85°F · wind 3 mph, gust 7 · RH 70% · PoP 35%</td>
-            <td>OVER edge 0.9 · projected total 53.4</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Colgate @ Central Michigan</strong><br><span class="small">Sat Sep 12 · 12:00 PM CT</span></td>
-            <td>O/U 49.5 · DraftKings · 1 providers</td>
-            <td>78°F · wind 12 mph, gust 22 · RH 67% · PoP 1%</td>
-            <td>OVER edge 0.9 · projected total 50.4</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Alabama State @ Troy</strong><br><span class="small">Sat Sep 12 · 3:00 PM CT</span></td>
-            <td>O/U 51.5 · DraftKings · 1 providers</td>
-            <td>89°F · wind 6 mph, gust 12 · RH 59% · PoP 77%</td>
-            <td>OVER edge 0.9 · projected total 52.4</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>New Mexico State @ Hawai&#x27;i</strong><br><span class="small">Sat Sep 12 · 10:59 PM CT</span></td>
-            <td>O/U 49.5 · DraftKings · 2 providers</td>
-            <td>83°F · wind 12 mph, gust 15 · RH 58% · PoP 16%</td>
-            <td>OVER edge 0.9 · projected total 50.4</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>UC Davis @ SMU</strong><br><span class="small">Sat Sep 12 · 3:00 PM CT</span></td>
-            <td>O/U 58.5 · DraftKings · 1 providers</td>
-            <td>100°F · wind 10 mph, gust 17 · RH 38% · PoP 0%</td>
-            <td>OVER edge 0.9 · projected total 59.4</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Northern Colorado @ Wyoming</strong><br><span class="small">Sat Sep 12 · 3:00 PM CT</span></td>
-            <td>O/U 47.5 · DraftKings · 1 providers</td>
-            <td>77°F · wind 16 mph, gust 24 · RH 24% · PoP 36%</td>
-            <td>OVER edge 0.8 · projected total 48.3</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Arkansas @ Utah</strong><br><span class="small">Sat Sep 12 · 9:15 PM CT</span></td>
-            <td>O/U 55.5 · DraftKings · 2 providers</td>
-            <td>82°F · wind 14 mph, gust 31 · RH 25% · PoP 11%</td>
-            <td>OVER edge 0.8 · projected total 56.3</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Central Connecticut @ Toledo</strong><br><span class="small">Sat Sep 12 · 2:30 PM CT</span></td>
-            <td>O/U 55.5 · DraftKings · 1 providers</td>
-            <td>82°F · wind 8 mph, gust 15 · RH 62% · PoP 15%</td>
-            <td>OVER edge 0.8 · projected total 56.3</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Holy Cross @ Miami (OH)</strong><br><span class="small">Sat Sep 12 · 12:00 PM CT</span></td>
-            <td>O/U 49.5 · DraftKings · 1 providers</td>
-            <td>80°F · wind 6 mph, gust 9 · RH 80% · PoP 44%</td>
-            <td>OVER edge 0.8 · projected total 50.3</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Wagner @ James Madison</strong><br><span class="small">Sat Sep 12 · 2:30 PM CT</span></td>
-            <td>O/U 54.5 · DraftKings · 1 providers</td>
-            <td>78°F · wind 6 mph, gust 13 · RH 79% · PoP 69%</td>
-            <td>OVER edge 0.8 · projected total 55.3</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Monmouth @ Western Michigan</strong><br><span class="small">Sat Sep 12 · 5:30 PM CT</span></td>
-            <td>O/U 52.5 · DraftKings · 1 providers</td>
-            <td>79°F · wind 7 mph, gust 15 · RH 67% · PoP 8%</td>
-            <td>OVER edge 0.8 · projected total 53.3</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Iowa State @ Iowa</strong><br><span class="small">Sat Sep 12 · 6:30 PM CT</span></td>
-            <td>O/U 40.5 · DraftKings · 2 providers</td>
-            <td>79°F · wind 6 mph, gust 8 · RH 67% · PoP 26%</td>
-            <td>OVER edge 0.8 · projected total 41.3</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Arizona @ BYU</strong><br><span class="small">Sat Sep 12 · 2:30 PM CT</span></td>
-            <td>O/U 47.5 · DraftKings · 2 providers</td>
-            <td>83°F · wind 9 mph, gust 17 · RH 31% · PoP 7%</td>
-            <td>OVER edge 0.8 · projected total 48.3</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Buffalo @ Florida International</strong><br><span class="small">Sat Sep 12 · 5:00 PM CT</span></td>
-            <td>O/U 47.5 · DraftKings · 2 providers</td>
-            <td>84°F · wind 7 mph, gust 13 · RH 82% · PoP 87%</td>
-            <td>OVER edge 0.8 · projected total 48.3</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>San Diego State @ UCLA</strong><br><span class="small">Sat Sep 12 · 6:15 PM CT</span></td>
-            <td>O/U 54.5 · DraftKings · 2 providers</td>
-            <td>83°F · wind 5 mph, gust 7 · RH 46% · PoP 0%</td>
-            <td>OVER edge 0.8 · projected total 55.3</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Bowling Green @ Nebraska</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 51.5 · DraftKings · 2 providers</td>
-            <td>77°F · wind 9 mph, gust 14 · RH 68% · PoP 38%</td>
-            <td>OVER edge 0.8 · projected total 52.3</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Alabama @ Kentucky</strong><br><span class="small">Sat Sep 12 · 2:30 PM CT</span></td>
-            <td>O/U 49.5 · DraftKings · 2 providers</td>
-            <td>84°F · wind 7 mph, gust 12 · RH 72% · PoP 66%</td>
-            <td>OVER edge 0.8 · projected total 50.3</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Southern Miss @ Auburn</strong><br><span class="small">Sat Sep 12 · 6:45 PM CT</span></td>
-            <td>O/U 56.5 · DraftKings · 2 providers</td>
-            <td>81°F · wind 3 mph, gust 8 · RH 82% · PoP 72%</td>
-            <td>OVER edge 0.8 · projected total 57.3</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Stephen F. Austin @ Abilene Christian</strong><br><span class="small">Sat Sep 12 · 7:00 PM CT</span></td>
-            <td>O/U 49.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>100°F · wind 14 mph, gust 20 · RH 27% · PoP 1%</td>
-            <td>UNDER edge 0.8 · projected total 48.7<br><span class="small">FCS-only HGB</span></td>
-            <td>FCS-only model does not meet the conservative under-edge screen.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Southern Utah @ Colorado State</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 56.5 · DraftKings · 1 providers</td>
-            <td>81°F · wind 12 mph, gust 18 · RH 35% · PoP 26%</td>
-            <td>OVER edge 0.7 · projected total 57.2</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Louisiana Tech @ LSU</strong><br><span class="small">Sat Sep 12 · 6:30 PM CT</span></td>
-            <td>O/U 55.5 · DraftKings · 2 providers</td>
-            <td>84°F · wind 3 mph, gust 7 · RH 80% · PoP 73%</td>
-            <td>OVER edge 0.7 · projected total 56.2</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Mercyhurst @ New Mexico</strong><br><span class="small">Sat Sep 12 · 3:00 PM CT</span></td>
-            <td>O/U 51.5 · DraftKings · 1 providers</td>
-            <td>93°F · wind 3 mph, gust 5 · RH 23% · PoP 2%</td>
-            <td>OVER edge 0.7 · projected total 52.2</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>UL Monroe @ UAB</strong><br><span class="small">Sat Sep 12 · 2:30 PM CT</span></td>
-            <td>O/U 55.5 · DraftKings · 2 providers</td>
-            <td>89°F · wind 6 mph, gust 9 · RH 66% · PoP 79%</td>
-            <td>OVER edge 0.7 · projected total 56.2</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Grambling @ TCU</strong><br><span class="small">Sat Sep 12 · 7:00 PM CT</span></td>
-            <td>O/U 53.5 · DraftKings · 1 providers</td>
-            <td>98°F · wind 10 mph, gust 17 · RH 38% · PoP 0%</td>
-            <td>OVER edge 0.7 · projected total 54.2</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Richmond @ NC State</strong><br><span class="small">Fri Sep 11 · 6:00 PM CT</span></td>
-            <td>O/U 48.5 · DraftKings · 1 providers</td>
-            <td>84°F · wind 3 mph, gust 6 · RH 70% · PoP 34%</td>
-            <td>OVER edge 0.7 · projected total 49.2</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Prairie View A&amp;M @ Baylor</strong><br><span class="small">Sat Sep 12 · 7:08 PM CT</span></td>
-            <td>O/U 56.5 · DraftKings · 1 providers</td>
-            <td>97°F · wind 10 mph, gust 16 · RH 40% · PoP 1%</td>
-            <td>OVER edge 0.6 · projected total 57.1</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Oklahoma @ Michigan</strong><br><span class="small">Sat Sep 12 · 11:00 AM CT</span></td>
-            <td>O/U 43.5 · DraftKings · 2 providers</td>
-            <td>75°F · wind 8 mph, gust 16 · RH 75% · PoP 1%</td>
-            <td>OVER edge 0.6 · projected total 44.1</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Tennessee @ Georgia Tech</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 55.5 · DraftKings · 2 providers</td>
-            <td>82°F · wind 3 mph, gust 8 · RH 75% · PoP 84%</td>
-            <td>OVER edge 0.6 · projected total 56.1</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Villanova @ Louisville</strong><br><span class="small">Fri Sep 11 · 6:00 PM CT</span></td>
-            <td>O/U 56.5 · DraftKings · 1 providers</td>
-            <td>79°F · wind 3 mph, gust 5 · RH 82% · PoP 49%</td>
-            <td>OVER edge 0.6 · projected total 57.1</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Rutgers @ Boston College</strong><br><span class="small">Fri Sep 11 · 6:30 PM CT</span></td>
-            <td>O/U 54.5 · DraftKings · 2 providers</td>
-            <td>68°F · wind 8 mph, gust 10 · RH 49% · PoP 0%</td>
-            <td>OVER edge 0.6 · projected total 55.1</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Missouri @ Kansas</strong><br><span class="small">Fri Sep 11 · 7:00 PM CT</span></td>
-            <td>O/U 50.5 · DraftKings · 2 providers</td>
-            <td>82°F · wind 5 mph, gust 9 · RH 69% · PoP 5%</td>
-            <td>OVER edge 0.6 · projected total 51.1</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>East Tennessee State @ North Carolina</strong><br><span class="small">Sat Sep 12 · 11:00 AM CT</span></td>
-            <td>O/U 54.5 · DraftKings · 1 providers</td>
-            <td>83°F · wind 3 mph, gust 7 · RH 80% · PoP 39%</td>
-            <td>OVER edge 0.6 · projected total 55.1</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Penn State @ Temple</strong><br><span class="small">Sat Sep 12 · 11:00 AM CT</span></td>
-            <td>O/U 49.5 · DraftKings · 2 providers</td>
-            <td>77°F · wind 5 mph, gust 8 · RH 67% · PoP 4%</td>
-            <td>OVER edge 0.6 · projected total 50.1</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Western Carolina @ Cincinnati</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 60.5 · DraftKings · 1 providers</td>
-            <td>81°F · wind 2 mph, gust 6 · RH 76% · PoP 53%</td>
-            <td>OVER edge 0.6 · projected total 61.1</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Navy @ Florida Atlantic</strong><br><span class="small">Sat Sep 12 · 6:30 PM CT</span></td>
-            <td>O/U 58.5 · DraftKings · 2 providers</td>
-            <td>84°F · wind 8 mph, gust 13 · RH 80% · PoP 79%</td>
-            <td>OVER edge 0.6 · projected total 59.1</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Georgia State @ Kennesaw State</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 54.5 · DraftKings · 2 providers</td>
-            <td>81°F · wind 2 mph, gust 7 · RH 81% · PoP 84%</td>
-            <td>OVER edge 0.6 · projected total 55.1</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Mississippi State @ Minnesota</strong><br><span class="small">Sat Sep 12 · 2:30 PM CT</span></td>
-            <td>O/U 55.5 · DraftKings · 2 providers</td>
-            <td>71°F · wind 10 mph, gust 18 · RH 55% · PoP 0%</td>
-            <td>OVER edge 0.6 · projected total 56.1</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Middle Tennessee @ Marshall</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 56.5 · DraftKings · 2 providers</td>
-            <td>82°F · wind 2 mph, gust 7 · RH 81% · PoP 71%</td>
-            <td>UNDER edge 0.5 · projected total 56.0</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Fordham @ Coastal Carolina</strong><br><span class="small">Sat Sep 12 · 6:30 PM CT</span></td>
-            <td>O/U 52.5 · DraftKings · 1 providers</td>
-            <td>82°F · wind 5 mph, gust 10 · RH 88% · PoP 64%</td>
-            <td>OVER edge 0.5 · projected total 53.0</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Tulsa @ Sam Houston</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 51.5 · DraftKings · 2 providers</td>
-            <td>87°F · wind 7 mph, gust 12 · RH 63% · PoP 29%</td>
-            <td>OVER edge 0.5 · projected total 52.0</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Gardner-Webb @ Liberty</strong><br><span class="small">Sat Sep 12 · 5:00 PM CT</span></td>
-            <td>O/U 55.5 · DraftKings · 1 providers</td>
-            <td>80°F · wind 3 mph, gust 8 · RH 77% · PoP 74%</td>
-            <td>OVER edge 0.5 · projected total 56.0</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>UT Martin @ West Virginia</strong><br><span class="small">Sat Sep 12 · 12:00 PM CT</span></td>
-            <td>O/U 55.5 · DraftKings · 1 providers</td>
-            <td>77°F · wind 6 mph, gust 13 · RH 86% · PoP 44%</td>
-            <td>OVER edge 0.5 · projected total 56.0</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Florida A&amp;M @ Miami</strong><br><span class="small">Thu Sep 10 · 7:00 PM CT</span></td>
-            <td>O/U 63.5 · DraftKings · 2 providers</td>
-            <td>83°F · wind 5 mph, gust 8 · RH 82% · PoP 16%</td>
-            <td>OVER edge 0.5 · projected total 64.0<br><span class="small">refinement: total≥60 + RH≥80%; selected total above market median</span></td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>South Florida @ Army</strong><br><span class="small">Sat Sep 12 · 11:00 AM CT</span></td>
-            <td>O/U 46.5 · DraftKings · 2 providers</td>
-            <td>75°F · wind 2 mph, gust 6 · RH 64% · PoP 0%</td>
-            <td>OVER edge 0.5 · projected total 47.0</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Oregon @ Oklahoma State</strong><br><span class="small">Sat Sep 12 · 11:00 AM CT</span></td>
-            <td>O/U 57.5 · DraftKings · 2 providers</td>
-            <td>83°F · wind 8 mph, gust 16 · RH 72% · PoP 39%</td>
-            <td>OVER edge 0.5 · projected total 58.0</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FCS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Eastern Washington @ South Dakota</strong><br><span class="small">Sat Sep 12 · 1:00 PM CT</span></td>
-            <td>O/U 58.5 · FanDuel (Odds API) · 1 providers</td>
-            <td>Indoor / dome</td>
-            <td>OVER edge 0.5 · projected total 59.0<br><span class="small">FCS-only HGB; FCS 56+ total</span></td>
-            <td>FCS-only model does not meet the conservative under-edge screen.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Wake Forest @ Purdue</strong><br><span class="small">Sat Sep 12 · 11:00 AM CT</span></td>
-            <td>O/U 49.5 · DraftKings · 2 providers</td>
-            <td>79°F · wind 5 mph, gust 10 · RH 74% · PoP 11%</td>
-            <td>OVER edge 0.4 · projected total 49.9</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Jacksonville State @ Ohio</strong><br><span class="small">Sat Sep 12 · 5:00 PM CT</span></td>
-            <td>O/U 50.5 · DraftKings · 2 providers</td>
-            <td>80°F · wind 3 mph, gust 9 · RH 85% · PoP 61%</td>
-            <td>OVER edge 0.4 · projected total 50.9</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Towson @ South Carolina</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 54.5 · DraftKings · 1 providers</td>
-            <td>81°F · wind 3 mph, gust 7 · RH 85% · PoP 75%</td>
-            <td>OVER edge 0.4 · projected total 54.9</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Charlotte @ Ole Miss</strong><br><span class="small">Sat Sep 12 · 6:45 PM CT</span></td>
-            <td>O/U 60.5 · DraftKings · 2 providers</td>
-            <td>85°F · wind 1 mph, gust 7 · RH 63% · PoP 37%</td>
-            <td>OVER edge 0.4 · projected total 60.9</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>UNLV @ North Texas</strong><br><span class="small">Sat Sep 12 · 2:45 PM CT</span></td>
-            <td>O/U 56.5 · DraftKings · 2 providers</td>
-            <td>98°F · wind 10 mph, gust 17 · RH 43% · PoP 0%</td>
-            <td>OVER edge 0.4 · projected total 56.9</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Utah State @ Washington</strong><br><span class="small">Sat Sep 12 · 2:30 PM CT</span></td>
-            <td>O/U 55.5 · DraftKings · 2 providers</td>
-            <td>64°F · wind 6 mph, gust 8 · RH 75% · PoP 41%</td>
-            <td>OVER edge 0.4 · projected total 55.9</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Maryland @ UConn</strong><br><span class="small">Sat Sep 12 · 2:30 PM CT</span></td>
-            <td>O/U 52.5 · DraftKings · 2 providers</td>
-            <td>77°F · wind 8 mph, gust 13 · RH 50% · PoP 1%</td>
-            <td>OVER edge 0.4 · projected total 52.9</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Old Dominion @ Virginia Tech</strong><br><span class="small">Sat Sep 12 · 11:00 AM CT</span></td>
-            <td>O/U 49.5 · DraftKings · 2 providers</td>
-            <td>76°F · wind 0 mph, gust 8 · RH 86% · PoP 31%</td>
-            <td>OVER edge 0.4 · projected total 49.9</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Montana State @ Nevada</strong><br><span class="small">Sat Sep 12 · 9:30 PM CT</span></td>
-            <td>O/U 49.5 · DraftKings · 1 providers</td>
-            <td>64°F · wind 26 mph, gust 41 · RH 35% · PoP 0%</td>
-            <td>OVER edge 0.4 · projected total 49.9</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Louisiana @ USC</strong><br><span class="small">Sat Sep 12 · 10:00 PM CT</span></td>
-            <td>O/U 60.5 · DraftKings · 2 providers</td>
-            <td>72°F · wind 5 mph, gust 7 · RH 84% · PoP 0%</td>
-            <td>OVER edge 0.3 · projected total 60.8<br><span class="small">refinement: total≥60 + RH≥80%; selected total above market median</span></td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Campbell @ Florida</strong><br><span class="small">Sat Sep 12 · 4:30 PM CT</span></td>
-            <td>O/U 65.5 · DraftKings · 1 providers</td>
-            <td>86°F · wind 5 mph, gust 9 · RH 77% · PoP 73%</td>
-            <td>OVER edge 0.3 · projected total 65.8</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>App State @ East Carolina</strong><br><span class="small">Sat Sep 12 · 11:00 AM CT</span></td>
-            <td>O/U 56.5 · DraftKings · 2 providers</td>
-            <td>86°F · wind 5 mph, gust 10 · RH 68% · PoP 41%</td>
-            <td>UNDER edge 0.3 · projected total 56.2</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Western Kentucky @ Georgia</strong><br><span class="small">Sat Sep 12 · 11:45 AM CT</span></td>
-            <td>O/U 55.5 · DraftKings · 2 providers</td>
-            <td>83°F · wind 3 mph, gust 8 · RH 79% · PoP 52%</td>
-            <td>OVER edge 0.3 · projected total 55.8</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>North Dakota State @ Air Force</strong><br><span class="small">Sat Sep 12 · 9:00 PM CT</span></td>
-            <td>O/U 47.5 · DraftKings · 2 providers</td>
-            <td>69°F · wind 20 mph, gust 30 · RH 49% · PoP 12%</td>
-            <td>OVER edge 0.3 · projected total 47.8</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Cal Poly @ San José State</strong><br><span class="small">Sat Sep 12 · 8:00 PM CT</span></td>
-            <td>O/U 56.5 · DraftKings · 1 providers</td>
-            <td>72°F · wind 14 mph, gust 24 · RH 58% · PoP 0%</td>
-            <td>OVER edge 0.2 · projected total 56.7</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>California @ Syracuse</strong><br><span class="small">Sat Sep 12 · 2:30 PM CT</span></td>
-            <td>O/U 56.5 · DraftKings · 2 providers</td>
-            <td>Indoor / dome</td>
-            <td>OVER edge 0.2 · projected total 56.7</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Delaware @ Vanderbilt</strong><br><span class="small">Sat Sep 12 · 3:15 PM CT</span></td>
-            <td>O/U 54.5 · DraftKings · 2 providers</td>
-            <td>89°F · wind 5 mph, gust 8 · RH 64% · PoP 70%</td>
-            <td>OVER edge 0.2 · projected total 54.7</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Texas Tech @ Oregon State</strong><br><span class="small">Sat Sep 12 · 6:30 PM CT</span></td>
-            <td>O/U 53.5 · DraftKings · 2 providers</td>
-            <td>59°F · wind 6 mph, gust 14 · RH 89% · PoP 85%</td>
-            <td>UNDER edge 0.2 · projected total 53.3</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>UTSA @ Texas State</strong><br><span class="small">Sat Sep 12 · 2:30 PM CT</span></td>
-            <td>O/U 66.5 · DraftKings · 2 providers</td>
-            <td>98°F · wind 9 mph, gust 17 · RH 43% · PoP 1%</td>
-            <td>OVER edge 0.2 · projected total 66.7</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="OTHER">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Howard @ Indiana</strong><br><span class="small">Sat Sep 12 · 11:00 AM CT</span></td>
-            <td>O/U 64.5 · DraftKings · 1 providers</td>
-            <td>79°F · wind 3 mph, gust 8 · RH 82% · PoP 17%</td>
-            <td>OVER edge 0.1 · projected total 64.6<br><span class="small">refinement: total≥60 + RH≥80%</span></td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Rice @ Notre Dame</strong><br><span class="small">Sat Sep 12 · 2:30 PM CT</span></td>
-            <td>O/U 55.5 · DraftKings · 2 providers</td>
-            <td>82°F · wind 8 mph, gust 16 · RH 63% · PoP 10%</td>
-            <td>UNDER edge 0.1 · projected total 55.4</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Washington State @ Kansas State</strong><br><span class="small">Sat Sep 12 · 11:00 AM CT</span></td>
-            <td>O/U 49.5 · DraftKings · 2 providers</td>
-            <td>75°F · wind 3 mph, gust 8 · RH 87% · PoP 62%</td>
-            <td>OVER edge 0.1 · projected total 49.6</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>South Alabama @ Tulane</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>O/U 49.5 · DraftKings · 2 providers</td>
-            <td>83°F · wind 5 mph, gust 7 · RH 85% · PoP 81%</td>
-            <td>OVER edge 0.1 · projected total 49.6</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Georgia Southern @ Clemson</strong><br><span class="small">Sat Sep 12 · 6:30 PM CT</span></td>
-            <td>O/U 55.5 · DraftKings · 2 providers</td>
-            <td>79°F · wind 1 mph, gust 7 · RH 89% · PoP 69%</td>
-            <td>OVER edge 0.1 · projected total 55.6</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Duke @ Illinois</strong><br><span class="small">Sat Sep 12 · 2:30 PM CT</span></td>
-            <td>O/U 51.5 · DraftKings · 2 providers</td>
-            <td>85°F · wind 6 mph, gust 12 · RH 67% · PoP 10%</td>
-            <td>UNDER edge 0.0 · projected total 51.5</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO PLAY" data-division="FBS">
-            <td><span class="badge no-play">NO PLAY</span></td>
-            <td><strong>Sacramento State @ Fresno State</strong><br><span class="small">Sat Sep 12 · 9:30 PM CT</span></td>
-            <td>O/U 45.5 · DraftKings · 2 providers</td>
-            <td>85°F · wind 10 mph, gust 22 · RH 31% · PoP 0%</td>
-            <td>UNDER edge 0.0 · projected total 45.5</td>
-            <td>Model edge is below the 3.5-point production threshold.</td>
-          </tr>
-        
-          <tr data-status="NO LINE" data-division="OTHER">
-            <td><span class="badge no-line">NO LINE</span></td>
-            <td><strong>Thomas More @ Dayton</strong><br><span class="small">Sat Sep 12 · 11:00 AM CT</span></td>
-            <td>No current total</td>
-            <td>NWS scoring waits until a current market total is available.</td>
-            <td>Not scored</td>
-            <td>No current market total is available.</td>
-          </tr>
-        
-          <tr data-status="NO LINE" data-division="OTHER">
-            <td><span class="badge no-line">NO LINE</span></td>
-            <td><strong>Dickinson @ Davidson</strong><br><span class="small">Sat Sep 12 · 11:00 AM CT</span></td>
-            <td>No current total</td>
-            <td>NWS scoring waits until a current market total is available.</td>
-            <td>Not scored</td>
-            <td>No current market total is available.</td>
-          </tr>
-        
-          <tr data-status="NO LINE" data-division="OTHER">
-            <td><span class="badge no-line">NO LINE</span></td>
-            <td><strong>Kentucky Christian @ Chicago State</strong><br><span class="small">Sat Sep 12 · 12:00 PM CT</span></td>
-            <td>No current total</td>
-            <td>NWS scoring waits until a current market total is available.</td>
-            <td>Not scored</td>
-            <td>No current market total is available.</td>
-          </tr>
-        
-          <tr data-status="NO LINE" data-division="OTHER">
-            <td><span class="badge no-line">NO LINE</span></td>
-            <td><strong>Northern Michigan @ St. Thomas (MN)</strong><br><span class="small">Sat Sep 12 · 1:00 PM CT</span></td>
-            <td>No current total</td>
-            <td>NWS scoring waits until a current market total is available.</td>
-            <td>Not scored</td>
-            <td>No current market total is available.</td>
-          </tr>
-        
-          <tr data-status="NO LINE" data-division="OTHER">
-            <td><span class="badge no-line">NO LINE</span></td>
-            <td><strong>Bowie State @ Delaware State</strong><br><span class="small">Sat Sep 12 · 2:00 PM CT</span></td>
-            <td>No current total</td>
-            <td>NWS scoring waits until a current market total is available.</td>
-            <td>Not scored</td>
-            <td>No current market total is available.</td>
-          </tr>
-        
-          <tr data-status="NO LINE" data-division="OTHER">
-            <td><span class="badge no-line">NO LINE</span></td>
-            <td><strong>Lincoln (PA) @ Mississippi Valley State</strong><br><span class="small">Sat Sep 12 · 3:00 PM CT</span></td>
-            <td>No current total</td>
-            <td>NWS scoring waits until a current market total is available.</td>
-            <td>Not scored</td>
-            <td>No current market total is available.</td>
-          </tr>
-        
-          <tr data-status="NO LINE" data-division="OTHER">
-            <td><span class="badge no-line">NO LINE</span></td>
-            <td><strong>Virginia State @ South Carolina State</strong><br><span class="small">Sat Sep 12 · 5:00 PM CT</span></td>
-            <td>No current total</td>
-            <td>NWS scoring waits until a current market total is available.</td>
-            <td>Not scored</td>
-            <td>No current market total is available.</td>
-          </tr>
-        
-          <tr data-status="NO LINE" data-division="OTHER">
-            <td><span class="badge no-line">NO LINE</span></td>
-            <td><strong>Virginia Lynchburg @ Morgan State</strong><br><span class="small">Sat Sep 12 · 5:00 PM CT</span></td>
-            <td>No current total</td>
-            <td>NWS scoring waits until a current market total is available.</td>
-            <td>Not scored</td>
-            <td>No current market total is available.</td>
-          </tr>
-        
-          <tr data-status="NO LINE" data-division="OTHER">
-            <td><span class="badge no-line">NO LINE</span></td>
-            <td><strong>Franklin @ Butler</strong><br><span class="small">Sat Sep 12 · 5:00 PM CT</span></td>
-            <td>No current total</td>
-            <td>NWS scoring waits until a current market total is available.</td>
-            <td>Not scored</td>
-            <td>No current market total is available.</td>
-          </tr>
-        
-          <tr data-status="NO LINE" data-division="FCS">
-            <td><span class="badge no-line">NO LINE</span></td>
-            <td><strong>North Alabama @ SE Louisiana</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>No current total</td>
-            <td>NWS scoring waits until a current market total is available.</td>
-            <td>Not scored<br><span class="small">FCS-only HGB</span></td>
-            <td>No current FCS market total is available.</td>
-          </tr>
-        
-          <tr data-status="NO LINE" data-division="OTHER">
-            <td><span class="badge no-line">NO LINE</span></td>
-            <td><strong>Central Oklahoma @ Central Arkansas</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>No current total</td>
-            <td>NWS scoring waits until a current market total is available.</td>
-            <td>Not scored</td>
-            <td>No current market total is available.</td>
-          </tr>
-        
-          <tr data-status="NO LINE" data-division="OTHER">
-            <td><span class="badge no-line">NO LINE</span></td>
-            <td><strong>Arkansas Baptist @ Houston Christian</strong><br><span class="small">Sat Sep 12 · 6:00 PM CT</span></td>
-            <td>No current total</td>
-            <td>NWS scoring waits until a current market total is available.</td>
-            <td>Not scored</td>
-            <td>No current market total is available.</td>
-          </tr>
-        </tbody></table></div>
+        <div class="toolbar"><input id="search" type="search" placeholder="Search matchup, weather, reason…"><select id="divisionFilter"><option value="ALL">All divisions</option><option value="FBS">FBS vs FBS</option><option value="FCS">FCS vs FCS</option><option value="OTHER">Other / cross-division</option></select><select id="weatherFilter" title="Filter by kickoff weather type"><option value="ALL">All weather</option><option value="RAIN">Rain / precip</option><option value="SNOW">Snow / wintry</option><option value="WIND">Windy</option><option value="HOT">Hot (85°F+)</option><option value="COLD">Cold (40°F or lower)</option><option value="INDOOR">Indoor / dome</option></select><select id="statusFilter"><option value="ALL">All statuses</option><option>QUALIFIES</option><option>LEAN</option><option>WATCH</option><option>NO PLAY</option><option>NO LINE</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>Status</th><th>Game</th><th><button class="sort-btn" type="button" data-weather-sort="2">Kickoff <span>↕</span></button></th><th>Market</th><th><button class="sort-btn" type="button" data-weather-sort="4">Temp <span>↕</span></button></th><th><button class="sort-btn" type="button" data-weather-sort="5">Wind <span>↕</span></button></th><th><button class="sort-btn" type="button" data-weather-sort="6">Gust <span>↕</span></button></th><th><button class="sort-btn" type="button" data-weather-sort="7">RH <span>↕</span></button></th><th><button class="sort-btn" type="button" data-weather-sort="8" title="Probability of precipitation / chance of precipitation">PoP <span>↕</span></button></th><th>Model</th><th>Why</th></tr></thead><tbody id="boardBody"><tr data-status="LEAN" data-division="FCS" data-weather-types="HOT"><td><span class="badge lean">LEAN</span></td><td><strong>Northwestern State @ East Texas A&amp;M</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 51.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="97.000000">97°F</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="12.658570">13 mph</td><td class="weather-num" data-sort-value="39.000000">39%</td><td class="weather-num" data-sort-value="4.000000">4%</td><td>UNDER edge 11.2 · projected total 40.3<br><span class="small">5.0+ model edge; FCS-only HGB; FCS 7.5+ under edge</span></td><td>FCS-only HGB has a strong under edge, but the market total is below the preferred 56+ qualifying screen.</td></tr><tr data-status="LEAN" data-division="FCS" data-weather-types=""><td><span class="badge lean">LEAN</span></td><td><strong>New Haven @ South Dakota State</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 56.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="70.000000">70°F</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="12.658570">13 mph</td><td class="weather-num" data-sort-value="44.000000">44%</td><td class="weather-num" data-sort-value="0.000000">0%</td><td>UNDER edge 5.8 · projected total 50.7<br><span class="small">5.0+ model edge; FCS-only HGB; FCS 56+ total</span></td><td>FCS-only HGB points under with a 5.0+ edge and 56+ total, but it does not meet the 7.5-point qualifying edge.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>William &amp; Mary @ Lehigh</strong></td><td class="kickoff-num" data-sort-value="1789236000">Sat Sep 12 · 1:00 PM CT</td><td>O/U 46.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="78.000000">78°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="11.507791">12 mph</td><td class="weather-num" data-sort-value="60.000000">60%</td><td class="weather-num" data-sort-value="22.000000">22%</td><td>OVER edge 14.5 · projected total 61.0<br><span class="small">5.0+ model edge; FCS-only HGB</span></td><td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>North Carolina A&amp;T @ North Carolina Central</strong></td><td class="kickoff-num" data-sort-value="1789250400">Sat Sep 12 · 5:00 PM CT</td><td>O/U 54.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="82.000000">82°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="79.000000">79%</td><td class="weather-num" data-sort-value="73.000000">73%</td><td>OVER edge 11.2 · projected total 65.7<br><span class="small">5.0+ model edge; FCS-only HGB</span></td><td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Duquesne @ Youngstown State</strong></td><td class="kickoff-num" data-sort-value="1789236000">Sat Sep 12 · 1:00 PM CT</td><td>O/U 52.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="80.000000">80°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="10.357012">10 mph</td><td class="weather-num" data-sort-value="67.000000">67%</td><td class="weather-num" data-sort-value="44.000000">44%</td><td>OVER edge 10.8 · projected total 63.3<br><span class="small">5.0+ model edge; FCS-only HGB</span></td><td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="RAIN HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Furman @ Mercer</strong></td><td class="kickoff-num" data-sort-value="1789250400">Sat Sep 12 · 5:00 PM CT</td><td>O/U 54.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="86.000000">86°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="9.206233">9 mph</td><td class="weather-num" data-sort-value="69.000000">69%</td><td class="weather-num" data-sort-value="70.000000">70%</td><td>OVER edge 10.3 · projected total 64.8<br><span class="small">5.0+ model edge; FCS-only HGB</span></td><td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Southeast Missouri State @ Southern Illinois</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 52.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="86.000000">86°F</td><td class="weather-num" data-sort-value="1.150779">1 mph</td><td class="weather-num" data-sort-value="3.452337">3 mph</td><td class="weather-num" data-sort-value="68.000000">68%</td><td class="weather-num" data-sort-value="18.000000">18%</td><td>OVER edge 8.1 · projected total 60.6<br><span class="small">5.0+ model edge; FCS-only HGB</span></td><td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="INDOOR"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Incarnate Word @ Northern Arizona</strong></td><td class="kickoff-num" data-sort-value="1789246800">Sat Sep 12 · 4:00 PM CT</td><td>O/U 55.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td>OVER edge 7.5 · projected total 63.0<br><span class="small">5.0+ model edge; FCS-only HGB</span></td><td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Chattanooga @ Eastern Kentucky</strong></td><td class="kickoff-num" data-sort-value="1789250400">Sat Sep 12 · 5:00 PM CT</td><td>O/U 47.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="82.000000">82°F</td><td class="weather-num" data-sort-value="3.452337">3 mph</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="77.000000">77%</td><td class="weather-num" data-sort-value="68.000000">68%</td><td>OVER edge 7.1 · projected total 54.6<br><span class="small">5.0+ model edge; FCS-only HGB</span></td><td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="INDOOR"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Lamar @ Idaho</strong></td><td class="kickoff-num" data-sort-value="1789243200">Sat Sep 12 · 3:00 PM CT</td><td>O/U 49.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td>OVER edge 7.0 · projected total 56.5<br><span class="small">5.0+ model edge; FCS-only HGB</span></td><td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Bryant @ Hampton</strong></td><td class="kickoff-num" data-sort-value="1789250400">Sat Sep 12 · 5:00 PM CT</td><td>O/U 48.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="81.000000">81°F</td><td class="weather-num" data-sort-value="9.206233">9 mph</td><td class="weather-num" data-sort-value="13.809349">14 mph</td><td class="weather-num" data-sort-value="82.000000">82%</td><td class="weather-num" data-sort-value="69.000000">69%</td><td>OVER edge 6.8 · projected total 55.3<br><span class="small">5.0+ model edge; FCS-only HGB</span></td><td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Utah Tech @ Montana</strong></td><td class="kickoff-num" data-sort-value="1789239600">Sat Sep 12 · 2:00 PM CT</td><td>O/U 57.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="59.000000">59°F</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="12.658570">13 mph</td><td class="weather-num" data-sort-value="64.000000">64%</td><td class="weather-num" data-sort-value="27.000000">27%</td><td>OVER edge 6.3 · projected total 63.8<br><span class="small">5.0+ model edge; FCS-only HGB; FCS 56+ total</span></td><td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>UAlbany @ Long Island University</strong></td><td class="kickoff-num" data-sort-value="1789228800">Sat Sep 12 · 11:00 AM CT</td><td>O/U 44.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="76.000000">76°F</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="62.000000">62%</td><td class="weather-num" data-sort-value="0.000000">0%</td><td>OVER edge 5.6 · projected total 50.1<br><span class="small">5.0+ model edge; FCS-only HGB</span></td><td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="RAIN HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Tarleton State @ McNeese</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 56.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="85.000000">85°F</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="9.206233">9 mph</td><td class="weather-num" data-sort-value="77.000000">77%</td><td class="weather-num" data-sort-value="73.000000">73%</td><td>OVER edge 5.6 · projected total 62.1<br><span class="small">5.0+ model edge; FCS-only HGB; FCS 56+ total</span></td><td>FCS-only model points over; the FCS research track has not validated an over production strategy.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>UT Rio Grande Valley @ Nicholls</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 51.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="83.000000">83°F</td><td class="weather-num" data-sort-value="1.150779">1 mph</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="88.000000">88%</td><td class="weather-num" data-sort-value="87.000000">87%</td><td>OVER edge 3.8 · projected total 55.3<br><span class="small">FCS-only HGB</span></td><td>FCS-only model does not meet the conservative under-edge screen.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="RAIN HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Valparaiso @ Murray State</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 50.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="85.000000">85°F</td><td class="weather-num" data-sort-value="1.150779">1 mph</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="72.000000">72%</td><td class="weather-num" data-sort-value="38.000000">38%</td><td>OVER edge 3.4 · projected total 53.9<br><span class="small">FCS-only HGB</span></td><td>FCS-only model does not meet the conservative under-edge screen.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Arkansas-Pine Bluff @ Alcorn State</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 49.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="90.000000">90°F</td><td class="weather-num" data-sort-value="3.452337">3 mph</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="60.000000">60%</td><td class="weather-num" data-sort-value="21.000000">21%</td><td>UNDER edge 3.2 · projected total 46.3<br><span class="small">FCS-only HGB</span></td><td>FCS-only model does not meet the conservative under-edge screen.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="RAIN HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Stetson @ Bethune-Cookman</strong></td><td class="kickoff-num" data-sort-value="1789243200">Sat Sep 12 · 3:00 PM CT</td><td>O/U 57.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="87.000000">87°F</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="13.809349">14 mph</td><td class="weather-num" data-sort-value="75.000000">75%</td><td class="weather-num" data-sort-value="70.000000">70%</td><td>UNDER edge 3.1 · projected total 54.4<br><span class="small">FCS-only HGB; FCS 56+ total</span></td><td>FCS-only model does not meet the conservative under-edge screen.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Samford @ Tennessee Tech</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 48.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="78.000000">78°F</td><td class="weather-num" data-sort-value="1.150779">1 mph</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="91.000000">91%</td><td class="weather-num" data-sort-value="79.000000">79%</td><td>OVER edge 2.7 · projected total 51.2<br><span class="small">FCS-only HGB</span></td><td>FCS-only model does not meet the conservative under-edge screen.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>North Dakota @ Portland State</strong></td><td class="kickoff-num" data-sort-value="1789264800">Sat Sep 12 · 9:00 PM CT</td><td>O/U 59.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="59.000000">59°F</td><td class="weather-num" data-sort-value="2.301558">2 mph</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="84.000000">84%</td><td class="weather-num" data-sort-value="44.000000">44%</td><td>OVER edge 2.3 · projected total 61.8<br><span class="small">FCS-only HGB; FCS 56+ total</span></td><td>FCS-only model does not meet the conservative under-edge screen.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="INDOOR"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Drake @ Northern Iowa</strong></td><td class="kickoff-num" data-sort-value="1789236000">Sat Sep 12 · 1:00 PM CT</td><td>O/U 55.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td>OVER edge 2.1 · projected total 57.6<br><span class="small">FCS-only HGB</span></td><td>FCS-only model does not meet the conservative under-edge screen.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Stonehill @ New Hampshire</strong></td><td class="kickoff-num" data-sort-value="1789250400">Sat Sep 12 · 5:00 PM CT</td><td>O/U 42.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="69.000000">69°F</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="11.507791">12 mph</td><td class="weather-num" data-sort-value="66.000000">66%</td><td class="weather-num" data-sort-value="0.000000">0%</td><td>UNDER edge 2.1 · projected total 40.4<br><span class="small">FCS-only HGB</span></td><td>FCS-only model does not meet the conservative under-edge screen.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Marist @ Lafayette</strong></td><td class="kickoff-num" data-sort-value="1789230600">Sat Sep 12 · 11:30 AM CT</td><td>O/U 46.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="74.000000">74°F</td><td class="weather-num" data-sort-value="2.301558">2 mph</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="64.000000">64%</td><td class="weather-num" data-sort-value="2.000000">2%</td><td>UNDER edge 1.9 · projected total 44.6<br><span class="small">FCS-only HGB</span></td><td>FCS-only model does not meet the conservative under-edge screen.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Eastern Michigan @ Michigan State</strong></td><td class="kickoff-num" data-sort-value="1789241400">Sat Sep 12 · 2:30 PM CT</td><td>O/U 49.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="81.000000">81°F</td><td class="weather-num" data-sort-value="10.357012">10 mph</td><td class="weather-num" data-sort-value="21.864803">22 mph</td><td class="weather-num" data-sort-value="63.000000">63%</td><td class="weather-num" data-sort-value="8.000000">8%</td><td>OVER edge 1.9 · projected total 51.4</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Texas Southern @ UTEP</strong></td><td class="kickoff-num" data-sort-value="1789261200">Sat Sep 12 · 8:00 PM CT</td><td>O/U 52.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="96.000000">96°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="21.000000">21%</td><td class="weather-num" data-sort-value="3.000000">3%</td><td>OVER edge 1.6 · projected total 54.1</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>UCF @ Pittsburgh</strong></td><td class="kickoff-num" data-sort-value="1789241400">Sat Sep 12 · 2:30 PM CT</td><td>O/U 56.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="79.000000">79°F</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="13.809349">14 mph</td><td class="weather-num" data-sort-value="82.000000">82%</td><td class="weather-num" data-sort-value="74.000000">74%</td><td>OVER edge 1.6 · projected total 58.1</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Merrimack @ Maine</strong></td><td class="kickoff-num" data-sort-value="1789246800">Sat Sep 12 · 4:00 PM CT</td><td>O/U 46.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="74.000000">74°F</td><td class="weather-num" data-sort-value="9.206233">9 mph</td><td class="weather-num" data-sort-value="17.261686">17 mph</td><td class="weather-num" data-sort-value="48.000000">48%</td><td class="weather-num" data-sort-value="0.000000">0%</td><td>OVER edge 1.6 · projected total 48.1<br><span class="small">FCS-only HGB</span></td><td>FCS-only model does not meet the conservative under-edge screen.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Charleston Southern @ The Citadel</strong></td><td class="kickoff-num" data-sort-value="1789250400">Sat Sep 12 · 5:00 PM CT</td><td>O/U 46.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="84.000000">84°F</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="14.960128">15 mph</td><td class="weather-num" data-sort-value="85.000000">85%</td><td class="weather-num" data-sort-value="66.000000">66%</td><td>OVER edge 1.5 · projected total 48.0<br><span class="small">FCS-only HGB</span></td><td>FCS-only model does not meet the conservative under-edge screen.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Memphis @ Boise State</strong></td><td class="kickoff-num" data-sort-value="1789250400">Sat Sep 12 · 5:00 PM CT</td><td>O/U 54.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="79.000000">79°F</td><td class="weather-num" data-sort-value="10.357012">10 mph</td><td class="weather-num" data-sort-value="23.015582">23 mph</td><td class="weather-num" data-sort-value="30.000000">30%</td><td class="weather-num" data-sort-value="7.000000">7%</td><td>OVER edge 1.5 · projected total 56.0</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Indiana State @ Eastern Illinois</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 48.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="83.000000">83°F</td><td class="weather-num" data-sort-value="2.301558">2 mph</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="67.000000">67%</td><td class="weather-num" data-sort-value="16.000000">16%</td><td>OVER edge 1.4 · projected total 49.9<br><span class="small">FCS-only HGB</span></td><td>FCS-only model does not meet the conservative under-edge screen.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Bucknell @ VMI</strong></td><td class="kickoff-num" data-sort-value="1789234200">Sat Sep 12 · 12:30 PM CT</td><td>O/U 48.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="77.000000">77°F</td><td class="weather-num" data-sort-value="2.301558">2 mph</td><td class="weather-num" data-sort-value="9.206233">9 mph</td><td class="weather-num" data-sort-value="90.000000">90%</td><td class="weather-num" data-sort-value="22.000000">22%</td><td>UNDER edge 1.3 · projected total 47.2<br><span class="small">FCS-only HGB</span></td><td>FCS-only model does not meet the conservative under-edge screen.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="INDOOR"><td><span class="badge no-play">NO PLAY</span></td><td><strong>San Diego @ Idaho State</strong></td><td class="kickoff-num" data-sort-value="1789250400">Sat Sep 12 · 5:00 PM CT</td><td>O/U 59.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td>UNDER edge 1.2 · projected total 58.3<br><span class="small">FCS-only HGB; FCS 56+ total</span></td><td>FCS-only model does not meet the conservative under-edge screen.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Norfolk State @ Virginia</strong></td><td class="kickoff-num" data-sort-value="1789167600">Fri Sep 11 · 6:00 PM CT</td><td>O/U 54.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="78.000000">78°F</td><td class="weather-num" data-sort-value="3.452337">3 mph</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="79.000000">79%</td><td class="weather-num" data-sort-value="34.000000">34%</td><td>OVER edge 1.2 · projected total 55.7</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>West Georgia @ Arkansas State</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 56.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="91.000000">91°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="52.000000">52%</td><td class="weather-num" data-sort-value="12.000000">12%</td><td>OVER edge 1.2 · projected total 57.7</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Robert Morris @ Akron</strong></td><td class="kickoff-num" data-sort-value="1789241400">Sat Sep 12 · 2:30 PM CT</td><td>O/U 41.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="80.000000">80°F</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="11.507791">12 mph</td><td class="weather-num" data-sort-value="69.000000">69%</td><td class="weather-num" data-sort-value="37.000000">37%</td><td>OVER edge 1.1 · projected total 42.6</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Illinois State @ Northern Illinois</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 48.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="78.000000">78°F</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="9.206233">9 mph</td><td class="weather-num" data-sort-value="73.000000">73%</td><td class="weather-num" data-sort-value="12.000000">12%</td><td>OVER edge 1.1 · projected total 49.6</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Elon @ Rhode Island</strong></td><td class="kickoff-num" data-sort-value="1789228800">Sat Sep 12 · 11:00 AM CT</td><td>O/U 47.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="73.000000">73°F</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="55.000000">55%</td><td class="weather-num" data-sort-value="0.000000">0%</td><td>OVER edge 1.1 · projected total 48.6<br><span class="small">FCS-only HGB</span></td><td>FCS-only model does not meet the conservative under-edge screen.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="RAIN HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Southern @ Houston</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 60.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="88.000000">88°F</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="10.357012">10 mph</td><td class="weather-num" data-sort-value="66.000000">66%</td><td class="weather-num" data-sort-value="48.000000">48%</td><td>OVER edge 1.1 · projected total 61.6</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="RAIN HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Morehead State @ Austin Peay</strong></td><td class="kickoff-num" data-sort-value="1789246800">Sat Sep 12 · 4:00 PM CT</td><td>O/U 63.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="88.000000">88°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="66.000000">66%</td><td class="weather-num" data-sort-value="55.000000">55%</td><td>UNDER edge 1.1 · projected total 62.4<br><span class="small">FCS-only HGB; FCS 56+ total</span></td><td>FCS-only model does not meet the conservative under-edge screen.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Weber State @ Colorado</strong></td><td class="kickoff-num" data-sort-value="1789241400">Sat Sep 12 · 2:30 PM CT</td><td>O/U 53.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="77.000000">77°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="37.000000">37%</td><td class="weather-num" data-sort-value="27.000000">27%</td><td>OVER edge 1.1 · projected total 54.6</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Western Illinois @ Wisconsin</strong></td><td class="kickoff-num" data-sort-value="1789254900">Sat Sep 12 · 6:15 PM CT</td><td>O/U 48.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="76.000000">76°F</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="10.357012">10 mph</td><td class="weather-num" data-sort-value="64.000000">64%</td><td class="weather-num" data-sort-value="12.000000">12%</td><td>OVER edge 1.1 · projected total 49.6</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Stony Brook @ Ball State</strong></td><td class="kickoff-num" data-sort-value="1789236000">Sat Sep 12 · 1:00 PM CT</td><td>O/U 57.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="80.000000">80°F</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="11.507791">12 mph</td><td class="weather-num" data-sort-value="70.000000">70%</td><td class="weather-num" data-sort-value="25.000000">25%</td><td>OVER edge 1.0 · projected total 58.5</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Wofford @ Kent State</strong></td><td class="kickoff-num" data-sort-value="1789228800">Sat Sep 12 · 11:00 AM CT</td><td>O/U 47.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="75.000000">75°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="9.206233">9 mph</td><td class="weather-num" data-sort-value="73.000000">73%</td><td class="weather-num" data-sort-value="16.000000">16%</td><td>OVER edge 1.0 · projected total 48.5</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Sacred Heart @ Massachusetts</strong></td><td class="kickoff-num" data-sort-value="1789241400">Sat Sep 12 · 2:30 PM CT</td><td>O/U 53.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="76.000000">76°F</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="11.507791">12 mph</td><td class="weather-num" data-sort-value="50.000000">50%</td><td class="weather-num" data-sort-value="0.000000">0%</td><td>OVER edge 1.0 · projected total 54.5</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Tennessee State @ Alabama A&amp;M</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 48.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="82.000000">82°F</td><td class="weather-num" data-sort-value="2.301558">2 mph</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="78.000000">78%</td><td class="weather-num" data-sort-value="72.000000">72%</td><td>OVER edge 1.0 · projected total 49.5<br><span class="small">FCS-only HGB</span></td><td>FCS-only model does not meet the conservative under-edge screen.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Arizona State @ Texas A&amp;M</strong></td><td class="kickoff-num" data-sort-value="1789228800">Sat Sep 12 · 11:00 AM CT</td><td>O/U 50.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="88.000000">88°F</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="11.507791">12 mph</td><td class="weather-num" data-sort-value="65.000000">65%</td><td class="weather-num" data-sort-value="8.000000">8%</td><td>OVER edge 1.0 · projected total 51.5</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Ohio State @ Texas</strong></td><td class="kickoff-num" data-sort-value="1789255800">Sat Sep 12 · 6:30 PM CT</td><td>O/U 49.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="98.000000">98°F</td><td class="weather-num" data-sort-value="9.206233">9 mph</td><td class="weather-num" data-sort-value="18.412465">18 mph</td><td class="weather-num" data-sort-value="41.000000">41%</td><td class="weather-num" data-sort-value="2.000000">2%</td><td>OVER edge 0.9 · projected total 50.4</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="RAIN HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Lindenwood @ Missouri State</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 52.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="85.000000">85°F</td><td class="weather-num" data-sort-value="3.452337">3 mph</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="70.000000">70%</td><td class="weather-num" data-sort-value="35.000000">35%</td><td>OVER edge 0.9 · projected total 53.4</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Colgate @ Central Michigan</strong></td><td class="kickoff-num" data-sort-value="1789232400">Sat Sep 12 · 12:00 PM CT</td><td>O/U 49.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="78.000000">78°F</td><td class="weather-num" data-sort-value="11.507791">12 mph</td><td class="weather-num" data-sort-value="21.864803">22 mph</td><td class="weather-num" data-sort-value="67.000000">67%</td><td class="weather-num" data-sort-value="1.000000">1%</td><td>OVER edge 0.9 · projected total 50.4</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="RAIN HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Alabama State @ Troy</strong></td><td class="kickoff-num" data-sort-value="1789243200">Sat Sep 12 · 3:00 PM CT</td><td>O/U 51.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="89.000000">89°F</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="11.507791">12 mph</td><td class="weather-num" data-sort-value="59.000000">59%</td><td class="weather-num" data-sort-value="77.000000">77%</td><td>OVER edge 0.9 · projected total 52.4</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>New Mexico State @ Hawai&#x27;i</strong></td><td class="kickoff-num" data-sort-value="1789271940">Sat Sep 12 · 10:59 PM CT</td><td>O/U 49.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="83.000000">83°F</td><td class="weather-num" data-sort-value="11.507791">12 mph</td><td class="weather-num" data-sort-value="14.960128">15 mph</td><td class="weather-num" data-sort-value="58.000000">58%</td><td class="weather-num" data-sort-value="16.000000">16%</td><td>OVER edge 0.9 · projected total 50.4</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>UC Davis @ SMU</strong></td><td class="kickoff-num" data-sort-value="1789243200">Sat Sep 12 · 3:00 PM CT</td><td>O/U 58.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="100.000000">100°F</td><td class="weather-num" data-sort-value="10.357012">10 mph</td><td class="weather-num" data-sort-value="17.261686">17 mph</td><td class="weather-num" data-sort-value="38.000000">38%</td><td class="weather-num" data-sort-value="0.000000">0%</td><td>OVER edge 0.9 · projected total 59.4</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="RAIN WIND"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Northern Colorado @ Wyoming</strong></td><td class="kickoff-num" data-sort-value="1789243200">Sat Sep 12 · 3:00 PM CT</td><td>O/U 47.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="77.000000">77°F</td><td class="weather-num" data-sort-value="16.110907">16 mph</td><td class="weather-num" data-sort-value="24.166361">24 mph</td><td class="weather-num" data-sort-value="24.000000">24%</td><td class="weather-num" data-sort-value="36.000000">36%</td><td>OVER edge 0.8 · projected total 48.3</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="WIND"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Arkansas @ Utah</strong></td><td class="kickoff-num" data-sort-value="1789265700">Sat Sep 12 · 9:15 PM CT</td><td>O/U 55.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="82.000000">82°F</td><td class="weather-num" data-sort-value="13.809349">14 mph</td><td class="weather-num" data-sort-value="31.071035">31 mph</td><td class="weather-num" data-sort-value="25.000000">25%</td><td class="weather-num" data-sort-value="11.000000">11%</td><td>OVER edge 0.8 · projected total 56.3</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Central Connecticut @ Toledo</strong></td><td class="kickoff-num" data-sort-value="1789241400">Sat Sep 12 · 2:30 PM CT</td><td>O/U 55.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="82.000000">82°F</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="14.960128">15 mph</td><td class="weather-num" data-sort-value="62.000000">62%</td><td class="weather-num" data-sort-value="15.000000">15%</td><td>OVER edge 0.8 · projected total 56.3</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Holy Cross @ Miami (OH)</strong></td><td class="kickoff-num" data-sort-value="1789232400">Sat Sep 12 · 12:00 PM CT</td><td>O/U 49.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="80.000000">80°F</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="9.206233">9 mph</td><td class="weather-num" data-sort-value="80.000000">80%</td><td class="weather-num" data-sort-value="44.000000">44%</td><td>OVER edge 0.8 · projected total 50.3</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Wagner @ James Madison</strong></td><td class="kickoff-num" data-sort-value="1789241400">Sat Sep 12 · 2:30 PM CT</td><td>O/U 54.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="78.000000">78°F</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="12.658570">13 mph</td><td class="weather-num" data-sort-value="79.000000">79%</td><td class="weather-num" data-sort-value="69.000000">69%</td><td>OVER edge 0.8 · projected total 55.3</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Monmouth @ Western Michigan</strong></td><td class="kickoff-num" data-sort-value="1789252200">Sat Sep 12 · 5:30 PM CT</td><td>O/U 52.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="79.000000">79°F</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="14.960128">15 mph</td><td class="weather-num" data-sort-value="67.000000">67%</td><td class="weather-num" data-sort-value="8.000000">8%</td><td>OVER edge 0.8 · projected total 53.3</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Iowa State @ Iowa</strong></td><td class="kickoff-num" data-sort-value="1789255800">Sat Sep 12 · 6:30 PM CT</td><td>O/U 40.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="79.000000">79°F</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="67.000000">67%</td><td class="weather-num" data-sort-value="26.000000">26%</td><td>OVER edge 0.8 · projected total 41.3</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Arizona @ BYU</strong></td><td class="kickoff-num" data-sort-value="1789241400">Sat Sep 12 · 2:30 PM CT</td><td>O/U 47.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="83.000000">83°F</td><td class="weather-num" data-sort-value="9.206233">9 mph</td><td class="weather-num" data-sort-value="17.261686">17 mph</td><td class="weather-num" data-sort-value="31.000000">31%</td><td class="weather-num" data-sort-value="7.000000">7%</td><td>OVER edge 0.8 · projected total 48.3</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Buffalo @ Florida International</strong></td><td class="kickoff-num" data-sort-value="1789250400">Sat Sep 12 · 5:00 PM CT</td><td>O/U 47.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="84.000000">84°F</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="12.658570">13 mph</td><td class="weather-num" data-sort-value="82.000000">82%</td><td class="weather-num" data-sort-value="87.000000">87%</td><td>OVER edge 0.8 · projected total 48.3</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>San Diego State @ UCLA</strong></td><td class="kickoff-num" data-sort-value="1789254900">Sat Sep 12 · 6:15 PM CT</td><td>O/U 54.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="83.000000">83°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="46.000000">46%</td><td class="weather-num" data-sort-value="0.000000">0%</td><td>OVER edge 0.8 · projected total 55.3</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Bowling Green @ Nebraska</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 51.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="77.000000">77°F</td><td class="weather-num" data-sort-value="9.206233">9 mph</td><td class="weather-num" data-sort-value="13.809349">14 mph</td><td class="weather-num" data-sort-value="68.000000">68%</td><td class="weather-num" data-sort-value="38.000000">38%</td><td>OVER edge 0.8 · projected total 52.3</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Alabama @ Kentucky</strong></td><td class="kickoff-num" data-sort-value="1789241400">Sat Sep 12 · 2:30 PM CT</td><td>O/U 49.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="84.000000">84°F</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="11.507791">12 mph</td><td class="weather-num" data-sort-value="72.000000">72%</td><td class="weather-num" data-sort-value="66.000000">66%</td><td>OVER edge 0.8 · projected total 50.3</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Southern Miss @ Auburn</strong></td><td class="kickoff-num" data-sort-value="1789256700">Sat Sep 12 · 6:45 PM CT</td><td>O/U 56.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="81.000000">81°F</td><td class="weather-num" data-sort-value="3.452337">3 mph</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="82.000000">82%</td><td class="weather-num" data-sort-value="72.000000">72%</td><td>OVER edge 0.8 · projected total 57.3</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Stephen F. Austin @ Abilene Christian</strong></td><td class="kickoff-num" data-sort-value="1789257600">Sat Sep 12 · 7:00 PM CT</td><td>O/U 49.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="100.000000">100°F</td><td class="weather-num" data-sort-value="13.809349">14 mph</td><td class="weather-num" data-sort-value="19.563245">20 mph</td><td class="weather-num" data-sort-value="27.000000">27%</td><td class="weather-num" data-sort-value="1.000000">1%</td><td>UNDER edge 0.8 · projected total 48.7<br><span class="small">FCS-only HGB</span></td><td>FCS-only model does not meet the conservative under-edge screen.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Southern Utah @ Colorado State</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 56.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="81.000000">81°F</td><td class="weather-num" data-sort-value="11.507791">12 mph</td><td class="weather-num" data-sort-value="18.412465">18 mph</td><td class="weather-num" data-sort-value="35.000000">35%</td><td class="weather-num" data-sort-value="26.000000">26%</td><td>OVER edge 0.7 · projected total 57.2</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Louisiana Tech @ LSU</strong></td><td class="kickoff-num" data-sort-value="1789255800">Sat Sep 12 · 6:30 PM CT</td><td>O/U 55.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="84.000000">84°F</td><td class="weather-num" data-sort-value="3.452337">3 mph</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="80.000000">80%</td><td class="weather-num" data-sort-value="73.000000">73%</td><td>OVER edge 0.7 · projected total 56.2</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Mercyhurst @ New Mexico</strong></td><td class="kickoff-num" data-sort-value="1789243200">Sat Sep 12 · 3:00 PM CT</td><td>O/U 51.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="93.000000">93°F</td><td class="weather-num" data-sort-value="3.452337">3 mph</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="23.000000">23%</td><td class="weather-num" data-sort-value="2.000000">2%</td><td>OVER edge 0.7 · projected total 52.2</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>UL Monroe @ UAB</strong></td><td class="kickoff-num" data-sort-value="1789241400">Sat Sep 12 · 2:30 PM CT</td><td>O/U 55.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="89.000000">89°F</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="9.206233">9 mph</td><td class="weather-num" data-sort-value="66.000000">66%</td><td class="weather-num" data-sort-value="79.000000">79%</td><td>OVER edge 0.7 · projected total 56.2</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Grambling @ TCU</strong></td><td class="kickoff-num" data-sort-value="1789257600">Sat Sep 12 · 7:00 PM CT</td><td>O/U 53.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="98.000000">98°F</td><td class="weather-num" data-sort-value="10.357012">10 mph</td><td class="weather-num" data-sort-value="17.261686">17 mph</td><td class="weather-num" data-sort-value="38.000000">38%</td><td class="weather-num" data-sort-value="0.000000">0%</td><td>OVER edge 0.7 · projected total 54.2</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Richmond @ NC State</strong></td><td class="kickoff-num" data-sort-value="1789167600">Fri Sep 11 · 6:00 PM CT</td><td>O/U 48.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="84.000000">84°F</td><td class="weather-num" data-sort-value="3.452337">3 mph</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="70.000000">70%</td><td class="weather-num" data-sort-value="34.000000">34%</td><td>OVER edge 0.7 · projected total 49.2</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Prairie View A&amp;M @ Baylor</strong></td><td class="kickoff-num" data-sort-value="1789258080">Sat Sep 12 · 7:08 PM CT</td><td>O/U 56.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="97.000000">97°F</td><td class="weather-num" data-sort-value="10.357012">10 mph</td><td class="weather-num" data-sort-value="16.110907">16 mph</td><td class="weather-num" data-sort-value="40.000000">40%</td><td class="weather-num" data-sort-value="1.000000">1%</td><td>OVER edge 0.6 · projected total 57.1</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Oklahoma @ Michigan</strong></td><td class="kickoff-num" data-sort-value="1789228800">Sat Sep 12 · 11:00 AM CT</td><td>O/U 43.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="75.000000">75°F</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="16.110907">16 mph</td><td class="weather-num" data-sort-value="75.000000">75%</td><td class="weather-num" data-sort-value="1.000000">1%</td><td>OVER edge 0.6 · projected total 44.1</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Tennessee @ Georgia Tech</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 55.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="82.000000">82°F</td><td class="weather-num" data-sort-value="3.452337">3 mph</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="75.000000">75%</td><td class="weather-num" data-sort-value="84.000000">84%</td><td>OVER edge 0.6 · projected total 56.1</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Villanova @ Louisville</strong></td><td class="kickoff-num" data-sort-value="1789167600">Fri Sep 11 · 6:00 PM CT</td><td>O/U 56.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="79.000000">79°F</td><td class="weather-num" data-sort-value="3.452337">3 mph</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="82.000000">82%</td><td class="weather-num" data-sort-value="49.000000">49%</td><td>OVER edge 0.6 · projected total 57.1</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Rutgers @ Boston College</strong></td><td class="kickoff-num" data-sort-value="1789169400">Fri Sep 11 · 6:30 PM CT</td><td>O/U 54.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="68.000000">68°F</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="10.357012">10 mph</td><td class="weather-num" data-sort-value="49.000000">49%</td><td class="weather-num" data-sort-value="0.000000">0%</td><td>OVER edge 0.6 · projected total 55.1</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Missouri @ Kansas</strong></td><td class="kickoff-num" data-sort-value="1789171200">Fri Sep 11 · 7:00 PM CT</td><td>O/U 50.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="82.000000">82°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="9.206233">9 mph</td><td class="weather-num" data-sort-value="69.000000">69%</td><td class="weather-num" data-sort-value="5.000000">5%</td><td>OVER edge 0.6 · projected total 51.1</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>East Tennessee State @ North Carolina</strong></td><td class="kickoff-num" data-sort-value="1789228800">Sat Sep 12 · 11:00 AM CT</td><td>O/U 54.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="83.000000">83°F</td><td class="weather-num" data-sort-value="3.452337">3 mph</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="80.000000">80%</td><td class="weather-num" data-sort-value="39.000000">39%</td><td>OVER edge 0.6 · projected total 55.1</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Penn State @ Temple</strong></td><td class="kickoff-num" data-sort-value="1789228800">Sat Sep 12 · 11:00 AM CT</td><td>O/U 49.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="77.000000">77°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="67.000000">67%</td><td class="weather-num" data-sort-value="4.000000">4%</td><td>OVER edge 0.6 · projected total 50.1</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Western Carolina @ Cincinnati</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 60.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="81.000000">81°F</td><td class="weather-num" data-sort-value="2.301558">2 mph</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="76.000000">76%</td><td class="weather-num" data-sort-value="53.000000">53%</td><td>OVER edge 0.6 · projected total 61.1</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Navy @ Florida Atlantic</strong></td><td class="kickoff-num" data-sort-value="1789255800">Sat Sep 12 · 6:30 PM CT</td><td>O/U 58.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="84.000000">84°F</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="12.658570">13 mph</td><td class="weather-num" data-sort-value="80.000000">80%</td><td class="weather-num" data-sort-value="79.000000">79%</td><td>OVER edge 0.6 · projected total 59.1</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Georgia State @ Kennesaw State</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 54.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="81.000000">81°F</td><td class="weather-num" data-sort-value="2.301558">2 mph</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="81.000000">81%</td><td class="weather-num" data-sort-value="84.000000">84%</td><td>OVER edge 0.6 · projected total 55.1</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Mississippi State @ Minnesota</strong></td><td class="kickoff-num" data-sort-value="1789241400">Sat Sep 12 · 2:30 PM CT</td><td>O/U 55.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="71.000000">71°F</td><td class="weather-num" data-sort-value="10.357012">10 mph</td><td class="weather-num" data-sort-value="18.412465">18 mph</td><td class="weather-num" data-sort-value="55.000000">55%</td><td class="weather-num" data-sort-value="0.000000">0%</td><td>OVER edge 0.6 · projected total 56.1</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Middle Tennessee @ Marshall</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 56.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="82.000000">82°F</td><td class="weather-num" data-sort-value="2.301558">2 mph</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="81.000000">81%</td><td class="weather-num" data-sort-value="71.000000">71%</td><td>UNDER edge 0.5 · projected total 56.0</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Fordham @ Coastal Carolina</strong></td><td class="kickoff-num" data-sort-value="1789255800">Sat Sep 12 · 6:30 PM CT</td><td>O/U 52.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="82.000000">82°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="10.357012">10 mph</td><td class="weather-num" data-sort-value="88.000000">88%</td><td class="weather-num" data-sort-value="64.000000">64%</td><td>OVER edge 0.5 · projected total 53.0</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Tulsa @ Sam Houston</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 51.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="87.000000">87°F</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="11.507791">12 mph</td><td class="weather-num" data-sort-value="63.000000">63%</td><td class="weather-num" data-sort-value="29.000000">29%</td><td>OVER edge 0.5 · projected total 52.0</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Gardner-Webb @ Liberty</strong></td><td class="kickoff-num" data-sort-value="1789250400">Sat Sep 12 · 5:00 PM CT</td><td>O/U 55.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="80.000000">80°F</td><td class="weather-num" data-sort-value="3.452337">3 mph</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="77.000000">77%</td><td class="weather-num" data-sort-value="74.000000">74%</td><td>OVER edge 0.5 · projected total 56.0</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>UT Martin @ West Virginia</strong></td><td class="kickoff-num" data-sort-value="1789232400">Sat Sep 12 · 12:00 PM CT</td><td>O/U 55.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="77.000000">77°F</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="12.658570">13 mph</td><td class="weather-num" data-sort-value="86.000000">86%</td><td class="weather-num" data-sort-value="44.000000">44%</td><td>OVER edge 0.5 · projected total 56.0</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Florida A&amp;M @ Miami</strong></td><td class="kickoff-num" data-sort-value="1789084800">Thu Sep 10 · 7:00 PM CT</td><td>O/U 63.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="83.000000">83°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="82.000000">82%</td><td class="weather-num" data-sort-value="16.000000">16%</td><td>OVER edge 0.5 · projected total 64.0<br><span class="small">refinement: total≥60 + RH≥80%; selected total above market median</span></td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>South Florida @ Army</strong></td><td class="kickoff-num" data-sort-value="1789228800">Sat Sep 12 · 11:00 AM CT</td><td>O/U 46.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="75.000000">75°F</td><td class="weather-num" data-sort-value="2.301558">2 mph</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="64.000000">64%</td><td class="weather-num" data-sort-value="0.000000">0%</td><td>OVER edge 0.5 · projected total 47.0</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Oregon @ Oklahoma State</strong></td><td class="kickoff-num" data-sort-value="1789228800">Sat Sep 12 · 11:00 AM CT</td><td>O/U 57.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="83.000000">83°F</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="16.110907">16 mph</td><td class="weather-num" data-sort-value="72.000000">72%</td><td class="weather-num" data-sort-value="39.000000">39%</td><td>OVER edge 0.5 · projected total 58.0</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FCS" data-weather-types="INDOOR"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Eastern Washington @ South Dakota</strong></td><td class="kickoff-num" data-sort-value="1789236000">Sat Sep 12 · 1:00 PM CT</td><td>O/U 58.5 · FanDuel (Odds API) · 1 providers</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td>OVER edge 0.5 · projected total 59.0<br><span class="small">FCS-only HGB; FCS 56+ total</span></td><td>FCS-only model does not meet the conservative under-edge screen.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Wake Forest @ Purdue</strong></td><td class="kickoff-num" data-sort-value="1789228800">Sat Sep 12 · 11:00 AM CT</td><td>O/U 49.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="79.000000">79°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="10.357012">10 mph</td><td class="weather-num" data-sort-value="74.000000">74%</td><td class="weather-num" data-sort-value="11.000000">11%</td><td>OVER edge 0.4 · projected total 49.9</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Jacksonville State @ Ohio</strong></td><td class="kickoff-num" data-sort-value="1789250400">Sat Sep 12 · 5:00 PM CT</td><td>O/U 50.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="80.000000">80°F</td><td class="weather-num" data-sort-value="3.452337">3 mph</td><td class="weather-num" data-sort-value="9.206233">9 mph</td><td class="weather-num" data-sort-value="85.000000">85%</td><td class="weather-num" data-sort-value="61.000000">61%</td><td>OVER edge 0.4 · projected total 50.9</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Towson @ South Carolina</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 54.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="81.000000">81°F</td><td class="weather-num" data-sort-value="3.452337">3 mph</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="85.000000">85%</td><td class="weather-num" data-sort-value="75.000000">75%</td><td>OVER edge 0.4 · projected total 54.9</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Charlotte @ Ole Miss</strong></td><td class="kickoff-num" data-sort-value="1789256700">Sat Sep 12 · 6:45 PM CT</td><td>O/U 60.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="85.000000">85°F</td><td class="weather-num" data-sort-value="1.150779">1 mph</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="63.000000">63%</td><td class="weather-num" data-sort-value="37.000000">37%</td><td>OVER edge 0.4 · projected total 60.9</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>UNLV @ North Texas</strong></td><td class="kickoff-num" data-sort-value="1789242300">Sat Sep 12 · 2:45 PM CT</td><td>O/U 56.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="98.000000">98°F</td><td class="weather-num" data-sort-value="10.357012">10 mph</td><td class="weather-num" data-sort-value="17.261686">17 mph</td><td class="weather-num" data-sort-value="43.000000">43%</td><td class="weather-num" data-sort-value="0.000000">0%</td><td>OVER edge 0.4 · projected total 56.9</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Utah State @ Washington</strong></td><td class="kickoff-num" data-sort-value="1789241400">Sat Sep 12 · 2:30 PM CT</td><td>O/U 55.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="64.000000">64°F</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="75.000000">75%</td><td class="weather-num" data-sort-value="41.000000">41%</td><td>OVER edge 0.4 · projected total 55.9</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Maryland @ UConn</strong></td><td class="kickoff-num" data-sort-value="1789241400">Sat Sep 12 · 2:30 PM CT</td><td>O/U 52.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="77.000000">77°F</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="12.658570">13 mph</td><td class="weather-num" data-sort-value="50.000000">50%</td><td class="weather-num" data-sort-value="1.000000">1%</td><td>OVER edge 0.4 · projected total 52.9</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Old Dominion @ Virginia Tech</strong></td><td class="kickoff-num" data-sort-value="1789228800">Sat Sep 12 · 11:00 AM CT</td><td>O/U 49.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="76.000000">76°F</td><td class="weather-num" data-sort-value="0.000000">0 mph</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="86.000000">86%</td><td class="weather-num" data-sort-value="31.000000">31%</td><td>OVER edge 0.4 · projected total 49.9</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="WIND"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Montana State @ Nevada</strong></td><td class="kickoff-num" data-sort-value="1789266600">Sat Sep 12 · 9:30 PM CT</td><td>O/U 49.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="64.000000">64°F</td><td class="weather-num" data-sort-value="26.467919">26 mph</td><td class="weather-num" data-sort-value="41.428047">41 mph</td><td class="weather-num" data-sort-value="35.000000">35%</td><td class="weather-num" data-sort-value="0.000000">0%</td><td>OVER edge 0.4 · projected total 49.9</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Louisiana @ USC</strong></td><td class="kickoff-num" data-sort-value="1789268400">Sat Sep 12 · 10:00 PM CT</td><td>O/U 60.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="72.000000">72°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="84.000000">84%</td><td class="weather-num" data-sort-value="0.000000">0%</td><td>OVER edge 0.3 · projected total 60.8<br><span class="small">refinement: total≥60 + RH≥80%; selected total above market median</span></td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types="RAIN HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Campbell @ Florida</strong></td><td class="kickoff-num" data-sort-value="1789248600">Sat Sep 12 · 4:30 PM CT</td><td>O/U 65.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="86.000000">86°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="9.206233">9 mph</td><td class="weather-num" data-sort-value="77.000000">77%</td><td class="weather-num" data-sort-value="73.000000">73%</td><td>OVER edge 0.3 · projected total 65.8</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>App State @ East Carolina</strong></td><td class="kickoff-num" data-sort-value="1789228800">Sat Sep 12 · 11:00 AM CT</td><td>O/U 56.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="86.000000">86°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="10.357012">10 mph</td><td class="weather-num" data-sort-value="68.000000">68%</td><td class="weather-num" data-sort-value="41.000000">41%</td><td>UNDER edge 0.3 · projected total 56.2</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Western Kentucky @ Georgia</strong></td><td class="kickoff-num" data-sort-value="1789231500">Sat Sep 12 · 11:45 AM CT</td><td>O/U 55.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="83.000000">83°F</td><td class="weather-num" data-sort-value="3.452337">3 mph</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="79.000000">79%</td><td class="weather-num" data-sort-value="52.000000">52%</td><td>OVER edge 0.3 · projected total 55.8</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="WIND"><td><span class="badge no-play">NO PLAY</span></td><td><strong>North Dakota State @ Air Force</strong></td><td class="kickoff-num" data-sort-value="1789264800">Sat Sep 12 · 9:00 PM CT</td><td>O/U 47.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="69.000000">69°F</td><td class="weather-num" data-sort-value="19.563245">20 mph</td><td class="weather-num" data-sort-value="29.920256">30 mph</td><td class="weather-num" data-sort-value="49.000000">49%</td><td class="weather-num" data-sort-value="12.000000">12%</td><td>OVER edge 0.3 · projected total 47.8</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Cal Poly @ San José State</strong></td><td class="kickoff-num" data-sort-value="1789261200">Sat Sep 12 · 8:00 PM CT</td><td>O/U 56.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="72.000000">72°F</td><td class="weather-num" data-sort-value="13.809349">14 mph</td><td class="weather-num" data-sort-value="24.166361">24 mph</td><td class="weather-num" data-sort-value="58.000000">58%</td><td class="weather-num" data-sort-value="0.000000">0%</td><td>OVER edge 0.2 · projected total 56.7</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="INDOOR"><td><span class="badge no-play">NO PLAY</span></td><td><strong>California @ Syracuse</strong></td><td class="kickoff-num" data-sort-value="1789241400">Sat Sep 12 · 2:30 PM CT</td><td>O/U 56.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td>OVER edge 0.2 · projected total 56.7</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Delaware @ Vanderbilt</strong></td><td class="kickoff-num" data-sort-value="1789244100">Sat Sep 12 · 3:15 PM CT</td><td>O/U 54.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="89.000000">89°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="64.000000">64%</td><td class="weather-num" data-sort-value="70.000000">70%</td><td>OVER edge 0.2 · projected total 54.7</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Texas Tech @ Oregon State</strong></td><td class="kickoff-num" data-sort-value="1789255800">Sat Sep 12 · 6:30 PM CT</td><td>O/U 53.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="59.000000">59°F</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="13.809349">14 mph</td><td class="weather-num" data-sort-value="89.000000">89%</td><td class="weather-num" data-sort-value="85.000000">85%</td><td>UNDER edge 0.2 · projected total 53.3</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>UTSA @ Texas State</strong></td><td class="kickoff-num" data-sort-value="1789241400">Sat Sep 12 · 2:30 PM CT</td><td>O/U 66.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="98.000000">98°F</td><td class="weather-num" data-sort-value="9.206233">9 mph</td><td class="weather-num" data-sort-value="17.261686">17 mph</td><td class="weather-num" data-sort-value="43.000000">43%</td><td class="weather-num" data-sort-value="1.000000">1%</td><td>OVER edge 0.2 · projected total 66.7</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="OTHER" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Howard @ Indiana</strong></td><td class="kickoff-num" data-sort-value="1789228800">Sat Sep 12 · 11:00 AM CT</td><td>O/U 64.5 · DraftKings · 1 providers</td><td class="weather-num" data-sort-value="79.000000">79°F</td><td class="weather-num" data-sort-value="3.452337">3 mph</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="82.000000">82%</td><td class="weather-num" data-sort-value="17.000000">17%</td><td>OVER edge 0.1 · projected total 64.6<br><span class="small">refinement: total≥60 + RH≥80%</span></td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><strong>Rice @ Notre Dame</strong></td><td class="kickoff-num" data-sort-value="1789241400">Sat Sep 12 · 2:30 PM CT</td><td>O/U 55.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="82.000000">82°F</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="16.110907">16 mph</td><td class="weather-num" data-sort-value="63.000000">63%</td><td class="weather-num" data-sort-value="10.000000">10%</td><td>UNDER edge 0.1 · projected total 55.4</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Washington State @ Kansas State</strong></td><td class="kickoff-num" data-sort-value="1789228800">Sat Sep 12 · 11:00 AM CT</td><td>O/U 49.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="75.000000">75°F</td><td class="weather-num" data-sort-value="3.452337">3 mph</td><td class="weather-num" data-sort-value="8.055454">8 mph</td><td class="weather-num" data-sort-value="87.000000">87%</td><td class="weather-num" data-sort-value="62.000000">62%</td><td>OVER edge 0.1 · projected total 49.6</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>South Alabama @ Tulane</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>O/U 49.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="83.000000">83°F</td><td class="weather-num" data-sort-value="4.603116">5 mph</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="85.000000">85%</td><td class="weather-num" data-sort-value="81.000000">81%</td><td>OVER edge 0.1 · projected total 49.6</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="RAIN"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Georgia Southern @ Clemson</strong></td><td class="kickoff-num" data-sort-value="1789255800">Sat Sep 12 · 6:30 PM CT</td><td>O/U 55.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="79.000000">79°F</td><td class="weather-num" data-sort-value="1.150779">1 mph</td><td class="weather-num" data-sort-value="6.904675">7 mph</td><td class="weather-num" data-sort-value="89.000000">89%</td><td class="weather-num" data-sort-value="69.000000">69%</td><td>OVER edge 0.1 · projected total 55.6</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Duke @ Illinois</strong></td><td class="kickoff-num" data-sort-value="1789241400">Sat Sep 12 · 2:30 PM CT</td><td>O/U 51.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="85.000000">85°F</td><td class="weather-num" data-sort-value="5.753895">6 mph</td><td class="weather-num" data-sort-value="11.507791">12 mph</td><td class="weather-num" data-sort-value="67.000000">67%</td><td class="weather-num" data-sort-value="10.000000">10%</td><td>UNDER edge 0.0 · projected total 51.5</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO PLAY" data-division="FBS" data-weather-types="HOT"><td><span class="badge no-play">NO PLAY</span></td><td><strong>Sacramento State @ Fresno State</strong></td><td class="kickoff-num" data-sort-value="1789266600">Sat Sep 12 · 9:30 PM CT</td><td>O/U 45.5 · DraftKings · 2 providers</td><td class="weather-num" data-sort-value="85.000000">85°F</td><td class="weather-num" data-sort-value="10.357012">10 mph</td><td class="weather-num" data-sort-value="21.864803">22 mph</td><td class="weather-num" data-sort-value="31.000000">31%</td><td class="weather-num" data-sort-value="0.000000">0%</td><td>UNDER edge 0.0 · projected total 45.5</td><td>Model edge is below the 3.5-point production threshold.</td></tr><tr data-status="NO LINE" data-division="OTHER" data-weather-types=""><td><span class="badge no-line">NO LINE</span></td><td><strong>Thomas More @ Dayton</strong></td><td class="kickoff-num" data-sort-value="1789228800">Sat Sep 12 · 11:00 AM CT</td><td>No current total</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td>Not scored</td><td>No current market total is available.</td></tr><tr data-status="NO LINE" data-division="OTHER" data-weather-types=""><td><span class="badge no-line">NO LINE</span></td><td><strong>Dickinson @ Davidson</strong></td><td class="kickoff-num" data-sort-value="1789228800">Sat Sep 12 · 11:00 AM CT</td><td>No current total</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td>Not scored</td><td>No current market total is available.</td></tr><tr data-status="NO LINE" data-division="OTHER" data-weather-types=""><td><span class="badge no-line">NO LINE</span></td><td><strong>Kentucky Christian @ Chicago State</strong></td><td class="kickoff-num" data-sort-value="1789232400">Sat Sep 12 · 12:00 PM CT</td><td>No current total</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td>Not scored</td><td>No current market total is available.</td></tr><tr data-status="NO LINE" data-division="OTHER" data-weather-types=""><td><span class="badge no-line">NO LINE</span></td><td><strong>Northern Michigan @ St. Thomas (MN)</strong></td><td class="kickoff-num" data-sort-value="1789236000">Sat Sep 12 · 1:00 PM CT</td><td>No current total</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td>Not scored</td><td>No current market total is available.</td></tr><tr data-status="NO LINE" data-division="OTHER" data-weather-types=""><td><span class="badge no-line">NO LINE</span></td><td><strong>Bowie State @ Delaware State</strong></td><td class="kickoff-num" data-sort-value="1789239600">Sat Sep 12 · 2:00 PM CT</td><td>No current total</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td>Not scored</td><td>No current market total is available.</td></tr><tr data-status="NO LINE" data-division="OTHER" data-weather-types=""><td><span class="badge no-line">NO LINE</span></td><td><strong>Lincoln (PA) @ Mississippi Valley State</strong></td><td class="kickoff-num" data-sort-value="1789243200">Sat Sep 12 · 3:00 PM CT</td><td>No current total</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td>Not scored</td><td>No current market total is available.</td></tr><tr data-status="NO LINE" data-division="OTHER" data-weather-types=""><td><span class="badge no-line">NO LINE</span></td><td><strong>Virginia State @ South Carolina State</strong></td><td class="kickoff-num" data-sort-value="1789250400">Sat Sep 12 · 5:00 PM CT</td><td>No current total</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td>Not scored</td><td>No current market total is available.</td></tr><tr data-status="NO LINE" data-division="OTHER" data-weather-types=""><td><span class="badge no-line">NO LINE</span></td><td><strong>Virginia Lynchburg @ Morgan State</strong></td><td class="kickoff-num" data-sort-value="1789250400">Sat Sep 12 · 5:00 PM CT</td><td>No current total</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td>Not scored</td><td>No current market total is available.</td></tr><tr data-status="NO LINE" data-division="OTHER" data-weather-types=""><td><span class="badge no-line">NO LINE</span></td><td><strong>Franklin @ Butler</strong></td><td class="kickoff-num" data-sort-value="1789250400">Sat Sep 12 · 5:00 PM CT</td><td>No current total</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td>Not scored</td><td>No current market total is available.</td></tr><tr data-status="NO LINE" data-division="FCS" data-weather-types=""><td><span class="badge no-line">NO LINE</span></td><td><strong>North Alabama @ SE Louisiana</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>No current total</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td>Not scored<br><span class="small">FCS-only HGB</span></td><td>No current FCS market total is available.</td></tr><tr data-status="NO LINE" data-division="OTHER" data-weather-types=""><td><span class="badge no-line">NO LINE</span></td><td><strong>Central Oklahoma @ Central Arkansas</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>No current total</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td>Not scored</td><td>No current market total is available.</td></tr><tr data-status="NO LINE" data-division="OTHER" data-weather-types=""><td><span class="badge no-line">NO LINE</span></td><td><strong>Arkansas Baptist @ Houston Christian</strong></td><td class="kickoff-num" data-sort-value="1789254000">Sat Sep 12 · 6:00 PM CT</td><td>No current total</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td class="weather-num" data-sort-value="">—</td><td>Not scored</td><td>No current market total is available.</td></tr></tbody></table></div>
       </div>
     </section>
   </main>
@@ -1359,7 +206,7 @@
 
     const mapElement = document.getElementById('weekMap');
     const mapCount = document.getElementById('mapCount');
-    const mapFilters = [...document.querySelectorAll('.map-filter')];
+    const mapFilters = [...document.querySelectorAll('.map-filter[data-map-status]')];
     const divisionFilters = [...document.querySelectorAll('.division-filter')];
     let activeMapStatus = 'ALL';
     let activeDivision = 'ALL';
@@ -1371,6 +218,152 @@
         maxZoom:19,
         attribution:'&copy; OpenStreetMap contributors'
       }).addTo(weekMap);
+
+      // SITE_RADAR_SYNC
+      // Use a timestamp-pinned IEM layer rather than the moving "-0" layer.
+      // This prevents adjacent cached tiles from representing different 5-minute scans.
+      const radarTileUrl = function(validKey) {
+        return 'https://mesonet.agron.iastate.edu/c/tile.py/1.0.0/ridge::USCOMP-N0Q-' + validKey + '/{z}/{x}/{y}.png';
+      };
+      const radarMetaUrl = 'https://mesonet.agron.iastate.edu/data/gis/images/4326/USCOMP/n0q_0.json';
+      const radarToggle = document.getElementById('radarToggle');
+      const radarStatus = document.getElementById('radarStatus');
+      let radarLayer = null;
+      let radarValid = null;
+      let radarEnabled = false;
+      let radarRefreshTimer = null;
+
+      if (!weekMap.getPane('radarPane')) {
+        weekMap.createPane('radarPane');
+        weekMap.getPane('radarPane').style.zIndex = 250;
+        weekMap.getPane('radarPane').style.pointerEvents = 'none';
+      }
+
+      function radarKeyFromIso(valid) {
+        const dt = new Date(valid);
+        if (Number.isNaN(dt.getTime())) return null;
+        const y = dt.getUTCFullYear();
+        const mo = String(dt.getUTCMonth() + 1).padStart(2, '0');
+        const d = String(dt.getUTCDate()).padStart(2, '0');
+        const h = String(dt.getUTCHours()).padStart(2, '0');
+        const m = String(dt.getUTCMinutes()).padStart(2, '0');
+        return '' + y + mo + d + h + m;
+      }
+
+      function fallbackRadarValid() {
+        const dt = new Date(Date.now() - 10 * 60 * 1000);
+        dt.setUTCMinutes(Math.floor(dt.getUTCMinutes() / 5) * 5, 0, 0);
+        return dt.toISOString();
+      }
+
+      function formatRadarValid(valid, approximate) {
+        const dt = new Date(valid);
+        if (Number.isNaN(dt.getTime())) return approximate ? 'Radar time approximate.' : 'Radar time unavailable.';
+        const label = new Intl.DateTimeFormat('en-US', {
+          timeZone:'America/Chicago',
+          month:'short', day:'numeric', hour:'numeric', minute:'2-digit',
+          timeZoneName:'short'
+        }).format(dt);
+        return 'Radar valid ' + label + (approximate ? ' (approx.)' : '') + '.';
+      }
+
+      async function latestRadarValid() {
+        try {
+          const response = await fetch(radarMetaUrl + '?_=' + Date.now(), { cache:'no-store' });
+          if (!response.ok) throw new Error('Radar metadata HTTP ' + response.status);
+          const payload = await response.json();
+          const valid = payload && payload.meta && payload.meta.valid;
+          if (!valid || !radarKeyFromIso(valid)) throw new Error('Radar metadata missing valid time');
+          return { valid:valid, approximate:false };
+        } catch (error) {
+          console.warn('Using conservative radar-time fallback:', error);
+          return { valid:fallbackRadarValid(), approximate:true };
+        }
+      }
+
+      function makeRadarLayer(valid) {
+        const key = radarKeyFromIso(valid);
+        return L.tileLayer(radarTileUrl(key), {
+          opacity:0.58,
+          pane:'radarPane',
+          maxNativeZoom:12,
+          maxZoom:19,
+          noWrap:true,
+          updateWhenIdle:true,
+          keepBuffer:2,
+          bounds:[[20, -130], [55, -60]],
+          attribution:'NEXRAD: Iowa Environmental Mesonet / NWS'
+        });
+      }
+
+      async function refreshRadar() {
+        if (!radarEnabled) return;
+        if (radarStatus) radarStatus.textContent = 'Checking latest radar scan…';
+        const latest = await latestRadarValid();
+        if (!radarEnabled) return;
+
+        const latestKey = radarKeyFromIso(latest.valid);
+        const currentKey = radarValid ? radarKeyFromIso(radarValid) : null;
+        if (radarLayer && latestKey === currentKey) {
+          if (!weekMap.hasLayer(radarLayer)) radarLayer.addTo(weekMap);
+          if (radarStatus) radarStatus.textContent = formatRadarValid(latest.valid, latest.approximate);
+          return;
+        }
+
+        const nextLayer = makeRadarLayer(latest.valid);
+        const previousLayer = radarLayer;
+        let swapped = false;
+
+        function finishSwap() {
+          if (swapped) return;
+          swapped = true;
+          if (!radarEnabled) {
+            if (weekMap.hasLayer(nextLayer)) weekMap.removeLayer(nextLayer);
+            return;
+          }
+          radarLayer = nextLayer;
+          radarValid = latest.valid;
+          if (previousLayer && previousLayer !== nextLayer && weekMap.hasLayer(previousLayer)) {
+            weekMap.removeLayer(previousLayer);
+          }
+          if (radarStatus) radarStatus.textContent = formatRadarValid(latest.valid, latest.approximate);
+        }
+
+        nextLayer.once('load', finishSwap);
+        nextLayer.addTo(weekMap);
+        window.setTimeout(finishSwap, 3500);
+      }
+
+      function setRadarEnabled(enabled) {
+        radarEnabled = enabled;
+        try { localStorage.setItem('cfbRadarEnabled', enabled ? '1' : '0'); } catch (e) {}
+        if (radarToggle) {
+          radarToggle.classList.toggle('active', enabled);
+          radarToggle.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+          radarToggle.textContent = enabled ? 'Radar: On' : 'Radar: Off';
+        }
+        if (radarRefreshTimer) {
+          window.clearInterval(radarRefreshTimer);
+          radarRefreshTimer = null;
+        }
+        if (!enabled) {
+          if (radarLayer && weekMap.hasLayer(radarLayer)) weekMap.removeLayer(radarLayer);
+          if (radarStatus) radarStatus.textContent = 'Radar off.';
+          return;
+        }
+        refreshRadar();
+        radarRefreshTimer = window.setInterval(refreshRadar, 5 * 60 * 1000);
+      }
+
+      if (radarToggle) {
+        radarToggle.addEventListener('click', function() {
+          setRadarEnabled(!radarEnabled);
+        });
+      }
+
+      let restoreRadar = false;
+      try { restoreRadar = localStorage.getItem('cfbRadarEnabled') === '1'; } catch (e) {}
+      if (restoreRadar) setRadarEnabled(true);
 
       gamePoints.forEach(function(game) {
         const color = statusColors[game.status] || '#64748b';
@@ -1439,22 +432,60 @@
 
     const search = document.getElementById('search');
     const divisionFilter = document.getElementById('divisionFilter');
+    const weatherFilter = document.getElementById('weatherFilter');
     const statusFilter = document.getElementById('statusFilter');
     const rows = [...document.querySelectorAll('#boardBody tr')];
     function filterRows() {
       const q = search.value.toLowerCase();
       const d = divisionFilter ? divisionFilter.value : 'ALL';
+      const w = weatherFilter ? weatherFilter.value : 'ALL';
       const s = statusFilter.value;
       rows.forEach(function(row) {
         const showText = row.innerText.toLowerCase().includes(q);
         const showDivision = d === 'ALL' || row.dataset.division === d;
         const showStatus = s === 'ALL' || row.dataset.status === s;
-        row.style.display = showText && showDivision && showStatus ? '' : 'none';
+        const weatherTypes = (row.dataset.weatherTypes || '').split(/\s+/).filter(Boolean);
+        const showWeather = w === 'ALL' || weatherTypes.includes(w);
+        row.style.display = showText && showDivision && showStatus && showWeather ? '' : 'none';
       });
     }
     search.addEventListener('input', filterRows);
     if (divisionFilter) divisionFilter.addEventListener('change', filterRows);
+    if (weatherFilter) weatherFilter.addEventListener('change', filterRows);
     statusFilter.addEventListener('change', filterRows);
+
+
+    // SITE_WEATHER_TOOLS
+    const weatherSortButtons = [...document.querySelectorAll('[data-weather-sort]')];
+    let activeWeatherSortColumn = null;
+    let activeWeatherSortAscending = true;
+    weatherSortButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        const column = Number(button.dataset.weatherSort);
+        if (activeWeatherSortColumn === column) {
+          activeWeatherSortAscending = !activeWeatherSortAscending;
+        } else {
+          activeWeatherSortColumn = column;
+          activeWeatherSortAscending = true;
+        }
+        const tbody = document.getElementById('boardBody');
+        const currentRows = [...tbody.querySelectorAll('tr[data-status]')];
+        currentRows.sort(function(a, b) {
+          const av = Number(a.children[column].dataset.sortValue);
+          const bv = Number(b.children[column].dataset.sortValue);
+          const aMissing = Number.isNaN(av) || a.children[column].dataset.sortValue === '';
+          const bMissing = Number.isNaN(bv) || b.children[column].dataset.sortValue === '';
+          if (aMissing && bMissing) return 0;
+          if (aMissing) return 1;
+          if (bMissing) return -1;
+          return activeWeatherSortAscending ? av - bv : bv - av;
+        });
+        currentRows.forEach(function(row) { tbody.appendChild(row); });
+        weatherSortButtons.forEach(function(other) { other.querySelector('span').textContent = '↕'; });
+        button.querySelector('span').textContent = activeWeatherSortAscending ? '▲' : '▼';
+      });
+    });
+
   </script>
 
   <script>
