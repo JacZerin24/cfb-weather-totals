@@ -38,15 +38,23 @@ jobs:
         run: |
           python - <<'PY'
           from datetime import datetime, timezone
+          from pathlib import Path
+          from tempfile import TemporaryDirectory
 
           import numpy as np
           import pandas as pd
 
           from site_tools.augment_weather_ui import weather_types
+          from src.close_capture_gate import candidate_kickoffs, should_capture
           from src.fcs_model import classify_division_row
           from src.model_bakeoff import feature_lists
           from src.nws_forecast import _c_to_f, _kph_to_mph, _value_at
-          from src.odds_api_fallback import apply_fcs_odds_fallback, match_odds_event, select_total_market
+          from src.odds_api_fallback import (
+              apply_fbs_odds_fallback,
+              apply_fcs_odds_fallback,
+              match_odds_event,
+              select_total_market,
+          )
           from src.oddspapi_fallback import (
               NCAA_BOOKMAKER_PRIORITY,
               _is_full_game_total,
@@ -127,13 +135,14 @@ jobs:
           assert _value_at(grid_series, far) is None
 
           # January/February postseason games stay attached to the prior CFB
-          # season, and slate selection is based on the actual calendar week
-          # rather than one possibly stale CFBD week label.
+          # season, and slate selection is based on the actual Central calendar
+          # week rather than one possibly stale CFBD week label. The first
+          # fixture is deliberately Monday morning Central, not Sunday evening.
           assert active_cfb_season('2026-09-10T00:00:00Z') == 2026
           assert active_cfb_season('2027-01-10T00:00:00Z') == 2026
           slate_fixture = pd.DataFrame({
               'start_date': pd.to_datetime([
-                  '2026-09-14T00:00:00Z',
+                  '2026-09-14T12:00:00Z',
                   '2026-09-17T23:00:00Z',
                   '2026-09-19T23:00:00Z',
               ], utc=True),
@@ -142,6 +151,74 @@ jobs:
           start, end = calendar_slate_window(slate_fixture)
           assert start < slate_fixture.iloc[0]['start_date'] < end
           assert (slate_fixture['start_date'] < end).all()
+          assert start == pd.Timestamp('2026-09-14T05:00:00Z')
+          assert end == pd.Timestamp('2026-09-21T05:00:00Z')
+
+          # 00Z Monday is still Sunday evening CDT and therefore belongs to the
+          # previous Central-time week. Keep this explicit so UTC/local boundary
+          # mistakes cannot re-enter the slate regression fixture.
+          boundary_fixture = pd.DataFrame({
+              'start_date': pd.to_datetime(['2026-09-14T00:00:00Z'], utc=True),
+          })
+          boundary_start, boundary_end = calendar_slate_window(boundary_fixture)
+          assert boundary_start == pd.Timestamp('2026-09-07T05:00:00Z')
+          assert boundary_end == pd.Timestamp('2026-09-14T05:00:00Z')
+
+          # Close-capture preflight source order is authoritative. A current
+          # weekly-board reschedule must override a stale immutable ledger time.
+          with TemporaryDirectory() as td:
+              root = Path(td)
+              board_path = root / 'weekly_board.csv'
+              ledger_path = root / 'official_entries.csv'
+
+              pd.DataFrame([{
+                  'game_id': 101,
+                  'start_date': '2026-09-19T23:00:00Z',
+                  'away_team': 'Away',
+                  'home_team': 'Home',
+              }]).to_csv(board_path, index=False)
+              pd.DataFrame([{
+                  'game_id': 101,
+                  'start_date': '2026-09-20T01:00:00Z',
+                  'away_team': 'Away',
+                  'home_team': 'Home',
+              }]).to_csv(ledger_path, index=False)
+              moved_earlier = candidate_kickoffs(
+                  now='2026-09-19T21:30:00Z',
+                  window_minutes=105,
+                  sources=(board_path, ledger_path),
+              )
+              assert len(moved_earlier) == 1
+              assert moved_earlier.iloc[0]['start_date'] == pd.Timestamp('2026-09-19T23:00:00Z')
+              assert should_capture(
+                  now='2026-09-19T21:30:00Z',
+                  window_minutes=105,
+                  sources=(board_path, ledger_path),
+              )
+
+              pd.DataFrame([{
+                  'game_id': 102,
+                  'start_date': '2026-09-20T01:30:00Z',
+                  'away_team': 'Away2',
+                  'home_team': 'Home2',
+              }]).to_csv(board_path, index=False)
+              pd.DataFrame([{
+                  'game_id': 102,
+                  'start_date': '2026-09-19T23:00:00Z',
+                  'away_team': 'Away2',
+                  'home_team': 'Home2',
+              }]).to_csv(ledger_path, index=False)
+              moved_later = candidate_kickoffs(
+                  now='2026-09-19T21:30:00Z',
+                  window_minutes=105,
+                  sources=(board_path, ledger_path),
+              )
+              assert moved_later.empty
+              assert not should_capture(
+                  now='2026-09-19T21:30:00Z',
+                  window_minutes=105,
+                  sources=(board_path, ledger_path),
+              )
 
           # All-missing historical numeric columns are explicitly excluded
           # instead of being silently dropped by sklearn's imputer.
@@ -222,6 +299,79 @@ jobs:
           assert filled.loc[0, 'closing_total'] == 51.5
           assert filled.loc[0, 'line_source'] == 'The Odds API'
           assert stats['fcs_fallback_filled'] == 1
+
+          # FBS fallback is missing-only: primary CFBD market data must never be
+          # overwritten, while a genuinely missing FBS-involved total is filled.
+          fbs_events = [
+              {
+                  'id': 'fbs-existing',
+                  'commence_time': '2026-09-19T23:30:00Z',
+                  'home_team': 'Alabama Crimson Tide',
+                  'away_team': 'Georgia Bulldogs',
+                  'bookmakers': [{
+                      'key': 'draftkings',
+                      'title': 'DraftKings',
+                      'markets': [{
+                          'key': 'totals',
+                          'outcomes': [
+                              {'name': 'Over', 'price': -110, 'point': 61.0},
+                              {'name': 'Under', 'price': -110, 'point': 61.0},
+                          ],
+                      }],
+                  }],
+              },
+              {
+                  'id': 'fbs-missing',
+                  'commence_time': '2026-09-20T00:00:00Z',
+                  'home_team': 'LSU Tigers',
+                  'away_team': 'Florida Gators',
+                  'bookmakers': [{
+                      'key': 'draftkings',
+                      'title': 'DraftKings',
+                      'markets': [{
+                          'key': 'totals',
+                          'outcomes': [
+                              {'name': 'Over', 'price': -110, 'point': 57.0},
+                              {'name': 'Under', 'price': -110, 'point': 57.0},
+                          ],
+                      }],
+                  }],
+              },
+          ]
+          fbs_board = pd.DataFrame([
+              {
+                  'game_id': 201,
+                  'home_team': 'Alabama',
+                  'away_team': 'Georgia',
+                  'home_classification': 'fbs',
+                  'away_classification': 'fbs',
+                  'start_date': '2026-09-19T23:30:00Z',
+                  'closing_total': 58.5,
+                  'line_source': 'CFBD',
+              },
+              {
+                  'game_id': 202,
+                  'home_team': 'LSU',
+                  'away_team': 'Florida',
+                  'home_classification': 'fbs',
+                  'away_classification': 'fbs',
+                  'start_date': '2026-09-20T00:00:00Z',
+                  'closing_total': None,
+                  'line_source': '',
+              },
+          ])
+          fbs_filled, fbs_stats = apply_fbs_odds_fallback(
+              fbs_board,
+              ['DraftKings'],
+              events=fbs_events,
+          )
+          assert fbs_filled.loc[0, 'closing_total'] == 58.5
+          assert fbs_filled.loc[0, 'line_source'] == 'CFBD'
+          assert fbs_filled.loc[1, 'closing_total'] == 57.0
+          assert fbs_filled.loc[1, 'line_source'] == 'The Odds API'
+          assert fbs_stats['fbs_missing_before'] == 1
+          assert fbs_stats['fbs_fallback_filled'] == 1
+          assert fbs_stats['fbs_missing_after'] == 0
 
           op_fixtures = [{
               'fixtureId': 'id1402765300000001',
@@ -384,5 +534,5 @@ jobs:
           assert op_filled.loc[0, 'closing_total'] == 44.5
           assert op_filled.loc[0, 'line_source'] == 'OddsPapi'
           assert op_stats['fcs_oddspapi_filled'] == 1
-          print('Live decision, NWS horizon, slate rollover, feature-shape, weather UI, and odds fallback checks passed.')
+          print('Live decision, NWS horizon, Central slate rollover, close-capture precedence, feature-shape, weather UI, and FBS/FCS odds fallback checks passed.')
           PY
