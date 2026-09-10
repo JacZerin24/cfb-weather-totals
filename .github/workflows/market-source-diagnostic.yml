@@ -15,9 +15,9 @@ jobs:
   diagnose:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger production board refresh after FCS alias repair
+      - name: Trigger production board refresh after final FCS alias repair
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh workflow run weekly-cfb-weather.yml --repo "$GITHUB_REPOSITORY" --ref main
-          echo "Triggered Weekly CFB Weather Totals on main."
+          echo "Triggered final Weekly CFB Weather Totals validation on main."
