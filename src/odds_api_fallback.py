@@ -10,7 +10,10 @@ import numpy as np
 import pandas as pd
 import requests
 
-ODDS_URL = 'https://api.the-odds-api.com/v4/sports/americanfootball_ncaaf/odds'
+# The Odds API split FCS into its own sport key for the 2026/27 season.
+# This module is only used to fill missing FCS-vs-FCS totals, so query the
+# dedicated FCS board rather than the FBS/NCAAF key.
+ODDS_URL = 'https://api.the-odds-api.com/v4/sports/americanfootball_ncaaf_fcs/odds'
 
 # Common naming differences between CFBD and sportsbook feeds. Keep this list
 # intentionally conservative; fuzzy matching is only used after kickoff/date
