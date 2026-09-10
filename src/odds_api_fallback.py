@@ -72,7 +72,12 @@ def _team_score(left: Any, right: Any) -> float:
     if a == b:
         return 1.0
     shorter, longer = sorted([a, b], key=len)
-    if len(shorter) >= 5 and (longer.startswith(shorter + ' ') or longer.endswith(' ' + shorter)):
+    # Sportsbook feeds commonly append mascots ("LSU Tigers", "TCU Horned
+    # Frogs", etc.). Three-character school abbreviations are distinctive
+    # enough to accept as an exact leading/trailing token because event matching
+    # still requires BOTH teams to clear the threshold and kickoff proximity to
+    # be within 36 hours. Two-character fragments remain excluded.
+    if len(shorter) >= 3 and (longer.startswith(shorter + ' ') or longer.endswith(' ' + shorter)):
         return 0.97
     seq = SequenceMatcher(None, a, b).ratio()
     aset, bset = set(a.split()), set(b.split())
