@@ -1,0 +1,39 @@
+name: OddsPapi Account Diagnostic
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/oddspapi-account-diagnostic.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  account:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Query safe OddsPapi account fields
+        env:
+          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json, os, urllib.parse, urllib.request
+          key = os.environ.get('ODDSPAPI_API_KEY','').strip()
+          if not key:
+              raise SystemExit('ODDSPAPI_API_KEY missing')
+          url = 'https://api.oddspapi.io/v4/account?' + urllib.parse.urlencode({'apiKey': key})
+          with urllib.request.urlopen(url, timeout=30) as r:
+              payload = json.load(r)
+          subs = payload.get('subscriptions') or []
+          active = [s for s in subs if isinstance(s, dict) and s.get('is_active')]
+          current_id = payload.get('current_subscription_id')
+          sub = active[-1] if active else next((s for s in subs if isinstance(s, dict) and s.get('subscription_id') == current_id), (subs[-1] if subs else {}))
+          safe = {k: sub.get(k) for k in ['subscription_id','price','valid_from','valid_until','auto_renew','is_active','request_limit','request_count','last_request']}
+          print('SAFE_ACCOUNT=' + json.dumps(safe, sort_keys=True))
+          print('SUBSCRIPTION_KEYS=' + ','.join(sorted(sub.keys())))
+          for keyname in sorted(sub):
+              if 'reset' in keyname.lower() or 'period' in keyname.lower() or 'renew' in keyname.lower():
+                  print(f'{keyname}={sub.get(keyname)}')
+          PY
