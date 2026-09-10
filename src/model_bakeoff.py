@@ -24,7 +24,16 @@ def feature_lists(df: pd.DataFrame) -> tuple[list[str], list[str]]:
         'snowfall', 'dewpoint_f', 'pressure', 'home_pregame_elo', 'away_pregame_elo',
     ]
     prior_nums = [c for c in df.columns if c.startswith(('home_prior_', 'away_prior_'))]
-    nums = [c for c in base_nums + prior_nums if c in df.columns]
+    # sklearn 1.9 intentionally drops all-missing features inside SimpleImputer,
+    # but doing that implicitly produces warnings and makes feature-shape drift
+    # harder to audit. Exclude columns with no observed historical value before
+    # constructing the production preprocessor. This is semantically equivalent
+    # to the prior runtime behavior for those columns; it does not invent data or
+    # change any non-missing feature.
+    nums = [
+        c for c in base_nums + prior_nums
+        if c in df.columns and pd.to_numeric(df[c], errors='coerce').notna().any()
+    ]
     cats = [
         'game_indoors_bool', 'neutral_site', 'conference_game', 'line_provider',
         'wind_bin', 'temp_bin', 'total_bin', 'fbs_vs_fbs', 'home_conference', 'away_conference',
