@@ -1,0 +1,68 @@
+name: Optimize OddsPapi Live Refresh
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/optimize-oddspapi-live-refresh.yml'
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  patch-and-refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Batch FCS bookmakers into one request
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('src/oddspapi_fallback.py')
+          text = path.read_text()
+          old_chunk = 'BULK_BOOKMAKER_CHUNK_SIZE = 1'
+          old_budget = "max_bulk_calls = max(0, request_limit - request_count - 7)"
+          if old_chunk not in text:
+              raise SystemExit('Expected bookmaker chunk-size line not found')
+          if old_budget not in text:
+              raise SystemExit('Expected quota-budget line not found')
+          text = text.replace(old_chunk, 'BULK_BOOKMAKER_CHUNK_SIZE = 4', 1)
+          text = text.replace(
+              '# Keep a reserve of at least five requests so scheduled runs cannot exhaust\n'
+              '# the free account. Fixtures + markets cost two calls; each book costs one.\n',
+              '# A full refresh uses one fixtures call, one markets call, and one batched\n'
+              '# four-book odds call. Reserve only the two prerequisite calls so any\n'
+              '# remaining third request can still retrieve the freshest FCS board.\n',
+              1,
+          )
+          text = text.replace(old_budget, "max_bulk_calls = max(0, request_limit - request_count - 2)", 1)
+          path.write_text(text)
+          PY
+
+      - name: Sanity check optimized source
+        run: |
+          python -m py_compile src/oddspapi_fallback.py
+          grep -n "BULK_BOOKMAKER_CHUNK_SIZE = 4" src/oddspapi_fallback.py
+          grep -n "request_count - 2" src/oddspapi_fallback.py
+
+      - name: Commit optimized source
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add src/oddspapi_fallback.py
+          git commit -m "Batch FCS bookmakers in one live odds request"
+          git pull --rebase origin main
+          git push origin main
+
+      - name: Trigger real live board refresh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run weekly-cfb-weather.yml --ref main
+          echo "Triggered Weekly CFB Weather Totals with live FCS market refresh enabled."
