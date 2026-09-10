@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 
 import numpy as np
 import pandas as pd
@@ -32,6 +33,8 @@ from .predict_week import (
 from .utils import get_settings
 
 
+CT = ZoneInfo('America/Chicago')
+
 DISPLAY_COLUMNS = [
     'status', 'decision_reason', 'research_tags', 'division_track', 'model_track',
     'season', 'week', 'game_id', 'start_date', 'start_time_tbd',
@@ -46,6 +49,65 @@ DISPLAY_COLUMNS = [
 ]
 
 STATUS_RANK = {'QUALIFIES': 0, 'LEAN': 1, 'WATCH': 2, 'NO PLAY': 3, 'NO LINE': 4}
+
+
+def _utc_timestamp(value: object | None = None) -> pd.Timestamp:
+    if value is None:
+        return pd.Timestamp.now(tz='UTC')
+    ts = pd.to_datetime(value, utc=True, errors='coerce')
+    if pd.isna(ts):
+        raise ValueError(f'Could not parse timestamp: {value!r}')
+    return ts
+
+
+def active_cfb_season(now: object | None = None) -> int:
+    """Map January/February postseason dates back to the prior CFB season."""
+    ts = _utc_timestamp(now)
+    return int(ts.year - 1 if ts.month <= 2 else ts.year)
+
+
+def calendar_slate_window(future_games: pd.DataFrame) -> tuple[pd.Timestamp, pd.Timestamp]:
+    """Return the Central-time Monday-Sunday window containing the next game.
+
+    This avoids a single postponed game that retains an old CFBD week number
+    pinning the entire site to the wrong football week. Games from multiple
+    CFBD week labels can coexist if they are genuinely scheduled in the same
+    calendar slate.
+    """
+    if future_games.empty:
+        raise ValueError('future_games must not be empty')
+    first = pd.to_datetime(future_games['start_date'], utc=True, errors='coerce').dropna().min()
+    if pd.isna(first):
+        raise ValueError('future_games has no usable kickoff time')
+    first_local = first.tz_convert(CT)
+    start_local = first_local.normalize() - pd.Timedelta(days=int(first_local.weekday()))
+    end_local = start_local + pd.Timedelta(days=7)
+    return start_local.tz_convert('UTC'), end_local.tz_convert('UTC')
+
+
+def load_live_games(
+    client: CFBDClient,
+    season: int,
+    configured_season_type: str,
+    now: pd.Timestamp,
+) -> tuple[pd.DataFrame, str]:
+    """Load regular season first, then roll to postseason only when needed."""
+    season_types = [configured_season_type]
+    if configured_season_type == 'regular':
+        season_types.append('postseason')
+
+    last = pd.DataFrame()
+    for season_type in season_types:
+        records = client.get('/games', {'year': season, 'seasonType': season_type})
+        games = normalize_games(records, season)
+        last = games
+        if games.empty:
+            continue
+        future = games[games['start_date'].notna() & games['start_date'].ge(now)]
+        if not future.empty:
+            return games, season_type
+
+    return last, season_types[-1]
 
 
 def finalize_board(board: pd.DataFrame) -> pd.DataFrame:
@@ -63,48 +125,61 @@ def combined_research_tags(row: pd.Series) -> str:
 
 def main() -> None:
     settings = get_settings()
-    season_type = settings['data'].get('season_type', 'regular')
-    season = datetime.now(timezone.utc).year
+    configured_season_type = settings['data'].get('season_type', 'regular')
     now = pd.Timestamp.now(tz='UTC')
+    season = active_cfb_season(now)
 
     client = CFBDClient()
-    print(f'Pulling {season} {season_type} games...')
-    games = normalize_games(client.get('/games', {'year': season, 'seasonType': season_type}), season)
+    print(f'Pulling active CFB season {season}...')
+    games, season_type = load_live_games(client, season, configured_season_type, now)
     if games.empty:
-        raise RuntimeError('CFBD returned no games for the current season.')
+        raise RuntimeError(f'CFBD returned no games for active season {season}.')
 
-    future = games[games['start_date'].notna() & (games['start_date'] >= now)].sort_values('start_date').copy()
+    future = games[games['start_date'].notna() & games['start_date'].ge(now)].sort_values('start_date').copy()
     if future.empty:
-        raise RuntimeError('No upcoming games remain in the current regular season.')
+        raise RuntimeError(f'No upcoming {season} {season_type} games remain.')
 
-    target_week = int(future.iloc[0]['week']) if pd.notna(future.iloc[0]['week']) else None
-    board = future[future['week'].eq(target_week)].copy() if target_week is not None else future.head(100).copy()
+    slate_start, slate_end = calendar_slate_window(future)
+    slate = future[future['start_date'].ge(slate_start) & future['start_date'].lt(slate_end)].copy()
+    if slate.empty:
+        raise RuntimeError('Could not construct the next Central-time football slate.')
 
     # The live site is scoped to games involving an FBS or FCS team. Pure
-    # lower-division matchups do not have a researched model/market use case
-    # here and otherwise clutter the map and table.
-    home_classification = board.get(
-        'home_classification', pd.Series('', index=board.index)
+    # lower-division matchups do not have a researched model/market use case.
+    home_classification = slate.get(
+        'home_classification', pd.Series('', index=slate.index)
     ).astype(str).str.lower()
-    away_classification = board.get(
-        'away_classification', pd.Series('', index=board.index)
+    away_classification = slate.get(
+        'away_classification', pd.Series('', index=slate.index)
     ).astype(str).str.lower()
     live_scope = home_classification.isin({'fbs', 'fcs'}) | away_classification.isin({'fbs', 'fcs'})
     removed_lower_division = int((~live_scope).sum())
-    board = board[live_scope].copy()
+    board = slate[live_scope].copy()
     if board.empty:
-        raise RuntimeError('No FBS/FCS-involved games remain in the current live week.')
+        raise RuntimeError('No FBS/FCS-involved games remain in the next calendar slate.')
 
     board['division_track'] = division_track(board)
+    week_values = pd.to_numeric(board.get('week'), errors='coerce').dropna().astype(int)
+    target_week = int(week_values.mode().iloc[0]) if not week_values.empty else None
+    week_labels = sorted(set(week_values.tolist()))
+    start_label = slate_start.tz_convert(CT).strftime('%b %-d')
+    end_label = (slate_end - pd.Timedelta(seconds=1)).tz_convert(CT).strftime('%b %-d')
     print(
-        f'Upcoming season {season}, week {target_week}: {len(board)} live-site games '
-        f"({int(board['division_track'].eq('FBS').sum())} FBS-vs-FBS, "
-        f"{int(board['division_track'].eq('FCS').sum())} FCS-vs-FCS, "
-        f"{removed_lower_division} pure lower-division game(s) omitted)"
+        f'Upcoming season {season} {season_type}, calendar slate {start_label}-{end_label} CT: '
+        f'{len(board)} live-site games ({int(board["division_track"].eq("FBS").sum())} FBS-vs-FBS, '
+        f'{int(board["division_track"].eq("FCS").sum())} FCS-vs-FCS, '
+        f'{removed_lower_division} pure lower-division game(s) omitted); CFBD week label(s)={week_labels or ["unknown"]}.'
     )
 
-    line_records = client.get('/lines', {'year': season, 'week': target_week, 'seasonType': season_type}) if target_week is not None else []
-    lines = normalize_lines(line_records)
+    # A rescheduled game can retain a different CFBD week number while sharing
+    # the same actual calendar slate. Pull lines for every represented week.
+    line_parts: list[pd.DataFrame] = []
+    for week in week_labels:
+        line_records = client.get('/lines', {'year': season, 'week': week, 'seasonType': season_type})
+        part = normalize_lines(line_records)
+        if not part.empty:
+            line_parts.append(part)
+    lines = pd.concat(line_parts, ignore_index=True) if line_parts else pd.DataFrame()
     selected = pick_total(lines, settings['cfbd']['preferred_line_providers'])
     board = board.merge(selected, on='game_id', how='left')
 
@@ -141,7 +216,8 @@ def main() -> None:
     print(
         f"Market line cache: {fresh_games_with_lines} fresh total(s), "
         f"{cache_stats.get('restored_lines', 0)} restored last-known total(s), "
-        f"{games_with_lines} usable total(s), {cache_stats.get('cached_entries', 0)} cached game(s)."
+        f"{games_with_lines} usable total(s), {cache_stats.get('cached_entries', 0)} cached game(s), "
+        f"{cache_stats.get('skipped_rescheduled', 0)} stale line(s) rejected after kickoff change."
     )
     print(
         f"OddsPapi: status={oddspapi_stats.get('oddspapi_status', 'unknown')}; "

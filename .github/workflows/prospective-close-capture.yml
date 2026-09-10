@@ -2,11 +2,14 @@ name: Prospective Near-Kickoff Market Capture
 
 on:
   schedule:
-    # Protocol 2026.2: try twice per hour during the main college-football
-    # kickoff window Thursday through Monday. The script still writes a file
-    # only when a game starts within the frozen 90-minute capture window.
+    # Protocol 2026.5: try twice per hour during the main college-football
+    # kickoff window Thursday through Monday, plus November Tue/Wed MACtion.
+    # A zero-API local preflight gate runs on every tick; the authoritative
+    # capture routine only calls CFBD/odds when a tracked game is near kickoff.
     - cron: '15,45 14-23 * * 4,5,6,0,1'
     - cron: '15,45 0-5 * * 5,6,0,1,2'
+    - cron: '15,45 14-23 * 11 2,3'
+    - cron: '15,45 0-5 * 11 3,4'
 
 permissions:
   contents: write
@@ -31,7 +34,13 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Zero-API close-capture preflight
+        id: preflight
+        if: ${{ github.run_attempt == 1 }}
+        run: python -m src.close_capture_gate --window-minutes 105
+
       - name: Confirm CFBD API key
+        if: ${{ github.run_attempt == 1 && steps.preflight.outputs.should_capture == 'true' }}
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
         run: |
@@ -41,7 +50,7 @@ jobs:
           fi
 
       - name: Capture immutable near-kickoff market
-        if: ${{ github.run_attempt == 1 }}
+        if: ${{ github.run_attempt == 1 && steps.preflight.outputs.should_capture == 'true' }}
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
           ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
@@ -56,8 +65,9 @@ jobs:
           python -m src.prospective_ledger capture-close
 
       - name: Commit prospective market capture
-        if: ${{ github.run_attempt == 1 }}
+        if: ${{ github.run_attempt == 1 && steps.preflight.outputs.should_capture == 'true' }}
         run: |
+          set -euo pipefail
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add outputs/prospective/2026/

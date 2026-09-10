@@ -7,10 +7,11 @@ on:
     # Thursday, and Friday.
     - cron: '47 10 * * 1,4,5'  # 5:47 AM CDT
     - cron: '47 11 * * 1,4,5'  # 5:47 AM CST
+    # November through January Tue/Wed operational coverage is CST-only.
+    # November snapshots are also part of protocol 2026.5 official entry timing.
+    - cron: '47 11 * 11,12,1 2,3' # 5:47 AM CST
     # Saturday deadline guard: 6:47 AM Central. The normal Saturday full build
     # is at 1:17 AM, so this guard normally only verifies that it succeeded.
-    # It dispatches one backup full build only if the normal build is missing
-    # or failed, preserving a single normal Saturday run.
     - cron: '47 11 * * 6'      # 6:47 AM CDT
     - cron: '47 12 * * 6'      # 6:47 AM CST
 
@@ -44,7 +45,7 @@ jobs:
             "47 10 * * 1,4,5"|"47 11 * * 6")
               EXPECTED_OFFSET="-0500"
               ;;
-            "47 11 * * 1,4,5"|"47 12 * * 6")
+            "47 11 * * 1,4,5"|"47 12 * * 6"|"47 11 * 11,12,1 2,3")
               EXPECTED_OFFSET="-0600"
               ;;
             *)
@@ -75,7 +76,7 @@ jobs:
 
           CENTRAL_DOW=$(TZ=America/Chicago date +%u)
           case "$CENTRAL_DOW" in
-            1|4|5)
+            1|2|3|4|5)
               SAFETY_HOUR=5
               SAFETY_MINUTE=17
               ;;
@@ -84,7 +85,7 @@ jobs:
               SAFETY_MINUTE=17
               ;;
             *)
-              echo "The watchdog only applies Monday, Thursday, Friday, and Saturday."
+              echo "The watchdog only applies to scheduled Monday-Saturday operational safety windows."
               exit 1
               ;;
           esac

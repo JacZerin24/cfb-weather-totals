@@ -8,12 +8,16 @@ import pandas as pd
 from .market_line_cache import apply_market_line_cache, cached_market_reason, load_market_cache
 
 
-def _board(total: float | None, provider: str = 'DraftKings') -> pd.DataFrame:
+def _board(
+    total: float | None,
+    provider: str = 'DraftKings',
+    start_date: str = '2026-09-12T19:00:00Z',
+) -> pd.DataFrame:
     return pd.DataFrame([{
         'game_id': 12345,
         'season': 2026,
         'week': 2,
-        'start_date': '2026-09-12T19:00:00Z',
+        'start_date': start_date,
         'away_team': 'Away',
         'home_team': 'Home',
         'division_track': 'FBS',
@@ -33,7 +37,13 @@ def main() -> None:
         first, stats = apply_market_line_cache(
             _board(55.5), now='2026-09-09T12:00:00Z', path=path,
         )
-        assert stats == {'fresh_lines': 1, 'restored_lines': 0, 'usable_lines': 1, 'cached_entries': 1}
+        assert stats == {
+            'fresh_lines': 1,
+            'restored_lines': 0,
+            'usable_lines': 1,
+            'cached_entries': 1,
+            'skipped_rescheduled': 0,
+        }
         assert first.loc[0, 'line_cache_status'] == 'LIVE'
         assert not bool(first.loc[0, 'line_is_cached'])
 
@@ -55,8 +65,21 @@ def main() -> None:
         cache = load_market_cache(path)
         assert str(cache.loc[0, 'line_last_seen_utc']) == '2026-09-09 12:00:00+00:00'
 
+        # A materially changed kickoff is a new market context. The old line
+        # must not be restored or allowed to orient the model.
+        rescheduled, stats = apply_market_line_cache(
+            _board(None, start_date='2026-09-13T15:00:00Z'),
+            now='2026-09-09T16:00:00Z',
+            path=path,
+        )
+        assert stats['restored_lines'] == 0
+        assert stats['skipped_rescheduled'] == 1
+        assert pd.isna(rescheduled.loc[0, 'closing_total'])
+        assert rescheduled.loc[0, 'line_cache_status'] == 'NO LINE'
+
         updated, stats = apply_market_line_cache(
-            _board(56.5, 'FanDuel'), now='2026-09-09T16:00:00Z', path=path,
+            _board(56.5, 'FanDuel', start_date='2026-09-13T15:00:00Z'),
+            now='2026-09-09T16:30:00Z', path=path,
         )
         assert stats['fresh_lines'] == 1
         assert stats['restored_lines'] == 0
@@ -67,9 +90,10 @@ def main() -> None:
         assert len(cache) == 1
         assert float(cache.loc[0, 'closing_total']) == 56.5
         assert cache.loc[0, 'line_provider'] == 'FanDuel'
-        assert str(cache.loc[0, 'line_first_seen_utc']) == '2026-09-09T12:00:00+00:00'
+        # Rescheduling resets first-seen because this is a materially new event context.
+        assert str(cache.loc[0, 'line_first_seen_utc']) == '2026-09-09T16:30:00+00:00'
 
-    print('Market line cache self-tests passed: 4/4')
+    print('Market line cache self-tests passed: live, fallback, timestamp, reschedule guard, and refresh.')
 
 
 if __name__ == '__main__':

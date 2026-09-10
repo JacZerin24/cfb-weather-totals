@@ -1,10 +1,10 @@
-protocol_version: "orientation-eval-2026.2"
+protocol_version: "orientation-eval-2026.3"
 season: 2026
 challenger_version: "orientation-crosswind-hgb-v0.1"
 frozen_at_utc: "2026-08-31T20:59:52Z"
-revision_effective_at_utc: "2026-09-04T05:00:00Z"
-supersedes: "orientation-eval-2026.1"
-revision_scope: "Prospective schedule reliability only. The Sep. 8 integrity revision aligns the shadow evaluator with the already-deployed single Saturday 1:17 AM Central production schedule and restores the same preserved Sep. 5 scheduled run whose stored eligibility metadata was false. The challenger, paired metrics, classification rules, and economic evaluation are unchanged."
+revision_effective_at_utc: "2026-09-10T05:30:00Z"
+supersedes: "orientation-eval-2026.2"
+revision_scope: "Prospective schedule reliability only. Mirrors production protocol 2026.5 by adding predeclared November Tuesday/Wednesday snapshots before midweek conference play begins. The Sep. 8 run-level integrity correction remains unchanged. Challenger features, paired metrics, classification rules, and economic evaluation are unchanged."
 status: "research_only"
 purpose: "Prospective paired evaluation of the existing GENERAL HGB baseline versus the frozen GENERAL HGB + crosswind_mph orientation challenger."
 
@@ -25,8 +25,10 @@ official_entry_policy:
     - "17 14 * * 4,5"
     - "17 6 * * 6"
     - "17 7 * * 6"
+    - "17 11 * 11 2,3"
+    - "17 14 * 11 2,3"
   minimum_lead_minutes: 120
-  selection: "For each game, use the latest successful eligible scheduled orientation-shadow snapshot at least 120 minutes before kickoff. Thursday/Friday mirror the 5:17 and 8:17 AM Central production snapshots; Saturday mirrors the single 1:17 AM Central production build. The active CDT or CST expression is selected by the weekly workflow's America/Chicago gate. For duplicate attempts of the same GitHub run, retain the earliest successful attempt. Push, manual, and watchdog-dispatched snapshots remain archived but are never official evaluation entries."
+  selection: "For each game, use the latest successful eligible scheduled orientation-shadow snapshot at least 120 minutes before kickoff. Thursday/Friday mirror the 5:17 and 8:17 AM Central production snapshots; Saturday mirrors the single 1:17 AM Central production build; November Tuesday/Wednesday mirrors the new 5:17 and 8:17 AM Central production snapshots. The active CDT/CST expression is selected by the weekly workflow's America/Chicago gate, with the November midweek expressions CST-only. For duplicate attempts of the same GitHub run, retain the earliest successful attempt. Push, manual, postseason-only operational refreshes, and watchdog-dispatched snapshots remain archived but are never official evaluation entries."
 
 data_integrity_corrections:
   official_entry_eligibility_overrides:
@@ -91,4 +93,4 @@ review_policy:
 
 freeze_policy:
   challenger_tuning: "Do not change orientation-crosswind-hgb-v0.1 features, model specification, or qualifier thresholds based on 2026 outcomes. A changed challenger receives a new version and a new prospective start time."
-  evaluation_tuning: "Do not change official-entry selection, primary metric, classification scoring, or economic grading based on observed 2026 results. Data-integrity bug fixes require a documented correction tied to preserved immutable evidence."
+  evaluation_tuning: "Do not change official-entry selection, primary metric, classification scoring, or economic grading based on observed 2026 results. Prospective schedule additions must be declared before affected games begin; data-integrity bug fixes require a documented correction tied to preserved immutable evidence."

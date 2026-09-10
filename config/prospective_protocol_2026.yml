@@ -1,9 +1,9 @@
-protocol_version: "2026.4"
+protocol_version: "2026.5"
 season: 2026
 frozen_at_utc: "2026-08-28T00:38:00Z"
-revision_effective_at_utc: "2026-09-08T00:00:00Z"
-supersedes: "2026.3"
-revision_scope: "Data-integrity correction only. Aligns official-entry metadata with the already-deployed single Saturday 1:17 AM Central production schedule, repairs the one immutable Saturday run whose eligibility flag was false because the protocol config lagged the workflow change, and excludes a documented postponed/stale game from performance grading. Model rules, qualifier thresholds, minimum lead time, closing-benchmark policy, and card logic are unchanged."
+revision_effective_at_utc: "2026-09-10T05:30:00Z"
+supersedes: "2026.4"
+revision_scope: "Prospective schedule and operational-reliability expansion only. Adds predeclared Tuesday/Wednesday November snapshots before MAC midweek play begins, adds matching near-kickoff/grade cadence, and permits a zero-API preflight gate that skips close-capture ticks when no locally tracked game is near kickoff. Model rules, qualifier thresholds, minimum lead time, closing-benchmark selection, grading economics, and card logic are unchanged."
 purpose: "Prospective paper validation of the frozen 2026 CFB totals research rules."
 
 rules:
@@ -27,8 +27,10 @@ official_entry_policy:
     - "17 14 * * 4,5"
     - "17 6 * * 6"
     - "17 7 * * 6"
+    - "17 11 * 11 2,3"
+    - "17 14 * 11 2,3"
   minimum_lead_minutes: 120
-  selection: "For each game, use the latest successful eligible scheduled snapshot at least 120 minutes before kickoff. Thursday/Friday retain the 5:17 and 8:17 AM Central snapshots. Saturday uses the single 1:17 AM Central production build. The active CDT or CST expression is selected by the workflow's America/Chicago gate. For duplicate attempts of the same GitHub run, retain the earliest successful attempt. Manual, push-triggered, and watchdog-dispatched refreshes are archived but are never official entries."
+  selection: "For each game, use the latest successful eligible scheduled snapshot at least 120 minutes before kickoff. Thursday/Friday retain the 5:17 and 8:17 AM Central snapshots. Saturday uses the single 1:17 AM Central production build. Beginning prospectively with protocol 2026.5, November Tuesday/Wednesday games also receive 5:17 and 8:17 AM Central snapshots before the first declared midweek slate occurs. The active CDT/CST expression is selected by the workflow's America/Chicago gate; November midweek expressions are CST-only. For duplicate attempts of the same GitHub run, retain the earliest successful attempt. Manual, push-triggered, postseason-only operational refreshes, and watchdog-dispatched refreshes are archived but are never official entries."
 
 schedule_reliability:
   timezone: "America/Chicago"
@@ -36,18 +38,23 @@ schedule_reliability:
   thursday_friday_safety_local: "05:17"
   thursday_friday_freshness_local: "08:17"
   saturday_full_build_local: "01:17"
+  november_tuesday_wednesday_safety_local: "05:17"
+  november_tuesday_wednesday_freshness_local: "08:17"
   saturday_watchdog_local: "06:47"
-  watchdog_policy: "Monday, Thursday, and Friday are checked 30 minutes after the 5:17 AM safety build. Saturday is checked at 6:47 AM Central against the 1:17 AM full build; one workflow-dispatch backup is launched only if no successful full build exists. Watchdog backups refresh operations but remain ineligible for official prospective entry."
+  watchdog_policy: "Monday, Thursday, and Friday are checked 30 minutes after the 5:17 AM safety build. November Tuesday/Wednesday midweek builds are checked 30 minutes after 5:17 AM. Saturday is checked at 6:47 AM Central against the 1:17 AM full build. One workflow-dispatch backup is launched only if no successful required build exists. Watchdog backups refresh operations but remain ineligible for official prospective entry."
 
 closing_benchmark_policy:
   capture_event_name: "schedule"
   capture_crons:
     - "15,45 14-23 * * 4,5,6,0,1"
     - "15,45 0-5 * * 5,6,0,1,2"
+    - "15,45 14-23 * 11 2,3"
+    - "15,45 0-5 * 11 3,4"
   capture_window_minutes: 90
+  preflight_window_minutes: 105
   allow_manual_capture: false
   allow_rerun_backfill: false
-  selection: "Use the latest immutable first-attempt scheduled market capture before kickoff and within the 90-minute capture window. Beginning with protocol 2026.2, the capture workflow attempts twice per hour to reduce missed benchmarks caused by delayed GitHub scheduled jobs. Prefer the median total across available books; if a median is unavailable, use the selected current total. Missing captures stay missing and are not manually backfilled."
+  selection: "Use the latest immutable first-attempt scheduled market capture before kickoff and within the 90-minute capture window. Beginning with protocol 2026.2, the capture workflow attempts twice per hour to reduce missed benchmarks caused by delayed GitHub scheduled jobs. Protocol 2026.5 adds November Tuesday/Wednesday coverage and a repository-only preflight gate: when no locally tracked game is within 105 minutes, the scheduled tick exits without spending CFBD or odds requests; the authoritative capture routine still re-checks current CFBD kickoff times before any immutable file is written. Prefer the median total across available books; if a median is unavailable, use the selected current total. Missing captures stay missing and are not manually backfilled."
   clv_definition: "For an under, CLV points = entry total minus benchmark close total. Positive is favorable. For an over, CLV points = benchmark close total minus entry total."
 
 paper_grading:
@@ -59,7 +66,8 @@ paper_grading:
   push_profit_units: 0.0
   postgame_grade_crons:
     - "0 12 * * 0,1,2"
-  timing_note: "Derived grades are rebuilt only on postgame mornings, explicit derived-only rebuilds, or scheduled pregame model runs. Only games explicitly marked completed by CFBD are eligible for normal settlement."
+    - "0 12 * 11 3,4"
+  timing_note: "Derived grades are rebuilt on normal postgame mornings, on November Wednesday/Thursday mornings after midweek slates, explicit derived-only rebuilds, or scheduled pregame model runs. Only games explicitly marked completed by CFBD are eligible for normal settlement."
 
 data_integrity_corrections:
   official_entry_eligibility_overrides:
@@ -73,5 +81,5 @@ data_integrity_corrections:
       reason: "Western Carolina at Campbell was postponed from its original Saturday kickoff. The original prospective qualifier remains preserved, but the event changed kickoff/weather context and must not be settled, counted in units/ROI, or assigned CLV from the stale market snapshot."
 
 freeze_policy:
-  description: "Do not tune production thresholds or retrospectively alter official-entry selection based on 2026 outcomes before the declared review point. Protocol 2026.4 is limited to documented data-integrity corrections: it restores the already-intended Saturday production run as an official snapshot and prevents a postponed/stale event from being misgraded. Any future protocol change must receive a new protocol_version and applies prospectively unless it is a narrowly documented metadata/integrity correction tied to preserved immutable evidence."
+  description: "Do not tune production thresholds or retrospectively alter official-entry selection based on 2026 outcomes before the declared review point. Protocol 2026.5 is limited to a prospectively declared schedule expansion before November midweek games begin plus operational/API-efficiency safeguards that do not change model outputs or selection thresholds. The existing Sep. 5 metadata correction and postponed-game exclusion remain narrowly documented integrity fixes tied to preserved immutable evidence. Any future protocol change must receive a new protocol_version and applies prospectively unless it is a narrowly documented metadata/integrity correction tied to preserved immutable evidence."
   review_point: "After the 2026 regular season unless a data-integrity bug requires a documented correction."

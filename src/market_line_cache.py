@@ -9,6 +9,7 @@ import pandas as pd
 from .utils import ROOT
 
 CACHE_PATH = ROOT / 'outputs/market_total_cache.csv'
+MAX_CACHE_KICKOFF_DRIFT_HOURS = 2.0
 
 LINE_FIELDS = [
     'closing_total',
@@ -102,6 +103,15 @@ def _prune_cache(cache: pd.DataFrame, now: pd.Timestamp) -> pd.DataFrame:
     return cache.loc[keep].copy()
 
 
+def _kickoff_compatible(current_start: Any, cached_start: Any) -> bool:
+    current = _as_utc_timestamp(current_start)
+    cached = _as_utc_timestamp(cached_start)
+    if pd.isna(current) or pd.isna(cached):
+        return True
+    drift_hours = abs((current - cached).total_seconds()) / 3600.0
+    return drift_hours <= MAX_CACHE_KICKOFF_DRIFT_HOURS
+
+
 def apply_market_line_cache(
     board: pd.DataFrame,
     *,
@@ -114,6 +124,11 @@ def apply_market_line_cache(
     Rows missing a current line may be restored from the cache and are stamped
     CACHED. Cached lines are intentionally distinguishable so downstream
     decision logic can prevent them from becoming official qualifiers.
+
+    A cached total is never restored when the game's current kickoff differs by
+    more than two hours from the kickoff attached to that cached market. This
+    prevents a postponed/rescheduled game's old market context from appearing as
+    a valid last-known line for the new event time.
     """
     out = board.copy()
     timestamp = _now_utc(now)
@@ -141,10 +156,14 @@ def apply_market_line_cache(
         cache_lookup = {int(row['game_id']): row for _, row in cache.iterrows()}
 
     restored = 0
+    skipped_rescheduled = 0
     for idx, row in out.loc[~fresh_mask].iterrows():
         game_id = _normalize_game_id(row.get('game_id'))
         cached = cache_lookup.get(game_id) if game_id is not None else None
         if cached is None or pd.isna(pd.to_numeric(pd.Series([cached.get('closing_total')]), errors='coerce').iloc[0]):
+            continue
+        if not _kickoff_compatible(row.get('start_date'), cached.get('start_date')):
+            skipped_rescheduled += 1
             continue
         for field in LINE_FIELDS:
             if field in cached.index:
@@ -171,7 +190,12 @@ def apply_market_line_cache(
         game_id = _normalize_game_id(row.get('game_id'))
         if game_id is None:
             continue
-        live_rows.append(_cache_row_from_live(row, timestamp, existing_first_seen.get(game_id)))
+        first_seen = existing_first_seen.get(game_id)
+        prior = cache_lookup.get(game_id)
+        if prior is not None and not _kickoff_compatible(row.get('start_date'), prior.get('start_date')):
+            # A new event context gets a new first-seen timestamp.
+            first_seen = None
+        live_rows.append(_cache_row_from_live(row, timestamp, first_seen))
 
     if live_rows:
         live_cache = pd.DataFrame(live_rows, columns=CACHE_COLUMNS)
@@ -191,6 +215,7 @@ def apply_market_line_cache(
         'restored_lines': int(restored),
         'usable_lines': int(out['closing_total'].notna().sum()),
         'cached_entries': int(len(cache)),
+        'skipped_rescheduled': int(skipped_rescheduled),
     }
     return out, stats
 

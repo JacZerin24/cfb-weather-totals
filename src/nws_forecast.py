@@ -7,11 +7,33 @@ from pathlib import Path
 from typing import Any
 
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 from .utils import ROOT, ensure_dir
 
 NWS_BASE = 'https://api.weather.gov'
 CACHE_PATH = ROOT / 'outputs' / 'nws_grid_cache.json'
+NWS_CONNECT_TIMEOUT_SECONDS = 15
+NWS_READ_TIMEOUT_SECONDS = 45
+NWS_RETRY_TOTAL = 3
+NWS_RETRY_BACKOFF_SECONDS = 1.0
+NWS_RETRY_STATUS_CODES = (429, 500, 502, 503, 504)
+MAX_NEAREST_DISTANCE = timedelta(hours=3)
+
+
+def build_nws_retry_policy() -> Retry:
+    return Retry(
+        total=NWS_RETRY_TOTAL,
+        connect=NWS_RETRY_TOTAL,
+        read=NWS_RETRY_TOTAL,
+        status=NWS_RETRY_TOTAL,
+        backoff_factor=NWS_RETRY_BACKOFF_SECONDS,
+        status_forcelist=NWS_RETRY_STATUS_CODES,
+        allowed_methods=frozenset({'GET'}),
+        respect_retry_after_header=True,
+        raise_on_status=False,
+    )
 
 
 def _dt(value: str) -> datetime:
@@ -33,7 +55,18 @@ def _interval(valid_time: str) -> tuple[datetime, datetime]:
     return start, end
 
 
-def _value_at(series: dict[str, Any] | None, when: datetime) -> Any:
+def _value_at(
+    series: dict[str, Any] | None,
+    when: datetime,
+    max_nearest_distance: timedelta = MAX_NEAREST_DISTANCE,
+) -> Any:
+    """Return a value valid at ``when`` or a nearby value within a tight guard.
+
+    Older behavior accepted the nearest non-null grid value regardless of how
+    far it was from kickoff. That could silently turn an out-of-horizon grid
+    into a seemingly valid kickoff forecast. Containing intervals still win;
+    nearest-value fallback is now bounded to three hours by default.
+    """
     if not series:
         return None
     values = series.get('values') or []
@@ -47,10 +80,12 @@ def _value_at(series: dict[str, Any] | None, when: datetime) -> Any:
             return value
         if value is None:
             continue
-        distance = abs((start - when).total_seconds())
+        distance = min(abs((start - when).total_seconds()), abs((end - when).total_seconds()))
         if best is None or distance < best[0]:
             best = (distance, value)
-    return best[1] if best else None
+    if best is None or best[0] > max_nearest_distance.total_seconds():
+        return None
+    return best[1]
 
 
 def _c_to_f(value: Any) -> float | None:
@@ -100,6 +135,9 @@ class NWSClient:
             'User-Agent': 'cfb-weather-totals/1.0 (github.com/JacZerin24/cfb-weather-totals)',
             'Accept': 'application/geo+json',
         })
+        adapter = HTTPAdapter(max_retries=build_nws_retry_policy())
+        self.session.mount('https://', adapter)
+        self.session.mount('http://', adapter)
         self.cache_path = cache_path
         self.cache = self._load_cache()
         self.cache_dirty = False
@@ -120,7 +158,10 @@ class NWSClient:
         self.cache_dirty = False
 
     def _get(self, url: str) -> dict[str, Any]:
-        response = self.session.get(url, timeout=30)
+        response = self.session.get(
+            url,
+            timeout=(NWS_CONNECT_TIMEOUT_SECONDS, NWS_READ_TIMEOUT_SECONDS),
+        )
         response.raise_for_status()
         return response.json()
 
@@ -172,8 +213,18 @@ class NWSClient:
         snowfall = _mm_to_inches(_value_at(props.get('snowfallAmount'), kickoff))
         wind_direction = _number(_value_at(props.get('windDirection'), kickoff))
 
+        # The live model must not treat an out-of-horizon or badly incomplete
+        # grid as forecast-ready merely because a request returned HTTP 200.
+        forecast_ready = temperature_f is not None and wind_mph is not None
+        status = 'ok' if forecast_ready else 'incomplete_forecast'
+        summary = (
+            _weather_label(pop, precipitation, snowfall)
+            if forecast_ready
+            else 'NWS grid is available, but kickoff temperature/wind are not yet within the usable forecast horizon.'
+        )
+
         return {
-            'nws_status': 'ok',
+            'nws_status': status,
             'nws_office': grid.get('office'),
             'nws_grid_x': grid.get('grid_x'),
             'nws_grid_y': grid.get('grid_y'),
@@ -187,5 +238,5 @@ class NWSClient:
             'precipitation': precipitation,
             'snowfall': snowfall,
             'wind_direction_degrees': wind_direction,
-            'weather_summary': _weather_label(pop, precipitation, snowfall),
+            'weather_summary': summary,
         }
