@@ -28,19 +28,24 @@ def candidate_kickoffs(
     window_minutes: int = 105,
     sources: tuple[Path, ...] = DEFAULT_SOURCES,
 ) -> pd.DataFrame:
-    """Return locally known games that could enter the 90-minute close window.
+    """Return locally known games that could enter the close-capture window.
 
     This deliberately uses only repository state. It is a cheap preflight gate
     so the high-frequency close-capture workflow does not spend CFBD/odds API
-    requests when no tracked game is anywhere near kickoff. The authoritative
-    capture routine still re-checks current CFBD kickoff times before writing an
-    immutable benchmark.
+    requests when no tracked game is anywhere near kickoff. Source order is
+    authoritative: when the same game appears more than once, the earliest
+    source in ``sources`` wins. By default that means the current weekly board
+    takes precedence over the immutable official-entry ledger, so a kickoff
+    reschedule cannot be masked by an older ledger timestamp.
+
+    The authoritative capture routine still re-checks current CFBD kickoff
+    times before writing an immutable benchmark.
     """
     now_ts = _utc(now)
     end = now_ts + pd.Timedelta(minutes=max(1, int(window_minutes)))
     parts: list[pd.DataFrame] = []
 
-    for path in sources:
+    for source_priority, path in enumerate(sources):
         if not path.exists() or path.stat().st_size == 0:
             continue
         try:
@@ -55,19 +60,30 @@ def candidate_kickoffs(
         part = frame[keep].copy()
         part['start_date'] = pd.to_datetime(part['start_date'], utc=True, errors='coerce')
         part = part[part['start_date'].notna()].copy()
-        if not part.empty:
-            parts.append(part)
+        if part.empty:
+            continue
+        part['_source_priority'] = source_priority
+        part['_source_row'] = range(len(part))
+        parts.append(part)
 
     if not parts:
         return pd.DataFrame(columns=['game_id', 'start_date', 'away_team', 'home_team'])
 
     candidates = pd.concat(parts, ignore_index=True)
     if 'game_id' in candidates.columns:
-        candidates = candidates.sort_values('start_date').drop_duplicates('game_id', keep='last')
+        # Prefer the first configured source, not the chronologically latest
+        # kickoff. Sorting by start_date here can silently preserve a stale
+        # ledger kickoff when a current game has been moved earlier.
+        candidates = (
+            candidates.sort_values(['_source_priority', '_source_row'])
+            .drop_duplicates('game_id', keep='first')
+        )
+
     candidates = candidates[
         candidates['start_date'].ge(now_ts)
         & candidates['start_date'].le(end)
     ].copy()
+    candidates = candidates.drop(columns=['_source_priority', '_source_row'], errors='ignore')
     return candidates.sort_values('start_date').reset_index(drop=True)
 
 
