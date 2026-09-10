@@ -1,6 +1,7 @@
 name: Site UI Weather Tools
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -8,11 +9,6 @@ on:
       - 'site_tools/**'
       - 'diagnostics/results/**'
       - '.github/workflows/site-ui-weather-tools.yml'
-  workflow_run:
-    workflows:
-      - Weekly CFB Weather Totals
-    types:
-      - completed
 
 permissions:
   contents: write
@@ -23,7 +19,6 @@ concurrency:
 
 jobs:
   augment-site:
-    if: github.event_name == 'push' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Check out current main branch
@@ -36,20 +31,21 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Add sortable weather columns and radar overlay
-        run: python site_tools/augment_weather_ui.py
+      - name: Install lightweight validation dependency
+        run: pip install 'pandas==3.0.5'
 
-      - name: Synchronize radar mosaic tiles
-        run: python site_tools/fix_radar_ui.py
-
-      - name: Apply site-only postponed/stale overrides
-        run: python site_tools/apply_stale_status.py
-
-      - name: Display updated postponement diagnostics
-        run: python site_tools/apply_postponement_diagnostics.py
+      - name: Rebuild presentation-only weather tools from current board
+        run: |
+          set -euo pipefail
+          python site_tools/augment_weather_ui.py
+          python site_tools/fix_radar_ui.py
+          python site_tools/apply_stale_status.py
+          python site_tools/apply_postponement_diagnostics.py
+          python -m src.site_smoke_selftest
 
       - name: Commit website-only update
         run: |
+          set -euo pipefail
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add docs/index.html
