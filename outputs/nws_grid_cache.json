@@ -692,6 +692,15 @@
     "grid_y": 58,
     "office": "RAH"
   },
+  "35.8489,-90.6677": {
+    "checked_at": "2026-09-10T04:43:12.683388+00:00",
+    "forecast_hourly_url": "https://api.weather.gov/gridpoints/MEG/19,97/forecast/hourly",
+    "forecast_url": "https://api.weather.gov/gridpoints/MEG/19,97/forecast",
+    "grid_data_url": "https://api.weather.gov/gridpoints/MEG/19,97",
+    "grid_x": 19,
+    "grid_y": 97,
+    "office": "MEG"
+  },
   "35.8511,-86.3682": {
     "checked_at": "2026-08-27T16:44:33.179404+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/OHX/66,44/forecast/hourly",
