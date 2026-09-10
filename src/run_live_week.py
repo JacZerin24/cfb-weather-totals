@@ -14,7 +14,7 @@ from .fcs_model import (
     score_fcs_rows,
 )
 from .market_line_cache import apply_market_line_cache, cached_market_reason
-from .odds_api_fallback import apply_fcs_odds_fallback
+from .odds_api_fallback import apply_fbs_odds_fallback, apply_fcs_odds_fallback
 from .oddspapi_fallback import apply_fcs_oddspapi_fallback
 from .predict_week import (
     add_live_categories,
@@ -121,6 +121,9 @@ def main() -> None:
     preferred = settings['cfbd'].get('preferred_line_providers', [])
     board, oddspapi_stats = apply_fcs_oddspapi_fallback(board, preferred)
     board, odds_api_stats = apply_fcs_odds_fallback(board, preferred)
+    # CFBD remains primary for all FBS-involved games. Only if a current line is
+    # still missing do we spend one normal NCAAF Odds API call to fill the gap.
+    board, fbs_odds_api_stats = apply_fbs_odds_fallback(board, preferred)
 
     fcs_mask = board['division_track'].eq('FCS')
     fcs_games = int(fcs_mask.sum())
@@ -160,6 +163,11 @@ def main() -> None:
         f"{cached_fcs} restored from cache; {fcs_with_lines}/{fcs_games} usable. "
         f"Secondary Odds API filled {odds_api_stats.get('fcs_fallback_filled', 0)} game(s) "
         f"(status={odds_api_stats.get('odds_api_status', 'unknown')})."
+    )
+    print(
+        f"Missing-only NCAAF Odds API fallback filled "
+        f"{fbs_odds_api_stats.get('fbs_fallback_filled', 0)} FBS-involved game(s) "
+        f"(status={fbs_odds_api_stats.get('fbs_odds_api_status', 'unknown')})."
     )
 
     venues = normalize_venues(client.get('/venues'))
