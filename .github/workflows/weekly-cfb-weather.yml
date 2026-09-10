@@ -90,6 +90,12 @@ jobs:
     needs: central-time-gate
     if: needs.central-time-gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
+    # All workflows that write generated board/cache/prospective state share
+    # this lock. This prevents a completed weekly build from colliding with a
+    # close-capture/watchdog writer during the final rebase + push.
+    concurrency:
+      group: cfb-weather-data-writes
+      cancel-in-progress: false
     outputs:
       site_sha: ${{ steps.commit.outputs.site_sha }}
 
