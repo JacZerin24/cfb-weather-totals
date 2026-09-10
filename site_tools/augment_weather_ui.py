@@ -33,6 +33,10 @@ def num(value: object) -> float | None:
         return None
 
 
+def truthy(value: object) -> bool:
+    return str(value or "").strip().lower() in {"true", "1", "yes", "y"}
+
+
 def fmt(value: object, decimals: int = 1) -> str:
     v = num(value)
     return "—" if v is None else f"{v:.{decimals}f}"
@@ -88,6 +92,34 @@ def division(row: dict[str, str]) -> str:
     return "OTHER"
 
 
+def weather_types(row: dict[str, str]) -> list[str]:
+    """Return independent, user-facing weather tags for table filtering."""
+    tags: list[str] = []
+    if truthy(row.get("game_indoors")):
+        tags.append("INDOOR")
+        return tags
+
+    temp = num(row.get("temperature_f"))
+    wind = num(row.get("wind_mph"))
+    gust = num(row.get("wind_gust_mph"))
+    pop = num(row.get("precip_probability_pct"))
+    qpf = num(row.get("precipitation"))
+    snow = num(row.get("snowfall"))
+    summary = text(row.get("weather_summary"), "").lower()
+
+    if (snow is not None and snow > 0.01) or "snow" in summary or "wintry" in summary:
+        tags.append("SNOW")
+    if (qpf is not None and qpf > 0.01) or (pop is not None and pop >= 30):
+        tags.append("RAIN")
+    if (wind is not None and wind >= 15) or (gust is not None and gust >= 25):
+        tags.append("WIND")
+    if temp is not None and temp >= 85:
+        tags.append("HOT")
+    if temp is not None and temp <= 40:
+        tags.append("COLD")
+    return tags
+
+
 def market_html(row: dict[str, str]) -> str:
     total = num(row.get("closing_total"))
     if total is None:
@@ -125,8 +157,9 @@ def row_html(row: dict[str, str]) -> str:
     game = f"{text(row.get('away_team'), '')} @ {text(row.get('home_team'), '')}"
     reason = text(row.get("decision_reason"), "")
     kickoff_value = kickoff_sort_value(row.get("start_date"))
+    weather_tag_value = " ".join(weather_types(row))
     return "".join([
-        f'<tr data-status="{escape(status)}" data-division="{escape(division(row))}">',
+        f'<tr data-status="{escape(status)}" data-division="{escape(division(row))}" data-weather-types="{escape(weather_tag_value)}">',
         f'<td><span class="badge {status_class(status)}">{escape(status)}</span></td>',
         f'<td><strong>{escape(game)}</strong></td>',
         f'<td class="kickoff-num" data-sort-value="{kickoff_value}">{escape(kickoff_ct(row.get("start_date")))}</td>',
@@ -166,13 +199,33 @@ def replace_table(html: str, rows: list[dict[str, str]]) -> str:
         raise RuntimeError("Could not locate the live-board table for weather-column augmentation.")
     updated = updated.replace(
         '<div class="section-head"><div><div class="eyebrow">Everything, including no-plays and no-lines</div><h2>Full weekly board</h2></div><p>The site shows why games fail the screen instead of hiding them.</p></div>',
-        '<div class="section-head"><div><div class="eyebrow">Everything, including no-plays and no-lines</div><h2>Full weekly board</h2></div><p>Click Kickoff, Temp, Wind, Gust, RH, or PoP to sort. PoP is chance of precipitation.</p></div>',
+        '<div class="section-head"><div><div class="eyebrow">Everything, including no-plays and no-lines</div><h2>Full weekly board</h2></div><p>Filter by weather type or click Kickoff, Temp, Wind, Gust, RH, or PoP to sort. PoP is chance of precipitation.</p></div>',
     )
     updated = updated.replace(
-        '<div class="section-head"><div><div class="eyebrow">Everything, including no-plays and no-lines</div><h2>Full weekly board</h2></div><p>Click Temp, Wind, Gust, RH, or PoP to sort. PoP is chance of precipitation.</p></div>',
         '<div class="section-head"><div><div class="eyebrow">Everything, including no-plays and no-lines</div><h2>Full weekly board</h2></div><p>Click Kickoff, Temp, Wind, Gust, RH, or PoP to sort. PoP is chance of precipitation.</p></div>',
+        '<div class="section-head"><div><div class="eyebrow">Everything, including no-plays and no-lines</div><h2>Full weekly board</h2></div><p>Filter by weather type or click Kickoff, Temp, Wind, Gust, RH, or PoP to sort. PoP is chance of precipitation.</p></div>',
     )
     return updated
+
+
+def add_weather_filter_ui(html: str) -> str:
+    if 'id="weatherFilter"' in html:
+        return html
+    select = (
+        '<select id="weatherFilter" title="Filter by kickoff weather type">'
+        '<option value="ALL">All weather</option>'
+        '<option value="RAIN">Rain / precip</option>'
+        '<option value="SNOW">Snow / wintry</option>'
+        '<option value="WIND">Windy</option>'
+        '<option value="HOT">Hot (85°F+)</option>'
+        '<option value="COLD">Cold (40°F or lower)</option>'
+        '<option value="INDOOR">Indoor / dome</option>'
+        '</select>'
+    )
+    needle = '<select id="statusFilter">'
+    if needle not in html:
+        raise RuntimeError("Could not locate the status filter for weather-filter augmentation.")
+    return html.replace(needle, select + needle, 1)
 
 
 def add_css(html: str) -> str:
@@ -233,6 +286,54 @@ def add_radar_ui(html: str) -> str:
     return html
 
 
+def add_weather_filter_js(html: str) -> str:
+    if "const weatherFilter = document.getElementById('weatherFilter');" not in html:
+        needle = "    const statusFilter = document.getElementById('statusFilter');"
+        replacement = "    const weatherFilter = document.getElementById('weatherFilter');\n" + needle
+        if needle not in html:
+            raise RuntimeError("Could not locate table status-filter JavaScript.")
+        html = html.replace(needle, replacement, 1)
+
+    if "const w = weatherFilter ? weatherFilter.value : 'ALL';" not in html:
+        needle = "      const s = statusFilter.value;"
+        replacement = "      const w = weatherFilter ? weatherFilter.value : 'ALL';\n" + needle
+        if needle not in html:
+            raise RuntimeError("Could not locate table filter state JavaScript.")
+        html = html.replace(needle, replacement, 1)
+
+    if "const showWeather =" not in html:
+        needle = "        const showStatus = s === 'ALL' || row.dataset.status === s;"
+        replacement = (
+            "        const showStatus = s === 'ALL' || row.dataset.status === s;\n"
+            "        const weatherTypes = (row.dataset.weatherTypes || '').split(/\\s+/).filter(Boolean);\n"
+            "        const showWeather = w === 'ALL' || weatherTypes.includes(w);"
+        )
+        if needle not in html:
+            raise RuntimeError("Could not locate row status filtering JavaScript.")
+        html = html.replace(needle, replacement, 1)
+        html = html.replace(
+            "        row.style.display = showText && showDivision && showStatus ? '' : 'none';",
+            "        row.style.display = showText && showDivision && showStatus && showWeather ? '' : 'none';",
+            1,
+        )
+        html = html.replace(
+            "        row.style.display = showText && showStatus ? '' : 'none';",
+            "        row.style.display = showText && showStatus && showWeather ? '' : 'none';",
+            1,
+        )
+
+    if "weatherFilter.addEventListener('change', filterRows);" not in html:
+        needle = "    statusFilter.addEventListener('change', filterRows);"
+        replacement = (
+            "    if (weatherFilter) weatherFilter.addEventListener('change', filterRows);\n"
+            + needle
+        )
+        if needle not in html:
+            raise RuntimeError("Could not locate status-filter change listener.")
+        html = html.replace(needle, replacement, 1)
+    return html
+
+
 def add_sort_js(html: str) -> str:
     if JS_MARKER in html:
         return html
@@ -252,7 +353,7 @@ def add_sort_js(html: str) -> str:
           activeWeatherSortAscending = true;
         }}
         const tbody = document.getElementById('boardBody');
-        const currentRows = [...tbody.querySelectorAll('tr')];
+        const currentRows = [...tbody.querySelectorAll('tr[data-status]')];
         currentRows.sort(function(a, b) {{
           const av = Number(a.children[column].dataset.sortValue);
           const bv = Number(b.children[column].dataset.sortValue);
@@ -278,11 +379,16 @@ def main() -> None:
     rows = read_board()
     html = INDEX.read_text(encoding="utf-8")
     html = replace_table(html, rows)
+    html = add_weather_filter_ui(html)
     html = add_css(html)
     html = add_radar_ui(html)
+    html = add_weather_filter_js(html)
     html = add_sort_js(html)
     INDEX.write_text(html, encoding="utf-8")
-    print(f"Updated {INDEX} using {len(rows)} existing board rows. No model scoring was run.")
+    print(
+        f"Updated {INDEX} using {len(rows)} existing board rows with sortable weather columns, "
+        "weather-type filters, and radar controls. No model scoring was run."
+    )
 
 
 if __name__ == "__main__":
