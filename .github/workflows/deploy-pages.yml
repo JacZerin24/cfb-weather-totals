@@ -7,7 +7,6 @@ on:
       - main
     paths:
       - 'docs/**'
-      - '.github/workflows/deploy-pages.yml'
   workflow_run:
     workflows:
       - Manual Historical Research Run
