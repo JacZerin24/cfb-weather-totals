@@ -1,0 +1,42 @@
+name: Market Source Diagnostic
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/market-source-diagnostic.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check OddsPapi account status (unmetered)
+        env:
+          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
+        run: |
+          set -euo pipefail
+          RESP=$(curl -fsS "https://api.oddspapi.io/v4/account?apiKey=${ODDSPAPI_API_KEY}")
+          echo "OddsPapi active subscription metadata:"
+          echo "$RESP" | jq '{subscriptions: [.subscriptions[] | select(.is_active == true) | {currency, price, valid_from, valid_until, auto_renew, created_at, request_limit, request_count, last_request, available_fields: (keys | sort)}]}'
+
+      - name: Test The Odds API dedicated FCS totals feed
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: |
+          set -euo pipefail
+          rm -f /tmp/headers.txt /tmp/fcs.json
+          CODE=$(curl -sS -D /tmp/headers.txt -o /tmp/fcs.json -w "%{http_code}" \
+            "https://api.the-odds-api.com/v4/sports/americanfootball_ncaaf_fcs/odds?regions=us&markets=totals&oddsFormat=american&dateFormat=iso&apiKey=${ODDS_API_KEY}")
+          echo "The Odds API FCS HTTP status: $CODE"
+          echo "Quota headers:"
+          grep -iE '^x-requests-(remaining|used|last):' /tmp/headers.txt || true
+          if [ "$CODE" != "200" ]; then
+            cat /tmp/fcs.json
+            exit 1
+          fi
+          echo "Dedicated FCS feed summary:"
+          jq '{event_count: length, events_with_totals: ([.[] | select(any(.bookmakers[]?; any(.markets[]?; .key == "totals")))] | length), events: [.[] | {away_team, home_team, commence_time, total_bookmaker_count: ([.bookmakers[]? | select(any(.markets[]?; .key == "totals"))] | length), total_bookmakers: [.bookmakers[]? | select(any(.markets[]?; .key == "totals")) | .title]}]}' /tmp/fcs.json
