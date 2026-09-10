@@ -14,6 +14,7 @@ import requests
 # This module is only used to fill missing FCS-vs-FCS totals, so query the
 # dedicated FCS board rather than the FBS/NCAAF key.
 ODDS_URL = 'https://api.the-odds-api.com/v4/sports/americanfootball_ncaaf_fcs/odds'
+NCAAF_ODDS_URL = 'https://api.the-odds-api.com/v4/sports/americanfootball_ncaaf/odds'
 
 # Common naming differences between CFBD and sportsbook feeds. Keep this list
 # intentionally conservative; fuzzy matching is only used after kickoff/date
@@ -70,8 +71,6 @@ def _team_score(left: Any, right: Any) -> float:
         return 0.0
     if a == b:
         return 1.0
-    # Sportsbook feeds commonly append nicknames ("Stony Brook Seawolves")
-    # to the school name supplied by CFBD.
     shorter, longer = sorted([a, b], key=len)
     if len(shorter) >= 5 and (longer.startswith(shorter + ' ') or longer.endswith(' ' + shorter)):
         return 0.97
@@ -101,7 +100,6 @@ def match_odds_event(game: pd.Series, events: list[dict[str, Any]]) -> tuple[dic
         if min(home_score, away_score) < 0.72:
             continue
         score = (home_score + away_score) / 2.0
-        # Prefer closer kickoff times when team-name scores are otherwise similar.
         score -= min(hours, 24.0) / 2400.0
         if score > best_score:
             best = event
@@ -133,8 +131,6 @@ def select_total_market(event: dict[str, Any], preferred: list[str]) -> dict[str
                     points.append(float(point))
             if not points:
                 continue
-            # Over and under normally carry the same point. Median protects
-            # against malformed/alternate outcomes if a provider returns more.
             rows.append({'provider': title, 'total': float(np.median(points))})
             break
 
@@ -158,13 +154,13 @@ def select_total_market(event: dict[str, Any], preferred: list[str]) -> dict[str
     }
 
 
-def fetch_current_ncaaf_odds() -> tuple[list[dict[str, Any]], str]:
+def _fetch_odds_url(url: str) -> tuple[list[dict[str, Any]], str]:
     key = os.getenv('ODDS_API_KEY', '').strip()
     if not key:
         return [], 'missing_key'
     try:
         response = requests.get(
-            ODDS_URL,
+            url,
             params={
                 'regions': 'us',
                 'markets': 'totals',
@@ -185,6 +181,44 @@ def fetch_current_ncaaf_odds() -> tuple[list[dict[str, Any]], str]:
     return payload if isinstance(payload, list) else [], 'ok'
 
 
+def fetch_current_ncaaf_odds() -> tuple[list[dict[str, Any]], str]:
+    return _fetch_odds_url(ODDS_URL)
+
+
+def fetch_current_fbs_odds() -> tuple[list[dict[str, Any]], str]:
+    return _fetch_odds_url(NCAAF_ODDS_URL)
+
+
+def _ensure_line_source(out: pd.DataFrame) -> None:
+    total = out.get('closing_total', pd.Series(np.nan, index=out.index))
+    if 'line_source' not in out.columns:
+        out['line_source'] = np.where(total.notna(), 'CFBD', '')
+    else:
+        out.loc[total.notna() & out['line_source'].astype(str).eq(''), 'line_source'] = 'CFBD'
+
+
+def _apply_events_to_mask(
+    out: pd.DataFrame,
+    missing: pd.Series,
+    events: list[dict[str, Any]],
+    preferred: list[str],
+) -> int:
+    filled = 0
+    for idx, game in out.loc[missing].iterrows():
+        event, confidence = match_odds_event(game, events)
+        if event is None:
+            continue
+        market = select_total_market(event, preferred)
+        if market is None:
+            continue
+        for key, value in market.items():
+            out.at[idx, key] = value
+        out.at[idx, 'odds_match_confidence'] = round(float(confidence), 4)
+        out.at[idx, 'odds_event_id'] = str(event.get('id') or '')
+        filled += 1
+    return filled
+
+
 def apply_fcs_odds_fallback(
     board: pd.DataFrame,
     preferred_providers: list[str] | None = None,
@@ -192,10 +226,7 @@ def apply_fcs_odds_fallback(
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
     out = board.copy()
     preferred = list(preferred_providers or [])
-    if 'line_source' not in out.columns:
-        out['line_source'] = np.where(out.get('closing_total', pd.Series(np.nan, index=out.index)).notna(), 'CFBD', '')
-    else:
-        out.loc[out.get('closing_total', pd.Series(np.nan, index=out.index)).notna() & out['line_source'].astype(str).eq(''), 'line_source'] = 'CFBD'
+    _ensure_line_source(out)
 
     division = out.get('division_track', pd.Series('', index=out.index)).astype(str).str.upper()
     missing = division.eq('FCS') & out.get('closing_total', pd.Series(np.nan, index=out.index)).isna()
@@ -211,25 +242,54 @@ def apply_fcs_odds_fallback(
         events, api_status = fetch_current_ncaaf_odds()
         stats['odds_api_status'] = api_status
     else:
-        api_status = 'fixture'
-        stats['odds_api_status'] = api_status
+        stats['odds_api_status'] = 'fixture'
     if not events:
         return out, stats
 
-    for idx, game in out.loc[missing].iterrows():
-        event, confidence = match_odds_event(game, events)
-        if event is None:
-            continue
-        market = select_total_market(event, preferred)
-        if market is None:
-            continue
-        for key, value in market.items():
-            out.at[idx, key] = value
-        out.at[idx, 'odds_match_confidence'] = round(float(confidence), 4)
-        out.at[idx, 'odds_event_id'] = str(event.get('id') or '')
-        stats['fcs_fallback_filled'] += 1
-
+    stats['fcs_fallback_filled'] = _apply_events_to_mask(out, missing, events, preferred)
     stats['fcs_missing_after'] = int(
         (division.eq('FCS') & out.get('closing_total', pd.Series(np.nan, index=out.index)).isna()).sum()
+    )
+    return out, stats
+
+
+def apply_fbs_odds_fallback(
+    board: pd.DataFrame,
+    preferred_providers: list[str] | None = None,
+    events: list[dict[str, Any]] | None = None,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Fill only missing totals for games involving at least one FBS team.
+
+    CFBD remains the primary FBS market source. This fallback makes one normal
+    NCAAF Odds API request only when a current FBS-involved board row is still
+    missing a total after the primary source and FCS-specific fallbacks.
+    """
+    out = board.copy()
+    preferred = list(preferred_providers or [])
+    _ensure_line_source(out)
+
+    home = out.get('home_classification', pd.Series('', index=out.index)).astype(str).str.lower()
+    away = out.get('away_classification', pd.Series('', index=out.index)).astype(str).str.lower()
+    fbs_involved = home.eq('fbs') | away.eq('fbs')
+    missing = fbs_involved & out.get('closing_total', pd.Series(np.nan, index=out.index)).isna()
+    stats = {
+        'fbs_missing_before': int(missing.sum()),
+        'fbs_fallback_filled': 0,
+        'fbs_odds_api_status': 'not_needed' if not missing.any() else 'not_called',
+    }
+    if not missing.any():
+        return out, stats
+
+    if events is None:
+        events, api_status = fetch_current_fbs_odds()
+        stats['fbs_odds_api_status'] = api_status
+    else:
+        stats['fbs_odds_api_status'] = 'fixture'
+    if not events:
+        return out, stats
+
+    stats['fbs_fallback_filled'] = _apply_events_to_mask(out, missing, events, preferred)
+    stats['fbs_missing_after'] = int(
+        (fbs_involved & out.get('closing_total', pd.Series(np.nan, index=out.index)).isna()).sum()
     )
     return out, stats
