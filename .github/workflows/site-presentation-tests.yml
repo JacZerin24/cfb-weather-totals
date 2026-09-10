@@ -1,0 +1,53 @@
+name: Validate Production Website Presentation
+
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'site_tools/**'
+      - 'docs/**'
+      - 'outputs/weekly_board.csv'
+      - '.github/workflows/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-presentation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Rebuild production presentation without external APIs
+        run: |
+          set -euo pipefail
+          python -m src.build_live_dashboard
+          python -m src.augment_dashboard_divisions
+          python site_tools/augment_weather_ui.py
+          python site_tools/fix_radar_ui.py
+          python -m src.fcs_research_labels
+          python -m src.fcs_card_guard
+          python -m src.bankroll_helper
+          python -m src.mark_monday_early_look
+          python site_tools/apply_stale_status.py
+          python site_tools/apply_postponement_diagnostics.py
+          python -m src.site_smoke_selftest
+
+      - name: Verify required deploy markers explicitly
+        run: |
+          set -euo pipefail
+          grep -q 'SITE_WEATHER_TOOLS' docs/index.html
+          grep -q 'SITE_RADAR_SYNC' docs/index.html
+          grep -q 'id="radarToggle"' docs/index.html
+          grep -q 'id="weatherFilter"' docs/index.html
+          grep -q 'data-weather-sort="2"' docs/index.html
