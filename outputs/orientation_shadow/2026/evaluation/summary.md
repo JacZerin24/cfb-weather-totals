@@ -2,7 +2,7 @@
 
 **Research only. This report cannot alter the operational weekly board or official prospective ledger.**
 
-Protocol: `orientation-eval-2026.2`  
+Protocol: `orientation-eval-2026.3`  
 Challenger: `orientation-crosswind-hgb-v0.1`  
 Graded paired orientation-ready games: **37**
 

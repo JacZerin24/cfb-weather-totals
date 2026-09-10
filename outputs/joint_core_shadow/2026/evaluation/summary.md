@@ -2,29 +2,12 @@
 
 **Research only. This report cannot alter the operational weekly board, weekly picks, thresholds, or official prospective ledger.**
 
-Protocol: `joint-core-eval-2026.1`  
+Protocol: `joint-core-eval-2026.2`  
 Challenger: `joint-core-weather-context-hgb-v0.1`  
-Prospective signal: **PROSPECTIVE_MAE_NOT_FAVORABLE**  
-Graded paired joint-core-ready games: **37**
+Prospective signal: **INSUFFICIENT_SAMPLE**  
+Graded paired joint-core-ready games: **0**
 
-## Primary paired model metric
-
-- Baseline MAE: **11.850** points
-- Challenger MAE: **11.855** points
-- Challenger minus baseline MAE: **+0.005** points (negative is better)
-- 95% paired bootstrap interval: **[-0.180, +0.178]**
-
-## Decision-support diagnostics
-
-- Status disagreements: **0**
-- Qualifier disagreements: **0**
-- Scorable status migrations: **0**
-- Status-migration accuracy: **nan**
-
-## Qualifier economics (supporting evidence)
-
-- Baseline: 0-0-0, ROI +nan, avg CLV +nan
-- Challenger: 0-0-0, ROI +nan, avg CLV +nan
+No completed official post-freeze joint-core shadow entries are available yet.
 
 ## Interpretation guardrail
 

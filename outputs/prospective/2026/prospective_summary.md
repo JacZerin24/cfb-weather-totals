@@ -1,8 +1,8 @@
 # 2026 Prospective Validation Ledger
 
-Protocol version: **2026.4**
+Protocol version: **2026.5**
 
-Protocol SHA-256: `dfeadc49057054be39d16e41f12dcdacb2fa62e8e323bdd36cf124475ed9ef94`
+Protocol SHA-256: `6896b9770568baf57f8d4375019ad98ddc2fe7b2f1a2dabc8374b28193757625`
 
 Immutable board snapshots and close captures remain the source of truth. Derived ledgers may apply only the explicitly documented integrity corrections in the active protocol.
 
@@ -29,7 +29,7 @@ Immutable board snapshots and close captures remain the source of truth. Derived
 
 ## Data integrity
 
-- Immutable board snapshots: 27
+- Immutable board snapshots: 39
 - Immutable close captures: 16
 - Official game entries selected: 376
 
