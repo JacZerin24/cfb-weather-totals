@@ -188,6 +188,15 @@
     "grid_y": 86,
     "office": "TAE"
   },
+  "30.5110,-90.4686": {
+    "checked_at": "2026-09-11T17:03:19.073566+00:00",
+    "forecast_hourly_url": "https://api.weather.gov/gridpoints/LIX/52,112/forecast/hourly",
+    "forecast_url": "https://api.weather.gov/gridpoints/LIX/52,112/forecast",
+    "grid_data_url": "https://api.weather.gov/gridpoints/LIX/52,112",
+    "grid_x": 52,
+    "grid_y": 112,
+    "office": "LIX"
+  },
   "30.6099,-96.3404": {
     "checked_at": "2026-08-27T16:44:32.615819+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/HGX/26,132/forecast/hourly",
