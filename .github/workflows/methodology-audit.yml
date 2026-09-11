@@ -1,0 +1,71 @@
+name: Methodology Audit
+
+on:
+  pull_request:
+    paths:
+      - 'src/methodology_audit.py'
+      - 'src/methodology_audit_fbs_check.py'
+      - '.github/workflows/methodology-audit.yml'
+      - 'requirements.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install pinned dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore latest live training artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/methodology-audit
+          mkdir -p /tmp/methodology-audit data/processed
+          RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?name=cfb-live-training-data&per_page=100" \
+            --jq '[.artifacts[] | select(.expired == false)] | sort_by(.created_at) | last | .workflow_run.id // empty')
+          if [ -z "$RUN_ID" ]; then
+            echo "ERROR: No live training artifact is available."
+            exit 1
+          fi
+          echo "Using training artifact from workflow run ${RUN_ID}."
+          gh run download "$RUN_ID" -n cfb-live-training-data -D /tmp/methodology-audit
+          MODEL_PATH=$(find /tmp/methodology-audit -type f -name modeling_dataset.csv -print -quit)
+          TEAM_PATH=$(find /tmp/methodology-audit -type f -name team_prior_features.csv -print -quit)
+          if [ -z "$MODEL_PATH" ]; then
+            echo "ERROR: modeling_dataset.csv was not found."
+            exit 1
+          fi
+          cp "$MODEL_PATH" data/processed/modeling_dataset.csv
+          if [ -n "$TEAM_PATH" ]; then
+            cp "$TEAM_PATH" data/processed/team_prior_features.csv
+          fi
+
+      - name: Run pinned methodology audit
+        run: python -m src.methodology_audit
+
+      - name: Run independent FBS cross-check
+        run: python -m src.methodology_audit_fbs_check
+
+      - name: Upload audit outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: methodology-audit-output
+          path: |
+            outputs/methodology_audit_*.csv
+            outputs/methodology_audit_summary.md
+          if-no-files-found: error
+          retention-days: 30
