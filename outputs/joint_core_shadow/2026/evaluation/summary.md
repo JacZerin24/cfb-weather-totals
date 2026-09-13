@@ -4,10 +4,27 @@
 
 Protocol: `joint-core-eval-2026.2`  
 Challenger: `joint-core-weather-context-hgb-v0.1`  
-Prospective signal: **INSUFFICIENT_SAMPLE**  
-Graded paired joint-core-ready games: **0**
+Prospective signal: **PROSPECTIVE_MAE_NOT_FAVORABLE**  
+Graded paired joint-core-ready games: **45**
 
-No completed official post-freeze joint-core shadow entries are available yet.
+## Primary paired model metric
+
+- Baseline MAE: **11.083** points
+- Challenger MAE: **11.111** points
+- Challenger minus baseline MAE: **+0.028** points (negative is better)
+- 95% paired bootstrap interval: **[-0.163, +0.220]**
+
+## Decision-support diagnostics
+
+- Status disagreements: **0**
+- Qualifier disagreements: **0**
+- Scorable status migrations: **0**
+- Status-migration accuracy: **nan**
+
+## Qualifier economics (supporting evidence)
+
+- Baseline: 0-0-0, ROI +nan, avg CLV +nan
+- Challenger: 0-0-0, ROI +nan, avg CLV +nan
 
 ## Interpretation guardrail
 
