@@ -314,6 +314,15 @@
     "grid_y": 99,
     "office": "SJT"
   },
+  "32.5308,-92.0661": {
+    "checked_at": "2026-09-14T16:24:28.219467+00:00",
+    "forecast_hourly_url": "https://api.weather.gov/gridpoints/SHV/136,70/forecast/hourly",
+    "forecast_url": "https://api.weather.gov/gridpoints/SHV/136,70/forecast",
+    "grid_data_url": "https://api.weather.gov/gridpoints/SHV/136,70",
+    "grid_x": 136,
+    "grid_y": 70,
+    "office": "SHV"
+  },
   "32.5321,-92.6560": {
     "checked_at": "2026-08-27T16:44:33.411059+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/SHV/114,69/forecast/hourly",
@@ -637,6 +646,15 @@
     "grid_x": 100,
     "grid_y": 82,
     "office": "OUN"
+  },
+  "35.2258,-80.8528": {
+    "checked_at": "2026-09-14T16:24:33.637742+00:00",
+    "forecast_hourly_url": "https://api.weather.gov/gridpoints/GSP/118,65/forecast/hourly",
+    "forecast_url": "https://api.weather.gov/gridpoints/GSP/118,65/forecast",
+    "grid_data_url": "https://api.weather.gov/gridpoints/GSP/118,65",
+    "grid_x": 118,
+    "grid_y": 65,
+    "office": "GSP"
   },
   "35.2984,-120.6650": {
     "checked_at": "2026-08-27T23:27:53.540188+00:00",
@@ -1132,6 +1150,15 @@
     "grid_x": 90,
     "grid_y": 99,
     "office": "PUB"
+  },
+  "39.1114,-84.5222": {
+    "checked_at": "2026-09-14T16:24:24.575676+00:00",
+    "forecast_hourly_url": "https://api.weather.gov/gridpoints/ILN/35,38/forecast/hourly",
+    "forecast_url": "https://api.weather.gov/gridpoints/ILN/35,38/forecast",
+    "grid_data_url": "https://api.weather.gov/gridpoints/ILN/35,38",
+    "grid_x": 35,
+    "grid_y": 38,
+    "office": "ILN"
   },
   "39.1312,-84.5162": {
     "checked_at": "2026-08-27T16:44:30.960891+00:00",
@@ -1798,6 +1825,15 @@
     "grid_x": 96,
     "grid_y": 57,
     "office": "TFX"
+  },
+  "46.7318,-117.1605": {
+    "checked_at": "2026-09-14T16:24:25.682604+00:00",
+    "forecast_hourly_url": "https://api.weather.gov/gridpoints/OTX/141,45/forecast/hourly",
+    "forecast_url": "https://api.weather.gov/gridpoints/OTX/141,45/forecast",
+    "grid_data_url": "https://api.weather.gov/gridpoints/OTX/141,45",
+    "grid_x": 141,
+    "grid_y": 45,
+    "office": "OTX"
   },
   "46.8639,-113.9815": {
     "checked_at": "2026-08-27T23:28:00.193128+00:00",
