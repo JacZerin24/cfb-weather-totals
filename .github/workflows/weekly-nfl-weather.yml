@@ -93,6 +93,13 @@ jobs:
           python -m src.nfl.prospective_ledger snapshot-board
           python -m src.nfl.prospective_ledger verify
 
+      - name: Build NFL website and inject sport selector
+        run: |
+          cp docs/index.html /tmp/cfb-index-before-selector.html
+          python -m src.nfl.build_site
+          python -m src.nfl.inject_sport_selector
+          python -m src.nfl.site_selftest --cfb-before /tmp/cfb-index-before-selector.html
+
       - name: Upload current NFL live board
         uses: actions/upload-artifact@v4
         with:
@@ -107,7 +114,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add outputs/nfl/live/
+          git add outputs/nfl/live/ docs/nfl/ docs/index.html
           if [ -d outputs/nfl/prospective/2026 ]; then
             git add outputs/nfl/prospective/2026/
           fi
