@@ -64,7 +64,11 @@ def _kickoff_utc(gameday: object, gametime: object) -> pd.Timestamp:
     return local.tz_convert(UTC)
 
 
-def _request_day(date_text: str, locations: pd.DataFrame) -> list[dict]:
+def _request_range(
+    start_date: str,
+    end_date: str,
+    locations: pd.DataFrame,
+) -> list[dict]:
     hourly = []
     for lead in LEAD_DAYS:
         hourly.extend([
@@ -74,8 +78,8 @@ def _request_day(date_text: str, locations: pd.DataFrame) -> list[dict]:
     params = {
         'latitude': ','.join(f'{value:.6f}' for value in locations['lat']),
         'longitude': ','.join(f'{value:.6f}' for value in locations['lon']),
-        'start_date': date_text,
-        'end_date': (pd.Timestamp(date_text) + pd.Timedelta(days=1)).date().isoformat(),
+        'start_date': start_date,
+        'end_date': end_date,
         'hourly': ','.join(hourly),
         'temperature_unit': 'fahrenheit',
         'wind_speed_unit': 'mph',
@@ -103,7 +107,10 @@ def _request_day(date_text: str, locations: pd.DataFrame) -> list[dict]:
         except Exception as exc:
             last_error = exc
             sleep(min(30, 2 ** attempt))
-    raise RuntimeError(f'JMA archive request failed for {date_text}: {last_error}')
+    raise RuntimeError(
+        f'JMA archive request failed for {start_date} to {end_date}: '
+        f'{last_error}'
+    )
 
 
 def _value_at_kickoff(
@@ -165,16 +172,29 @@ def main() -> None:
     ].copy()
 
     forecast_rows: list[dict] = []
-    grouped = list(outdoor.groupby('gameday', sort=True))
-    total_days = len(grouped)
-    for day_index, (gameday, group) in enumerate(grouped, start=1):
-        date_text = pd.Timestamp(gameday).date().isoformat()
+    outdoor['archive_month'] = (
+        pd.to_datetime(outdoor['gameday'], errors='coerce')
+        .dt.to_period('M')
+        .astype(str)
+    )
+    grouped = list(outdoor.groupby('archive_month', sort=True))
+    total_blocks = len(grouped)
+
+    for block_index, (archive_month, group) in enumerate(grouped, start=1):
+        game_dates = pd.to_datetime(group['gameday'], errors='coerce')
+        start_date = game_dates.min().date().isoformat()
+        # Include the following UTC day for prime-time games that kick off
+        # after midnight UTC.
+        end_date = (
+            game_dates.max() + pd.Timedelta(days=1)
+        ).date().isoformat()
+
         locations = (
             group[['stadium_id', 'lat', 'lon']]
             .drop_duplicates('stadium_id')
             .reset_index(drop=True)
         )
-        payload = _request_day(date_text, locations)
+        payload = _request_range(start_date, end_date, locations)
         by_stadium = {
             str(locations.iloc[i]['stadium_id']): payload[i]
             for i in range(len(locations))
@@ -203,8 +223,10 @@ def main() -> None:
                 )
             forecast_rows.append(row)
 
-        if day_index % 25 == 0 or day_index == total_days:
-            print(f'Fetched {day_index}/{total_days} NFL game dates.')
+        print(
+            f'Fetched archive block {block_index}/{total_blocks}: '
+            f'{archive_month} ({len(locations)} stadiums, {len(group)} games).'
+        )
         sleep(0.10)
 
     forecasts = pd.DataFrame(forecast_rows)
