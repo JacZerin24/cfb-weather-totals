@@ -92,11 +92,13 @@ TEAM_NAMES = {
 
 BOARD_COLUMNS = [
     'status', 'model_signal', 'decision_state', 'decision_due',
+    'generated_at_utc', 'decision_target_utc',
     'hours_to_kickoff', 'hours_from_24h_target',
     'season', 'week', 'game_id', 'kickoff_utc', 'gameday', 'gametime',
     'away_team', 'home_team', 'stadium', 'stadium_id',
     'decision_roof', 'surface', 'lat', 'lon',
-    'closing_total', 'consensus_over_price', 'best_over_price_same_line',
+    'closing_total', 'consensus_over_price', 'consensus_over_sportsbook',
+    'best_over_price_same_line', 'best_over_sportsbook_same_line',
     'sportsbooks_at_selected_line', 'sportsbooks_in_snapshot',
     'market_total_min', 'market_total_max', 'market_total_range',
     'odds_event_id', 'odds_market_last_update',
@@ -165,6 +167,12 @@ def _active_regular_season(
     future = candidates[candidates['kickoff_utc'] > now].copy()
     if future.empty:
         return future
+
+    first_kickoff = future['kickoff_utc'].min()
+    if first_kickoff - now > pd.Timedelta(days=8):
+        # Keep the scheduled workflow quota-free during the offseason / long
+        # gaps before Week 1. The runner exits before calling The Odds API.
+        return future.iloc[0:0].copy()
 
     season = int(future.sort_values('kickoff_utc').iloc[0]['season'])
     future = future[future['season'].eq(season)].copy()
@@ -300,6 +308,10 @@ def _select_total_market(event: dict[str, Any]) -> dict[str, Any] | None:
         at_line['price'] - median_price
     ).abs().idxmin()
     representative_price = float(at_line.loc[representative_idx, 'price'])
+    representative_book = str(
+        at_line.loc[representative_idx, 'sportsbook']
+    )
+    best_idx = at_line['price'].idxmax()
     latest_update = pd.to_datetime(
         at_line['last_update'], utc=True, errors='coerce'
     ).max()
@@ -307,7 +319,11 @@ def _select_total_market(event: dict[str, Any]) -> dict[str, Any] | None:
     return {
         'closing_total': selected_line,
         'consensus_over_price': representative_price,
-        'best_over_price_same_line': float(at_line['price'].max()),
+        'consensus_over_sportsbook': representative_book,
+        'best_over_price_same_line': float(at_line.loc[best_idx, 'price']),
+        'best_over_sportsbook_same_line': str(
+            at_line.loc[best_idx, 'sportsbook']
+        ),
         'sportsbooks_at_selected_line': int(at_line['sportsbook'].nunique()),
         'sportsbooks_in_snapshot': int(frame['sportsbook'].nunique()),
         'market_total_min': float(frame['line'].min()),
@@ -598,6 +614,11 @@ def _classify(
     out['qualifier_threshold'] = qualifier_edge
     out['strong_threshold'] = strong_edge
     out['probability_threshold'] = probability
+    out['generated_at_utc'] = now.isoformat()
+    out['decision_target_utc'] = (
+        pd.to_datetime(out['kickoff_utc'], utc=True)
+        - pd.Timedelta(hours=LEAD_HOURS)
+    )
     out['hours_to_kickoff'] = (
         pd.to_datetime(out['kickoff_utc'], utc=True) - now
     ).dt.total_seconds() / 3600.0
