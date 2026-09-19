@@ -24,6 +24,11 @@ performance_review:
   require_brier_score_at_most: 0.25
   require_brier_not_worse_than_empirical_base_rate: true
 
+scope:
+  season: 2026
+  activation: starts_when_scheduled_workflows_are_active_on_default_branch
+  retroactive_backfill_allowed: false
+
 reporting:
   american_odds_stake_units: 1.0
   calibration_bins:
