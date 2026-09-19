@@ -1,7 +1,8 @@
 project:
   sport: nfl
   timezone: America/Chicago
-  status: research_only
+  status: prospective_paper_candidate
+  frozen_protocol_path: config/nfl_frozen_protocol.yml
 
 data:
   start_year: 2006
@@ -29,3 +30,7 @@ live:
   odds_sport_key: americanfootball_nfl
   paper_tracking_only: true
   production_enabled: false
+  official_signal_horizon_hours: 24
+  official_side: OVER
+  official_label: QUALIFIES
+  strong_label: STRONG
