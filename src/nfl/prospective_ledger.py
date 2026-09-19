@@ -23,6 +23,7 @@ from .live_week import (
 PROTOCOL_PATH = ROOT / 'config/nfl_frozen_protocol.yml'
 PROSPECTIVE_ROOT = ROOT / 'outputs/nfl/prospective/2026'
 DECISION_DIR = PROSPECTIVE_ROOT / 'decision_snapshots'
+MONITOR_DIR = PROSPECTIVE_ROOT / 'monitor_snapshots'
 CLOSE_DIR = PROSPECTIVE_ROOT / 'close_captures'
 LIVE_BOARD_PATH = ROOT / 'outputs/nfl/live/weekly_board.csv'
 HASH_RE = re.compile(r'_([0-9a-f]{12})\.csv$')
@@ -169,6 +170,7 @@ def verify_immutable_files() -> pd.DataFrame:
     rows: list[dict[str, Any]] = []
     for kind, directory in [
         ('decision_snapshot', DECISION_DIR),
+        ('monitor_snapshot', MONITOR_DIR),
         ('close_capture', CLOSE_DIR),
     ]:
         if not directory.exists():
@@ -547,6 +549,111 @@ def snapshot_board(now: pd.Timestamp | None = None) -> Path | None:
     return path
 
 
+def monitor_board(now: pd.Timestamp | None = None) -> Path | None:
+    load_protocol()
+    now = now or _utc_now()
+    metadata = _run_metadata(now, 'monitor_snapshot')
+
+    if not metadata['official_eligible']:
+        print(
+            'NFL monitor snapshot skipped: only first-attempt scheduled '
+            'live runs are accepted for post-freeze movement tracking.'
+        )
+        rebuild_derived()
+        return None
+
+    if not LIVE_BOARD_PATH.exists():
+        print('NFL live board is missing; no monitor snapshot written.')
+        rebuild_derived()
+        return None
+
+    board = pd.read_csv(LIVE_BOARD_PATH)
+    if board.empty:
+        print('NFL live board is empty; no monitor snapshot written.')
+        rebuild_derived()
+        return None
+
+    derived = rebuild_derived()
+    decisions = derived['decisions']
+    if decisions.empty or 'game_id' not in decisions.columns:
+        print('No official NFL decisions exist; no monitor snapshot needed.')
+        return None
+
+    official = decisions[
+        [
+            c for c in [
+                'game_id',
+                'snapshot_timestamp_utc',
+                'model_signal',
+                'closing_total',
+                'pred_market_residual',
+                'over_probability',
+            ]
+            if c in decisions.columns
+        ]
+    ].copy()
+    official = official.rename(columns={
+        'snapshot_timestamp_utc': 'official_decision_timestamp_utc',
+        'model_signal': 'official_model_signal',
+        'closing_total': 'official_total',
+        'pred_market_residual': 'official_pred_market_residual',
+        'over_probability': 'official_over_probability',
+    })
+
+    board['_game_key'] = board['game_id'].astype(str)
+    official['_game_key'] = official['game_id'].astype(str)
+    tracked = board.merge(
+        official.drop(columns=['game_id'], errors='ignore'),
+        on='_game_key',
+        how='inner',
+    )
+    if tracked.empty:
+        print('No current live-board games have an official decision.')
+        return None
+
+    tracked['kickoff_utc'] = pd.to_datetime(
+        tracked.get('kickoff_utc'),
+        utc=True,
+        errors='coerce',
+    )
+    tracked['official_decision_timestamp_utc'] = pd.to_datetime(
+        tracked.get('official_decision_timestamp_utc'),
+        utc=True,
+        errors='coerce',
+    )
+    tracked = tracked[
+        tracked['kickoff_utc'].notna()
+        & tracked['kickoff_utc'].gt(now)
+        & tracked['official_decision_timestamp_utc'].notna()
+        & tracked['official_decision_timestamp_utc'].lt(
+            now - pd.Timedelta(minutes=30)
+        )
+    ].copy()
+    if tracked.empty:
+        print(
+            'No post-freeze, pre-kickoff NFL games are eligible for '
+            'movement monitoring.'
+        )
+        return None
+
+    tracked = tracked.drop(columns=['_game_key'], errors='ignore')
+    for key, value in reversed(list(metadata.items())):
+        tracked.insert(0, key, value)
+
+    path = _immutable_write(
+        tracked,
+        MONITOR_DIR,
+        'monitor',
+        now,
+    )
+    rebuild_derived()
+    print(
+        'Wrote immutable NFL post-freeze monitor snapshot: '
+        f'{path.relative_to(ROOT)}; games={len(tracked)}.'
+    )
+    return path
+
+
 def _current_tracked_games(
     entries: pd.DataFrame,
     now: pd.Timestamp,
@@ -734,6 +841,7 @@ def main() -> None:
         choices=[
             'validate-protocol',
             'snapshot-board',
+            'monitor-board',
             'capture-close',
             'rebuild',
             'verify',
@@ -750,6 +858,8 @@ def main() -> None:
         )
     elif args.command == 'snapshot-board':
         snapshot_board()
+    elif args.command == 'monitor-board':
+        monitor_board()
     elif args.command == 'capture-close':
         capture_close()
     elif args.command == 'rebuild':
