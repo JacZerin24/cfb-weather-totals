@@ -186,6 +186,23 @@ def _build_market_snapshots(
         if event is None or event.empty:
             continue
 
+        expected_kickoff = pd.to_datetime(
+            game.get('kickoff_utc'), utc=True, errors='coerce'
+        )
+        event = event.copy()
+        if pd.notna(expected_kickoff):
+            event['kickoff_distance_hours'] = (
+                event['game_start_time'] - expected_kickoff
+            ).abs().dt.total_seconds() / 3600.0
+            nearest_start = (
+                event.sort_values('kickoff_distance_hours')
+                ['game_start_time']
+                .iloc[0]
+            )
+            event = event[event['game_start_time'].eq(nearest_start)].copy()
+            if event['kickoff_distance_hours'].min() > 6:
+                continue
+
         starts = event['game_start_time'].dropna()
         if starts.empty:
             continue
