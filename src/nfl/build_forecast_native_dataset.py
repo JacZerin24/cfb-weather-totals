@@ -75,7 +75,7 @@ def _request_day(date_text: str, locations: pd.DataFrame) -> list[dict]:
         'latitude': ','.join(f'{value:.6f}' for value in locations['lat']),
         'longitude': ','.join(f'{value:.6f}' for value in locations['lon']),
         'start_date': date_text,
-        'end_date': date_text,
+        'end_date': (pd.Timestamp(date_text) + pd.Timedelta(days=1)).date().isoformat(),
         'hourly': ','.join(hourly),
         'temperature_unit': 'fahrenheit',
         'wind_speed_unit': 'mph',
