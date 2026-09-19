@@ -45,6 +45,9 @@ jobs:
       - name: Run deep ROI sustainability search
         run: python -m src.nfl.roi_search
 
+      - name: Run archived forecast realism validation
+        run: python -m src.nfl.forecast_realistic
+
       - name: Upload NFL research artifacts
         uses: actions/upload-artifact@v4
         with:
