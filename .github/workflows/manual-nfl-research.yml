@@ -34,6 +34,9 @@ jobs:
       - name: Run chronological model bake-off
         run: python -m src.nfl.model_bakeoff
 
+      - name: Run stability and multiple-testing validation
+        run: python -m src.nfl.validate_stability
+
       - name: Upload NFL research artifacts
         uses: actions/upload-artifact@v4
         with:
