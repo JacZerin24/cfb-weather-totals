@@ -44,3 +44,8 @@ reporting:
     insufficient: INSUFFICIENT_SAMPLE
     review: REVIEW_ELIGIBLE
     do_not_promote: DO_NOT_PROMOTE
+
+change_control:
+  outcome_driven_changes_allowed: false
+  require_new_evaluation_version_for_change: true
+  human_review_required_before_any_wagering_status: true
