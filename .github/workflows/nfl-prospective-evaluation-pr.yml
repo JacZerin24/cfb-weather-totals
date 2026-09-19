@@ -5,6 +5,7 @@ on:
     paths:
       - 'src/nfl/prospective_grade.py'
       - 'src/nfl/prospective_grade_selftest.py'
+      - 'src/nfl/validate_prospective_evaluation.py'
       - 'src/nfl/prospective_ledger.py'
       - 'config/nfl_prospective_evaluation.yml'
       - 'src/nfl/build_site.py'
@@ -36,8 +37,9 @@ jobs:
       - name: Compile NFL prospective evaluation code
         run: python -m compileall -q src/nfl
 
-      - name: Validate frozen protocol
-        run: python -m src.nfl.validate_frozen_protocol
+      - name: Validate frozen protocol and evaluation gate
+        run: |
+          python -m src.nfl.validate_frozen_protocol
           python -m src.nfl.validate_prospective_evaluation
 
       - name: Test prospective evaluation methodology
