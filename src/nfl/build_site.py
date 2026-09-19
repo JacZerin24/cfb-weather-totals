@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from datetime import datetime, timezone
 from html import escape
 from pathlib import Path
@@ -281,10 +282,70 @@ def _decision_rows(decisions: pd.DataFrame) -> str:
     return ''.join(rows)
 
 
+def _load_evaluation() -> dict[str, Any]:
+    path = PROSPECTIVE_ROOT / 'evaluation_status.json'
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding='utf-8'))
+        return payload if isinstance(payload, dict) else {}
+    except Exception:
+        return {}
+
+
+def _evaluation_panel(evaluation: dict[str, Any]) -> str:
+    status = escape(str(evaluation.get('status') or 'INSUFFICIENT_SAMPLE'))
+    metrics = evaluation.get('metrics') or {}
+    checks = evaluation.get('checks') or {}
+
+    def metric(name: str, kind: str = 'number') -> str:
+        value = metrics.get(name)
+        try:
+            if value is None or pd.isna(value):
+                return '—'
+        except Exception:
+            pass
+        try:
+            if kind == 'pct':
+                return f'{100 * float(value):.1f}%'
+            if kind == 'one':
+                return f'{float(value):.1f}'
+            if kind == 'two':
+                return f'{float(value):.2f}'
+            return str(int(value))
+        except Exception:
+            return escape(str(value))
+
+    unmet = [name for name, passed in checks.items() if not passed]
+    unmet_text = (
+        ', '.join(unmet[:5]) + ('…' if len(unmet) > 5 else '')
+        if unmet else 'none'
+    )
+    return f'''
+      <div class="evaluation-status">
+        <div>
+          <span class="eyebrow">Prospective evidence status</span>
+          <h3>{status}</h3>
+          <p>Never an automatic wagering authorization. REVIEW_ELIGIBLE means only that the pre-registered paper-evidence gate is ready for human review.</p>
+        </div>
+        <div class="evaluation-grid">
+          <div><span>Record</span><strong>{metric('wins')}-{metric('losses')}-{metric('pushes')}</strong></div>
+          <div><span>Captured-price ROI</span><strong>{metric('captured_price_roi','pct')}</strong></div>
+          <div><span>Mean CLV</span><strong>{metric('mean_clv_points','two')} pts</strong></div>
+          <div><span>Brier score</span><strong>{metric('brier_score','three')}</strong></div>
+          <div><span>Graded entries</span><strong>{metric('graded_entries')}</strong></div>
+          <div><span>Graded decisions</span><strong>{metric('graded_official_decisions')}</strong></div>
+        </div>
+        <div class="evaluation-note"><strong>Unmet pre-registered checks:</strong> {escape(unmet_text)}</div>
+      </div>
+    '''
+
+
 def build_html(
     board: pd.DataFrame,
     decisions: pd.DataFrame,
     entries: pd.DataFrame,
+    evaluation: dict[str, Any],
 ) -> str:
     generated = _generated(board)
     season = (
@@ -328,6 +389,8 @@ def build_html(
         int(pd.to_numeric(board.get('closing_total'), errors='coerce').notna().sum())
         if not board.empty and 'closing_total' in board.columns else 0
     )
+    evaluation_html = _evaluation_panel(evaluation)
+
     current_qualifiers = (
         int(board.get('model_signal', pd.Series(dtype=str)).isin(
             ['QUALIFIES', 'STRONG']
@@ -469,6 +532,21 @@ def build_html(
     th {{ background:#101c2f; color:#dbeafe; position:sticky; top:0; }}
     td {{ color:#dce7f7; }}
     .empty-state,.empty-cell {{ padding:22px; color:var(--muted); }}
+    .evaluation-status {{
+      padding:18px; border:1px solid var(--line); border-radius:18px;
+      background:linear-gradient(180deg,rgba(17,30,50,.97),rgba(10,20,35,.96));
+      box-shadow:0 18px 44px rgba(0,0,0,.22);
+    }}
+    .evaluation-status h3 {{ margin-top:5px; font-size:24px; }}
+    .evaluation-status p {{ margin:5px 0 14px; }}
+    .evaluation-grid {{ display:grid; grid-template-columns:repeat(6,1fr); gap:8px; }}
+    .evaluation-grid > div {{
+      padding:10px; border:1px solid rgba(255,255,255,.08);
+      border-radius:11px; background:rgba(255,255,255,.03);
+    }}
+    .evaluation-grid span {{ display:block; color:var(--muted); font-size:9px; text-transform:uppercase; letter-spacing:.08em; font-weight:900; }}
+    .evaluation-grid strong {{ display:block; margin-top:4px; font-size:15px; }}
+    .evaluation-note {{ margin-top:11px; color:var(--muted); font-size:11px; }}
     .protocol {{
       display:grid; grid-template-columns:repeat(4,1fr); gap:10px;
     }}
@@ -477,7 +555,7 @@ def build_html(
     .protocol strong {{ display:block; margin-top:4px; font-size:14px; }}
     footer {{ color:var(--muted); font-size:11px; padding-bottom:38px; }}
     @media(max-width:900px) {{
-      .hero,.metrics,.cards,.protocol {{ grid-template-columns:1fr; }}
+      .hero,.metrics,.cards,.protocol,.evaluation-grid {{ grid-template-columns:1fr; }}
       .section-head {{ align-items:start; flex-direction:column; }}
       .grid {{ grid-template-columns:1fr; }}
       .topline {{ align-items:flex-start; }}
@@ -517,6 +595,7 @@ def build_html(
   <nav><div class="shell">
     <a href="#live">Live cards</a>
     <a href="#ledger">Frozen decisions</a>
+    <a href="#performance">Prospective performance</a>
     <a href="#protocol">Protocol</a>
     <a href="../">NCAA board →</a>
   </div></nav>
@@ -553,6 +632,14 @@ def build_html(
           <tbody>{_decision_rows(decisions)}</tbody>
         </table>
       </div></div>
+    </section>
+
+    <section id="performance">
+      <div class="section-head">
+        <div><div class="eyebrow">Untouched 2026 paper evidence</div><h2>Prospective performance</h2></div>
+        <p>ROI, CLV, calibration, and post-freeze signal movement are evaluated against criteria frozen before prospective outcomes accumulate.</p>
+      </div>
+      {evaluation_html}
     </section>
 
     <section id="protocol">
@@ -609,9 +696,10 @@ def main() -> None:
         if not entries_with_clv.empty
         else _read_csv(PROSPECTIVE_ROOT / 'official_entries.csv')
     )
+    evaluation = _load_evaluation()
 
     ensure_dir(DOCS_NFL)
-    html = build_html(board, decisions, entries)
+    html = build_html(board, decisions, entries, evaluation)
     output = DOCS_NFL / 'index.html'
     output.write_text(html, encoding='utf-8')
     print(
