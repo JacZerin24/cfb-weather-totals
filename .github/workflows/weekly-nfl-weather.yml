@@ -36,6 +36,7 @@ jobs:
       - name: Validate frozen NFL protocol
         run: |
           python -m src.nfl.validate_frozen_protocol
+          python -m src.nfl.validate_prospective_evaluation
           python -m src.nfl.live_week_selftest
 
       - name: Restore NFL forecast-native training data
