@@ -17,6 +17,8 @@ EXPECTED = {
     ('sample_gate', 'minimum_entries_with_clv'): 20,
     ('sample_gate', 'minimum_distinct_entry_weeks'): 8,
     ('sample_gate', 'minimum_monitor_coverage_fraction'): 0.80,
+    ('scope', 'season'): 2026,
+    ('scope', 'retroactive_backfill_allowed'): False,
     ('performance_review', 'require_positive_captured_price_roi'): True,
     ('performance_review', 'require_mean_clv_points_greater_than'): 0.0,
     ('performance_review', 'require_median_clv_points_at_least'): 0.0,
