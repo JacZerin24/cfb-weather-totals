@@ -38,6 +38,7 @@ jobs:
 
       - name: Validate frozen protocol
         run: python -m src.nfl.validate_frozen_protocol
+          python -m src.nfl.validate_prospective_evaluation
 
       - name: Test prospective evaluation methodology
         run: |
