@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: nfl-live-paper-board
+  group: cfb-weather-data-writes
   cancel-in-progress: false
 
 jobs:
