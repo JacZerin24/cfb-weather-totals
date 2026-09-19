@@ -312,6 +312,8 @@ def _evaluation_panel(evaluation: dict[str, Any]) -> str:
                 return f'{float(value):.1f}'
             if kind == 'two':
                 return f'{float(value):.2f}'
+            if kind == 'three':
+                return f'{float(value):.3f}'
             return str(int(value))
         except Exception:
             return escape(str(value))
