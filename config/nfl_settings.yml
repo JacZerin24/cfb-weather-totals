@@ -1,0 +1,31 @@
+project:
+  sport: nfl
+  timezone: America/Chicago
+  status: research_only
+
+data:
+  start_year: 2006
+  end_year: 2025
+  game_types:
+    - REG
+  source_url: https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv
+  raw_path: data/nfl/raw/nflverse_games.csv
+  processed_path: data/nfl/processed/modeling_dataset.csv
+  outputs_dir: outputs/nfl
+
+modeling:
+  target: market_residual
+  min_train_games: 1000
+  min_test_games: 150
+  edge_thresholds:
+    - 1.0
+    - 1.5
+    - 2.0
+    - 2.5
+    - 3.0
+    - 3.5
+
+live:
+  odds_sport_key: americanfootball_nfl
+  paper_tracking_only: true
+  production_enabled: false
