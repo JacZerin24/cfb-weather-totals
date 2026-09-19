@@ -1,0 +1,50 @@
+name: Validate NFL Forecast-Native Research
+
+on:
+  pull_request:
+    paths:
+      - 'src/nfl/build_forecast_native_dataset.py'
+      - 'src/nfl/forecast_native_bakeoff.py'
+      - '.github/workflows/nfl-forecast-native-pr.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  forecast-native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Pull NFL historical schedule and closing totals
+        run: python -m src.nfl.pull_historical
+
+      - name: Build base NFL modeling dataset
+        run: python -m src.nfl.build_dataset
+
+      - name: Build 2018-2025 forecast-native dataset
+        run: python -m src.nfl.build_forecast_native_dataset
+
+      - name: Run forecast-native walk-forward bakeoff
+        run: python -m src.nfl.forecast_native_bakeoff
+
+      - name: Upload forecast-native research artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nfl-forecast-native-research
+          path: |
+            outputs/nfl/forecast_native_*.csv
+            outputs/nfl/forecast_native_*.md
+            data/nfl/processed/forecast_native_dataset.csv
+          if-no-files-found: error

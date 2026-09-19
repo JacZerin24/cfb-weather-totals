@@ -1,0 +1,53 @@
+protocol:
+  id: nfl_totals_paper_v1
+  version: 1
+  frozen_date: 2026-09-19
+  status: frozen_for_prospective_paper_tracking
+  sport: nfl
+  market: totals
+  game_types:
+    - REG
+
+decision:
+  official_lead_hours: 24
+  side: OVER
+  require_market_total: true
+  require_over_price: true
+  no_forced_play: true
+
+model:
+  regression_model: reg_rf_leaf25
+  classifier_model: cls_rf_leaf25
+  target: market_residual
+  forecast_source: jma_gsm
+  forecast_weather_required_for_fixed_outdoor: true
+  retractable_roof_weather_policy: withhold_weather
+  dome_weather_policy: withhold_weather
+
+qualifier:
+  label: QUALIFIES
+  minimum_regression_edge_points: 3.0
+  minimum_over_probability: 0.60
+
+strong:
+  label: STRONG
+  minimum_regression_edge_points: 4.0
+  minimum_over_probability: 0.60
+
+non_official_horizons:
+  48:
+    status: research_only
+  72:
+    status: disabled
+
+grading:
+  mode: paper
+  stake_units: 1.0
+  use_captured_market_price: true
+  track_flat_minus_110_reference: true
+  track_closing_line_value: true
+
+change_control:
+  outcome_driven_retuning_allowed: false
+  require_new_protocol_version_for_threshold_change: true
+  require_documented_validation_before_real_money_status: true

@@ -1,0 +1,53 @@
+name: Manual NFL Weather Research
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Pull NFL historical schedule and closing totals
+        run: python -m src.nfl.pull_historical
+
+      - name: Build NFL modeling dataset
+        run: python -m src.nfl.build_dataset
+
+      - name: Run weather-effect screens
+        run: python -m src.nfl.research_weather
+
+      - name: Run chronological model bake-off
+        run: python -m src.nfl.model_bakeoff
+
+      - name: Run stability and multiple-testing validation
+        run: python -m src.nfl.validate_stability
+
+      - name: Run deep ROI sustainability search
+        run: python -m src.nfl.roi_search
+
+      - name: Run archived forecast realism validation
+        run: python -m src.nfl.forecast_realistic
+
+      - name: Upload NFL research artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nfl-weather-research
+          path: |
+            outputs/nfl/
+            data/nfl/processed/modeling_dataset.csv
+          if-no-files-found: error

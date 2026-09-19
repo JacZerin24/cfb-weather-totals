@@ -1,0 +1,116 @@
+name: Weekly NFL Weather Totals
+
+on:
+  workflow_dispatch:
+  schedule:
+    # One live NFL totals request (US totals only) costs one Odds API credit.
+    # Every-three-hour cadence keeps the 24h decision snapshot close to target
+    # while avoiding an unnecessary hourly burn.
+    - cron: '47 */3 * * *'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  live-paper-board:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: nfl-live-paper-board
+      cancel-in-progress: false
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Validate frozen NFL protocol
+        run: |
+          python -m src.nfl.validate_frozen_protocol
+          python -m src.nfl.live_week_selftest
+
+      - name: Restore NFL forecast-native training data
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/nfl-training
+          mkdir -p /tmp/nfl-training data/nfl/processed
+
+          LIVE_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?name=nfl-live-training-data&per_page=100"             --jq '[.artifacts[] | select(.expired == false)] | sort_by(.created_at) | last | .workflow_run.id // empty')
+
+          if [ -n "$LIVE_RUN_ID" ]; then
+            echo "Restoring NFL training data from live artifact run $LIVE_RUN_ID."
+            gh run download "$LIVE_RUN_ID"               -n nfl-live-training-data               -D /tmp/nfl-training
+          else
+            SEED_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/nfl-forecast-native-pr.yml/runs?status=success&per_page=20"               --jq '.workflow_runs[0].id // empty')
+            if [ -z "$SEED_RUN_ID" ]; then
+              echo "ERROR: no NFL forecast-native seed artifact found."
+              exit 1
+            fi
+            echo "Seeding NFL training data from forecast-native run $SEED_RUN_ID."
+            gh run download "$SEED_RUN_ID"               -n nfl-forecast-native-research               -D /tmp/nfl-training
+          fi
+
+          DATASET=$(find /tmp/nfl-training -type f -name forecast_native_dataset.csv -print -quit)
+          if [ -z "$DATASET" ]; then
+            echo "ERROR: forecast_native_dataset.csv missing from restored artifact."
+            exit 1
+          fi
+          cp "$DATASET" data/nfl/processed/forecast_native_dataset.csv
+
+      - name: Refresh NFL live-training artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nfl-live-training-data
+          path: data/nfl/processed/forecast_native_dataset.csv
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Build live NFL paper board
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: python -m src.nfl.live_week
+
+      - name: Archive immutable NFL decision snapshot
+        env:
+          NFL_PROSPECTIVE_EVENT_NAME: ${{ github.event_name }}
+          NFL_PROSPECTIVE_EVENT_SCHEDULE: ${{ github.event.schedule }}
+          NFL_PROSPECTIVE_RUN_ID: ${{ github.run_id }}
+          NFL_PROSPECTIVE_RUN_ATTEMPT: ${{ github.run_attempt }}
+          NFL_PROSPECTIVE_SHA: ${{ github.sha }}
+        run: |
+          python -m src.nfl.prospective_ledger validate-protocol
+          python -m src.nfl.prospective_ledger snapshot-board
+          python -m src.nfl.prospective_ledger verify
+
+      - name: Upload current NFL live board
+        uses: actions/upload-artifact@v4
+        with:
+          name: nfl-live-paper-board
+          path: outputs/nfl/live/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Commit NFL-only live outputs
+        if: github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add outputs/nfl/live/
+          if [ -d outputs/nfl/prospective/2026 ]; then
+            git add outputs/nfl/prospective/2026/
+          fi
+          git commit -m "Update live NFL paper board and prospective ledger" || exit 0
+          git pull --rebase origin main
+          git push origin main
