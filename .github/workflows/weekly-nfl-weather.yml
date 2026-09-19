@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     concurrency:
-      group: nfl-live-paper-board
+      group: cfb-weather-data-writes
       cancel-in-progress: false
 
     steps:
