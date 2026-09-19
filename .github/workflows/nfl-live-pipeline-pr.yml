@@ -9,7 +9,10 @@ on:
       - 'src/nfl/inject_sport_selector.py'
       - 'src/nfl/site_selftest.py'
       - 'src/nfl/prospective_ledger.py'
+      - 'src/nfl/prospective_grade.py'
+      - 'src/nfl/prospective_grade_selftest.py'
       - 'config/nfl_frozen_protocol.yml'
+      - 'config/nfl_prospective_evaluation.yml'
       - '.github/workflows/nfl-live-pipeline-pr.yml'
 
 permissions:
@@ -76,6 +79,8 @@ jobs:
           NFL_PROSPECTIVE_SHA: ${{ github.sha }}
         run: |
           python -m src.nfl.prospective_ledger snapshot-board
+          python -m src.nfl.prospective_ledger monitor-board
+          python -m src.nfl.prospective_grade
           python -m src.nfl.prospective_ledger verify
 
       - name: Build and validate NFL website
