@@ -64,6 +64,16 @@ BLOCK = r'''<!-- SPORT_MODE_SELECTOR_START -->
 <!-- SPORT_MODE_SELECTOR_END -->'''
 
 
+def strip_selector(html: str) -> str:
+    if START not in html or END not in html:
+        return html
+    pattern = re.compile(
+        re.escape(START) + r'.*?' + re.escape(END) + r'\n?',
+        flags=re.DOTALL,
+    )
+    return pattern.sub('', html, count=1)
+
+
 def inject(html: str) -> str:
     if START in html and END in html:
         pattern = re.compile(
