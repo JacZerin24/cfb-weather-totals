@@ -91,6 +91,8 @@ jobs:
         run: |
           python -m src.nfl.prospective_ledger validate-protocol
           python -m src.nfl.prospective_ledger snapshot-board
+          python -m src.nfl.prospective_ledger monitor-board
+          python -m src.nfl.prospective_grade
           python -m src.nfl.prospective_ledger verify
 
       - name: Build NFL website and inject sport selector
