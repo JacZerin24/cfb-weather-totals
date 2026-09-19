@@ -673,6 +673,20 @@ def _status(
     return str(statuses['do_not_promote']), checks
 
 
+def _json_safe(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {str(k): _json_safe(v) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_json_safe(v) for v in value]
+    if isinstance(value, (np.floating, float)):
+        return float(value) if np.isfinite(float(value)) else None
+    if isinstance(value, (np.integer,)):
+        return int(value)
+    if isinstance(value, (np.bool_,)):
+        return bool(value)
+    return value
+
+
 def evaluate(
     now: pd.Timestamp | None = None,
 ) -> dict[str, Any]:
@@ -720,7 +734,7 @@ def evaluate(
     }
     STATUS_PATH.parent.mkdir(parents=True, exist_ok=True)
     STATUS_PATH.write_text(
-        json.dumps(payload, indent=2, default=str),
+        json.dumps(_json_safe(payload), indent=2, allow_nan=False),
         encoding='utf-8',
     )
 
