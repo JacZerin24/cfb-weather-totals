@@ -744,7 +744,7 @@ def _write_outputs(
         '',
         f'Frozen protocol: {protocol["protocol"]["id"]} v{protocol["protocol"]["version"]}',
         '',
-        'This board is operational paper-mode output only. It does not create the immutable prospective ledger; that is the next build stage.',
+        'This board is operational paper-mode output. First-attempt scheduled runs archive any games in the frozen 24-hour decision window to the separate immutable prospective ledger.',
         '',
         output[visible].to_markdown(index=False)
         if not output.empty else '_No upcoming regular-season games._',
