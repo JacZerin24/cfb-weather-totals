@@ -52,7 +52,12 @@ jobs:
           NFL_PROSPECTIVE_RUN_ID: ${{ github.run_id }}
           NFL_PROSPECTIVE_RUN_ATTEMPT: ${{ github.run_attempt }}
           NFL_PROSPECTIVE_SHA: ${{ github.sha }}
-        run: python -m src.nfl.prospective_ledger capture-close
+        run: |
+          python -m src.nfl.prospective_ledger capture-close
+          python -m src.nfl.prospective_grade
+          python -m src.nfl.build_site
+          python -m src.nfl.inject_sport_selector
+          python -m src.nfl.site_selftest
 
       - name: Commit NFL prospective CLV records
         if: ${{ github.run_attempt == 1 && steps.preflight.outputs.should_capture == 'true' }}
@@ -60,7 +65,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add outputs/nfl/prospective/2026/
+          git add outputs/nfl/prospective/2026/ docs/nfl/ docs/index.html
           git commit -m "Capture prospective NFL market benchmark" || exit 0
           git pull --rebase origin main
           git push origin main
