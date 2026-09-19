@@ -74,6 +74,13 @@ jobs:
           python -m src.nfl.prospective_ledger snapshot-board
           python -m src.nfl.prospective_ledger verify
 
+      - name: Build and validate NFL website
+        run: |
+          cp docs/index.html /tmp/cfb-index-before-selector.html
+          python -m src.nfl.build_site
+          python -m src.nfl.inject_sport_selector
+          python -m src.nfl.site_selftest --cfb-before /tmp/cfb-index-before-selector.html
+
       - name: Upload live-board validation artifact
         uses: actions/upload-artifact@v4
         with:
@@ -81,4 +88,6 @@ jobs:
           path: |
             outputs/nfl/live/
             outputs/nfl/prospective/2026/
+            docs/nfl/
+            docs/index.html
           if-no-files-found: error
