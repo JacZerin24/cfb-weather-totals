@@ -35,6 +35,7 @@ jobs:
       - name: Validate frozen NFL protocol
         run: |
           python -m src.nfl.validate_frozen_protocol
+          python -m src.nfl.validate_prospective_evaluation
           python -m src.nfl.prospective_ledger validate-protocol
           python -m src.nfl.prospective_ledger verify
 
