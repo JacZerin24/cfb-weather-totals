@@ -1,0 +1,41 @@
+name: Validate NFL Prospective Ledger
+
+on:
+  pull_request:
+    paths:
+      - 'src/nfl/prospective_ledger.py'
+      - 'src/nfl/prospective_ledger_selftest.py'
+      - 'src/nfl/close_capture_gate.py'
+      - 'config/nfl_frozen_protocol.yml'
+      - '.github/workflows/weekly-nfl-weather.yml'
+      - '.github/workflows/nfl-prospective-close-capture.yml'
+      - '.github/workflows/nfl-prospective-ledger-pr.yml'
+      - 'documentation/NFL_PROSPECTIVE_LEDGER.md'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Compile NFL prospective source
+        run: python -m compileall -q src/nfl
+
+      - name: Validate immutable NFL prospective methodology
+        run: |
+          python -m src.nfl.validate_frozen_protocol
+          python -m src.nfl.prospective_ledger validate-protocol
+          python -m src.nfl.prospective_ledger_selftest
