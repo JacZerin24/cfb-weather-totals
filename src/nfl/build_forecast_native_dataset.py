@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from io import StringIO
 from pathlib import Path
 from time import sleep
@@ -180,7 +181,9 @@ def main() -> None:
     grouped = list(outdoor.groupby('archive_month', sort=True))
     total_blocks = len(grouped)
 
-    for block_index, (archive_month, group) in enumerate(grouped, start=1):
+    def fetch_block(item: tuple[str, pd.DataFrame]) -> tuple[str, list[dict], int, int]:
+        archive_month, group = item
+        group = group.copy()
         game_dates = pd.to_datetime(group['gameday'], errors='coerce')
         start_date = game_dates.min().date().isoformat()
         # Include the following UTC day for prime-time games that kick off
@@ -188,7 +191,6 @@ def main() -> None:
         end_date = (
             game_dates.max() + pd.Timedelta(days=1)
         ).date().isoformat()
-
         locations = (
             group[['stadium_id', 'lat', 'lon']]
             .drop_duplicates('stadium_id')
@@ -200,9 +202,10 @@ def main() -> None:
             for i in range(len(locations))
         }
 
+        block_rows: list[dict] = []
         for _, game in group.iterrows():
-            item = by_stadium.get(str(game['stadium_id']), {})
-            hourly = item.get('hourly') or {}
+            item_payload = by_stadium.get(str(game['stadium_id']), {})
+            hourly = item_payload.get('hourly') or {}
             row = {
                 'game_id': game['game_id'],
                 'season': int(game['season']),
@@ -221,13 +224,23 @@ def main() -> None:
                     f'wind_speed_10m_previous_day{lead}',
                     game['kickoff_utc'],
                 )
-            forecast_rows.append(row)
+            block_rows.append(row)
+        return archive_month, block_rows, len(locations), len(group)
 
-        print(
-            f'Fetched archive block {block_index}/{total_blocks}: '
-            f'{archive_month} ({len(locations)} stadiums, {len(group)} games).'
-        )
-        sleep(0.10)
+    completed = 0
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        futures = {
+            executor.submit(fetch_block, item): item[0]
+            for item in grouped
+        }
+        for future in as_completed(futures):
+            archive_month, block_rows, location_count, game_count = future.result()
+            forecast_rows.extend(block_rows)
+            completed += 1
+            print(
+                f'Fetched archive block {completed}/{total_blocks}: '
+                f'{archive_month} ({location_count} stadiums, {game_count} games).'
+            )
 
     forecasts = pd.DataFrame(forecast_rows)
     merged = df.merge(forecasts, on=['game_id', 'season', 'gameday', 'stadium_id'], how='left')
