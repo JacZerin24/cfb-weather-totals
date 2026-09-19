@@ -11,6 +11,7 @@ on:
       - 'src/nfl/prospective_ledger.py'
       - 'src/nfl/prospective_grade.py'
       - 'src/nfl/prospective_grade_selftest.py'
+      - 'src/nfl/validate_prospective_evaluation.py'
       - 'config/nfl_frozen_protocol.yml'
       - 'config/nfl_prospective_evaluation.yml'
       - '.github/workflows/nfl-live-pipeline-pr.yml'
