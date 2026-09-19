@@ -81,6 +81,18 @@ jobs:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: python -m src.nfl.live_week
 
+      - name: Archive immutable NFL decision snapshot
+        env:
+          NFL_PROSPECTIVE_EVENT_NAME: ${{ github.event_name }}
+          NFL_PROSPECTIVE_EVENT_SCHEDULE: ${{ github.event.schedule }}
+          NFL_PROSPECTIVE_RUN_ID: ${{ github.run_id }}
+          NFL_PROSPECTIVE_RUN_ATTEMPT: ${{ github.run_attempt }}
+          NFL_PROSPECTIVE_SHA: ${{ github.sha }}
+        run: |
+          python -m src.nfl.prospective_ledger validate-protocol
+          python -m src.nfl.prospective_ledger snapshot-board
+          python -m src.nfl.prospective_ledger verify
+
       - name: Upload current NFL live board
         uses: actions/upload-artifact@v4
         with:
@@ -96,6 +108,9 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add outputs/nfl/live/
-          git commit -m "Update live NFL paper board" || exit 0
+          if [ -d outputs/nfl/prospective/2026 ]; then
+            git add outputs/nfl/prospective/2026/
+          fi
+          git commit -m "Update live NFL paper board and prospective ledger" || exit 0
           git pull --rebase origin main
           git push origin main
