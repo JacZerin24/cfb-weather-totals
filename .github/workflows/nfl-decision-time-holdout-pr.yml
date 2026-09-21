@@ -1,0 +1,87 @@
+name: Validate NFL 2025 Decision-Time Holdout
+
+on:
+  pull_request:
+    paths:
+      - 'src/nfl/decision_time_holdout_2025.py'
+      - '.github/workflows/nfl-decision-time-holdout-pr.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  decision-time-holdout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      FORECAST_SOURCE_SHA: da6d34c767d51f01a40edf51f210291dd7cabbed
+      MARKET_DB_URL: https://github.com/bobby-king3/nfl-market-movement-tracker/releases/download/v1.1.1/nfl_odds.duckdb
+      MARKET_DB_SHA256: b03c4e7f1cf885e9f20ea808ee538c26c21df4065b342fe04c50d09b808c344c
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install project and holdout-only dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install 'duckdb>=1.1,<2'
+
+      - name: Restore exact corrected forecast-native artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          RUN_ID=""
+          for attempt in $(seq 1 60); do
+            RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/nfl-forecast-native-pr.yml/runs?head_sha=${FORECAST_SOURCE_SHA}&status=success&per_page=10"               --jq '.workflow_runs[0].id // empty')
+            if [ -n "$RUN_ID" ]; then
+              break
+            fi
+            echo "Forecast-native artifact for ${FORECAST_SOURCE_SHA} not ready yet (attempt ${attempt}/60)."
+            sleep 30
+          done
+
+          if [ -z "$RUN_ID" ]; then
+            echo "ERROR: corrected forecast-native run did not complete successfully."
+            exit 1
+          fi
+
+          rm -rf /tmp/nfl-forecast-artifact
+          mkdir -p /tmp/nfl-forecast-artifact data/nfl/processed
+          gh run download "$RUN_ID" -n nfl-forecast-native-research -D /tmp/nfl-forecast-artifact
+
+          DATASET=$(find /tmp/nfl-forecast-artifact -type f -name forecast_native_dataset.csv -print -quit)
+          if [ -z "$DATASET" ]; then
+            echo "ERROR: forecast_native_dataset.csv missing from artifact."
+            exit 1
+          fi
+          cp "$DATASET" data/nfl/processed/forecast_native_dataset.csv
+          echo "Restored forecast-native dataset from run $RUN_ID."
+
+      - name: Download and verify public 2025 NFL market database
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 4 --retry-delay 3             "$MARKET_DB_URL" -o /tmp/nfl_odds.duckdb
+          echo "${MARKET_DB_SHA256}  /tmp/nfl_odds.duckdb" | sha256sum --check -
+
+      - name: Run fully pre-kickoff 2025 holdout
+        env:
+          NFL_MARKET_DB: /tmp/nfl_odds.duckdb
+        run: python -m src.nfl.decision_time_holdout_2025
+
+      - name: Upload decision-time holdout artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nfl-2025-decision-time-holdout
+          path: |
+            outputs/nfl/decision_time_*.csv
+            outputs/nfl/decision_time_*.md
+          if-no-files-found: error

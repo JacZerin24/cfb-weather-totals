@@ -1,0 +1,104 @@
+name: Validate NFL Live Pipeline
+
+on:
+  pull_request:
+    paths:
+      - 'src/nfl/live_week.py'
+      - 'src/nfl/live_week_selftest.py'
+      - 'src/nfl/build_site.py'
+      - 'src/nfl/inject_sport_selector.py'
+      - 'src/nfl/site_selftest.py'
+      - 'src/nfl/prospective_ledger.py'
+      - 'src/nfl/prospective_grade.py'
+      - 'src/nfl/prospective_grade_selftest.py'
+      - 'src/nfl/validate_prospective_evaluation.py'
+      - 'config/nfl_frozen_protocol.yml'
+      - 'config/nfl_prospective_evaluation.yml'
+      - '.github/workflows/nfl-live-pipeline-pr.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Validate frozen protocol and live logic
+        run: |
+          python -m src.nfl.validate_frozen_protocol
+          python -m src.nfl.validate_prospective_evaluation
+          python -m src.nfl.live_week_selftest
+
+      - name: Restore forecast-native training data
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/nfl-training
+          mkdir -p /tmp/nfl-training data/nfl/processed
+
+          RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/nfl-forecast-native-pr.yml/runs?status=success&per_page=20"             --jq '[.workflow_runs[] | select(.head_branch == "feature/nfl-weather-totals")][0].id // empty')
+
+          if [ -z "$RUN_ID" ]; then
+            echo "ERROR: no successful NFL forecast-native training run found."
+            exit 1
+          fi
+
+          gh run download "$RUN_ID"             -n nfl-forecast-native-research             -D /tmp/nfl-training
+
+          DATASET=$(find /tmp/nfl-training -type f -name forecast_native_dataset.csv -print -quit)
+          if [ -z "$DATASET" ]; then
+            echo "ERROR: forecast_native_dataset.csv missing."
+            exit 1
+          fi
+          cp "$DATASET" data/nfl/processed/forecast_native_dataset.csv
+
+      - name: Run current NFL live board
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: python -m src.nfl.live_week
+
+      - name: Simulate scheduled immutable NFL decision capture
+        env:
+          NFL_PROSPECTIVE_EVENT_NAME: schedule
+          NFL_PROSPECTIVE_EVENT_SCHEDULE: '47 */3 * * *'
+          NFL_PROSPECTIVE_RUN_ID: pr-${{ github.run_id }}
+          NFL_PROSPECTIVE_RUN_ATTEMPT: 1
+          NFL_PROSPECTIVE_SHA: ${{ github.sha }}
+        run: |
+          python -m src.nfl.prospective_ledger snapshot-board
+          python -m src.nfl.prospective_ledger monitor-board
+          python -m src.nfl.prospective_grade
+          python -m src.nfl.prospective_ledger verify
+
+      - name: Build and validate NFL website
+        run: |
+          cp docs/index.html /tmp/cfb-index-before-selector.html
+          python -m src.nfl.build_site
+          python -m src.nfl.inject_sport_selector
+          python -m src.nfl.site_selftest --cfb-before /tmp/cfb-index-before-selector.html
+
+      - name: Upload live-board validation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nfl-live-pipeline-validation
+          path: |
+            outputs/nfl/live/
+            outputs/nfl/prospective/2026/
+            docs/nfl/
+            docs/index.html
+          if-no-files-found: error

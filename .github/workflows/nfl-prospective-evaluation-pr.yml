@@ -1,0 +1,48 @@
+name: Validate NFL Prospective Evaluation
+
+on:
+  pull_request:
+    paths:
+      - 'src/nfl/prospective_grade.py'
+      - 'src/nfl/prospective_grade_selftest.py'
+      - 'src/nfl/validate_prospective_evaluation.py'
+      - 'src/nfl/prospective_ledger.py'
+      - 'config/nfl_prospective_evaluation.yml'
+      - 'src/nfl/build_site.py'
+      - 'src/nfl/site_selftest.py'
+      - '.github/workflows/weekly-nfl-weather.yml'
+      - '.github/workflows/nfl-prospective-close-capture.yml'
+      - '.github/workflows/nfl-prospective-evaluation-pr.yml'
+      - 'documentation/NFL_PROSPECTIVE_EVALUATION.md'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Compile NFL prospective evaluation code
+        run: python -m compileall -q src/nfl
+
+      - name: Validate frozen protocol and evaluation gate
+        run: |
+          python -m src.nfl.validate_frozen_protocol
+          python -m src.nfl.validate_prospective_evaluation
+
+      - name: Test prospective evaluation methodology
+        run: |
+          python -m src.nfl.prospective_grade_selftest
+          python -m src.nfl.prospective_ledger_selftest

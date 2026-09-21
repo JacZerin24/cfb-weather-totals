@@ -1,0 +1,42 @@
+name: Validate NFL Data Access Probes
+
+on:
+  pull_request:
+    paths:
+      - 'src/nfl/jma_archive_probe.py'
+      - 'src/nfl/historical_odds_probe.py'
+      - '.github/workflows/nfl-data-access-probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Probe long-history JMA forecast archive
+        run: python -m src.nfl.jma_archive_probe
+
+      - name: Probe historical NFL totals access
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: python -m src.nfl.historical_odds_probe
+
+      - name: Upload probe outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: nfl-data-access-probes
+          path: outputs/nfl/*probe.json
+          if-no-files-found: error

@@ -1,0 +1,56 @@
+evaluation:
+  id: nfl_totals_prospective_eval_v1
+  protocol_id: nfl_totals_paper_v1
+  frozen_date: 2026-09-19
+  mode: prospective_paper_only
+  auto_validate_for_wagering: false
+  description: >
+    Pre-registered evaluation criteria for untouched prospective NFL paper
+    tracking. These criteria may summarize or flag evidence, but they do not
+    authorize wagering and must not be changed in response to 2026 outcomes.
+
+sample_gate:
+  minimum_graded_entries: 25
+  minimum_graded_official_decisions: 100
+  minimum_entries_with_clv: 20
+  minimum_distinct_entry_weeks: 8
+  minimum_monitor_coverage_fraction: 0.80
+
+performance_review:
+  require_positive_captured_price_roi: true
+  require_mean_clv_points_greater_than: 0.0
+  require_median_clv_points_at_least: 0.0
+  require_positive_clv_fraction_at_least: 0.50
+  require_brier_score_at_most: 0.25
+  require_brier_not_worse_than_empirical_base_rate: true
+
+scope:
+  season: 2026
+  activation: starts_when_scheduled_workflows_are_active_on_default_branch
+  retroactive_backfill_allowed: false
+
+reporting:
+  american_odds_stake_units: 1.0
+  calibration_bins:
+    - 0.00
+    - 0.45
+    - 0.50
+    - 0.55
+    - 0.60
+    - 0.65
+    - 0.70
+    - 1.00
+  track_signal_changes:
+    - late_qualifier_after_freeze
+    - official_entry_faded
+    - tier_upgraded_later
+    - tier_downgraded_later
+  statuses:
+    insufficient: INSUFFICIENT_SAMPLE
+    review: REVIEW_ELIGIBLE
+    do_not_promote: DO_NOT_PROMOTE
+
+change_control:
+  outcome_driven_changes_allowed: false
+  require_new_evaluation_version_for_change: true
+  human_review_required_before_any_wagering_status: true

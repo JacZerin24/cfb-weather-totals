@@ -197,6 +197,7 @@ jobs:
           python site_tools/apply_stale_status.py
           python site_tools/apply_postponement_diagnostics.py
           python -m src.site_smoke_selftest
+          python -m src.nfl.inject_sport_selector
 
       - name: Archive prospective entry snapshot
         env:
