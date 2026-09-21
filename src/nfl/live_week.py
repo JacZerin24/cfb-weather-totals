@@ -499,7 +499,13 @@ def _attach_weather(board: pd.DataFrame) -> pd.DataFrame:
     if not weather.empty:
         out = out.merge(weather, on='game_id', how='left')
     else:
-        out['forecast_model'] = np.nan
+        out['forecast_model'] = pd.Series(
+            [None] * len(out),
+            index=out.index,
+            dtype='object',
+        )
+    if 'forecast_model' in out.columns:
+        out['forecast_model'] = out['forecast_model'].astype('object')
 
     for lead in (24, 48, 72):
         temp = f'forecast_temp_{lead}h'
