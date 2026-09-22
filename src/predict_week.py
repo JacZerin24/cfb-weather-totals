@@ -16,6 +16,11 @@ from .pull_historical_lines import flatten_lines
 from .utils import ROOT, ensure_dir, get_settings, read_df, write_df
 
 
+GENERAL_QUALIFY_EDGE = 4.0
+GENERAL_QUALIFY_TOTAL = 56.0
+GENERAL_LEAN_EDGE = 3.5
+
+
 def as_bool(value: Any) -> bool:
     if isinstance(value, bool):
         return value
@@ -243,13 +248,15 @@ def classify_row(row: pd.Series) -> tuple[str, str]:
 
     pred = float(row['pred_market_residual'])
     total = float(row['closing_total'])
-    if pred <= -3.5 and total >= 56:
-        return 'QUALIFIES', 'Validated HGB under edge ≥3.5 with the preferred high-total screen.'
-    if pred <= -3.5:
+    if pred <= -GENERAL_QUALIFY_EDGE and total >= GENERAL_QUALIFY_TOTAL:
+        return 'QUALIFIES', 'Validated HGB under edge ≥4.0 with the preferred 56+ high-total screen.'
+    if pred <= -GENERAL_LEAN_EDGE and total >= GENERAL_QUALIFY_TOTAL:
+        return 'LEAN', 'HGB points under by at least 3.5, but the edge is below the 4.0-point production threshold.'
+    if pred <= -GENERAL_LEAN_EDGE:
         return 'LEAN', 'HGB under edge ≥3.5, but the market total is below the preferred 56+ weekly screen.'
-    if pred >= 3.5:
+    if pred >= GENERAL_LEAN_EDGE:
         return 'NO PLAY', 'Model points over, but overs did not validate as the production direction.'
-    return 'NO PLAY', 'Model edge is below the 3.5-point production threshold.'
+    return 'NO PLAY', 'Model edge is below the 3.5-point lean threshold and 4.0-point production threshold.'
 
 
 def clean_json_records(df: pd.DataFrame) -> list[dict[str, Any]]:
@@ -272,7 +279,7 @@ def write_outputs(board: pd.DataFrame, season: int, week: int | None) -> None:
     if targets.empty:
         picks = pd.DataFrame([{
             'status': 'no_qualifying_plays',
-            'note': 'No game currently satisfies the HGB under 3.5+ edge, 56+ total, and forecast-readiness screen.',
+            'note': 'No game currently satisfies the HGB under 4.0+ edge, 56+ total, and forecast-readiness screen.',
         }])
     else:
         picks = targets.copy()
