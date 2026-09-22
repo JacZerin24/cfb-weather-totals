@@ -109,6 +109,7 @@ def build_fcs_model() -> Pipeline:
                 l2_regularization=0.5,
                 min_samples_leaf=35,
                 random_state=42,
+                early_stopping=False,
             ),
         ),
     ])
