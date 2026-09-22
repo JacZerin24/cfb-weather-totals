@@ -62,7 +62,7 @@ def reg_models(nums: list[str], cats: list[str]) -> dict[str, Pipeline]:
         'elastic_net': Pipeline([('prep', preprocessor(nums, cats)), ('model', ElasticNet(alpha=0.05, l1_ratio=0.15, max_iter=20000))]),
         'random_forest': Pipeline([('prep', preprocessor(nums, cats)), ('model', RandomForestRegressor(n_estimators=250, min_samples_leaf=25, random_state=42, n_jobs=-1))]),
         'extra_trees': Pipeline([('prep', preprocessor(nums, cats)), ('model', ExtraTreesRegressor(n_estimators=250, min_samples_leaf=25, random_state=42, n_jobs=-1))]),
-        'hist_gradient_boosting': Pipeline([('prep', preprocessor(nums, cats)), ('model', HistGradientBoostingRegressor(max_iter=250, learning_rate=0.04, l2_regularization=0.5, min_samples_leaf=35, random_state=42))]),
+        'hist_gradient_boosting': Pipeline([('prep', preprocessor(nums, cats)), ('model', HistGradientBoostingRegressor(max_iter=250, learning_rate=0.04, l2_regularization=0.5, min_samples_leaf=35, random_state=42, early_stopping=False))]),
     }
 
 
