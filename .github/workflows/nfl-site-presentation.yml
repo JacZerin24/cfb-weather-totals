@@ -23,8 +23,8 @@ permissions:
   id-token: write
 
 concurrency:
-  group: cfb-weather-data-writes
-  cancel-in-progress: false
+  group: nfl-site-presentation-v2
+  cancel-in-progress: true
 
 jobs:
   presentation:
