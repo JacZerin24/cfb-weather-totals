@@ -10,6 +10,7 @@ from zoneinfo import ZoneInfo
 import pandas as pd
 
 from ..utils import ROOT, ensure_dir
+from .site_parity import enhance_html
 
 
 CT = ZoneInfo('America/Chicago')
@@ -702,6 +703,7 @@ def main() -> None:
 
     ensure_dir(DOCS_NFL)
     html = build_html(board, decisions, entries, evaluation)
+    html = enhance_html(html, board)
     output = DOCS_NFL / 'index.html'
     output.write_text(html, encoding='utf-8')
     print(

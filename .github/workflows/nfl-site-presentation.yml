@@ -1,0 +1,65 @@
+name: Validate and Publish NFL Website Presentation
+
+on:
+  pull_request:
+    paths:
+      - 'src/nfl/build_site.py'
+      - 'src/nfl/site_parity.py'
+      - 'src/nfl/site_selftest.py'
+      - '.github/workflows/nfl-site-presentation.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/nfl/build_site.py'
+      - 'src/nfl/site_parity.py'
+      - 'src/nfl/site_selftest.py'
+      - '.github/workflows/nfl-site-presentation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cfb-weather-data-writes
+  cancel-in-progress: false
+
+jobs:
+  presentation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Rebuild NFL website from checked-in live data
+        run: |
+          set -euo pipefail
+          python -m src.nfl.build_site
+          python -m src.nfl.site_selftest
+
+      - name: Upload NFL website preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: nfl-site-presentation
+          path: docs/nfl/index.html
+          if-no-files-found: error
+
+      - name: Commit rebuilt NFL page
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add docs/nfl/index.html
+          git commit -m "Refresh NFL website presentation" || exit 0
+          git pull --rebase origin main
+          git push origin main
