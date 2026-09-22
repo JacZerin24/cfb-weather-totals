@@ -25,17 +25,18 @@ Under the corrected 2025 walk-forward fit, the HGB runs all 250 iterations, aver
 
 ## FBS production-screen audit
 
-A research-only workflow restored the exact live historical training artifact and compared FBS-vs-FBS UNDER screens across edge thresholds 2.5–5.0 and total floors 52–60. Selection used historical data only through 2025; no 2026 game outcomes were used.
+A research-only workflow restored the exact live historical training artifact and compared FBS-vs-FBS UNDER screens across edge thresholds 2.5–5.0 and total floors 52–60. Selection used historical data only through 2025; no 2026 game outcomes were used. The model predictions are season-by-season walk-forward, while the final threshold comparison used the full through-2025 historical audit.
 
 The chosen production candidate is **HGB UNDER edge >=4.0 with market total >=56**.
 
 | Evaluation | Graded | Wins | Losses | Hit rate | Net units at -110 | ROI |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | All walk-forward seasons | 643 | 376 | 267 | 58.48% | +74.82 | +11.64% |
-| 2022–2025 | 172 | 106 | 66 | 61.63% | +30.36 | +17.65% |
-| 2025 holdout | 29 | 16 | 13 | 55.17% | +1.55 | +5.33% |
+| 2016–2024 threshold-development period | 614 | 360 | 254 | 58.63% | +73.27 | +11.93% |
+| 2022–2024 recent development period | 143 | 90 | 53 | 62.94% | +28.82 | +20.15% |
+| 2025 post-check walk-forward season | 29 | 16 | 13 | 55.17% | +1.55 | +5.33% |
 
-The 4.0/56 screen was profitable in **10 of 10** walk-forward test seasons and **4 of 4** seasons from 2022–2025. A 4.0/58 screen had slightly higher aggregate ROI but was profitable in 9 of 10 seasons, so 4.0/56 was preferred for stability.
+The 4.0/56 screen was profitable in **10 of 10** walk-forward test seasons and **4 of 4** seasons from 2022–2025. Importantly, it was already profitable in **9 of 9** seasons from 2016–2024; 2025 remained positive afterward at 16–13. The threshold grid did inspect 2025 when the final protocol choice was made, so 2025 should not be described as a completely untouched threshold holdout. A 4.0/58 screen had slightly higher aggregate ROI but was profitable in 9 of 10 seasons, so 4.0/56 was preferred for stability.
 
 ## Current-slate preview
 
