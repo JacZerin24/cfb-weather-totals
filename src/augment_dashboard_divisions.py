@@ -8,6 +8,7 @@ from pathlib import Path
 import pandas as pd
 
 from .fcs_model import FCS_QUALIFY_EDGE, FCS_QUALIFY_TOTAL
+from .predict_week import GENERAL_QUALIFY_EDGE, GENERAL_QUALIFY_TOTAL
 from .utils import ROOT, ensure_dir
 
 
@@ -94,7 +95,7 @@ def augment_html(html: str, board: pd.DataFrame) -> str:
     )
     html = html.replace(
         'HGB under edge ≥3.5 + market total ≥56 + usable kickoff forecast/time.',
-        f'FBS/general screen: HGB under edge ≥3.5 + total ≥56. FCS screen: FCS-only HGB under edge ≥{FCS_QUALIFY_EDGE:.1f} + total ≥{FCS_QUALIFY_TOTAL:.0f}. Both require a usable kickoff forecast/time.',
+        f'FBS/general screen: HGB under edge ≥{GENERAL_QUALIFY_EDGE:.1f} + total ≥{GENERAL_QUALIFY_TOTAL:.0f}. FCS screen: FCS-only HGB under edge ≥{FCS_QUALIFY_EDGE:.1f} + total ≥{FCS_QUALIFY_TOTAL:.0f}. Both require a usable kickoff forecast/time.',
     )
 
     old_toolbar = '<div class="toolbar"><input id="search" type="search" placeholder="Search matchup, weather, reason…"><select id="statusFilter"><option value="ALL">All statuses</option><option>QUALIFIES</option><option>LEAN</option><option>WATCH</option><option>NO PLAY</option><option>NO LINE</option></select></div>'
