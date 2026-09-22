@@ -11,6 +11,8 @@ on:
 permissions:
   contents: write
   actions: read
+  pages: write
+  id-token: write
 
 jobs:
   live-paper-board:
@@ -124,3 +126,44 @@ jobs:
           git commit -m "Update live NFL paper board and prospective ledger" || exit 0
           git pull --rebase origin main
           git push origin main
+
+  deploy-site:
+    needs: live-paper-board
+    if: needs.live-paper-board.result == 'success'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: github-pages
+      cancel-in-progress: true
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out current main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Verify current CFB and NFL production pages
+        run: |
+          set -euo pipefail
+          test -s docs/index.html
+          test -s docs/nfl/index.html
+          grep -q 'SITE_WEATHER_TOOLS' docs/index.html
+          grep -q 'SITE_RADAR_SYNC' docs/index.html
+          grep -q 'NFL_SITE_PARITY' docs/nfl/index.html
+          grep -q 'id="weekMap"' docs/nfl/index.html
+          grep -q 'id="nflBoardTable"' docs/nfl/index.html
+          grep -q 'id="radarToggle"' docs/nfl/index.html
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload website artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
