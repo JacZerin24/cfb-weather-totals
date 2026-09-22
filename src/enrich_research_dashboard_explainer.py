@@ -11,7 +11,7 @@ SECTION_MARKER = '<section class="section" id="straight">'
 
 EXPLAINER_TAB = '''<button class="tab" data-target="howitworks">How It Works</button>'''
 
-EXPLAINER_SECTION = r'''
+EXPLAINER_SECTION = fr'''
     <section class="section" id="howitworks">
       <div class="panel">
         <h2>How this research came together</h2>
