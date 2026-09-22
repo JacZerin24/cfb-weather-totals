@@ -39,11 +39,13 @@ class FakeClient:
 def main() -> None:
     validate_frozen_rules()
     protocol = load_protocol()
-    assert protocol['protocol_version'] == '2026.5'
-    assert protocol.get('supersedes') == '2026.4'
+    assert protocol['protocol_version'] == '2026.6'
+    assert protocol.get('supersedes') == '2026.5'
     assert int(protocol['closing_benchmark_policy']['capture_window_minutes']) == 90
     assert int(protocol['closing_benchmark_policy']['preflight_window_minutes']) == 105
     assert len(protocol_sha256()) == 64
+    assert float(protocol['rules']['general']['qualify_edge_points']) == 4.0
+    assert float(protocol['rules']['general']['minimum_total']) == 56.0
 
     expected_official_crons = {
         '17 10 * * 4,5',
@@ -312,7 +314,7 @@ def main() -> None:
     for cron in protocol['paper_grading']['postgame_grade_crons']:
         assert str(cron) in grade_workflow
 
-    print('Prospective protocol 2026.5, schedule alignment, API preflight, immutable selection, completed-game grading, exclusions, CLV, and shadow-integrity checks passed.')
+    print('Prospective protocol 2026.6, corrected HGB threshold, schedule alignment, API preflight, immutable selection, completed-game grading, exclusions, CLV, and shadow-integrity checks passed.')
 
 
 if __name__ == '__main__':

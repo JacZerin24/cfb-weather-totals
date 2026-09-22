@@ -56,10 +56,10 @@ A negative value points UNDER; a positive value points OVER.
 
 ### General track
 
-The general live workflow uses the HGB residual model and the frozen production research screen:
+The general live workflow uses the HGB residual model with `early_stopping=False` explicitly pinned so estimator behavior cannot change when the historical sample crosses a library size threshold. Protocol 2026.6 uses the corrected production research screen:
 
 - UNDER direction only
-- edge at least 3.5 points
+- edge at least 4.0 points
 - market total at least 56
 - usable NWS forecast or indoor designation
 - known kickoff time
@@ -190,4 +190,4 @@ Their graders already require completed games. Shadow failures remain `continue-
 - shadow evaluations receive the same documented schedule correction;
 - immutable writer behavior remains append-only.
 
-Protocol 2026.4 does not change model science. Production thresholds, direction rules, minimum lead time, pricing assumptions, and historical research conclusions remain frozen through the declared review point unless a separate evidence-backed, versioned decision is made.
+Protocol 2026.6 is the evidence-backed, versioned correction to the general HGB training regime and FBS qualifier threshold. It was selected from walk-forward historical data through 2025 without using 2026 game outcomes and applies prospectively only; prior immutable entries are not reclassified. Direction rules, minimum lead time, FCS thresholds, pricing assumptions, and preserved historical/prospective records remain unchanged.

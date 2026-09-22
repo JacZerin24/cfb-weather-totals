@@ -1,16 +1,16 @@
-protocol_version: "2026.5"
+protocol_version: "2026.6"
 season: 2026
 frozen_at_utc: "2026-08-28T00:38:00Z"
-revision_effective_at_utc: "2026-09-10T05:30:00Z"
-supersedes: "2026.4"
-revision_scope: "Prospective schedule and operational-reliability expansion only. Adds predeclared Tuesday/Wednesday November snapshots before MAC midweek play begins, adds matching near-kickoff/grade cadence, and permits a zero-API preflight gate that skips close-capture ticks when no locally tracked game is near kickoff. Model rules, qualifier thresholds, minimum lead time, closing-benchmark selection, grading economics, and card logic are unchanged."
+revision_effective_at_utc: "2026-09-22T12:00:00Z"
+supersedes: "2026.5"
+revision_scope: "Prospective model-integrity correction. Explicitly pins HistGradientBoostingRegressor early_stopping=False after the prior sklearn auto setting changed training behavior when the historical sample crossed 10,000 rows. A walk-forward audit using only historical data through 2025 selected a 4.0-point GENERAL HGB UNDER qualifier edge with the existing 56+ total floor. FCS rules, official-entry timing, closing-benchmark selection, grading economics, and card logic are unchanged. Prior immutable entries remain governed by the protocol/version and status recorded at capture time."
 purpose: "Prospective paper validation of the frozen 2026 CFB totals research rules."
 
 rules:
   general:
     model_track: "GENERAL HGB"
     direction: "under"
-    qualify_edge_points: 3.5
+    qualify_edge_points: 4.0
     minimum_total: 56.0
   fcs:
     model_track: "FCS-only HGB"
@@ -81,5 +81,5 @@ data_integrity_corrections:
       reason: "Western Carolina at Campbell was postponed from its original Saturday kickoff. The original prospective qualifier remains preserved, but the event changed kickoff/weather context and must not be settled, counted in units/ROI, or assigned CLV from the stale market snapshot."
 
 freeze_policy:
-  description: "Do not tune production thresholds or retrospectively alter official-entry selection based on 2026 outcomes before the declared review point. Protocol 2026.5 is limited to a prospectively declared schedule expansion before November midweek games begin plus operational/API-efficiency safeguards that do not change model outputs or selection thresholds. The existing Sep. 5 metadata correction and postponed-game exclusion remain narrowly documented integrity fixes tied to preserved immutable evidence. Any future protocol change must receive a new protocol_version and applies prospectively unless it is a narrowly documented metadata/integrity correction tied to preserved immutable evidence."
+  description: "Do not tune production thresholds or retrospectively alter official-entry selection based on 2026 outcomes before the declared review point. Protocol 2026.6 is a prospective, evidence-backed software/model-integrity correction: the sklearn early-stopping default changed the HGB training regime solely because the historical training sample crossed 10,000 rows. The replacement 4.0/56 GENERAL HGB screen was selected from walk-forward historical data through 2025 without using 2026 outcomes. Prior immutable snapshots and grades are not reclassified. The existing Sep. 5 metadata correction and postponed-game exclusion remain narrowly documented integrity fixes tied to preserved immutable evidence. Any future protocol change must receive a new protocol_version and applies prospectively unless it is a narrowly documented metadata/integrity correction tied to preserved immutable evidence."
   review_point: "After the 2026 regular season unless a data-integrity bug requires a documented correction."

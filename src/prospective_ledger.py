@@ -16,7 +16,7 @@ from .cfbd_client import CFBDClient
 from .fcs_model import FCS_QUALIFY_EDGE, FCS_QUALIFY_TOTAL, division_track
 from .odds_api_fallback import apply_fcs_odds_fallback
 from .oddspapi_fallback import apply_fcs_oddspapi_fallback
-from .predict_week import classify_row, line_market_context, normalize_games, normalize_lines
+from .predict_week import (GENERAL_QUALIFY_EDGE, GENERAL_QUALIFY_TOTAL, classify_row, line_market_context, normalize_games, normalize_lines)
 from .utils import ROOT, get_settings, load_yaml, read_df, write_df
 
 PROTOCOL_PATH = ROOT / 'config/prospective_protocol_2026.yml'
@@ -62,12 +62,14 @@ def validate_frozen_rules() -> None:
         raise RuntimeError('Production general total threshold is looser than the frozen protocol.')
 
     checks = [
+        ('General qualify edge', float(general['qualify_edge_points']), float(GENERAL_QUALIFY_EDGE)),
+        ('General minimum total', float(general['minimum_total']), float(GENERAL_QUALIFY_TOTAL)),
         ('FCS qualify edge', float(fcs['qualify_edge_points']), float(FCS_QUALIFY_EDGE)),
         ('FCS minimum total', float(fcs['minimum_total']), float(FCS_QUALIFY_TOTAL)),
     ]
     drift = [f'{name}: protocol={expected:g}, code={actual:g}' for name, expected, actual in checks if expected != actual]
     if drift:
-        raise RuntimeError('Frozen 2026 prospective protocol no longer matches production FCS rules: ' + '; '.join(drift))
+        raise RuntimeError('Frozen 2026 prospective protocol no longer matches production rules: ' + '; '.join(drift))
 
 
 def _bool(value: Any) -> bool:
