@@ -5,10 +5,12 @@ import re
 
 import pandas as pd
 
+from .predict_week import GENERAL_QUALIFY_EDGE, GENERAL_QUALIFY_TOTAL
 from .utils import ROOT
 
 INDEX = ROOT / 'docs/index.html'
 BOARD = ROOT / 'outputs/weekly_board.csv'
+RESEARCH = ROOT / 'docs/research.html'
 
 
 def main() -> None:
@@ -43,6 +45,31 @@ def main() -> None:
     if missing:
         raise AssertionError('Final website is missing required production UI: ' + ', '.join(missing))
 
+    current_screen = (
+        f'FBS/general screen: HGB under edge ≥{GENERAL_QUALIFY_EDGE:.1f} '
+        f'+ total ≥{GENERAL_QUALIFY_TOTAL:.0f}.'
+    )
+    if current_screen not in html:
+        raise AssertionError(f'Live website is missing the current production screen copy: {current_screen}')
+    stale_screen = 'FBS/general screen: HGB under edge ≥3.5 + total ≥56.'
+    if GENERAL_QUALIFY_EDGE != 3.5 and stale_screen in html:
+        raise AssertionError('Live website still presents the legacy 3.5/56 screen as current.')
+
+    if RESEARCH.exists():
+        research_html = RESEARCH.read_text(encoding='utf-8')
+        if 'Current production protocol 2026.6' not in research_html:
+            raise AssertionError('Research page is missing the current Protocol 2026.6 production banner.')
+        if 'legacy research' not in research_html.lower():
+            raise AssertionError('Research page does not distinguish legacy research from current production.')
+        stale_research_phrases = [
+            'Current conclusion:</strong> the best historical candidate is HGB-driven unders with a 3.5+ point edge',
+            'HGB under, model edge ≥ 3.5 points, total bin 56+.',
+            'The current historical strategy is selective unders only, especially high-total games with at least a 3.5-point model edge.',
+        ]
+        stale = [phrase for phrase in stale_research_phrases if phrase in research_html]
+        if stale:
+            raise AssertionError('Research page still presents legacy 3.5 research as current production.')
+
     for option in ['RAIN', 'SNOW', 'WIND', 'HOT', 'COLD', 'INDOOR']:
         if f'value="{option}"' not in html:
             raise AssertionError(f'Weather filter option is missing: {option}')
@@ -68,7 +95,7 @@ def main() -> None:
 
     print(
         f'Final website smoke test passed: {len(board)} board rows, radar present, '
-        'kickoff/weather sorting present, and weather-type filtering present.'
+        'kickoff/weather sorting present, weather-type filtering present, and current protocol copy aligned.'
     )
 
 

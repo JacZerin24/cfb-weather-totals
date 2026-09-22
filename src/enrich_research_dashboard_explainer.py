@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from .predict_week import GENERAL_LEAN_EDGE, GENERAL_QUALIFY_EDGE, GENERAL_QUALIFY_TOTAL
 from .utils import ROOT
 
 
@@ -10,7 +11,7 @@ SECTION_MARKER = '<section class="section" id="straight">'
 
 EXPLAINER_TAB = '''<button class="tab" data-target="howitworks">How It Works</button>'''
 
-EXPLAINER_SECTION = r'''
+EXPLAINER_SECTION = fr'''
     <section class="section" id="howitworks">
       <div class="panel">
         <h2>How this research came together</h2>
@@ -33,7 +34,7 @@ EXPLAINER_SECTION = r'''
             <div class="rule"><strong>Actual total points</strong><span>The final combined score of both teams.</span></div>
             <div class="rule"><strong>Market residual</strong><span>Actual total points minus closing total. Example: if the closing total was 58.5 and the game finished 52, the residual is -6.5.</span></div>
             <div class="rule"><strong>Model edge</strong><span>How far the model thinks the game is from the market total. A negative predicted residual points toward an under; a positive predicted residual points toward an over.</span></div>
-            <div class="rule"><strong>3.5+ edge threshold</strong><span>The current minimum historical threshold. Below 3.5 points, the signal has not been strong enough to treat as a production target.</span></div>
+            <div class="rule"><strong>Current thresholds</strong><span>Protocol 2026.6 uses {GENERAL_QUALIFY_EDGE:.1f}+ points with total ≥ {GENERAL_QUALIFY_TOTAL:.0f} for a GENERAL qualifier. {GENERAL_LEAN_EDGE:.1f} to under {GENERAL_QUALIFY_EDGE:.1f} is a LEAN band, not a production qualifier.</span></div>
             <div class="rule"><strong>High-total screen</strong><span>A filter for games with totals in the 56+ range. This is where the under signal and weekly-card results looked cleanest.</span></div>
           </div>
         </div>
@@ -54,8 +55,8 @@ EXPLAINER_SECTION = r'''
         <div class="grid3">
           <div class="rule"><strong class="good">Best validated direction</strong><span>Unders, not overs. Overs are shown for transparency, but they are not the default production target.</span></div>
           <div class="rule"><strong class="good">Best model</strong><span>HistGradientBoosting, abbreviated HGB throughout the dashboard.</span></div>
-          <div class="rule"><strong class="good">Best threshold</strong><span>3.5+ predicted point edge, with 5.0+ treated as stricter but thinner.</span></div>
-          <div class="rule"><strong class="good">Best weekly combo profile</strong><span>Top 1 weekly 2-leg combo from HGB under 3.5+ high-total games.</span></div>
+          <div class="rule"><strong class="good">Current production threshold</strong><span>UNDER edge ≥ {GENERAL_QUALIFY_EDGE:.1f} with total ≥ {GENERAL_QUALIFY_TOTAL:.0f}. The older 3.5+ tables are legacy research retained for comparison.</span></div>
+          <div class="rule"><strong class="good">Weekly-card context</strong><span>The displayed card backtests are legacy 3.5+ research. The live protocol only forms a card when two current {GENERAL_QUALIFY_EDGE:.1f}/{GENERAL_QUALIFY_TOTAL:.0f} GENERAL qualifiers exist.</span></div>
           <div class="rule"><strong class="warn">Still needs live tracking</strong><span>Historical testing used closing totals and historical weather. Production use must use current lines and forecast weather.</span></div>
           <div class="rule"><strong class="bad">No-play by design</strong><span>Below-threshold edges, over-only leans, missing line/weather confidence, or extra parlays should be shown as no-play or paper-only.</span></div>
         </div>
@@ -64,7 +65,7 @@ EXPLAINER_SECTION = r'''
       <div class="panel">
         <h2>Why this is not just a pick page</h2>
         <p>The goal is to show both sides of the research: what worked and what failed. A trustworthy weekly page should show specific games only when they meet the historical threshold. It should also clearly show why other games are no-plays. The number of games and combos should vary by week because the model should not force action on weak slates.</p>
-        <div class="callout">Simple summary: HGB means HistGradientBoosting. The model predicts how far a game may finish from the market total. The current historical strategy is selective unders only, especially high-total games with at least a 3.5-point model edge.</div>
+        <div class="callout">Simple summary: HGB means HistGradientBoosting. Protocol 2026.6 uses selective UNDERs only: a GENERAL qualifier needs at least a {GENERAL_QUALIFY_EDGE:.1f}-point under edge and a market total of {GENERAL_QUALIFY_TOTAL:.0f}+. The 3.5+ studies elsewhere on this page are legacy research, not the current qualifying rule.</div>
       </div>
     </section>
 '''
