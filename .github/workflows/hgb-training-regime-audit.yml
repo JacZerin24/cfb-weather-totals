@@ -7,6 +7,8 @@ on:
       - 'src/fcs_model.py'
       - 'src/hgb_training_selftest.py'
       - 'src/hgb_regime_audit.py'
+      - 'src/predict_week.py'
+      - 'config/prospective_protocol_2026.yml'
       - '.github/workflows/hgb-training-regime-audit.yml'
   workflow_dispatch:
 
