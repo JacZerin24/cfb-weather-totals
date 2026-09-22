@@ -7,6 +7,7 @@ from typing import Any
 
 import pandas as pd
 
+from .predict_week import GENERAL_LEAN_EDGE, GENERAL_QUALIFY_EDGE, GENERAL_QUALIFY_TOTAL
 from .utils import ROOT, ensure_dir
 
 
@@ -280,15 +281,15 @@ def dashboard_html(payload: dict[str, Any], metrics: dict[str, str]) -> str:
         </div>
       </section>
       <aside class="hero-card summary-card">
-        <div class="verdict"><strong>Current conclusion:</strong> the best historical candidate is HGB-driven unders with a 3.5+ point edge, especially in high-total games. Weekly cards should remain selective and variable by slate.</div>
+        <div class="verdict"><strong>Current production protocol 2026.6:</strong> GENERAL HGB UNDER edge ≥ {GENERAL_QUALIFY_EDGE:.1f} with market total ≥ {GENERAL_QUALIFY_TOTAL:.0f}. The older 3.5-point studies remain below as legacy research for transparency; they are not the current qualifying rule.</div>
         <p><strong>Not a lock machine.</strong> The dashboard is designed to show where the historical signal is strongest, where it failed, and when a week should have few or no targets.</p>
       </aside>
     </div>
     <div class="shell metrics">
-      <div class="metric"><div class="label">HGB 3.5+ under</div><div class="value">{escape(metrics['straight_hit'])}</div><div class="sub">straight hit rate · {escape(metrics['straight_roi'])} ROI</div></div>
-      <div class="metric"><div class="label">Top weekly 2-leg</div><div class="value">{escape(metrics['weekly_roi'])}</div><div class="sub">ROI · {escape(metrics['weekly_dd'])} max drawdown</div></div>
-      <div class="metric"><div class="label">Same legs straight</div><div class="value">{escape(metrics['leg_hit'])}</div><div class="sub">hit rate · {escape(metrics['leg_roi'])} ROI</div></div>
-      <div class="metric"><div class="label">Recent HGB 3.5+</div><div class="value">{escape(metrics['recent_hit'])}</div><div class="sub">2022–2025 · {escape(metrics['recent_roi'])} ROI</div></div>
+      <div class="metric"><div class="label">Legacy HGB 3.5+ under</div><div class="value">{escape(metrics['straight_hit'])}</div><div class="sub">straight hit rate · {escape(metrics['straight_roi'])} ROI</div></div>
+      <div class="metric"><div class="label">Legacy top weekly 2-leg</div><div class="value">{escape(metrics['weekly_roi'])}</div><div class="sub">ROI · {escape(metrics['weekly_dd'])} max drawdown</div></div>
+      <div class="metric"><div class="label">Legacy same legs straight</div><div class="value">{escape(metrics['leg_hit'])}</div><div class="sub">hit rate · {escape(metrics['leg_roi'])} ROI</div></div>
+      <div class="metric"><div class="label">Legacy recent HGB 3.5+</div><div class="value">{escape(metrics['recent_hit'])}</div><div class="sub">2022–2025 · {escape(metrics['recent_roi'])} ROI</div></div>
     </div>
   </header>
 
@@ -311,17 +312,17 @@ def dashboard_html(payload: dict[str, Any], metrics: dict[str, str]) -> str:
           <p>The target is market residual: actual total points minus the closing total. Positive residuals mean the game went over the market total. Negative residuals mean the game went under.</p>
           <div class="rule-list">
             <div class="rule"><strong>Core idea</strong><span>Control for the total first, then look for repeatable weather/context/model signals that explain residual movement.</span></div>
-            <div class="rule"><strong>Best signal so far</strong><span>HistGradientBoosting unders at 3.5+ model edge, with high-total games as the cleanest weekly-card filter.</span></div>
+            <div class="rule"><strong>Current production signal</strong><span>Protocol 2026.6 uses HistGradientBoosting UNDER edge ≥ {GENERAL_QUALIFY_EDGE:.1f} with total ≥ {GENERAL_QUALIFY_TOTAL:.0f}. A 3.5-to-&lt;4.0 under edge is a LEAN, not a qualifier.</span></div>
             <div class="rule"><strong>What changed after combo testing</strong><span>The broad all-combo test looked flashy, but the weekly-card test is the more realistic method because it limits selections by week.</span></div>
           </div>
         </div>
         <div class="panel">
-          <h2>Current decision thresholds</h2>
+          <h2>Current decision thresholds · Protocol 2026.6</h2>
           <div class="rule-list">
-            <div class="rule"><strong class="good">Target candidate</strong><span>HGB under, model edge ≥ 3.5 points.</span></div>
-            <div class="rule"><strong class="good">Strongest screen</strong><span>HGB under, model edge ≥ 3.5 points, total bin 56+.</span></div>
-            <div class="rule"><strong class="warn">Strict but thinner</strong><span>HGB under, model edge ≥ 5.0 points. Useful, but some weekly-card versions were less stable.</span></div>
-            <div class="rule"><strong class="bad">No-play / paper only</strong><span>Overs, edge below 3.5, missing line/weather confidence, or extra combo legs beyond the top weekly 2-leg card.</span></div>
+            <div class="rule"><strong class="good">QUALIFIES</strong><span>HGB UNDER, model edge ≥ {GENERAL_QUALIFY_EDGE:.1f} points, market total ≥ {GENERAL_QUALIFY_TOTAL:.0f}, with usable kickoff timing/forecast.</span></div>
+            <div class="rule"><strong class="warn">LEAN</strong><span>HGB UNDER edge ≥ {GENERAL_LEAN_EDGE:.1f} but below {GENERAL_QUALIFY_EDGE:.1f}, or an under edge ≥ {GENERAL_LEAN_EDGE:.1f} with a total below {GENERAL_QUALIFY_TOTAL:.0f}.</span></div>
+            <div class="rule"><strong class="good">Why 4.0/56</strong><span>The corrected early_stopping=False walk-forward audit produced 376-267 overall (58.48% hit rate, +11.64% ROI at -110) and positive ROI in all 10 test seasons.</span></div>
+            <div class="rule"><strong class="bad">NO PLAY</strong><span>Overs are not promoted, edges below {GENERAL_LEAN_EDGE:.1f} are below the lean threshold, and missing/stale market or forecast inputs are withheld from qualification.</span></div>
           </div>
         </div>
       </div>
@@ -359,10 +360,10 @@ def dashboard_html(payload: dict[str, Any], metrics: dict[str, str]) -> str:
 
     <section class="section" id="weekly">
       <div class="panel">
-        <h2>Weekly-card methodology</h2>
-        <p>This is the bridge between research and what a real weekly process could look like. The model selects a limited number of top-ranked weekly cards instead of every possible combination.</p>
+        <h2>Legacy weekly-card methodology</h2>
+        <p>The tables in this section were researched with the older 3.5-point screen and are retained for historical transparency. Protocol 2026.6 only allows the live site to form a card from current GENERAL qualifiers meeting the corrected 4.0/56 rule; the legacy card ROI should not be treated as a validated expectation for the stricter current subset.</p>
         <div class="grid3">
-          <div class="rule"><strong>Primary card</strong><span>Top 1 weekly 2-leg combo from HGB under 3.5+ high-total games.</span></div>
+          <div class="rule"><strong>Legacy primary card</strong><span>Top 1 weekly 2-leg combo from HGB under 3.5+ high-total games. Historical reference only.</span></div>
           <div class="rule"><strong>Why top 1?</strong><span>It had a strong historical return with lower drawdown than broader weekly cards.</span></div>
           <div class="rule"><strong>Default combo cap</strong><span>0 or 1 weekly 2-leg card. Some weeks should have no combo.</span></div>
         </div>
@@ -388,7 +389,7 @@ def dashboard_html(payload: dict[str, Any], metrics: dict[str, str]) -> str:
         <div class="panel">
           <h2>No-play logic</h2>
           <div class="rule-list">
-            <div class="rule"><strong class="bad">Edge below 3.5</strong><span>Does not clear the current historical threshold.</span></div>
+            <div class="rule"><strong class="bad">Edge below {GENERAL_LEAN_EDGE:.1f}</strong><span>Below the current lean threshold. Edges from {GENERAL_LEAN_EDGE:.1f} to under {GENERAL_QUALIFY_EDGE:.1f} are LEANs, not qualifiers.</span></div>
             <div class="rule"><strong class="bad">Over side</strong><span>Overs did not validate as cleanly as unders in the current tests.</span></div>
             <div class="rule"><strong class="bad">Weather/line uncertainty</strong><span>Missing current line or uncertain forecast means no production target.</span></div>
             <div class="rule"><strong class="warn">Three-leg cards</strong><span>Positive in places, but season stability and drawdown make them paper-only by default.</span></div>
