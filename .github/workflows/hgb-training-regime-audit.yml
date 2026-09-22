@@ -55,6 +55,41 @@ jobs:
       - name: Run walk-forward regime and threshold audit
         run: python -m src.hgb_regime_audit
 
+      - name: Preview current live slate with fixed HGB
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          NOAA_API_TOKEN: ${{ secrets.NOAA_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          python -m src.run_live_week
+          cp outputs/weekly_board.csv outputs/hgb_fixed_live_board.csv
+          python - <<'PY'
+          import pandas as pd
+
+          board = pd.read_csv('outputs/hgb_fixed_live_board.csv')
+          fbs = board[board['division_track'].astype(str).str.upper().eq('FBS')].copy()
+          fbs['pred_market_residual'] = pd.to_numeric(fbs['pred_market_residual'], errors='coerce')
+          fbs['closing_total'] = pd.to_numeric(fbs['closing_total'], errors='coerce')
+
+          rows = []
+          for edge in [2.5, 3.0, 3.5, 4.0, 4.5, 5.0]:
+              for total in [56.0, 58.0, 60.0]:
+                  mask = (fbs['pred_market_residual'] <= -edge) & (fbs['closing_total'] >= total)
+                  rows.append({'edge_threshold': edge, 'total_min': total, 'current_qualifiers': int(mask.sum())})
+          pd.DataFrame(rows).to_csv('outputs/hgb_fixed_live_screen_counts.csv', index=False)
+
+          top = fbs.sort_values('pred_market_residual').head(20)
+          keep = [c for c in [
+              'away_team','home_team','closing_total','model_projected_total',
+              'pred_market_residual','abs_pred_edge','nws_status','weather_summary','line_provider'
+          ] if c in top.columns]
+          top[keep].to_csv('outputs/hgb_fixed_live_top_under.csv', index=False)
+          print(pd.DataFrame(rows).to_string(index=False))
+          print(top[keep].to_string(index=False))
+          PY
+
       - name: Upload audit outputs
         uses: actions/upload-artifact@v4
         with:
@@ -63,4 +98,7 @@ jobs:
             outputs/hgb_regime_diagnostics.csv
             outputs/hgb_fixed_threshold_grid.csv
             outputs/hgb_regime_audit.md
+            outputs/hgb_fixed_live_board.csv
+            outputs/hgb_fixed_live_screen_counts.csv
+            outputs/hgb_fixed_live_top_under.csv
           if-no-files-found: error
