@@ -94,7 +94,7 @@ def augment_html(html: str, board: pd.DataFrame) -> str:
         '<div class="map-toolbar"><div class="division-filters" id="divisionFilters">' + _division_buttons(board) + '</div><div class="map-filters">',
     )
     html = html.replace(
-        'HGB under edge ≥3.5 + market total ≥56 + usable kickoff forecast/time.',
+        f'HGB under edge ≥{GENERAL_QUALIFY_EDGE:.1f} + market total ≥{GENERAL_QUALIFY_TOTAL:.0f} + usable kickoff forecast/time.',
         f'FBS/general screen: HGB under edge ≥{GENERAL_QUALIFY_EDGE:.1f} + total ≥{GENERAL_QUALIFY_TOTAL:.0f}. FCS screen: FCS-only HGB under edge ≥{FCS_QUALIFY_EDGE:.1f} + total ≥{FCS_QUALIFY_TOTAL:.0f}. Both require a usable kickoff forecast/time.',
     )
 
