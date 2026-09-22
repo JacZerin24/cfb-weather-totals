@@ -9,6 +9,7 @@ from zoneinfo import ZoneInfo
 
 import pandas as pd
 
+from .predict_week import GENERAL_QUALIFY_EDGE, GENERAL_QUALIFY_TOTAL
 from .utils import ROOT, ensure_dir
 
 CT = ZoneInfo('America/Chicago')
@@ -321,7 +322,7 @@ def dashboard_html(board: pd.DataFrame, card: pd.DataFrame, snapshot: dict[str, 
       </div>
     </section>
     <section id="targets">
-      <div class="section-head"><div><div class="eyebrow">Selective by design</div><h2>Qualifying under targets</h2></div><p>HGB under edge ≥3.5 + market total ≥56 + usable kickoff forecast/time.</p></div>
+      <div class="section-head"><div><div class="eyebrow">Selective by design</div><h2>Qualifying under targets</h2></div><p>HGB under edge ≥{GENERAL_QUALIFY_EDGE:.1f} + market total ≥{GENERAL_QUALIFY_TOTAL:.0f} + usable kickoff forecast/time.</p></div>
       <div class="target-grid">__TARGET_HTML__</div>
     </section>
     <section id="card"><div class="section-head"><div><div class="eyebrow">Historical weekly-card method</div><h2>Top two-leg card</h2></div></div>__CARD_HTML__</section>
