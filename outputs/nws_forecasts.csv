@@ -1,124 +1,124 @@
 game_id,away_team,home_team,start_date,venue_name,game_indoors,nws_status,nws_office,temperature_f,dewpoint_f,humidity,wind_mph,wind_gust_mph,precip_probability_pct,precipitation,snowfall,weather_summary
-401858461,Northwestern,Indiana,2026-09-26 00:00:00+00:00,"Memorial Stadium (Bloomington, IN)",False,ok,IND,66.0,54.0,65.0,5.75389546,11.50779092,0.0,,,No meaningful precipitation signal
-401858464,Nebraska,Michigan State,2026-09-26 21:00:00+00:00,Spartan Stadium,False,ok,GRR,66.0,51.0,58.0,4.603116368,12.658570012,0.0,,,No meaningful precipitation signal
-401869961,James Madison,Old Dominion,2026-09-26 22:00:00+00:00,S.B. Ballard Stadium,False,ok,AKQ,69.0,55.0,61.0,13.809349104,19.563244564,15.0,,,No meaningful precipitation signal
-401861970,UConn,Miami (OH),2026-09-26 19:30:00+00:00,Yager Stadium,False,ok,ILN,69.0,54.0,58.0,5.75389546,11.50779092,0.0,,,No meaningful precipitation signal
-401869931,Kennesaw State,Arkansas State,2026-09-26 23:00:00+00:00,Centennial Bank Stadium,False,ok,MEG,79.0,53.0,41.0,6.904674552,10.357011828,1.0,0.0,0.0,No meaningful precipitation signal
-401856696,South Carolina,Alabama,2026-09-26 23:00:00+00:00,Bryant-Denny Stadium,False,ok,BMX,83.0,58.0,43.0,4.603116368,9.206232736,0.0,0.0,0.0,No meaningful precipitation signal
-401856805,Sam Houston,Texas Tech,2026-09-26 16:00:00+00:00,Jones AT&T Stadium,False,ok,LUB,75.0,62.0,64.0,9.206232736,14.960128196000001,17.0,0.01,0.0,No meaningful precipitation signal
-401858238,Central Michigan,Miami,2026-09-26 22:30:00+00:00,Hard Rock Stadium,False,ok,MFL,82.0,74.0,77.0,5.75389546,10.357011828,67.0,0.19,0.0,Measurable precipitation forecast
-401858469,Oregon,USC,2026-09-26 23:30:00+00:00,Los Angeles Memorial Coliseum,False,ok,LOX,85.0,64.0,50.0,6.904674552,10.357011828,0.0,0.0,0.0,No meaningful precipitation signal
-401862785,South Florida,Bowling Green,2026-09-26 21:00:00+00:00,Doyt L. Perry Stadium,False,ok,CLE,67.0,50.0,55.0,6.904674552,11.50779092,0.0,0.0,0.0,No meaningful precipitation signal
-401860895,Oregon State,UTEP,2026-09-27 01:00:00+00:00,Sun Bowl,False,ok,EPZ,78.0,61.0,56.0,1.150779092,3.452337276,9.0,0.0,0.0,No meaningful precipitation signal
-401856804,Arizona,Washington State,2026-09-26 23:30:00+00:00,Gesa Field,False,ok,OTX,62.0,38.0,41.0,3.452337276,8.055453644,1.0,0.0,0.0,No meaningful precipitation signal
-401866425,Ball State,Kent State,2026-09-26 16:00:00+00:00,Dix Stadium,False,ok,CLE,63.0,51.0,65.0,8.055453644,16.110907288,0.0,0.0,0.0,No meaningful precipitation signal
-401864579,New Mexico,New Mexico State,2026-09-26 19:30:00+00:00,Aggie Memorial Stadium,False,ok,EPZ,78.0,62.0,58.0,2.301558184,6.904674552,9.0,0.0,0.0,No meaningful precipitation signal
+401856699,Ole Miss,Florida,2026-09-26 19:30:00+00:00,Ben Hill Griffin Stadium,False,ok,JAX,85.0,61.0,45.0,10.357011828,17.26168638,0.0,0.0,0.0,No meaningful precipitation signal
+401858467,Notre Dame,Purdue,2026-09-26 18:00:00+00:00,Ross-Ade Stadium,False,ok,IND,67.0,49.0,50.0,3.452337276,6.904674552,0.0,,,No meaningful precipitation signal
+401860895,Oregon State,UTEP,2026-09-27 01:00:00+00:00,Sun Bowl,False,ok,EPZ,83.0,61.0,48.0,0.0,2.301558184,4.0,0.0,0.0,No meaningful precipitation signal
+401856702,Texas A&M,LSU,2026-09-26 23:30:00+00:00,Tiger Stadium (LA),False,ok,LIX,90.0,67.0,47.0,2.301558184,4.603116368,1.0,0.0,0.0,No meaningful precipitation signal
+401858464,Nebraska,Michigan State,2026-09-26 21:00:00+00:00,Spartan Stadium,False,ok,GRR,67.0,49.0,52.0,4.603116368,11.50779092,0.0,,,No meaningful precipitation signal
+401864572,App State,NC State,2026-09-26 23:30:00+00:00,Carter-Finley Stadium,False,ok,RAH,70.0,52.0,53.0,4.603116368,8.055453644,1.0,,,No meaningful precipitation signal
+401858236,Bucknell,Pittsburgh,2026-09-26 16:00:00+00:00,Acrisure Stadium,False,ok,PBZ,63.0,52.0,68.0,9.206232736,13.809349104,1.0,,,No meaningful precipitation signal
+401864510,Hawai'i,Wyoming,2026-09-26 19:00:00+00:00,War Memorial Stadium,False,ok,CYS,70.0,39.0,32.0,16.110907288,25.317140024,1.0,0.0,0.0,No meaningful precipitation signal
+401856815,TCU,UCF,2026-09-26 19:30:00+00:00,FBC Mortgage Stadium,False,ok,MLB,84.0,67.0,57.0,13.809349104,21.864802748000002,4.0,0.0,0.0,No meaningful precipitation signal
+401860891,Rice,Fresno State,2026-09-27 02:00:00+00:00,Valley Children's Stadium,False,ok,HNX,85.0,53.0,33.0,3.452337276,8.055453644,0.0,0.0,0.0,No meaningful precipitation signal
+401869941,Liberty,Coastal Carolina,2026-09-24 23:30:00+00:00,Brooks Stadium (SC),False,ok,ILM,70.0,64.0,83.0,11.50779092,21.864802748000002,28.0,0.02,0.0,Measurable precipitation forecast
+401856806,Houston,Georgia Southern,2026-09-26 20:00:00+00:00,Allen E. Paulson Stadium,False,ok,CHS,83.0,53.0,36.0,6.904674552,12.658570012,0.0,,,No meaningful precipitation signal
+401864579,New Mexico,New Mexico State,2026-09-26 19:30:00+00:00,Aggie Memorial Stadium,False,ok,EPZ,81.0,61.0,51.0,2.301558184,6.904674552,5.0,0.0,0.0,No meaningful precipitation signal
+401864512,UNLV,Akron,2026-09-26 16:00:00+00:00,InfoCision Stadium,False,ok,CLE,63.0,52.0,66.0,6.904674552,13.809349104,0.0,0.0,0.0,No meaningful precipitation signal
+401856704,Texas,Tennessee,2026-09-26 16:00:00+00:00,Neyland Stadium,False,ok,MRX,68.0,55.0,63.0,3.452337276,8.055453644,0.0,0.0,0.0,No meaningful precipitation signal
+401858466,Wisconsin,Penn State,2026-09-26 21:00:00+00:00,Beaver Stadium,False,ok,CTP,66.0,51.0,58.0,10.357011828,18.412465472,6.0,,,No meaningful precipitation signal
+401858462,UCLA,Maryland,2026-09-26 17:30:00+00:00,SECU Stadium,False,ok,LWX,65.0,54.0,68.0,14.960128196000001,26.467919115999997,8.0,,,No meaningful precipitation signal
+401856698,Vanderbilt,Auburn,2026-09-26 20:15:00+00:00,Jordan-Hare Stadium,False,ok,BMX,83.0,56.0,40.0,4.603116368,10.357011828,1.0,0.0,0.0,No meaningful precipitation signal
+401856814,Kansas State,Cincinnati,2026-09-26 23:00:00+00:00,Nippert Stadium,False,ok,ILN,68.0,51.0,55.0,5.75389546,9.206232736,0.0,,,No meaningful precipitation signal
+401856804,Arizona,Washington State,2026-09-26 23:30:00+00:00,Gesa Field,False,ok,OTX,59.0,37.0,44.0,4.603116368,10.357011828,1.0,0.0,0.0,No meaningful precipitation signal
+401858469,Oregon,USC,2026-09-26 23:30:00+00:00,Los Angeles Memorial Coliseum,False,ok,LOX,84.0,62.0,47.0,5.75389546,11.50779092,0.0,0.0,0.0,No meaningful precipitation signal
+401862779,Army,Temple,2026-09-25 20:00:00+00:00,Lincoln Financial Field,False,ok,PHI,67.0,52.0,59.0,9.206232736,20.714023656,27.0,,,Low precipitation chance
+401862778,Navy,UAB,2026-09-25 23:00:00+00:00,Protective Stadium,False,ok,BMX,80.0,64.0,58.0,4.603116368,10.357011828,2.0,0.0,0.0,No meaningful precipitation signal
+401858243,Wake Forest,Louisville,2026-09-26 16:00:00+00:00,L&N Federal Credit Union Stadium,False,ok,LMK,67.0,49.0,52.0,4.603116368,8.055453644,0.0,0.0,0.0,No meaningful precipitation signal
+401856696,South Carolina,Alabama,2026-09-26 23:00:00+00:00,Bryant-Denny Stadium,False,ok,BMX,83.0,58.0,43.0,4.603116368,8.055453644,0.0,0.0,0.0,No meaningful precipitation signal
+401856881,Oklahoma State,West Virginia,2026-09-26 23:00:00+00:00,Milan Puskar Stadium,False,ok,PBZ,63.0,51.0,66.0,6.904674552,13.809349104,1.0,,,No meaningful precipitation signal
+401866425,Ball State,Kent State,2026-09-26 16:00:00+00:00,Dix Stadium,False,ok,CLE,64.0,52.0,64.0,8.055453644,14.960128196000001,0.0,0.0,0.0,No meaningful precipitation signal
+401866428,Stonehill,Ohio,2026-09-26 19:30:00+00:00,Peden Stadium,False,ok,RLX,68.0,54.0,60.0,5.75389546,11.50779092,0.0,,,No meaningful precipitation signal
+401858468,Howard,Rutgers,2026-09-25 23:00:00+00:00,SHI Stadium,False,ok,PHI,62.0,52.0,70.0,11.50779092,23.01558184,32.0,,,Low precipitation chance
+401869931,Kennesaw State,Arkansas State,2026-09-26 23:00:00+00:00,Centennial Bank Stadium,False,ok,MEG,81.0,53.0,38.0,6.904674552,9.206232736,2.0,0.0,0.0,No meaningful precipitation signal
+401858239,Delaware,Virginia,2026-09-26 22:00:00+00:00,Scott Stadium,False,ok,LWX,68.0,56.0,65.0,9.206232736,14.960128196000001,2.0,,,No meaningful precipitation signal
+401862782,Florida Atlantic,UL Monroe,2026-09-27 00:00:00+00:00,Malone Stadium,False,ok,SHV,89.0,61.0,39.0,2.301558184,5.75389546,0.0,0.0,0.0,No meaningful precipitation signal
+401856813,Colorado,Baylor,2026-09-26 16:00:00+00:00,McLane Stadium,False,ok,FWD,86.0,67.0,53.0,4.603116368,6.904674552,1.0,0.0,0.0,No meaningful precipitation signal
+401862784,Southern Miss,Tulane,2026-09-26 23:00:00+00:00,Yulman Stadium,False,ok,LIX,87.0,68.0,53.0,3.452337276,6.904674552,3.0,0.0,0.0,No meaningful precipitation signal
+401866429,Massachusetts,Sacramento State,2026-09-27 01:00:00+00:00,Hornet Stadium,False,ok,STO,79.0,48.0,34.0,5.75389546,11.50779092,0.0,0.0,0.0,No meaningful precipitation signal
+401862781,North Carolina Central,East Carolina,2026-09-26 20:00:00+00:00,Dowdy-Ficklen Stadium,False,ok,MHX,76.0,49.0,39.0,10.357011828,14.960128196000001,0.0,,,No meaningful precipitation signal
+401868188,Gardner-Webb,Marshall,2026-09-26 19:30:00+00:00,Joan C. Edwards Stadium,False,ok,RLX,71.0,53.0,53.0,5.75389546,11.50779092,0.0,,,No meaningful precipitation signal
+401856805,Sam Houston,Texas Tech,2026-09-26 16:00:00+00:00,Jones AT&T Stadium,False,ok,LUB,75.0,64.0,69.0,8.055453644,13.809349104,17.0,0.0,0.0,No meaningful precipitation signal
+401860894,Troy,Utah State,2026-09-26 23:30:00+00:00,Maverik Stadium,False,ok,SLC,74.0,47.0,38.0,5.75389546,14.960128196000001,1.0,0.0,0.0,No meaningful precipitation signal
+401858237,Central Arkansas,Florida State,2026-09-26 19:00:00+00:00,Doak Campbell Stadium,False,ok,TAE,86.0,59.0,40.0,8.055453644,13.809349104,1.0,0.0,0.0,No meaningful precipitation signal
+401856697,Tulsa,Arkansas,2026-09-27 00:00:00+00:00,Razorback Stadium,False,ok,TSA,82.0,60.0,47.0,4.603116368,9.206232736,11.0,0.0,0.0,No meaningful precipitation signal
+401860893,San Diego State,Toledo,2026-09-26 16:00:00+00:00,Glass Bowl,False,ok,CLE,63.0,51.0,64.0,4.603116368,9.206232736,0.0,0.0,0.0,No meaningful precipitation signal
+401864511,Northern Illinois,Georgia State,2026-09-26 18:00:00+00:00,Center Parc Stadium,False,ok,FFC,79.0,58.0,49.0,4.603116368,8.055453644,2.0,0.0,0.0,No meaningful precipitation signal
+401858234,Clemson,California,2026-09-26 02:30:00+00:00,California Memorial Stadium,False,ok,MTR,64.0,56.0,76.0,8.055453644,11.50779092,0.0,0.0,0.0,No meaningful precipitation signal
+401856700,Oklahoma,Georgia,2026-09-26 19:30:00+00:00,Sanford Stadium,False,ok,FFC,81.0,58.0,46.0,3.452337276,8.055453644,0.0,0.0,0.0,No meaningful precipitation signal
+401858241,Missouri State,SMU,2026-09-27 01:00:00+00:00,Gerald J. Ford Stadium,False,ok,FWD,90.0,63.0,41.0,8.055453644,11.50779092,2.0,0.0,0.0,No meaningful precipitation signal
 401860896,Colorado State,UTSA,2026-09-26 16:00:00+00:00,Alamodome,True,indoor,,,,,,,,,,Indoor/dome game
-401856703,Missouri,Mississippi State,2026-09-26 23:45:00+00:00,Davis Wade Stadium,False,ok,JAN,83.0,57.0,41.0,4.603116368,10.357011828,2.0,0.0,0.0,No meaningful precipitation signal
-401858240,Georgia Tech,Stanford,2026-09-27 02:30:00+00:00,Stanford Stadium,False,ok,MTR,68.0,53.0,59.0,9.206232736,14.960128196000001,0.0,0.0,0.0,No meaningful precipitation signal
-401856698,Vanderbilt,Auburn,2026-09-26 20:15:00+00:00,Jordan-Hare Stadium,False,ok,BMX,84.0,56.0,38.0,5.75389546,11.50779092,0.0,0.0,0.0,No meaningful precipitation signal
-401856881,Oklahoma State,West Virginia,2026-09-26 23:00:00+00:00,Milan Puskar Stadium,False,ok,PBZ,62.0,52.0,71.0,4.603116368,11.50779092,2.0,,,No meaningful precipitation signal
-401858241,Missouri State,SMU,2026-09-27 01:00:00+00:00,Gerald J. Ford Stadium,False,ok,FWD,88.0,61.0,41.0,6.904674552,10.357011828,15.0,0.01,0.0,No meaningful precipitation signal
-401862780,Louisiana,Charlotte,2026-09-26 22:30:00+00:00,Jerry Richardson Stadium,False,ok,GSP,72.0,56.0,57.0,4.603116368,9.206232736,3.0,0.0,0.0,No meaningful precipitation signal
-401860893,San Diego State,Toledo,2026-09-26 16:00:00+00:00,Glass Bowl,False,ok,CLE,63.0,51.0,65.0,5.75389546,11.50779092,0.0,0.0,0.0,No meaningful precipitation signal
-401856806,Houston,Georgia Southern,2026-09-26 20:00:00+00:00,Allen E. Paulson Stadium,False,ok,CHS,83.0,55.0,38.0,8.055453644,13.809349104,0.0,,,No meaningful precipitation signal
-401858462,UCLA,Maryland,2026-09-26 17:30:00+00:00,SECU Stadium,False,ok,LWX,64.0,54.0,70.0,13.809349104,24.166360932000003,15.0,,,No meaningful precipitation signal
-401860894,Troy,Utah State,2026-09-26 23:30:00+00:00,Maverik Stadium,False,ok,SLC,77.0,46.0,33.0,4.603116368,12.658570012,2.0,0.0,0.0,No meaningful precipitation signal
-401858239,Delaware,Virginia,2026-09-26 22:00:00+00:00,Scott Stadium,False,ok,LWX,66.0,55.0,68.0,9.206232736,16.110907288,5.0,,,No meaningful precipitation signal
-401856702,Texas A&M,LSU,2026-09-26 23:30:00+00:00,Tiger Stadium (LA),False,ok,LIX,88.0,63.0,43.0,3.452337276,6.904674552,3.0,0.0,0.0,No meaningful precipitation signal
-401864576,South Alabama,Kentucky,2026-09-26 16:45:00+00:00,Kroger Field,False,ok,LMK,66.0,51.0,58.0,5.75389546,11.50779092,0.0,0.0,0.0,No meaningful precipitation signal
-401858466,Wisconsin,Penn State,2026-09-26 21:00:00+00:00,Beaver Stadium,False,ok,CTP,65.0,51.0,60.0,10.357011828,18.412465472,7.0,,,No meaningful precipitation signal
-401869941,Liberty,Coastal Carolina,2026-09-24 23:30:00+00:00,Brooks Stadium (SC),False,ok,ILM,72.0,66.0,82.0,13.809349104,25.317140024,35.0,,,Low precipitation chance
-401858463,Iowa,Michigan,2026-09-26 19:30:00+00:00,Michigan Stadium,False,ok,DTX,68.0,53.0,58.0,5.75389546,12.658570012,0.0,,,No meaningful precipitation signal
-401858470,Minnesota,Washington,2026-09-27 03:00:00+00:00,Husky Stadium,False,ok,SEW,58.0,49.0,72.0,2.301558184,3.452337276,6.0,0.0,0.0,No meaningful precipitation signal
-401856813,Colorado,Baylor,2026-09-26 16:00:00+00:00,McLane Stadium,False,ok,FWD,85.0,65.0,51.0,3.452337276,5.75389546,0.0,0.0,0.0,No meaningful precipitation signal
-401856700,Oklahoma,Georgia,2026-09-26 19:30:00+00:00,Sanford Stadium,False,ok,FFC,80.0,58.0,48.0,4.603116368,10.357011828,2.0,0.0,0.0,No meaningful precipitation signal
-401866429,Massachusetts,Sacramento State,2026-09-27 01:00:00+00:00,Hornet Stadium,False,ok,STO,82.0,48.0,30.0,5.75389546,12.658570012,0.0,0.0,0.0,No meaningful precipitation signal
-401864511,Northern Illinois,Georgia State,2026-09-26 18:00:00+00:00,Center Parc Stadium,False,ok,FFC,79.0,59.0,50.0,5.75389546,10.357011828,1.0,0.0,0.0,No meaningful precipitation signal
-401864512,UNLV,Akron,2026-09-26 16:00:00+00:00,InfoCision Stadium,False,ok,CLE,63.0,52.0,66.0,6.904674552,14.960128196000001,0.0,0.0,0.0,No meaningful precipitation signal
-401858465,Illinois,Ohio State,2026-09-26 16:00:00+00:00,Ohio Stadium,False,ok,ILN,63.0,54.0,72.0,6.904674552,12.658570012,0.0,,,No meaningful precipitation signal
-401858243,Wake Forest,Louisville,2026-09-26 16:00:00+00:00,L&N Federal Credit Union Stadium,False,ok,LMK,68.0,53.0,59.0,4.603116368,8.055453644,0.0,0.0,0.0,No meaningful precipitation signal
-401862778,Navy,UAB,2026-09-25 23:00:00+00:00,Protective Stadium,False,ok,BMX,80.0,62.0,54.0,4.603116368,9.206232736,2.0,0.0,0.0,No meaningful precipitation signal
-401858234,Clemson,California,2026-09-26 02:30:00+00:00,California Memorial Stadium,False,ok,MTR,65.0,56.0,74.0,5.75389546,10.357011828,0.0,0.0,0.0,No meaningful precipitation signal
-401856697,Tulsa,Arkansas,2026-09-27 00:00:00+00:00,Razorback Stadium,False,ok,TSA,81.0,59.0,47.0,4.603116368,8.055453644,9.0,0.0,0.0,No meaningful precipitation signal
-401860897,Boise State,Western Michigan,2026-09-26 19:30:00+00:00,Waldo Stadium,False,ok,GRR,68.0,50.0,53.0,4.603116368,11.50779092,0.0,,,No meaningful precipitation signal
-401856816,Utah,Iowa State,2026-09-26 19:30:00+00:00,Jack Trice Stadium,False,ok,DMX,62.0,61.0,97.0,9.206232736,14.960128196000001,30.0,0.02,0.0,Measurable precipitation forecast
-401858242,Virginia Tech,Boston College,2026-09-26 16:00:00+00:00,"Alumni Stadium (Chestnut Hill, MA)",False,ok,BOX,61.0,54.0,78.0,18.412465472,35.674151852,52.0,0.030000000000000002,0.0,Measurable precipitation forecast
-401864509,Air Force,Nevada,2026-09-27 02:30:00+00:00,Mackay Stadium,False,ok,REV,70.0,37.0,30.0,12.658570012,23.01558184,0.0,0.0,0.0,No meaningful precipitation signal
-401862779,Army,Temple,2026-09-25 20:00:00+00:00,Lincoln Financial Field,False,ok,PHI,64.0,51.0,63.0,11.50779092,25.317140024,39.0,,,Low precipitation chance
-401856814,Kansas State,Cincinnati,2026-09-26 23:00:00+00:00,Nippert Stadium,False,ok,ILN,68.0,54.0,60.0,4.603116368,9.206232736,0.0,,,No meaningful precipitation signal
-401856815,TCU,UCF,2026-09-26 19:30:00+00:00,FBC Mortgage Stadium,False,ok,MLB,82.0,70.0,67.0,12.658570012,19.563244564,24.0,0.02,0.0,Measurable precipitation forecast
-401871048,Middle Tennessee,Jacksonville State,2026-09-26 23:00:00+00:00,AmFirst Stadium,False,ok,BMX,78.0,58.0,50.0,4.603116368,9.206232736,0.0,0.0,0.0,No meaningful precipitation signal
-401864572,App State,NC State,2026-09-26 23:30:00+00:00,Carter-Finley Stadium,False,ok,RAH,69.0,53.0,56.0,4.603116368,6.904674552,4.0,,,No meaningful precipitation signal
-401856704,Texas,Tennessee,2026-09-26 16:00:00+00:00,Neyland Stadium,False,ok,MRX,68.0,57.0,68.0,2.301558184,8.055453644,0.0,0.0,0.0,No meaningful precipitation signal
-401862784,Southern Miss,Tulane,2026-09-26 23:00:00+00:00,Yulman Stadium,False,ok,LIX,85.0,68.0,57.0,4.603116368,8.055453644,4.0,0.0,0.0,No meaningful precipitation signal
-401858467,Notre Dame,Purdue,2026-09-26 18:00:00+00:00,Ross-Ade Stadium,False,ok,IND,67.0,50.0,54.0,3.452337276,8.055453644,0.0,,,No meaningful precipitation signal
-401862782,Florida Atlantic,UL Monroe,2026-09-27 00:00:00+00:00,Malone Stadium,False,ok,SHV,88.0,63.0,44.0,2.301558184,6.904674552,0.0,0.0,0.0,No meaningful precipitation signal
-401864510,Hawai'i,Wyoming,2026-09-26 19:00:00+00:00,War Memorial Stadium,False,ok,CYS,71.0,38.0,30.0,12.658570012,20.714023656,14.0,0.0,0.0,No meaningful precipitation signal
-401856699,Ole Miss,Florida,2026-09-26 19:30:00+00:00,Ben Hill Griffin Stadium,False,ok,JAX,85.0,64.0,50.0,9.206232736,16.110907288,10.0,0.0,0.0,No meaningful precipitation signal
-401860891,Rice,Fresno State,2026-09-27 02:00:00+00:00,Valley Children's Stadium,False,ok,HNX,85.0,51.0,31.0,4.603116368,10.357011828,0.0,0.0,0.0,No meaningful precipitation signal
+401858240,Georgia Tech,Stanford,2026-09-27 02:30:00+00:00,Stanford Stadium,False,ok,MTR,66.0,53.0,63.0,10.357011828,14.960128196000001,0.0,0.0,0.0,No meaningful precipitation signal
+401858461,Northwestern,Indiana,2026-09-26 00:00:00+00:00,"Memorial Stadium (Bloomington, IN)",False,ok,IND,65.0,53.0,63.0,5.75389546,11.50779092,0.0,,,No meaningful precipitation signal
+401860892,Incarnate Word,Texas State,2026-09-26 22:00:00+00:00,Bobcat Stadium (TX),False,ok,EWX,96.0,65.0,36.0,3.452337276,10.357011828,0.0,0.0,0.0,No meaningful precipitation signal
+401858463,Iowa,Michigan,2026-09-26 19:30:00+00:00,Michigan Stadium,False,ok,DTX,67.0,50.0,56.0,4.603116368,10.357011828,0.0,,,No meaningful precipitation signal
+401861970,UConn,Miami (OH),2026-09-26 19:30:00+00:00,Yager Stadium,False,ok,ILN,69.0,51.0,54.0,4.603116368,10.357011828,0.0,,,No meaningful precipitation signal
+401867909,Long Island University,Florida International,2026-09-26 22:00:00+00:00,Pitbull Stadium,False,ok,MFL,84.0,74.0,72.0,5.75389546,10.357011828,62.0,0.32,0.0,Measurable precipitation forecast
+401856703,Missouri,Mississippi State,2026-09-26 23:45:00+00:00,Davis Wade Stadium,False,ok,JAN,84.0,60.0,44.0,3.452337276,8.055453644,1.0,0.0,0.0,No meaningful precipitation signal
+401858465,Illinois,Ohio State,2026-09-26 16:00:00+00:00,Ohio Stadium,False,ok,ILN,64.0,53.0,69.0,5.75389546,10.357011828,0.0,,,No meaningful precipitation signal
+401864576,South Alabama,Kentucky,2026-09-26 16:45:00+00:00,Kroger Field,False,ok,LMK,65.0,48.0,54.0,5.75389546,9.206232736,0.0,0.0,0.0,No meaningful precipitation signal
+401858470,Minnesota,Washington,2026-09-27 03:00:00+00:00,Husky Stadium,False,ok,SEW,57.0,50.0,77.0,1.150779092,2.301558184,3.0,0.0,0.0,No meaningful precipitation signal
+401858242,Virginia Tech,Boston College,2026-09-26 16:00:00+00:00,"Alumni Stadium (Chestnut Hill, MA)",False,ok,BOX,59.0,53.0,80.0,18.412465472,35.674151852,61.0,0.030000000000000002,0.0,Measurable precipitation forecast
+401864509,Air Force,Nevada,2026-09-27 02:30:00+00:00,Mackay Stadium,False,ok,REV,69.0,39.0,34.0,13.809349104,23.01558184,0.0,0.0,0.0,No meaningful precipitation signal
+401870745,Mercyhurst,Western Kentucky,2026-09-26 23:00:00+00:00,Houchens Industries-L.T. Smith Stadium,False,ok,LMK,76.0,45.0,33.0,4.603116368,6.904674552,0.0,0.0,0.0,No meaningful precipitation signal
+401866426,Robert Morris,Buffalo,2026-09-26 19:30:00+00:00,UB Stadium,False,ok,BUF,69.0,46.0,44.0,9.206232736,14.960128196000001,0.0,,,No meaningful precipitation signal
+401862785,South Florida,Bowling Green,2026-09-26 21:00:00+00:00,Doyt L. Perry Stadium,False,ok,CLE,68.0,49.0,51.0,5.75389546,10.357011828,0.0,0.0,0.0,No meaningful precipitation signal
+401869961,James Madison,Old Dominion,2026-09-26 22:00:00+00:00,S.B. Ballard Stadium,False,ok,AKQ,71.0,54.0,55.0,12.658570012,18.412465472,5.0,,,No meaningful precipitation signal
+401856816,Utah,Iowa State,2026-09-26 19:30:00+00:00,Jack Trice Stadium,False,ok,DMX,64.0,63.0,97.0,10.357011828,18.412465472,39.0,0.02,0.0,Measurable precipitation forecast
+401858238,Central Michigan,Miami,2026-09-26 22:30:00+00:00,Hard Rock Stadium,False,ok,MFL,84.0,73.0,70.0,8.055453644,12.658570012,60.0,0.27,0.0,Measurable precipitation forecast
+401862780,Louisiana,Charlotte,2026-09-26 22:30:00+00:00,Jerry Richardson Stadium,False,ok,GSP,72.0,55.0,54.0,4.603116368,9.206232736,0.0,0.0,0.0,No meaningful precipitation signal
+401858244,William & Mary,Duke,2026-09-26 19:30:00+00:00,Wallace Wade Stadium,False,ok,RAH,74.0,52.0,46.0,8.055453644,13.809349104,1.0,,,No meaningful precipitation signal
+401860897,Boise State,Western Michigan,2026-09-26 19:30:00+00:00,Waldo Stadium,False,ok,GRR,67.0,48.0,50.0,3.452337276,10.357011828,1.0,,,No meaningful precipitation signal
+401866427,Lindenwood,Eastern Michigan,2026-09-26 17:00:00+00:00,Rynearson Stadium,False,ok,DTX,65.0,51.0,60.0,4.603116368,10.357011828,0.0,,,No meaningful precipitation signal
+401871048,Middle Tennessee,Jacksonville State,2026-09-26 23:00:00+00:00,AmFirst Stadium,False,ok,BMX,77.0,57.0,50.0,3.452337276,8.055453644,2.0,0.0,0.0,No meaningful precipitation signal
 401867806,Harvard,Brown,2026-09-25 23:00:00+00:00,Brown Stadium,False,,,,,,,,,,,
-401858468,Howard,Rutgers,2026-09-25 23:00:00+00:00,SHI Stadium,False,,,,,,,,,,,
 401870839,University of Rio Grande,Duquesne,2026-09-26 16:00:00+00:00,Arthur J. Rooney Athletic Field,False,,,,,,,,,,,
-401866642,New Hampshire,Sacred Heart,2026-09-26 16:00:00+00:00,Campus Field,False,,,,,,,,,,,
-401858236,Bucknell,Pittsburgh,2026-09-26 16:00:00+00:00,Acrisure Stadium,False,,,,,,,,,,,
 401868263,Presbyterian,Marist,2026-09-26 16:00:00+00:00,Leonidoff Field,False,,,,,,,,,,,
+401866642,New Hampshire,Sacred Heart,2026-09-26 16:00:00+00:00,Campus Field,False,,,,,,,,,,,
 401867818,Columbia,Georgetown,2026-09-26 16:30:00+00:00,Cooper Field,False,,,,,,,,,,,
 401868024,Holy Cross,Lafayette,2026-09-26 16:30:00+00:00,Fisher Field,False,,,,,,,,,,,
-401872618,New Haven,Merrimack,2026-09-26 17:00:00+00:00,Duane Stadium,False,,,,,,,,,,,
-401866427,Lindenwood,Eastern Michigan,2026-09-26 17:00:00+00:00,Rynearson Stadium,False,,,,,,,,,,,
-401868219,Drake,Davidson,2026-09-26 17:00:00+00:00,Richardson Stadium,False,,,,,,,,,,,
 401866647,Monmouth,Dartmouth,2026-09-26 17:00:00+00:00,Memorial Field,False,,,,,,,,,,,
+401868034,Lehigh,Pennsylvania,2026-09-26 17:00:00+00:00,Franklin Field,False,,,,,,,,,,,
+401872618,New Haven,Merrimack,2026-09-26 17:00:00+00:00,Duane Stadium,False,,,,,,,,,,,
+401868219,Drake,Davidson,2026-09-26 17:00:00+00:00,Richardson Stadium,False,,,,,,,,,,,
 401867858,North Dakota,Indiana State,2026-09-26 17:00:00+00:00,Memorial Stadium,False,,,,,,,,,,,
 401867827,Yale,Cornell,2026-09-26 17:00:00+00:00,Schoellkopf Field,False,,,,,,,,,,,
 401866648,Stony Brook,Fordham,2026-09-26 17:00:00+00:00,Jack Coffey Field,False,,,,,,,,,,,
-401868034,Lehigh,Pennsylvania,2026-09-26 17:00:00+00:00,Franklin Field,False,,,,,,,,,,,
 401868390,Tennessee Tech,Wofford,2026-09-26 17:30:00+00:00,Gibbs Stadium,False,,,,,,,,,,,
-401868211,Butler,Valparaiso,2026-09-26 18:00:00+00:00,Brown Field,False,,,,,,,,,,,
+401868063,UT Martin,Austin Peay,2026-09-26 18:00:00+00:00,Governors Stadium,False,,,,,,,,,,,
 401866643,Maine,Elon,2026-09-26 18:00:00+00:00,Rhodes Stadium,False,,,,,,,,,,,
-401868281,San Diego,St. Thomas (MN),2026-09-26 18:00:00+00:00,O'Shaughnessy Stadium,False,,,,,,,,,,,
-401868338,Chattanooga,The Citadel,2026-09-26 18:00:00+00:00,Johnson Hagood Stadium,False,,,,,,,,,,,
 401867885,South Dakota,Youngstown State,2026-09-26 18:00:00+00:00,Stambaugh Stadium,False,,,,,,,,,,,
 401868037,Furman,Richmond,2026-09-26 18:00:00+00:00,E. Claiborne Robins Stadium,False,,,,,,,,,,,
-401868063,UT Martin,Austin Peay,2026-09-26 18:00:00+00:00,Governors Stadium,False,,,,,,,,,,,
+401868338,Chattanooga,The Citadel,2026-09-26 18:00:00+00:00,Johnson Hagood Stadium,False,,,,,,,,,,,
+401868211,Butler,Valparaiso,2026-09-26 18:00:00+00:00,Brown Field,False,,,,,,,,,,,
+401868281,San Diego,St. Thomas (MN),2026-09-26 18:00:00+00:00,O'Shaughnessy Stadium,False,,,,,,,,,,,
 401868001,Colgate,Villanova,2026-09-26 18:30:00+00:00,Villanova Stadium,False,,,,,,,,,,,
-401858237,Central Arkansas,Florida State,2026-09-26 19:00:00+00:00,Doak Campbell Stadium,False,,,,,,,,,,,
 401866646,UAlbany,Princeton,2026-09-26 19:00:00+00:00,Princeton University Stadium,False,,,,,,,,,,,
 401868346,Western Carolina,East Tennessee State,2026-09-26 19:30:00+00:00,William B. Greene Jr. Stadium,False,,,,,,,,,,,
 401868387,VMI,Samford,2026-09-26 19:30:00+00:00,Seibert Stadium,False,,,,,,,,,,,
-401866428,Stonehill,Ohio,2026-09-26 19:30:00+00:00,Peden Stadium,False,,,,,,,,,,,
-401866426,Robert Morris,Buffalo,2026-09-26 19:30:00+00:00,UB Stadium,False,,,,,,,,,,,
-401858244,William & Mary,Duke,2026-09-26 19:30:00+00:00,Wallace Wade Stadium,False,,,,,,,,,,,
-401868188,Gardner-Webb,Marshall,2026-09-26 19:30:00+00:00,Joan C. Edwards Stadium,False,,,,,,,,,,,
-401869143,Lamar,Nicholls,2026-09-26 20:00:00+00:00,Manning Field at John L. Guidry Stadium,False,,,,,,,,,,,
 401866644,Rhode Island,North Carolina A&T,2026-09-26 20:00:00+00:00,Aggie Stadium,False,,,,,,,,,,,
-401868206,Western Illinois,North Alabama,2026-09-26 20:00:00+00:00,Braly Municipal Stadium,False,,,,,,,,,,,
 401868358,Texas Southern,Alcorn State,2026-09-26 20:00:00+00:00,Jack Spinks Stadium,False,,,,,,,,,,,
-401862781,North Carolina Central,East Carolina,2026-09-26 20:00:00+00:00,Dowdy-Ficklen Stadium,False,,,,,,,,,,,
+401869143,Lamar,Nicholls,2026-09-26 20:00:00+00:00,Manning Field at John L. Guidry Stadium,False,,,,,,,,,,,
+401868206,Western Illinois,North Alabama,2026-09-26 20:00:00+00:00,Braly Municipal Stadium,False,,,,,,,,,,,
 401867847,Illinois State,Northern Iowa,2026-09-26 21:00:00+00:00,UNI-Dome,True,,,,,,,,,,,
-401868308,Northeastern State,Stephen F. Austin,2026-09-26 22:00:00+00:00,Homer Bryce Stadium,False,,,,,,,,,,,
-401866649,Towson,Delaware State,2026-09-26 22:00:00+00:00,Alumni Stadium,False,,,,,,,,,,,
 401868327,Mississippi Valley State,Alabama State,2026-09-26 22:00:00+00:00,Hornet Stadium,False,,,,,,,,,,,
-401860892,Incarnate Word,Texas State,2026-09-26 22:00:00+00:00,Bobcat Stadium (TX),False,,,,,,,,,,,
-401867909,Long Island University,Florida International,2026-09-26 22:00:00+00:00,Pitbull Stadium,False,,,,,,,,,,,
+401868308,Northeastern State,Stephen F. Austin,2026-09-26 22:00:00+00:00,Homer Bryce Stadium,False,,,,,,,,,,,
 401866645,Campbell,Hampton,2026-09-26 22:00:00+00:00,Armstrong Stadium,False,,,,,,,,,,,
+401866649,Towson,Delaware State,2026-09-26 22:00:00+00:00,Alumni Stadium,False,,,,,,,,,,,
 401868243,Fort Valley State,West Georgia,2026-09-26 22:00:00+00:00,University Stadium (GA),False,,,,,,,,,,,
-401867985,South Carolina State,Bethune-Cookman,2026-09-26 23:00:00+00:00,Municipal Stadium,False,,,,,,,,,,,
-401868960,Southern,Jackson State,2026-09-26 23:00:00+00:00,Mississippi Veterans Memorial Stadium,False,,,,,,,,,,,
-401868954,Prairie View A&M,Grambling,2026-09-26 23:00:00+00:00,Cotton Bowl,False,,,,,,,,,,,
 401867868,Southern Illinois,Murray State,2026-09-26 23:00:00+00:00,Roy Stewart Stadium,False,,,,,,,,,,,
-401870745,Mercyhurst,Western Kentucky,2026-09-26 23:00:00+00:00,Houchens Industries-L.T. Smith Stadium,False,,,,,,,,,,,
-401867687,Norfolk State,Chicago State,2026-09-26 23:00:00+00:00,SeatGeek Stadium,False,,,,,,,,,,,
 401868076,Cal Poly,Eastern Washington,2026-09-26 23:00:00+00:00,Roos Field,False,,,,,,,,,,,
+401867985,South Carolina State,Bethune-Cookman,2026-09-26 23:00:00+00:00,Municipal Stadium,False,,,,,,,,,,,
 401868179,Eastern Illinois,South Dakota State,2026-09-26 23:00:00+00:00,Dana J. Dykhouse Stadium,False,,,,,,,,,,,
-401868318,SE Louisiana,Northwestern State,2026-09-26 23:00:00+00:00,Harry Turpin Stadium,False,,,,,,,,,,,
 401869137,East Texas A&M,McNeese,2026-09-26 23:00:00+00:00,Cowboy Stadium,False,,,,,,,,,,,
+401867687,Norfolk State,Chicago State,2026-09-26 23:00:00+00:00,SeatGeek Stadium,False,,,,,,,,,,,
 401871472,West Florida,Southeast Missouri State,2026-09-26 23:00:00+00:00,Houck Field,False,,,,,,,,,,,
 401868299,Alabama A&M,Florida A&M,2026-09-26 23:00:00+00:00,Bragg Memorial Stadium,False,,,,,,,,,,,
+401868318,SE Louisiana,Northwestern State,2026-09-26 23:00:00+00:00,Harry Turpin Stadium,False,,,,,,,,,,,
+401868954,Prairie View A&M,Grambling,2026-09-26 23:00:00+00:00,Cotton Bowl,False,,,,,,,,,,,
+401868960,Southern,Jackson State,2026-09-26 23:00:00+00:00,Mississippi Veterans Memorial Stadium,False,,,,,,,,,,,
 401862783,Houston Christian,North Texas,2026-09-26 23:30:00+00:00,DATCU Stadium,False,,,,,,,,,,,
 401868131,Utah Tech,Northern Colorado,2026-09-27 00:00:00+00:00,Nottingham Field,False,,,,,,,,,,,
-401868155,Portland State,Weber State,2026-09-27 00:00:00+00:00,Stewart Stadium,False,,,,,,,,,,,
 401868103,Idaho State,Southern Utah,2026-09-27 00:00:00+00:00,Eccles Coliseum,False,,,,,,,,,,,
 401868052,Mercer,Abilene Christian,2026-09-27 00:00:00+00:00,Wildcat Stadium (TX),False,,,,,,,,,,,
+401868155,Portland State,Weber State,2026-09-27 00:00:00+00:00,Stewart Stadium,False,,,,,,,,,,,
 401868113,Montana,UC Davis,2026-09-27 02:00:00+00:00,Aggie Stadium,False,,,,,,,,,,,
 401868120,Northern Arizona,Montana State,2026-09-27 02:30:00+00:00,Bobcat Stadium,False,,,,,,,,,,,
