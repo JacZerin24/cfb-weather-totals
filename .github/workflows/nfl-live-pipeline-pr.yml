@@ -6,6 +6,7 @@ on:
       - 'src/nfl/live_week.py'
       - 'src/nfl/live_week_selftest.py'
       - 'src/nfl/build_site.py'
+      - 'src/nfl/site_parity.py'
       - 'src/nfl/inject_sport_selector.py'
       - 'src/nfl/site_selftest.py'
       - 'src/nfl/prospective_ledger.py'
