@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark">
   <title>NFL Weather Totals · Live Paper Board</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
   <style>
     :root {
       --bg:#07101c; --panel:#101c2e; --panel2:#16253b; --text:#f4f8ff;
@@ -160,6 +161,53 @@
       .grid { grid-template-columns:1fr; }
       .topline { align-items:flex-start; }
     }
+
+    /* NFL_SITE_PARITY */
+    .map-panel {
+      overflow:hidden; border:1px solid var(--line);
+      background:linear-gradient(180deg,rgba(17,30,50,.97),rgba(10,20,35,.96));
+      border-radius:20px; box-shadow:0 18px 44px rgba(0,0,0,.24);
+    }
+    .map-toolbar {
+      padding:14px; display:flex; justify-content:space-between; align-items:center;
+      gap:12px; flex-wrap:wrap; border-bottom:1px solid var(--line);
+    }
+    .map-filters,.map-controls { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .map-filter {
+      min-height:38px; border:1px solid var(--line); background:#0d1728;
+      color:var(--text); padding:7px 10px; border-radius:999px; cursor:pointer;
+      font-weight:850; display:inline-flex; align-items:center; gap:6px;
+    }
+    .map-filter:hover,.map-filter:focus-visible { border-color:rgba(103,232,249,.58); }
+    .map-filter.active { box-shadow:0 0 0 2px rgba(103,232,249,.20) inset; border-color:rgba(103,232,249,.78); }
+    .map-dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+    .all-dot { background:linear-gradient(135deg,var(--lime) 0 33%,var(--green) 33% 66%,var(--red) 66%); }
+    .strong-dot { background:var(--lime); } .qualifies-dot { background:var(--green); } .no-play-dot { background:var(--red); }
+    .map-count,.map-note { color:var(--muted); font-size:12px; font-weight:750; }
+    #weekMap { width:100%; height:clamp(430px,55vw,680px); background:#dbe7ef; }
+    .map-note { padding:10px 14px 13px; border-top:1px solid var(--line); }
+    #radarStatus { color:#bfdbfe; font-weight:800; }
+    .radar-toggle { border-color:rgba(103,232,249,.40); }
+    .radar-toggle.active { background:rgba(103,232,249,.14); border-color:rgba(103,232,249,.80); }
+    .leaflet-popup-content-wrapper,.leaflet-popup-tip { background:#101b30; color:#eef6ff; }
+    .leaflet-popup-content { margin:14px; min-width:250px; max-width:340px; }
+    .leaflet-container a.leaflet-popup-close-button { color:#cbd5e1; }
+    .map-popup .popup-status { font-size:10px; font-weight:950; letter-spacing:.07em; margin-bottom:5px; }
+    .map-popup h3 { font-size:17px; line-height:1.2; margin:0 0 5px; }
+    .map-popup .popup-sub { color:#aebed8; font-size:11px; margin-bottom:9px; }
+    .map-popup .popup-line { padding:5px 0; border-top:1px solid rgba(255,255,255,.09); font-size:12px; }
+    .sort-btn {
+      appearance:none; border:0; background:transparent; color:#dbeafe; font:inherit;
+      font-weight:900; padding:0; cursor:pointer; display:inline-flex; align-items:center; gap:5px;
+    }
+    .sort-btn:hover,.sort-btn:focus-visible { color:var(--cyan); }
+    .sort-btn span { color:var(--muted); font-size:10px; }
+    .nfl-num,.kickoff-num { white-space:nowrap; font-variant-numeric:tabular-nums; }
+    .nfl-board-panel .toolbar { margin-bottom:0; border:0; border-bottom:1px solid var(--line); border-radius:0; }
+    #nflBoardTable { min-width:1500px; }
+    #nflBoardTable th { top:0; z-index:1; }
+    @media(max-width:900px) { #weekMap { height:500px; } }
+
   </style>
 </head>
 <body>
@@ -193,7 +241,9 @@
   </header>
 
   <nav><div class="shell">
+    <a href="#map">Week map</a>
     <a href="#live">Live cards</a>
+    <a href="#board">Full table</a>
     <a href="#ledger">Frozen decisions</a>
     <a href="#performance">Prospective performance</a>
     <a href="#protocol">Protocol</a>
@@ -201,6 +251,25 @@
   </div></nav>
 
   <main class="shell">
+
+    <section id="map">
+      <div class="section-head">
+        <div><div class="eyebrow">Geographic slate overview</div><h2>Weekly signal map</h2></div>
+        <p>Marker colors follow the current model signal; live decision status and frozen-window state remain visible in each popup.</p>
+      </div>
+      <div class="map-panel">
+        <div class="map-toolbar">
+          <div class="map-filters"><button type="button" class="map-filter active" data-map-signal="ALL"><span class="map-dot all-dot"></span>All <strong>16</strong></button><button type="button" class="map-filter" data-map-signal="NO PLAY"><span class="map-dot no-play-dot"></span>NO PLAY <strong>16</strong></button></div>
+          <div class="map-controls">
+            <button type="button" class="map-filter radar-toggle" id="radarToggle" aria-pressed="false">Radar: Off</button>
+            <div class="map-count" id="mapCount">Showing 16 mapped games</div>
+          </div>
+        </div>
+        <div id="weekMap" role="region" aria-label="Interactive map of this week's NFL games by model signal"></div>
+        <div class="map-note">Marker colors: lime strong · green qualifies · red no play. Every game in the current slate has usable venue coordinates. Radar overlay: IEM / NWS CONUS NEXRAD base reflectivity. <span id="radarStatus">Radar off.</span></div>
+      </div>
+    </section>
+    
     <section id="live">
       <div class="section-head">
         <div><div class="eyebrow">Current market + model state</div><h2>Live weekly board</h2></div>
@@ -525,6 +594,55 @@
     </div>
     </section>
 
+
+    <section id="board">
+      <div class="section-head">
+        <div><div class="eyebrow">Everything in one sortable view</div><h2>Full weekly table</h2></div>
+        <p>Search and filter the entire slate without hiding NO PLAY, early-look, waiting, or roof-managed games.</p>
+      </div>
+      <div class="panel nfl-board-panel">
+        <div class="toolbar">
+          <input id="boardSearch" type="search" placeholder="Search matchup, venue, market, status…">
+          <select id="boardStatusFilter">
+            <option value="ALL">All live statuses</option>
+            <option>STRONG</option><option>QUALIFIES</option><option>NO PLAY</option>
+            <option>EARLY LOOK</option><option>PAST WINDOW</option><option>WAITING</option><option>NO LINE</option>
+          </select>
+          <select id="boardSignalFilter">
+            <option value="ALL">All model signals</option>
+            <option>STRONG</option><option>QUALIFIES</option><option>NO PLAY</option>
+          </select>
+          <select id="weatherFilter" title="Filter by fixed-lead weather / roof type">
+            <option value="ALL">All weather</option>
+            <option value="WIND">Windy (15+ mph)</option>
+            <option value="HOT">Hot (85°F+)</option>
+            <option value="COLD">Cold (40°F or lower)</option>
+            <option value="INDOOR">Dome / retractable roof</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table id="nflBoardTable">
+            <thead><tr>
+              <th>Live status</th>
+              <th>Model signal</th>
+              <th>Game</th>
+              <th><button class="sort-btn" type="button" data-nfl-sort="3">Kickoff <span>↕</span></button></th>
+              <th><button class="sort-btn" type="button" data-nfl-sort="4">Market <span>↕</span></button></th>
+              <th>Best price</th>
+              <th><button class="sort-btn" type="button" data-nfl-sort="6">Temp <span>↕</span></button></th>
+              <th><button class="sort-btn" type="button" data-nfl-sort="7">Wind <span>↕</span></button></th>
+              <th>Roof</th>
+              <th><button class="sort-btn" type="button" data-nfl-sort="9">Edge <span>↕</span></button></th>
+              <th><button class="sort-btn" type="button" data-nfl-sort="10">P(OVER) <span>↕</span></button></th>
+              <th>Decision state</th>
+              <th><button class="sort-btn" type="button" data-nfl-sort="12">Hours to kick <span>↕</span></button></th>
+            </tr></thead>
+            <tbody id="nflBoardBody"><tr data-status="EARLY LOOK" data-signal="NO PLAY" data-weather-types=""><td><span class="badge early">EARLY LOOK</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>ATL @ GB</strong><br><small>Lambeau Field</small></td><td class="kickoff-num" data-sort-value="1790295300">Thu Sep 24 · 7:15 PM CT</td><td class="nfl-num" data-sort-value="44.500000">OVER 44.5 · -110 · FanDuel</td><td>44.5 -108 · BetMGM</td><td class="nfl-num" data-sort-value="61.600000">62°F</td><td class="nfl-num" data-sort-value="1.800000">2 mph</td><td>Outdoors</td><td class="nfl-num" data-sort-value="-0.037010">-0.0</td><td class="nfl-num" data-sort-value="0.475907">47.6%</td><td>BEFORE 24H WINDOW</td><td class="nfl-num" data-sort-value="60.188028">60.2h</td></tr><tr data-status="EARLY LOOK" data-signal="NO PLAY" data-weather-types=""><td><span class="badge early">EARLY LOOK</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>LAC @ BUF</strong><br><small>Highmark Stadium</small></td><td class="kickoff-num" data-sort-value="1790528400">Sun Sep 27 · 12:00 PM CT</td><td class="nfl-num" data-sort-value="50.500000">OVER 50.5 · -105 · DraftKings</td><td>50.5 -102 · LowVig.ag</td><td class="nfl-num" data-sort-value="66.200000">66°F</td><td class="nfl-num" data-sort-value="4.400000">4 mph</td><td>Outdoors</td><td class="nfl-num" data-sort-value="-0.245455">-0.2</td><td class="nfl-num" data-sort-value="0.508891">50.9%</td><td>BEFORE 24H WINDOW</td><td class="nfl-num" data-sort-value="124.938028">124.9h</td></tr><tr data-status="EARLY LOOK" data-signal="NO PLAY" data-weather-types=""><td><span class="badge early">EARLY LOOK</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>CAR @ CLE</strong><br><small>Huntington Bank Field</small></td><td class="kickoff-num" data-sort-value="1790528400">Sun Sep 27 · 12:00 PM CT</td><td class="nfl-num" data-sort-value="42.000000">OVER 42.0 · -113 · LowVig.ag</td><td>42.0 -109 · BetRivers</td><td class="nfl-num" data-sort-value="64.600000">65°F</td><td class="nfl-num" data-sort-value="6.500000">6 mph</td><td>Outdoors</td><td class="nfl-num" data-sort-value="-1.195296">-1.2</td><td class="nfl-num" data-sort-value="0.428036">42.8%</td><td>BEFORE 24H WINDOW</td><td class="nfl-num" data-sort-value="124.938028">124.9h</td></tr><tr data-status="EARLY LOOK" data-signal="NO PLAY" data-weather-types="INDOOR"><td><span class="badge early">EARLY LOOK</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>NYJ @ DET</strong><br><small>Ford Field</small></td><td class="kickoff-num" data-sort-value="1790528400">Sun Sep 27 · 12:00 PM CT</td><td class="nfl-num" data-sort-value="48.000000">OVER 48.0 · -112 · BetRivers</td><td>48.0 -110 · BetUS</td><td class="nfl-num" data-sort-value="">—</td><td class="nfl-num" data-sort-value="">—</td><td>Dome</td><td class="nfl-num" data-sort-value="2.520040">+2.5</td><td class="nfl-num" data-sort-value="0.606206">60.6%</td><td>BEFORE 24H WINDOW</td><td class="nfl-num" data-sort-value="124.938028">124.9h</td></tr><tr data-status="EARLY LOOK" data-signal="NO PLAY" data-weather-types="INDOOR"><td><span class="badge early">EARLY LOOK</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>HOU @ IND</strong><br><small>Lucas Oil Stadium</small></td><td class="kickoff-num" data-sort-value="1790528400">Sun Sep 27 · 12:00 PM CT</td><td class="nfl-num" data-sort-value="43.500000">OVER 43.5 · -110 · DraftKings</td><td>43.5 -107 · LowVig.ag</td><td class="nfl-num" data-sort-value="">—</td><td class="nfl-num" data-sort-value="">—</td><td>Retractable</td><td class="nfl-num" data-sort-value="3.306147">+3.3</td><td class="nfl-num" data-sort-value="0.494540">49.5%</td><td>BEFORE 24H WINDOW</td><td class="nfl-num" data-sort-value="124.938028">124.9h</td></tr><tr data-status="EARLY LOOK" data-signal="NO PLAY" data-weather-types=""><td><span class="badge early">EARLY LOOK</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>NE @ JAX</strong><br><small>EverBank Stadium</small></td><td class="kickoff-num" data-sort-value="1790528400">Sun Sep 27 · 12:00 PM CT</td><td class="nfl-num" data-sort-value="45.500000">OVER 45.5 · -110 · BetUS</td><td>45.5 -105 · FanDuel</td><td class="nfl-num" data-sort-value="79.900000">80°F</td><td class="nfl-num" data-sort-value="3.000000">3 mph</td><td>Outdoors</td><td class="nfl-num" data-sort-value="-1.034075">-1.0</td><td class="nfl-num" data-sort-value="0.469046">46.9%</td><td>BEFORE 24H WINDOW</td><td class="nfl-num" data-sort-value="124.938028">124.9h</td></tr><tr data-status="EARLY LOOK" data-signal="NO PLAY" data-weather-types=""><td><span class="badge early">EARLY LOOK</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>KC @ MIA</strong><br><small>Hard Rock Stadium</small></td><td class="kickoff-num" data-sort-value="1790528400">Sun Sep 27 · 12:00 PM CT</td><td class="nfl-num" data-sort-value="46.000000">OVER 46.0 · -110 · BetUS</td><td>46.0 -107 · LowVig.ag</td><td class="nfl-num" data-sort-value="83.100000">83°F</td><td class="nfl-num" data-sort-value="11.700000">12 mph</td><td>Outdoors</td><td class="nfl-num" data-sort-value="-1.309646">-1.3</td><td class="nfl-num" data-sort-value="0.444063">44.4%</td><td>BEFORE 24H WINDOW</td><td class="nfl-num" data-sort-value="124.938028">124.9h</td></tr><tr data-status="EARLY LOOK" data-signal="NO PLAY" data-weather-types=""><td><span class="badge early">EARLY LOOK</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>TEN @ NYG</strong><br><small>MetLife Stadium</small></td><td class="kickoff-num" data-sort-value="1790528400">Sun Sep 27 · 12:00 PM CT</td><td class="nfl-num" data-sort-value="40.500000">OVER 40.5 · -108 · DraftKings</td><td>40.5 -105 · FanDuel</td><td class="nfl-num" data-sort-value="66.100000">66°F</td><td class="nfl-num" data-sort-value="13.500000">14 mph</td><td>Outdoors</td><td class="nfl-num" data-sort-value="-0.978277">-1.0</td><td class="nfl-num" data-sort-value="0.459159">45.9%</td><td>BEFORE 24H WINDOW</td><td class="nfl-num" data-sort-value="124.938028">124.9h</td></tr><tr data-status="EARLY LOOK" data-signal="NO PLAY" data-weather-types=""><td><span class="badge early">EARLY LOOK</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>CIN @ PIT</strong><br><small>Acrisure Stadium</small></td><td class="kickoff-num" data-sort-value="1790528400">Sun Sep 27 · 12:00 PM CT</td><td class="nfl-num" data-sort-value="42.500000">OVER 42.5 · -110 · DraftKings</td><td>42.5 -105 · Bovada</td><td class="nfl-num" data-sort-value="70.400000">70°F</td><td class="nfl-num" data-sort-value="5.700000">6 mph</td><td>Outdoors</td><td class="nfl-num" data-sort-value="-1.958641">-2.0</td><td class="nfl-num" data-sort-value="0.398879">39.9%</td><td>BEFORE 24H WINDOW</td><td class="nfl-num" data-sort-value="124.938028">124.9h</td></tr><tr data-status="EARLY LOOK" data-signal="NO PLAY" data-weather-types=""><td><span class="badge early">EARLY LOOK</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>SEA @ WAS</strong><br><small>Northwest Stadium</small></td><td class="kickoff-num" data-sort-value="1790528400">Sun Sep 27 · 12:00 PM CT</td><td class="nfl-num" data-sort-value="40.000000">OVER 40.0 · -110 · BetUS</td><td>40.0 -110 · BetUS</td><td class="nfl-num" data-sort-value="73.300000">73°F</td><td class="nfl-num" data-sort-value="12.800000">13 mph</td><td>Outdoors</td><td class="nfl-num" data-sort-value="-0.232865">-0.2</td><td class="nfl-num" data-sort-value="0.466653">46.7%</td><td>BEFORE 24H WINDOW</td><td class="nfl-num" data-sort-value="124.938028">124.9h</td></tr><tr data-status="EARLY LOOK" data-signal="NO PLAY" data-weather-types=""><td><span class="badge early">EARLY LOOK</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>ARI @ SF</strong><br><small>Levi&#x27;s Stadium</small></td><td class="kickoff-num" data-sort-value="1790539500">Sun Sep 27 · 3:05 PM CT</td><td class="nfl-num" data-sort-value="48.000000">OVER 48.0 · -110 · BetUS</td><td>48.0 -107 · BetRivers</td><td class="nfl-num" data-sort-value="72.000000">72°F</td><td class="nfl-num" data-sort-value="6.800000">7 mph</td><td>Outdoors</td><td class="nfl-num" data-sort-value="-1.766969">-1.8</td><td class="nfl-num" data-sort-value="0.463470">46.3%</td><td>BEFORE 24H WINDOW</td><td class="nfl-num" data-sort-value="128.021362">128.0h</td></tr><tr data-status="EARLY LOOK" data-signal="NO PLAY" data-weather-types=""><td><span class="badge early">EARLY LOOK</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>MIN @ TB</strong><br><small>Raymond James Stadium</small></td><td class="kickoff-num" data-sort-value="1790539500">Sun Sep 27 · 3:05 PM CT</td><td class="nfl-num" data-sort-value="43.000000">OVER 43.0 · -109 · BetRivers</td><td>43.0 -104 · LowVig.ag</td><td class="nfl-num" data-sort-value="84.400000">84°F</td><td class="nfl-num" data-sort-value="3.200000">3 mph</td><td>Outdoors</td><td class="nfl-num" data-sort-value="-1.482808">-1.5</td><td class="nfl-num" data-sort-value="0.429225">42.9%</td><td>BEFORE 24H WINDOW</td><td class="nfl-num" data-sort-value="128.021362">128.0h</td></tr><tr data-status="EARLY LOOK" data-signal="NO PLAY" data-weather-types=""><td><span class="badge early">EARLY LOOK</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>BAL @ DAL</strong><br><small>Maracana Stadium</small></td><td class="kickoff-num" data-sort-value="1790540700">Sun Sep 27 · 3:25 PM CT</td><td class="nfl-num" data-sort-value="52.500000">OVER 52.5 · -110 · BetUS</td><td>52.5 -107 · LowVig.ag</td><td class="nfl-num" data-sort-value="77.300000">77°F</td><td class="nfl-num" data-sort-value="8.000000">8 mph</td><td>Outdoors</td><td class="nfl-num" data-sort-value="-0.396297">-0.4</td><td class="nfl-num" data-sort-value="0.456521">45.7%</td><td>BEFORE 24H WINDOW</td><td class="nfl-num" data-sort-value="128.354695">128.4h</td></tr><tr data-status="EARLY LOOK" data-signal="NO PLAY" data-weather-types="INDOOR"><td><span class="badge early">EARLY LOOK</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>LV @ NO</strong><br><small>Caesars Superdome</small></td><td class="kickoff-num" data-sort-value="1790540700">Sun Sep 27 · 3:25 PM CT</td><td class="nfl-num" data-sort-value="43.500000">OVER 43.5 · -110 · BetUS</td><td>43.5 -107 · LowVig.ag</td><td class="nfl-num" data-sort-value="">—</td><td class="nfl-num" data-sort-value="">—</td><td>Dome</td><td class="nfl-num" data-sort-value="0.166294">+0.2</td><td class="nfl-num" data-sort-value="0.456875">45.7%</td><td>BEFORE 24H WINDOW</td><td class="nfl-num" data-sort-value="128.354695">128.4h</td></tr><tr data-status="EARLY LOOK" data-signal="NO PLAY" data-weather-types=""><td><span class="badge early">EARLY LOOK</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>LA @ DEN</strong><br><small>Empower Field at Mile High</small></td><td class="kickoff-num" data-sort-value="1790554800">Sun Sep 27 · 7:20 PM CT</td><td class="nfl-num" data-sort-value="45.500000">OVER 45.5 · -115 · DraftKings</td><td>45.5 -110 · FanDuel</td><td class="nfl-num" data-sort-value="77.900000">78°F</td><td class="nfl-num" data-sort-value="7.100000">7 mph</td><td>Outdoors</td><td class="nfl-num" data-sort-value="-0.440691">-0.4</td><td class="nfl-num" data-sort-value="0.500890">50.1%</td><td>BEFORE 24H WINDOW</td><td class="nfl-num" data-sort-value="132.271362">132.3h</td></tr><tr data-status="EARLY LOOK" data-signal="NO PLAY" data-weather-types=""><td><span class="badge early">EARLY LOOK</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>PHI @ CHI</strong><br><small>Soldier Field</small></td><td class="kickoff-num" data-sort-value="1790640900">Mon Sep 28 · 7:15 PM CT</td><td class="nfl-num" data-sort-value="44.000000">OVER 44.0 · -110 · LowVig.ag</td><td>44.0 -110 · LowVig.ag</td><td class="nfl-num" data-sort-value="65.500000">66°F</td><td class="nfl-num" data-sort-value="14.100000">14 mph</td><td>Outdoors</td><td class="nfl-num" data-sort-value="-2.096738">-2.1</td><td class="nfl-num" data-sort-value="0.371107">37.1%</td><td>BEFORE 24H WINDOW</td><td class="nfl-num" data-sort-value="156.188028">156.2h</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    
     <section id="ledger">
       <div class="section-head">
         <div><div class="eyebrow">Immutable prospective record</div><h2>Frozen 24-hour decisions</h2></div>
@@ -581,6 +699,7 @@
     Research and paper tracking only. Historical and prospective paper results do not guarantee future wagering performance. The NFL protocol remains production-disabled for real-money use.
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     const search = document.getElementById('gameSearch');
     const statusFilter = document.getElementById('statusFilter');
@@ -603,5 +722,273 @@
     statusFilter.addEventListener('change', filterCards);
     signalFilter.addEventListener('change', filterCards);
   </script>
+
+  <script>
+    // NFL_SITE_PARITY
+    const nflGamePoints = [{"game_id": "2026_03_ATL_GB", "lat": 44.5014769, "lon": -88.0621617, "status": "EARLY LOOK", "signal": "NO PLAY", "state": "BEFORE_24H_WINDOW", "away": "ATL", "home": "GB", "kickoff": "Thu Sep 24 · 7:15 PM CT", "venue": "Lambeau Field", "market": "OVER 44.5 · -110 · FanDuel", "best": "44.5 -108 · BetMGM", "model": "OVER edge -0.0 · model 44.5 · P(OVER) 47.6%", "weather": "24h JMA · 62°F · wind 2 mph", "roof": "outdoors", "weather_types": []}, {"game_id": "2026_03_LAC_BUF", "lat": 42.7737531, "lon": -78.786954, "status": "EARLY LOOK", "signal": "NO PLAY", "state": "BEFORE_24H_WINDOW", "away": "LAC", "home": "BUF", "kickoff": "Sun Sep 27 · 12:00 PM CT", "venue": "Highmark Stadium", "market": "OVER 50.5 · -105 · DraftKings", "best": "50.5 -102 · LowVig.ag", "model": "OVER edge -0.2 · model 50.3 · P(OVER) 50.9%", "weather": "24h JMA · 66°F · wind 4 mph", "roof": "outdoors", "weather_types": []}, {"game_id": "2026_03_CAR_CLE", "lat": 41.5060371, "lon": -81.699586, "status": "EARLY LOOK", "signal": "NO PLAY", "state": "BEFORE_24H_WINDOW", "away": "CAR", "home": "CLE", "kickoff": "Sun Sep 27 · 12:00 PM CT", "venue": "Huntington Bank Field", "market": "OVER 42.0 · -113 · LowVig.ag", "best": "42.0 -109 · BetRivers", "model": "OVER edge -1.2 · model 40.8 · P(OVER) 42.8%", "weather": "24h JMA · 65°F · wind 6 mph", "roof": "outdoors", "weather_types": []}, {"game_id": "2026_03_NYJ_DET", "lat": 42.3401334, "lon": -83.0456783, "status": "EARLY LOOK", "signal": "NO PLAY", "state": "BEFORE_24H_WINDOW", "away": "NYJ", "home": "DET", "kickoff": "Sun Sep 27 · 12:00 PM CT", "venue": "Ford Field", "market": "OVER 48.0 · -112 · BetRivers", "best": "48.0 -110 · BetUS", "model": "OVER edge +2.5 · model 50.5 · P(OVER) 60.6%", "weather": "Dome · weather withheld", "roof": "dome", "weather_types": ["INDOOR"]}, {"game_id": "2026_03_HOU_IND", "lat": 39.7602037, "lon": -86.1638068, "status": "EARLY LOOK", "signal": "NO PLAY", "state": "BEFORE_24H_WINDOW", "away": "HOU", "home": "IND", "kickoff": "Sun Sep 27 · 12:00 PM CT", "venue": "Lucas Oil Stadium", "market": "OVER 43.5 · -110 · DraftKings", "best": "43.5 -107 · LowVig.ag", "model": "OVER edge +3.3 · model 46.8 · P(OVER) 49.5%", "weather": "Retractable roof · weather withheld", "roof": "retractable", "weather_types": ["INDOOR"]}, {"game_id": "2026_03_NE_JAX", "lat": 30.3239164, "lon": -81.6373486, "status": "EARLY LOOK", "signal": "NO PLAY", "state": "BEFORE_24H_WINDOW", "away": "NE", "home": "JAX", "kickoff": "Sun Sep 27 · 12:00 PM CT", "venue": "EverBank Stadium", "market": "OVER 45.5 · -110 · BetUS", "best": "45.5 -105 · FanDuel", "model": "OVER edge -1.0 · model 44.5 · P(OVER) 46.9%", "weather": "24h JMA · 80°F · wind 3 mph", "roof": "outdoors", "weather_types": []}, {"game_id": "2026_03_KC_MIA", "lat": 25.9579623, "lon": -80.2388423, "status": "EARLY LOOK", "signal": "NO PLAY", "state": "BEFORE_24H_WINDOW", "away": "KC", "home": "MIA", "kickoff": "Sun Sep 27 · 12:00 PM CT", "venue": "Hard Rock Stadium", "market": "OVER 46.0 · -110 · BetUS", "best": "46.0 -107 · LowVig.ag", "model": "OVER edge -1.3 · model 44.7 · P(OVER) 44.4%", "weather": "24h JMA · 83°F · wind 12 mph", "roof": "outdoors", "weather_types": []}, {"game_id": "2026_03_TEN_NYG", "lat": 40.813507465, "lon": -74.074342406, "status": "EARLY LOOK", "signal": "NO PLAY", "state": "BEFORE_24H_WINDOW", "away": "TEN", "home": "NYG", "kickoff": "Sun Sep 27 · 12:00 PM CT", "venue": "MetLife Stadium", "market": "OVER 40.5 · -108 · DraftKings", "best": "40.5 -105 · FanDuel", "model": "OVER edge -1.0 · model 39.5 · P(OVER) 45.9%", "weather": "24h JMA · 66°F · wind 14 mph", "roof": "outdoors", "weather_types": []}, {"game_id": "2026_03_CIN_PIT", "lat": 40.4467883, "lon": -80.0157692, "status": "EARLY LOOK", "signal": "NO PLAY", "state": "BEFORE_24H_WINDOW", "away": "CIN", "home": "PIT", "kickoff": "Sun Sep 27 · 12:00 PM CT", "venue": "Acrisure Stadium", "market": "OVER 42.5 · -110 · DraftKings", "best": "42.5 -105 · Bovada", "model": "OVER edge -2.0 · model 40.5 · P(OVER) 39.9%", "weather": "24h JMA · 70°F · wind 6 mph", "roof": "outdoors", "weather_types": []}, {"game_id": "2026_03_SEA_WAS", "lat": 38.907703, "lon": -76.8645083, "status": "EARLY LOOK", "signal": "NO PLAY", "state": "BEFORE_24H_WINDOW", "away": "SEA", "home": "WAS", "kickoff": "Sun Sep 27 · 12:00 PM CT", "venue": "Northwest Stadium", "market": "OVER 40.0 · -110 · BetUS", "best": "40.0 -110 · BetUS", "model": "OVER edge -0.2 · model 39.8 · P(OVER) 46.7%", "weather": "24h JMA · 73°F · wind 13 mph", "roof": "outdoors", "weather_types": []}, {"game_id": "2026_03_ARI_SF", "lat": 37.4031837, "lon": -121.9698094, "status": "EARLY LOOK", "signal": "NO PLAY", "state": "BEFORE_24H_WINDOW", "away": "ARI", "home": "SF", "kickoff": "Sun Sep 27 · 3:05 PM CT", "venue": "Levi's Stadium", "market": "OVER 48.0 · -110 · BetUS", "best": "48.0 -107 · BetRivers", "model": "OVER edge -1.8 · model 46.2 · P(OVER) 46.3%", "weather": "24h JMA · 72°F · wind 7 mph", "roof": "outdoors", "weather_types": []}, {"game_id": "2026_03_MIN_TB", "lat": 27.9759691, "lon": -82.503356, "status": "EARLY LOOK", "signal": "NO PLAY", "state": "BEFORE_24H_WINDOW", "away": "MIN", "home": "TB", "kickoff": "Sun Sep 27 · 3:05 PM CT", "venue": "Raymond James Stadium", "market": "OVER 43.0 · -109 · BetRivers", "best": "43.0 -104 · LowVig.ag", "model": "OVER edge -1.5 · model 41.5 · P(OVER) 42.9%", "weather": "24h JMA · 84°F · wind 3 mph", "roof": "outdoors", "weather_types": []}, {"game_id": "2026_03_BAL_DAL", "lat": -22.912222222222223, "lon": -43.23027777777778, "status": "EARLY LOOK", "signal": "NO PLAY", "state": "BEFORE_24H_WINDOW", "away": "BAL", "home": "DAL", "kickoff": "Sun Sep 27 · 3:25 PM CT", "venue": "Maracana Stadium", "market": "OVER 52.5 · -110 · BetUS", "best": "52.5 -107 · LowVig.ag", "model": "OVER edge -0.4 · model 52.1 · P(OVER) 45.7%", "weather": "24h JMA · 77°F · wind 8 mph", "roof": "outdoors", "weather_types": []}, {"game_id": "2026_03_LV_NO", "lat": 29.9511425, "lon": -90.0810779, "status": "EARLY LOOK", "signal": "NO PLAY", "state": "BEFORE_24H_WINDOW", "away": "LV", "home": "NO", "kickoff": "Sun Sep 27 · 3:25 PM CT", "venue": "Caesars Superdome", "market": "OVER 43.5 · -110 · BetUS", "best": "43.5 -107 · LowVig.ag", "model": "OVER edge +0.2 · model 43.7 · P(OVER) 45.7%", "weather": "Dome · weather withheld", "roof": "dome", "weather_types": ["INDOOR"]}, {"game_id": "2026_03_LA_DEN", "lat": 39.7439402, "lon": -105.0201065, "status": "EARLY LOOK", "signal": "NO PLAY", "state": "BEFORE_24H_WINDOW", "away": "LA", "home": "DEN", "kickoff": "Sun Sep 27 · 7:20 PM CT", "venue": "Empower Field at Mile High", "market": "OVER 45.5 · -115 · DraftKings", "best": "45.5 -110 · FanDuel", "model": "OVER edge -0.4 · model 45.1 · P(OVER) 50.1%", "weather": "24h JMA · 78°F · wind 7 mph", "roof": "outdoors", "weather_types": []}, {"game_id": "2026_03_PHI_CHI", "lat": 41.8624598, "lon": -87.6167762, "status": "EARLY LOOK", "signal": "NO PLAY", "state": "BEFORE_24H_WINDOW", "away": "PHI", "home": "CHI", "kickoff": "Mon Sep 28 · 7:15 PM CT", "venue": "Soldier Field", "market": "OVER 44.0 · -110 · LowVig.ag", "best": "44.0 -110 · LowVig.ag", "model": "OVER edge -2.1 · model 41.9 · P(OVER) 37.1%", "weather": "24h JMA · 66°F · wind 14 mph", "roof": "outdoors", "weather_types": []}];
+    const nflSignalColors = {
+      'STRONG':'#a3e635',
+      'QUALIFIES':'#22c55e',
+      'NO PLAY':'#ef4444'
+    };
+
+    function nflEscapeHtml(value) {
+      return String(value == null ? '' : value).replace(/[&<>'"]/g, function(ch) {
+        return { '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' }[ch];
+      });
+    }
+
+    const nflMapElement = document.getElementById('weekMap');
+    const nflMapCount = document.getElementById('mapCount');
+    const nflMapFilters = [...document.querySelectorAll('.map-filter[data-map-signal]')];
+    const nflMapMarkers = [];
+
+    if (window.L && nflMapElement) {
+      const weekMap = L.map('weekMap', { scrollWheelZoom:true, preferCanvas:true });
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom:19,
+        attribution:'&copy; OpenStreetMap contributors'
+      }).addTo(weekMap);
+
+      const radarTileUrl = function(validKey) {
+        return 'https://mesonet.agron.iastate.edu/c/tile.py/1.0.0/ridge::USCOMP-N0Q-' + validKey + '/{z}/{x}/{y}.png';
+      };
+      const radarMetaUrl = 'https://mesonet.agron.iastate.edu/data/gis/images/4326/USCOMP/n0q_0.json';
+      const radarToggle = document.getElementById('radarToggle');
+      const radarStatus = document.getElementById('radarStatus');
+      let radarLayer = null;
+      let radarValid = null;
+      let radarEnabled = false;
+      let radarRefreshTimer = null;
+
+      if (!weekMap.getPane('radarPane')) {
+        weekMap.createPane('radarPane');
+        weekMap.getPane('radarPane').style.zIndex = 250;
+        weekMap.getPane('radarPane').style.pointerEvents = 'none';
+      }
+
+      function radarKeyFromIso(valid) {
+        const dt = new Date(valid);
+        if (Number.isNaN(dt.getTime())) return null;
+        const y = dt.getUTCFullYear();
+        const mo = String(dt.getUTCMonth() + 1).padStart(2, '0');
+        const d = String(dt.getUTCDate()).padStart(2, '0');
+        const h = String(dt.getUTCHours()).padStart(2, '0');
+        const m = String(dt.getUTCMinutes()).padStart(2, '0');
+        return '' + y + mo + d + h + m;
+      }
+
+      function fallbackRadarValid() {
+        const dt = new Date(Date.now() - 10 * 60 * 1000);
+        dt.setUTCMinutes(Math.floor(dt.getUTCMinutes() / 5) * 5, 0, 0);
+        return dt.toISOString();
+      }
+
+      function formatRadarValid(valid, approximate) {
+        const dt = new Date(valid);
+        if (Number.isNaN(dt.getTime())) return approximate ? 'Radar time approximate.' : 'Radar time unavailable.';
+        const label = new Intl.DateTimeFormat('en-US', {
+          timeZone:'America/Chicago',
+          month:'short', day:'numeric', hour:'numeric', minute:'2-digit',
+          timeZoneName:'short'
+        }).format(dt);
+        return 'Radar valid ' + label + (approximate ? ' (approx.)' : '') + '.';
+      }
+
+      async function latestRadarValid() {
+        try {
+          const response = await fetch(radarMetaUrl + '?_=' + Date.now(), { cache:'no-store' });
+          if (!response.ok) throw new Error('Radar metadata HTTP ' + response.status);
+          const payload = await response.json();
+          const valid = payload && payload.meta && payload.meta.valid;
+          if (!valid || !radarKeyFromIso(valid)) throw new Error('Radar metadata missing valid time');
+          return { valid:valid, approximate:false };
+        } catch (error) {
+          console.warn('Using conservative radar-time fallback:', error);
+          return { valid:fallbackRadarValid(), approximate:true };
+        }
+      }
+
+      function makeRadarLayer(valid) {
+        return L.tileLayer(radarTileUrl(radarKeyFromIso(valid)), {
+          opacity:0.58,
+          pane:'radarPane',
+          maxNativeZoom:12,
+          maxZoom:19,
+          noWrap:true,
+          updateWhenIdle:true,
+          keepBuffer:2,
+          bounds:[[20, -130], [55, -60]],
+          attribution:'NEXRAD: Iowa Environmental Mesonet / NWS'
+        });
+      }
+
+      async function refreshRadar() {
+        if (!radarEnabled) return;
+        if (radarStatus) radarStatus.textContent = 'Checking latest radar scan…';
+        const latest = await latestRadarValid();
+        if (!radarEnabled) return;
+        const latestKey = radarKeyFromIso(latest.valid);
+        const currentKey = radarValid ? radarKeyFromIso(radarValid) : null;
+        if (radarLayer && latestKey === currentKey) {
+          if (!weekMap.hasLayer(radarLayer)) radarLayer.addTo(weekMap);
+          if (radarStatus) radarStatus.textContent = formatRadarValid(latest.valid, latest.approximate);
+          return;
+        }
+        const nextLayer = makeRadarLayer(latest.valid);
+        const previousLayer = radarLayer;
+        let swapped = false;
+        function finishSwap() {
+          if (swapped) return;
+          swapped = true;
+          if (!radarEnabled) {
+            if (weekMap.hasLayer(nextLayer)) weekMap.removeLayer(nextLayer);
+            return;
+          }
+          radarLayer = nextLayer;
+          radarValid = latest.valid;
+          if (previousLayer && previousLayer !== nextLayer && weekMap.hasLayer(previousLayer)) {
+            weekMap.removeLayer(previousLayer);
+          }
+          if (radarStatus) radarStatus.textContent = formatRadarValid(latest.valid, latest.approximate);
+        }
+        nextLayer.once('load', finishSwap);
+        nextLayer.addTo(weekMap);
+        window.setTimeout(finishSwap, 3500);
+      }
+
+      function setRadarEnabled(enabled) {
+        radarEnabled = enabled;
+        try { localStorage.setItem('nflRadarEnabled', enabled ? '1' : '0'); } catch (e) {}
+        if (radarToggle) {
+          radarToggle.classList.toggle('active', enabled);
+          radarToggle.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+          radarToggle.textContent = enabled ? 'Radar: On' : 'Radar: Off';
+        }
+        if (radarRefreshTimer) {
+          window.clearInterval(radarRefreshTimer);
+          radarRefreshTimer = null;
+        }
+        if (!enabled) {
+          if (radarLayer && weekMap.hasLayer(radarLayer)) weekMap.removeLayer(radarLayer);
+          if (radarStatus) radarStatus.textContent = 'Radar off.';
+          return;
+        }
+        refreshRadar();
+        radarRefreshTimer = window.setInterval(refreshRadar, 5 * 60 * 1000);
+      }
+
+      if (radarToggle) {
+        radarToggle.addEventListener('click', function() {
+          setRadarEnabled(!radarEnabled);
+        });
+      }
+      let restoreRadar = false;
+      try { restoreRadar = localStorage.getItem('nflRadarEnabled') === '1'; } catch (e) {}
+      if (restoreRadar) setRadarEnabled(true);
+
+      nflGamePoints.forEach(function(game) {
+        const color = nflSignalColors[game.signal] || '#64748b';
+        const marker = L.circleMarker([game.lat, game.lon], {
+          radius:8, color:'#f8fafc', weight:1.5, fillColor:color, fillOpacity:0.93
+        });
+        const popup = '<div class="map-popup">' +
+          '<div class="popup-status" style="color:' + color + '">' +
+            nflEscapeHtml(game.signal + ' · ' + game.status) + '</div>' +
+          '<h3>' + nflEscapeHtml(game.away) + ' @ ' + nflEscapeHtml(game.home) + '</h3>' +
+          '<div class="popup-sub">' + nflEscapeHtml(game.kickoff) + '<br>' +
+            nflEscapeHtml(game.venue) + '</div>' +
+          '<div class="popup-line"><strong>Market:</strong> ' + nflEscapeHtml(game.market) + '</div>' +
+          '<div class="popup-line"><strong>Best:</strong> ' + nflEscapeHtml(game.best) + '</div>' +
+          '<div class="popup-line"><strong>Model:</strong> ' + nflEscapeHtml(game.model) + '</div>' +
+          '<div class="popup-line"><strong>Weather:</strong> ' + nflEscapeHtml(game.weather) + '</div>' +
+          '<div class="popup-line"><strong>Decision state:</strong> ' + nflEscapeHtml(game.state.replaceAll('_',' ')) + '</div>' +
+          '</div>';
+        marker.bindPopup(popup, { maxWidth:350 });
+        marker.bindTooltip(nflEscapeHtml(game.away + ' @ ' + game.home), { direction:'top' });
+        marker.addTo(weekMap);
+        nflMapMarkers.push({ marker:marker, signal:game.signal });
+      });
+
+      if (nflMapMarkers.length) {
+        const bounds = L.latLngBounds(nflMapMarkers.map(function(item) { return item.marker.getLatLng(); }));
+        weekMap.fitBounds(bounds.pad(0.08), { maxZoom:6 });
+      } else {
+        weekMap.setView([38.5, -97], 4);
+      }
+
+      function filterNflMap(signal) {
+        let shown = 0;
+        nflMapMarkers.forEach(function(item) {
+          const visible = signal === 'ALL' || item.signal === signal;
+          if (visible && !weekMap.hasLayer(item.marker)) item.marker.addTo(weekMap);
+          if (!visible && weekMap.hasLayer(item.marker)) weekMap.removeLayer(item.marker);
+          if (visible) shown += 1;
+        });
+        if (nflMapCount) nflMapCount.textContent = 'Showing ' + shown + ' mapped game' + (shown === 1 ? '' : 's');
+      }
+
+      nflMapFilters.forEach(function(button) {
+        button.addEventListener('click', function() {
+          nflMapFilters.forEach(function(other) { other.classList.remove('active'); });
+          button.classList.add('active');
+          filterNflMap(button.dataset.mapSignal || 'ALL');
+        });
+      });
+    } else if (nflMapElement) {
+      nflMapElement.innerHTML = '<div style="padding:28px;color:#334155">The interactive map library could not load. The full NFL table remains available below.</div>';
+    }
+
+    const boardSearch = document.getElementById('boardSearch');
+    const boardStatusFilter = document.getElementById('boardStatusFilter');
+    const boardSignalFilter = document.getElementById('boardSignalFilter');
+    const weatherFilter = document.getElementById('weatherFilter');
+    const boardBody = document.getElementById('nflBoardBody');
+    const boardRows = boardBody ? [...boardBody.querySelectorAll('tr[data-status]')] : [];
+
+    function filterNflBoard() {
+      const q = boardSearch ? (boardSearch.value || '').toLowerCase() : '';
+      const status = boardStatusFilter ? boardStatusFilter.value : 'ALL';
+      const signal = boardSignalFilter ? boardSignalFilter.value : 'ALL';
+      const weather = weatherFilter ? weatherFilter.value : 'ALL';
+      boardRows.forEach(function(row) {
+        const textMatch = row.innerText.toLowerCase().includes(q);
+        const statusMatch = status === 'ALL' || row.dataset.status === status;
+        const signalMatch = signal === 'ALL' || row.dataset.signal === signal;
+        const weatherTypes = (row.dataset.weatherTypes || '').split(/\s+/).filter(Boolean);
+        const weatherMatch = weather === 'ALL' || weatherTypes.includes(weather);
+        row.style.display = textMatch && statusMatch && signalMatch && weatherMatch ? '' : 'none';
+      });
+    }
+
+    if (boardSearch) boardSearch.addEventListener('input', filterNflBoard);
+    if (boardStatusFilter) boardStatusFilter.addEventListener('change', filterNflBoard);
+    if (boardSignalFilter) boardSignalFilter.addEventListener('change', filterNflBoard);
+    if (weatherFilter) weatherFilter.addEventListener('change', filterNflBoard);
+
+    let nflSortState = { index:null, asc:true };
+    document.querySelectorAll('[data-nfl-sort]').forEach(function(button) {
+      button.addEventListener('click', function() {
+        if (!boardBody) return;
+        const index = Number(button.dataset.nflSort);
+        const asc = nflSortState.index === index ? !nflSortState.asc : true;
+        nflSortState = { index:index, asc:asc };
+        const rows = [...boardBody.querySelectorAll('tr[data-status]')];
+        rows.sort(function(a, b) {
+          const av = a.children[index] ? a.children[index].dataset.sortValue : '';
+          const bv = b.children[index] ? b.children[index].dataset.sortValue : '';
+          const an = Number(av), bn = Number(bv);
+          const aMissing = av === '' || Number.isNaN(an);
+          const bMissing = bv === '' || Number.isNaN(bn);
+          if (aMissing && bMissing) return 0;
+          if (aMissing) return 1;
+          if (bMissing) return -1;
+          return asc ? an - bn : bn - an;
+        });
+        rows.forEach(function(row) { boardBody.appendChild(row); });
+      });
+    });
+  </script>
+
 </body>
 </html>
