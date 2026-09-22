@@ -9,16 +9,10 @@ on:
       - '.github/workflows/manual-climate-context-research.yml'
       - '.github/workflows/manual-historical-research.yml'
       - 'documentation/CLIMATE_CONTEXT_RESEARCH.md'
-      - 'src/model_bakeoff.py'
-      - 'src/fcs_model.py'
-      - 'src/hgb_training_selftest.py'
-      - 'src/hgb_regime_audit.py'
-      - '.github/workflows/hgb-training-regime-audit.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
-  actions: read
 
 jobs:
   validate:
@@ -37,50 +31,3 @@ jobs:
 
       - name: Run synthetic climate-context validation
         run: python -m src.climate_context_selftest
-
-  hgb-regime-audit:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Restore exact live CFB training artifact
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          rm -rf /tmp/cfb-training
-          mkdir -p /tmp/cfb-training data/processed
-          LIVE_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?name=cfb-live-training-data&per_page=100" \
-            --jq '[.artifacts[] | select(.expired == false)] | sort_by(.created_at) | last | .workflow_run.id // empty')
-          test -n "$LIVE_RUN_ID"
-          gh run download "$LIVE_RUN_ID" -n cfb-live-training-data -D /tmp/cfb-training
-          cp "$(find /tmp/cfb-training -type f -name modeling_dataset.csv -print -quit)" data/processed/modeling_dataset.csv
-          TEAM_PATH=$(find /tmp/cfb-training -type f -name team_prior_features.csv -print -quit)
-          if [ -n "$TEAM_PATH" ]; then
-            cp "$TEAM_PATH" data/processed/team_prior_features.csv
-          fi
-
-      - name: Guard pinned HGB configuration
-        run: python -m src.hgb_training_selftest
-
-      - name: Run walk-forward HGB audit
-        run: python -m src.hgb_regime_audit
-
-      - name: Upload HGB audit outputs
-        uses: actions/upload-artifact@v4
-        with:
-          name: hgb-training-regime-audit-pr
-          path: |
-            outputs/hgb_regime_diagnostics.csv
-            outputs/hgb_fixed_threshold_grid.csv
-            outputs/hgb_regime_audit.md
-          if-no-files-found: error
