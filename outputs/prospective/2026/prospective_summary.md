@@ -1,14 +1,14 @@
 # 2026 Prospective Validation Ledger
 
-Protocol version: **2026.5**
+Protocol version: **2026.6**
 
-Protocol SHA-256: `6896b9770568baf57f8d4375019ad98ddc2fe7b2f1a2dabc8374b28193757625`
+Protocol SHA-256: `31e56b010c97f2b28e355236952dac28e3fa11e1c2a9f9e9a9937d4e3f876c98`
 
 Immutable board snapshots and close captures remain the source of truth. Derived ledgers may apply only the explicitly documented integrity corrections in the active protocol.
 
 ## Frozen rules
 
-- General: HGB UNDER edge >= 3.5, total >= 56.
+- General: HGB UNDER edge >= 4, total >= 56.
 - FCS: FCS-only HGB UNDER edge >= 7.5, total >= 56.
 - Official entry: latest eligible scheduled snapshot at least 120 minutes before kickoff.
 - CLV benchmark: latest immutable pre-kickoff market capture within the 90-minute capture window.
