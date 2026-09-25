@@ -29,8 +29,8 @@ Immutable board snapshots and close captures remain the source of truth. Derived
 
 ## Data integrity
 
-- Immutable board snapshots: 57
-- Immutable close captures: 27
+- Immutable board snapshots: 58
+- Immutable close captures: 28
 - Official game entries selected: 758
 
 Every immutable CSV filename contains the first 12 characters of its SHA-256 content hash. The rebuild verifies those hashes before selecting entries.
