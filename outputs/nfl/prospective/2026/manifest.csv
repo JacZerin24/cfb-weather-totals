@@ -1,1 +1,2 @@
-
+kind,path,sha256,size_bytes
+decision_snapshot,outputs/nfl/prospective/2026/decision_snapshots/decision_20260926T164631Z_run36256622530_a1_c5ab7233cea6.csv,c5ab7233cea6e68593ae058fb17e7e7e2316cd43e87cbf6e45dc7959ec90c45c,7461

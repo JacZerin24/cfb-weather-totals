@@ -1,2 +1,2 @@
 graded_official_decisions,graded_entries,wins,losses,pushes,decisive_entries,hit_rate,hit_rate_wilson95_low,hit_rate_wilson95_high,one_sided_p_vs_minus110,paper_units,captured_price_roi,flat_minus110_units,flat_minus110_roi,entries_with_clv,mean_clv_points,median_clv_points,positive_clv_fraction,distinct_entry_weeks,calibration_decisions,mean_predicted_over_probability,observed_over_rate,brier_score,empirical_base_rate,empirical_base_rate_brier,monitored_decisions,monitor_coverage_fraction,late_qualifiers_after_freeze,official_entries_faded,tier_upgrades_later,tier_downgrades_later
-0,0,0,0,0,0,,,,,0.0,,0.0,,0,,,,0,0,,,,,,0,,0,0,0,0
+0,0,0,0,0,0,,,,,0.0,,0.0,,0,,,,0,0,,,,,,0,0.0,0,0,0,0

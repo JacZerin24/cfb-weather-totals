@@ -1,1 +1,10 @@
-
+game_id,week,away_team,home_team,official_signal,official_snapshot_utc,monitor_count,latest_pre_kickoff_signal,late_qualifier_after_freeze,official_entry_faded,tier_upgraded_later,tier_downgraded_later
+2026_03_CAR_CLE,3,CAR,CLE,NO PLAY,2026-09-26 16:46:31.375684+00:00,0,,False,False,False,False
+2026_03_CIN_PIT,3,CIN,PIT,NO PLAY,2026-09-26 16:46:31.375684+00:00,0,,False,False,False,False
+2026_03_HOU_IND,3,HOU,IND,NO PLAY,2026-09-26 16:46:31.375684+00:00,0,,False,False,False,False
+2026_03_KC_MIA,3,KC,MIA,NO PLAY,2026-09-26 16:46:31.375684+00:00,0,,False,False,False,False
+2026_03_LAC_BUF,3,LAC,BUF,NO PLAY,2026-09-26 16:46:31.375684+00:00,0,,False,False,False,False
+2026_03_NE_JAX,3,NE,JAX,NO PLAY,2026-09-26 16:46:31.375684+00:00,0,,False,False,False,False
+2026_03_NYJ_DET,3,NYJ,DET,NO PLAY,2026-09-26 16:46:31.375684+00:00,0,,False,False,False,False
+2026_03_SEA_WAS,3,SEA,WAS,NO PLAY,2026-09-26 16:46:31.375684+00:00,0,,False,False,False,False
+2026_03_TEN_NYG,3,TEN,NYG,NO PLAY,2026-09-26 16:46:31.375684+00:00,0,,False,False,False,False
