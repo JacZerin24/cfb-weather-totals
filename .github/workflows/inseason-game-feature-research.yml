@@ -44,6 +44,7 @@ jobs:
             data/processed/team_inseason_game_advanced_features.csv
             outputs/inseason_game_feature_experiment.csv
             outputs/inseason_game_feature_experiment_by_season.csv
+            outputs/inseason_game_feature_experiment_by_week.csv
             outputs/inseason_game_feature_experiment.md
           retention-days: 30
       - name: Commit research results
@@ -51,7 +52,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add outputs/inseason_game_feature_experiment.csv outputs/inseason_game_feature_experiment_by_season.csv outputs/inseason_game_feature_experiment.md
+          git add outputs/inseason_game_feature_experiment.csv outputs/inseason_game_feature_experiment_by_season.csv outputs/inseason_game_feature_experiment_by_week.csv outputs/inseason_game_feature_experiment.md
           git commit -m "Update in-season game feature experiment" || echo "No output changes"
           git pull --rebase origin main
           git push origin main
