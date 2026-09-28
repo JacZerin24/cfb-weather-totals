@@ -47,6 +47,20 @@ Features: offense/defense PPA, success rate, plays per drive, cumulative plays/d
 | hybrid         |          2024 | under_edge_4_total_56 |      50 |       49 |     31 |       18 |        1 |   0.632653 |           10.1818   |   0.207792   |         6.01082 |            -2.98      |
 | hybrid         |          2025 | under_edge_4_total_56 |      36 |       36 |     18 |       18 |        0 |   0.5      |           -1.63636  |  -0.0454545  |         5.26597 |            -2.5       |
 
+## By-week production-screen comparison
+
+| variant        | test_season   | screen                |   games |   graded |   wins |   losses |   pushes |   hit_rate |   net_units_1u_each |   roi_per_1u |   avg_pred_edge |   avg_actual_residual | week_bucket   |
+|:---------------|:--------------|:----------------------|--------:|---------:|-------:|---------:|---------:|-----------:|--------------------:|-------------:|----------------:|----------------------:|:--------------|
+| baseline_prior | ALL           | under_edge_4_total_56 |     137 |      137 |     78 |       59 |        0 |   0.569343 |            11.9091  |    0.0869277 |         6.65167 |             -0.879562 | weeks_2_4     |
+| baseline_prior | ALL           | under_edge_4_total_56 |     126 |      126 |     69 |       57 |        0 |   0.547619 |             5.72727 |    0.0454545 |         6.17422 |             -0.563492 | weeks_5_7     |
+| baseline_prior | ALL           | under_edge_4_total_56 |     348 |      341 |    203 |      138 |        7 |   0.595308 |            46.5455  |    0.136497  |         6.4132  |             -1.88075  | weeks_8_plus  |
+| inseason_only  | ALL           | under_edge_4_total_56 |     146 |      145 |     73 |       72 |        1 |   0.503448 |            -5.63636 |   -0.0388715 |         6.5789  |             -0.116438 | weeks_2_4     |
+| inseason_only  | ALL           | under_edge_4_total_56 |     145 |      145 |     80 |       65 |        0 |   0.551724 |             7.72727 |    0.0532915 |         6.63055 |             -1.01034  | weeks_5_7     |
+| inseason_only  | ALL           | under_edge_4_total_56 |     242 |      238 |    140 |       98 |        4 |   0.588235 |            29.2727  |    0.122995  |         6.33871 |             -0.997934 | weeks_8_plus  |
+| hybrid         | ALL           | under_edge_4_total_56 |     158 |      157 |     93 |       64 |        1 |   0.592357 |            20.5455  |    0.130863  |         6.64776 |             -2.31962  | weeks_2_4     |
+| hybrid         | ALL           | under_edge_4_total_56 |     166 |      166 |     89 |       77 |        0 |   0.536145 |             3.90909 |    0.0235487 |         6.50725 |             -0.171687 | weeks_5_7     |
+| hybrid         | ALL           | under_edge_4_total_56 |     319 |      312 |    179 |      133 |        7 |   0.573718 |            29.7273  |    0.0952797 |         6.66917 |             -1.51411  | weeks_8_plus  |
+
 ## Diagnostics
 
 | variant        |   test_season |   train_games |   test_games |   numeric_features |   categorical_features |   prior_feature_count |   inseason_feature_count |     mae |
