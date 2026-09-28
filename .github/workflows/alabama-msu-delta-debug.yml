@@ -33,7 +33,7 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add outputs/alabama_msu_delta_attribution.csv outputs/alabama_msu_delta_summary.csv
+          git add outputs/alabama_msu_delta_attribution.csv outputs/alabama_msu_delta_summary.csv outputs/alabama_msu_delta_response_grid.csv
           git commit -m "Add Alabama MSU model delta attribution"
           git pull --rebase origin main
           git push origin main
