@@ -2,9 +2,6 @@ name: In-Season Game Feature Research
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - '.github/inseason-game-feature-research-trigger.txt'
 
 permissions:
   contents: write
