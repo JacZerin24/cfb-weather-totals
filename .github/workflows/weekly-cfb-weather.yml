@@ -1,9 +1,6 @@
 name: Weekly CFB Weather Totals
 
 on:
-  push:
-    paths:
-      - '.github/cfb-inseason-shadow-trigger.txt'
   # Every run of this workflow is an operational board refresh. Scheduled,
   # watchdog, and ordinary manual runs all attempt current FCS market data
   # before the persisted market cache is allowed to fill any remaining gaps.
