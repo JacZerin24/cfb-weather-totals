@@ -1,6 +1,9 @@
 name: Weekly CFB Weather Totals
 
 on:
+  push:
+    paths:
+      - '.github/cfb-inseason-shadow-trigger.txt'
   # Every run of this workflow is an operational board refresh. Scheduled,
   # watchdog, and ordinary manual runs all attempt current FCS market data
   # before the persisted market cache is allowed to fill any remaining gaps.
@@ -157,6 +160,23 @@ jobs:
             cp "$TEAM_PATH" data/processed/team_prior_features.csv
           fi
 
+          INSEASON_PATH=$(find /tmp/cfb-training -type f -name team_inseason_game_advanced_features.csv -print -quit)
+          if [ -z "$INSEASON_PATH" ]; then
+            INSEASON_RUN_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?name=cfb-inseason-game-feature-research&per_page=100" \
+              --jq '[.artifacts[] | select(.expired == false)] | sort_by(.created_at) | last | .workflow_run.id // empty')
+            if [ -n "$INSEASON_RUN_ID" ]; then
+              rm -rf /tmp/cfb-inseason-research
+              mkdir -p /tmp/cfb-inseason-research
+              gh run download "$INSEASON_RUN_ID" -n cfb-inseason-game-feature-research -D /tmp/cfb-inseason-research
+              INSEASON_PATH=$(find /tmp/cfb-inseason-research -type f -name team_inseason_game_advanced_features.csv -print -quit)
+            fi
+          fi
+          if [ -n "$INSEASON_PATH" ]; then
+            cp "$INSEASON_PATH" data/processed/team_inseason_game_advanced_features.csv
+          else
+            echo "WARNING: historical in-season challenger features are unavailable; shadow capture may skip."
+          fi
+
           echo "Restored $(du -h data/processed/modeling_dataset.csv | cut -f1) modeling dataset."
 
       - name: Refresh live training artifact
@@ -166,6 +186,7 @@ jobs:
           path: |
             data/processed/modeling_dataset.csv
             data/processed/team_prior_features.csv
+            data/processed/team_inseason_game_advanced_features.csv
           if-no-files-found: error
           retention-days: 90
 
@@ -218,6 +239,13 @@ jobs:
 
       # Research-only challengers run only after the official prospective step.
       # They cannot change weekly_board.csv, weekly_picks.csv, thresholds, or the official ledger.
+      - name: Capture research-only in-season form challenger
+        continue-on-error: true
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: |
+          python -m src.inseason_shadow_capture
+
       - name: Capture research-only orientation challenger
         continue-on-error: true
         env:
