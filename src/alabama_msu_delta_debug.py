@@ -108,7 +108,22 @@ def main():
         'conference_game':meta.get('conference_game'),
     }])
     write_df(summary,'outputs/alabama_msu_delta_summary.csv')
+
+    grid_rows=[]
+    for feature, values in [
+        ('humidity', np.arange(78.0, 89.01, 0.5)),
+        ('dewpoint_f', np.arange(69.0, 77.01, 0.5)),
+        ('closing_total', np.arange(58.0, 62.01, 0.5)),
+    ]:
+        for value in values:
+            d=old_df.copy()
+            d.loc[:,feature]=float(value)
+            pred=score(d)
+            grid_rows.append({'feature':feature,'value':float(value),'pred_market_residual':pred,'projected_total_using_old_market':float(old['closing_total'])+pred})
+    grid=pd.DataFrame(grid_rows)
+    write_df(grid,'outputs/alabama_msu_delta_response_grid.csv')
     print(summary.to_string(index=False))
     print(detail.to_string(index=False))
+    print(grid.to_string(index=False))
 
 if __name__=='__main__': main()
