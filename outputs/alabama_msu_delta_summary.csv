@@ -1,0 +1,2 @@
+old_replayed_residual,old_recorded_residual,new_replayed_residual,new_recorded_residual,residual_change,shapley_sum,old_market_total,new_market_total,old_projected_total,new_projected_total,home_pregame_elo,away_pregame_elo,neutral_site,conference_game
+-4.427073077051678,-4.427073077051678,-7.819616554977638,-7.819616554977638,-3.39254347792596,-3.39254347792596,59.5,60.5,55.07292692294832,52.680383445022365,1674,1929,False,True
