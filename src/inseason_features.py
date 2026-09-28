@@ -4,6 +4,7 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
+import requests
 
 from .build_team_features import clean_name
 from .cfbd_client import CFBDClient
@@ -89,13 +90,20 @@ def fetch_advanced_snapshot(
 ) -> pd.DataFrame:
     if int(target_week) <= 1:
         return pd.DataFrame(columns=['season', 'week', 'feature_team'])
-    records = client.get('/stats/season/advanced', {
-        'year': int(season),
-        'startWeek': 1,
-        'endWeek': int(target_week) - 1,
-        'classification': 'fbs',
-        'excludeGarbageTime': True,
-    })
+    try:
+        records = client.get('/stats/season/advanced', {
+            'year': int(season),
+            'startWeek': 1,
+            'endWeek': int(target_week) - 1,
+            'classification': 'fbs',
+            'excludeGarbageTime': True,
+        })
+    except requests.HTTPError as exc:
+        print(
+            f'WARNING: advanced in-season snapshot unavailable for {season} '
+            f'through week {int(target_week) - 1}: {exc}'
+        )
+        return pd.DataFrame(columns=['season', 'week', 'feature_team'])
     return normalize_advanced_snapshot(records, int(season), int(target_week))
 
 
