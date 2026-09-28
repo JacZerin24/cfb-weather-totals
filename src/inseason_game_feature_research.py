@@ -119,6 +119,7 @@ def main() -> None:
 
     summaries = []
     seasons = []
+    week_buckets = []
     diagnostics = []
     for variant in ['baseline_prior', 'inseason_only', 'hybrid']:
         pred, diag, seasonal = run_variant(enriched, variant)
@@ -132,11 +133,23 @@ def main() -> None:
         seasons.extend(seasonal)
         diagnostics.extend(diag)
 
+        week_num = pd.to_numeric(pred.get('week'), errors='coerce')
+        for bucket, mask in [
+            ('weeks_2_4', week_num.between(2, 4)),
+            ('weeks_5_7', week_num.between(5, 7)),
+            ('weeks_8_plus', week_num.ge(8)),
+        ]:
+            bucket_row = grade_under_screen(pred[mask.fillna(False)], variant)
+            bucket_row['week_bucket'] = bucket
+            week_buckets.append(bucket_row)
+
     summary = pd.DataFrame(summaries)
     by_season = pd.DataFrame(seasons)
+    by_week = pd.DataFrame(week_buckets)
     diag_df = pd.DataFrame(diagnostics)
     write_df(summary, 'outputs/inseason_game_feature_experiment.csv')
     write_df(by_season, 'outputs/inseason_game_feature_experiment_by_season.csv')
+    write_df(by_week, 'outputs/inseason_game_feature_experiment_by_week.csv')
 
     lines = [
         '# In-Season Game-Level Feature Experiment',
@@ -152,6 +165,10 @@ def main() -> None:
         '## By-season production-screen comparison',
         '',
         by_season.to_markdown(index=False) if not by_season.empty else '_No results._',
+        '',
+        '## By-week production-screen comparison',
+        '',
+        by_week.to_markdown(index=False) if not by_week.empty else '_No results._',
         '',
         '## Diagnostics',
         '',
