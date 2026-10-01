@@ -14,4 +14,4 @@ game_id,week,away_team,home_team,official_signal,official_snapshot_utc,monitor_c
 2026_03_LV_NO,3,LV,NO,NO PLAY,2026-09-26 21:36:01.463715+00:00,4,NO PLAY,False,False,False,False
 2026_03_LA_DEN,3,LA,DEN,NO PLAY,2026-09-26 23:55:49.484976+00:00,5,NO PLAY,False,False,False,False
 2026_03_PHI_CHI,3,PHI,CHI,NO PLAY,2026-09-27 23:59:36.471987+00:00,3,NO PLAY,False,False,False,False
-2026_04_PIT_CLE,4,PIT,CLE,NO PLAY,2026-10-01 00:50:58.739416+00:00,1,NO PLAY,False,False,False,False
+2026_04_PIT_CLE,4,PIT,CLE,NO PLAY,2026-10-01 00:50:58.739416+00:00,2,NO PLAY,False,False,False,False
