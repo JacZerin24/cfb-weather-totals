@@ -98,6 +98,15 @@
     "grid_y": 32,
     "office": "JAX"
   },
+  "29.6949,-95.5167": {
+    "checked_at": "2026-10-02T18:29:55.133319+00:00",
+    "forecast_hourly_url": "https://api.weather.gov/gridpoints/HGX/57,92/forecast/hourly",
+    "forecast_url": "https://api.weather.gov/gridpoints/HGX/57,92/forecast",
+    "grid_data_url": "https://api.weather.gov/gridpoints/HGX/57,92",
+    "grid_x": 57,
+    "grid_y": 92,
+    "office": "HGX"
+  },
   "29.7163,-95.4093": {
     "checked_at": "2026-09-28T18:11:58.266913+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/HGX/61,93/forecast/hourly",
@@ -351,7 +360,7 @@
     "office": "JAN"
   },
   "32.2192,-98.2131": {
-    "checked_at": "2026-08-27T23:28:00.498963+00:00",
+    "checked_at": "2026-10-02T18:29:54.891783+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/FWD/36,80/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/FWD/36,80/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/FWD/36,80",
