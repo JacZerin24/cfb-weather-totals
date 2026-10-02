@@ -2286,7 +2286,7 @@
     "office": "OTX"
   },
   "46.8639,-113.9815": {
-    "checked_at": "2026-08-27T23:28:00.193128+00:00",
+    "checked_at": "2026-10-02T16:18:55.356568+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/MSO/105,131/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/MSO/105,131/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/MSO/105,131",
