@@ -6,7 +6,11 @@ on:
       - 'src/nfl/build_team_context.py'
       - 'src/nfl/team_context_bakeoff.py'
       - 'src/nfl/team_context_decision_time_2025.py'
+      - 'src/nfl/team_context_long_discovery.py'
+      - 'src/nfl/team_context_phase2_eval.py'
+      - 'src/nfl/team_context_phase2_decision_time_2025.py'
       - 'documentation/NFL_TEAM_CONTEXT_CHALLENGER_PREREG.md'
+      - 'documentation/NFL_TEAM_CONTEXT_PHASE2_PREREG.md'
       - '.github/workflows/nfl-team-context-research.yml'
   workflow_dispatch:
 
@@ -17,7 +21,7 @@ permissions:
 jobs:
   team-context:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 120
     env:
       FORECAST_SOURCE_SHA: da6d34c767d51f01a40edf51f210291dd7cabbed
       MARKET_DB_URL: https://github.com/bobby-king3/nfl-market-movement-tracker/releases/download/v1.1.1/nfl_odds.duckdb
@@ -71,11 +75,22 @@ jobs:
           cp "$DATASET" data/nfl/processed/forecast_native_dataset.csv
           echo "Restored forecast-native dataset from run $RUN_ID."
 
+      - name: Build long-history market/context dataset
+        run: |
+          python -m src.nfl.pull_historical
+          python -m src.nfl.build_dataset
+
       - name: Build leak-free pregame team context
         run: python -m src.nfl.build_team_context
 
-      - name: Run chronological team-context challenger
+      - name: Reproduce broad Phase 1 challenger
         run: python -m src.nfl.team_context_bakeoff
+
+      - name: Run preregistered pre-2018 feature discovery
+        run: python -m src.nfl.team_context_long_discovery
+
+      - name: Run Phase 2 reduced forecast-native evaluation
+        run: python -m src.nfl.team_context_phase2_eval
 
       - name: Download and verify public 2025 NFL market database
         run: |
@@ -84,10 +99,15 @@ jobs:
             "$MARKET_DB_URL" -o /tmp/nfl_odds.duckdb
           echo "${MARKET_DB_SHA256}  /tmp/nfl_odds.duckdb" | sha256sum --check -
 
-      - name: Run 2025 decision-time challenger holdout
+      - name: Reproduce Phase 1 2025 decision-time holdout
         env:
           NFL_MARKET_DB: /tmp/nfl_odds.duckdb
         run: python -m src.nfl.team_context_decision_time_2025
+
+      - name: Run Phase 2 2025 decision-time holdout
+        env:
+          NFL_MARKET_DB: /tmp/nfl_odds.duckdb
+        run: python -m src.nfl.team_context_phase2_decision_time_2025
 
       - name: Upload research artifacts
         uses: actions/upload-artifact@v4
@@ -96,6 +116,8 @@ jobs:
           path: |
             outputs/nfl/team_context_*.csv
             outputs/nfl/team_context_*.md
+            outputs/nfl/team_context_*.json
             data/nfl/processed/team_context_features.csv
+            data/nfl/processed/team_context_long_history.csv
             data/nfl/processed/team_game_context.csv
           if-no-files-found: error
