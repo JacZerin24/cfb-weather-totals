@@ -1,4 +1,4 @@
 scope,official_games,qualifying_entries,settled_qualifying_entries,excluded_qualifying_entries,pending_qualifying_entries,graded_ex_pushes,wins,losses,pushes,hit_rate_ex_pushes,net_units_1u_at_-110,roi_per_graded_entry,qualifiers_with_clv,average_clv_points,median_clv_points,positive_clv_rate
-ALL,872,11,4,1,6,4,3,1,0,0.75,1.7272727273,0.431818181825,2,-0.5,-0.5,0.5
-FCS-only HGB,233,7,4,1,2,4,3,1,0,0.75,1.7272727273,0.431818181825,2,-0.5,-0.5,0.5
-GENERAL HGB,639,4,0,0,4,0,0,0,0,,0.0,,0,,,
+ALL,872,11,10,1,0,10,6,4,0,0.6,1.4545454545999998,0.14545454545999997,4,0.875,0.25,0.5
+FCS-only HGB,233,7,6,1,0,6,4,2,0,0.6666666666666666,1.6363636364,0.27272727273333336,3,1.3333333333333333,1.0,0.6666666666666666
+GENERAL HGB,639,4,4,0,0,4,2,2,0,0.5,-0.18181818179999987,-0.04545454544999997,1,-0.5,-0.5,0.0
