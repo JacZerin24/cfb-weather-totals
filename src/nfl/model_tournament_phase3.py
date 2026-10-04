@@ -55,6 +55,7 @@ from .forecast_native_bakeoff import (
     _weather_features,
 )
 from .model_bakeoff import BREAKEVEN
+from .roi_search import _deep_models as _v1_deep_models
 
 
 DATA_PATH = 'data/nfl/processed/model_tournament_dataset.csv'
@@ -374,17 +375,7 @@ def _regressors(
             Ridge(alpha=25.0),
             spline=True,
         ),
-        'rf_v1': _pipe(
-            nums,
-            cats,
-            RandomForestRegressor(
-                n_estimators=150,
-                min_samples_leaf=25,
-                max_features=0.8,
-                random_state=RANDOM_STATE,
-                n_jobs=2,
-            ),
-        ),
+        'rf_v1': _v1_deep_models(nums, cats)['reg_rf_leaf25'][1],
         'random_forest': _pipe(
             nums,
             cats,
@@ -493,17 +484,7 @@ def _classifiers(
             ),
             spline=True,
         ),
-        'rf_v1': _pipe(
-            nums,
-            cats,
-            RandomForestClassifier(
-                n_estimators=150,
-                min_samples_leaf=25,
-                max_features=0.8,
-                random_state=RANDOM_STATE,
-                n_jobs=2,
-            ),
-        ),
+        'rf_v1': _v1_deep_models(nums, cats)['cls_rf_leaf25'][1],
         'random_forest': _pipe(
             nums,
             cats,
@@ -2022,11 +2003,10 @@ def main() -> None:
     df = df[
         df[f'forecast_complete_{LEAD}h'].fillna(False)
     ].copy()
-    df = df[
-        df['team_context_eligible'].fillna(False).astype(bool)
-        & df['dynamic_context_eligible'].fillna(False).astype(bool)
-    ].copy()
-
+    # Do not filter the historical training sample on new-feature availability.
+    # The frozen v1 benchmark must see exactly the same forecast-native rows it
+    # originally used. Challenger pipelines impute the small number of missing
+    # team/dynamic values instead.
     _, _, unavailable = _optional_models()
     reg, cls, errors = _fit_outer_predictions(df)
 
