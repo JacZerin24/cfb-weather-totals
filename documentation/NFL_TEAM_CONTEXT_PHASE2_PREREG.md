@@ -2,7 +2,7 @@
 
 **Branch:** `research/nfl-team-context-v2`  
 **Frozen production/paper baseline:** `nfl_totals_paper_v1` (must remain unchanged)  
-**Purpose:** Use pre-2018 NFL history to discover a compact football-context subset without selecting features on the 2018-2025 forecast-native evaluation period.
+**Purpose:** Use pre-2018 NFL history to discover a compact football-context subset without selecting features on the 2018-2025 forecast-native period.
 
 ## Why this phase exists
 
@@ -21,7 +21,8 @@ The study is intentionally designed so feature-group selection happens only on *
 - Long-history modeled seasons: 2006-2017 for feature discovery/confirmation.
 - Discovery walk-forward block: 2009-2013.
 - Internal confirmation block: 2014-2017.
-- Forecast-native evaluation: 2018-2025.
+- Forecast-native seasons 2018-2020 are training/warmup for the weather-aware models.
+- Forecast-native out-of-sample evaluation: 2021-2025.
 - True decision-time market check: 2025 archived 24-hour market snapshots.
 
 All team metrics are calculated from the previous eight completed games and shifted by one game. At least four prior games are required for both teams.
@@ -124,7 +125,7 @@ Using the fixed selected feature group, compare on the forecast-native period:
 
 The football feature group and 50/50 blend weight are frozen before any Phase 2 forecast-native results are read.
 
-Evaluation is chronological expanding-window from 2018 through 2025.
+The weather-aware forecast-native models use 2018-2020 as training/warmup and are scored out of sample on **2021-2025**, matching the existing v1 bakeoff design.
 
 ## Betting thresholds
 
