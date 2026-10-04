@@ -138,28 +138,28 @@ The following probability models are fixed:
 11. LightGBM classifier;
 12. CatBoost classifier.
 
-## Fixed model variants
+## Fixed representative configurations
 
-To permit meaningful complexity without an unrestricted search:
+Phase 3 prioritizes **breadth across model families**, not a large hyperparameter search within each family. One representative configuration is fixed for each family before results:
 
-- Ridge alpha: 10, 50
-- Elastic Net alpha: 0.02, 0.08; l1_ratio fixed 0.15
+- Ridge alpha: 25
+- Elastic Net alpha: 0.05; l1_ratio 0.15
 - Huber epsilon: 1.35
 - spline knots: 4; degree 3
-- RF min leaf: 15, 25, 50
-- Extra Trees min leaf: 15, 35
-- HistGB min leaf: 20, 35, 60
-- GradientBoosting depth: 2, 3
-- AdaBoost estimators: 100
-- RBF SVR C: 0.5, 2.0; gamma='scale'
-- MLP: hidden layers (32,) and (32,16), alpha 0.01
-- XGBoost: max_depth 2 or 3, learning_rate 0.03, n_estimators 250
-- LightGBM: num_leaves 7 or 15, learning_rate 0.03, n_estimators 250
-- CatBoost: depth 4 or 6, learning_rate 0.03, iterations 250
+- Random Forest: 250 trees, min leaf 25
+- Extra Trees: 250 trees, min leaf 25
+- HistGradientBoosting: 250 iterations, min leaf 35
+- GradientBoosting: 200 trees, depth 2, learning rate 0.03
+- AdaBoost: 150 estimators, learning rate 0.03
+- RBF SVR/SVC: C 1.0, gamma='scale'
+- MLP: hidden layers (32,16), alpha 0.01, early stopping
+- XGBoost: depth 3, learning rate 0.03, 250 trees
+- LightGBM: 15 leaves, learning rate 0.03, 250 trees
+- CatBoost: depth 5, learning rate 0.03, 250 iterations
 
-The same general complexity variants apply to classifiers where relevant.
+No within-family tuning is allowed in this phase. A later phase may tune a family only if Phase 3 establishes that the family itself is promising.
 
-## Chronological nested evaluation
+## Chronological evaluation and online selection
 
 Primary horizon: 24 hours.
 
@@ -170,57 +170,53 @@ Outer test seasons:
 - 2024
 - 2025
 
-For each outer season:
-- training data contains only earlier seasons;
-- an inner chronological evaluation among earlier seasons selects model/feature combinations;
-- the outer season is not used for selection.
+Every candidate is fit only on seasons before the outer test season.
 
-### Inner selection metric
+All fixed candidate/model/feature combinations therefore receive genuine walk-forward predictions for the same outer seasons.
+
+For adaptive selection systems, the tournament uses **only previously completed outer-season predictions**:
+- no 2021 adaptive pick is produced;
+- the 2022 adaptive pick may use only 2021 OOS performance;
+- the 2023 pick may use 2021-2022;
+- and so on.
+
+This creates an online model-selection simulation without repeatedly tuning on the current outer season.
+
+### Online selection metric
 
 Regression candidates:
-- primary: mean inner-fold residual MAE;
-- tie-breaker: median inner-fold MAE;
-- second tie-breaker: lower model complexity according to a fixed complexity rank.
+- primary: pooled prior-OOS residual MAE;
+- tie-breaker: median prior-season MAE;
+- second tie-breaker: lower fixed complexity rank.
 
 Classification candidates:
-- primary: mean inner-fold Brier score;
-- tie-breaker: mean log loss;
-- second tie-breaker: lower complexity rank.
+- primary: pooled prior-OOS Brier score;
+- tie-breaker: pooled log loss;
+- second tie-breaker: lower fixed complexity rank.
 
 ## Ensemble / stacking systems
 
 Three ensemble challengers are fixed:
 
 ### selected_pair
-For each outer season:
-- use the inner-selected best regression candidate;
-- use the inner-selected best classification candidate;
-- apply frozen QUALIFIES / STRONG thresholds.
+Beginning in 2022:
+- select the regression candidate with the best pooled MAE on prior outer seasons only;
+- select the classifier candidate with the best pooled Brier score on prior outer seasons only;
+- use those already-generated current-season predictions together under the frozen qualifier rules.
 
 ### diversified_average
-For each outer season:
-- select the best candidate from each of four broad regression families: linear/spline, tree bagging, boosting, nonlinear/neural;
-- average available regression predictions;
-- do the analogous family-level average for classification probabilities.
+Beginning in 2022:
+- within each broad family (linear/spline, tree bagging, boosting, nonlinear/neural), choose the candidate with the best prior-OOS score;
+- average the current-season predictions of the selected family representatives.
 
 ### stacked_meta
-For each outer season:
-- generate inner out-of-fold predictions using a fixed compact base library:
-  - Ridge
-  - spline-Ridge
-  - Random Forest
-  - Extra Trees
-  - HistGradientBoosting
-  - XGBoost
-  - LightGBM
-  - CatBoost
-  - MLP
-- fit a Ridge meta-regressor on OOF regression predictions;
-- fit logistic regression on OOF classifier probabilities;
-- refit base models on all outer-training data;
-- apply the frozen meta-model to the outer test season.
+Beginning only when at least **two prior outer seasons** exist:
+- use the fixed compact base library: Ridge, spline-Ridge, Random Forest, Extra Trees, HistGradientBoosting, XGBoost, LightGBM, CatBoost, MLP;
+- fit a Ridge meta-regressor on pooled prior-OOS regression predictions;
+- fit logistic regression on pooled prior-OOS classifier probabilities;
+- apply those meta-models to the current outer season.
 
-If fewer than four complete inner folds exist, stacked_meta is skipped for that outer season rather than weakening the rule.
+Thus stacked_meta first becomes eligible in 2023.
 
 ## Dynamic standalone system
 
