@@ -31,7 +31,7 @@ This status never authorizes wagering automatically. REVIEW_ELIGIBLE means only 
 
 ## Frozen-signal stability
 
-- Monitor coverage: 68.00%
+- Monitor coverage: 96.15%
 - Official NO PLAYs that qualified later: 0
 - Official entries that faded to NO PLAY later: 0
 - Later tier upgrades: 0
@@ -39,6 +39,6 @@ This status never authorizes wagering automatically. REVIEW_ELIGIBLE means only 
 
 ## Pre-registered gate
 
-- Unmet checks: sample_graded_entries, sample_graded_official_decisions, sample_entries_with_clv, sample_distinct_entry_weeks, sample_monitor_coverage, performance_positive_captured_price_roi, performance_positive_mean_clv, performance_nonnegative_median_clv, performance_positive_clv_fraction, performance_brier_at_most_threshold, performance_brier_not_worse_than_empirical_base_rate
+- Unmet checks: sample_graded_entries, sample_graded_official_decisions, sample_entries_with_clv, sample_distinct_entry_weeks, performance_positive_captured_price_roi, performance_positive_mean_clv, performance_nonnegative_median_clv, performance_positive_clv_fraction, performance_brier_at_most_threshold, performance_brier_not_worse_than_empirical_base_rate
 
 The frozen v1 protocol and its historical backtests are not re-optimized from these results.
