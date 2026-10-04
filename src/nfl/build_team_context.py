@@ -15,14 +15,19 @@ PBP_URL = (
     'https://github.com/nflverse/nflverse-data/releases/download/'
     'pbp/play_by_play_{season}.parquet'
 )
-HISTORY_START = 2017
-MODELED_START = 2018
+# 2005 is warmup history for the first modeled long-history season (2006).
+HISTORY_START = 2005
+LONG_MODELED_START = 2006
+FORECAST_MODELED_START = 2018
 END_SEASON = 2025
 ROLLING_GAMES = 8
 MIN_PRIOR_GAMES = 4
+
 FORECAST_DATA = 'data/nfl/processed/forecast_native_dataset.csv'
+BASE_DATA = 'data/nfl/processed/modeling_dataset.csv'
 OUT_TEAM_GAMES = 'data/nfl/processed/team_game_context.csv'
 OUT_MATCHUPS = 'data/nfl/processed/team_context_features.csv'
+OUT_LONG_MATCHUPS = 'data/nfl/processed/team_context_long_history.csv'
 
 PBP_COLUMNS = [
     'game_id', 'season', 'season_type', 'week', 'game_date',
@@ -179,10 +184,11 @@ def _game_team_rows(plays: pd.DataFrame) -> pd.DataFrame:
         columns={name: f'def_{name}_allowed' for name in OFF_METRICS}
     )
 
-    dates = (
-        plays[['game_id'] + [c for c in ['game_date', 'home_team', 'away_team'] if c in plays.columns]]
-        .drop_duplicates('game_id')
-    )
+    date_cols = [
+        c for c in ['game_date', 'home_team', 'away_team']
+        if c in plays.columns
+    ]
+    dates = plays[['game_id'] + date_cols].drop_duplicates('game_id')
     out = offense.merge(
         defense[['game_id', 'team', 'def_plays'] + DEF_METRICS],
         on=['game_id', 'team'],
@@ -268,6 +274,43 @@ def _matchup_features(games: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
+def _merge_games(
+    games: pd.DataFrame,
+    team_context: pd.DataFrame,
+    start_season: int,
+) -> pd.DataFrame:
+    out = games.copy()
+    out['season'] = pd.to_numeric(out['season'], errors='coerce')
+    out = out[out['season'].between(start_season, END_SEASON)].copy()
+    out = _attach_side(out, team_context, 'home')
+    out = _attach_side(out, team_context, 'away')
+    out = _matchup_features(out)
+
+    min_prior = pd.concat(
+        [
+            pd.to_numeric(out['home_team_games_prior'], errors='coerce'),
+            pd.to_numeric(out['away_team_games_prior'], errors='coerce'),
+        ],
+        axis=1,
+    ).min(axis=1)
+    out['team_context_eligible'] = min_prior.ge(MIN_PRIOR_GAMES)
+    return out
+
+
+def _coverage(games: pd.DataFrame) -> pd.DataFrame:
+    coverage = (
+        games.groupby('season', as_index=False)
+        .agg(
+            games=('game_id', 'count'),
+            team_context_eligible=('team_context_eligible', 'sum'),
+        )
+    )
+    coverage['coverage_rate'] = (
+        coverage['team_context_eligible'] / coverage['games']
+    )
+    return coverage
+
+
 def main() -> None:
     if not Path(FORECAST_DATA).exists():
         raise FileNotFoundError(
@@ -290,41 +333,40 @@ def main() -> None:
     team_context = _pregame_rolls(team_games)
     write_df(team_context, OUT_TEAM_GAMES)
 
-    games = read_df(FORECAST_DATA).copy()
-    games['season'] = pd.to_numeric(games['season'], errors='coerce')
-    games = games[games['season'].between(MODELED_START, END_SEASON)].copy()
-    games = _attach_side(games, team_context, 'home')
-    games = _attach_side(games, team_context, 'away')
-    games = _matchup_features(games)
-
-    min_prior = pd.concat(
-        [
-            pd.to_numeric(games['home_team_games_prior'], errors='coerce'),
-            pd.to_numeric(games['away_team_games_prior'], errors='coerce'),
-        ],
-        axis=1,
-    ).min(axis=1)
-    games['team_context_eligible'] = min_prior.ge(MIN_PRIOR_GAMES)
-
-    write_df(games, OUT_MATCHUPS)
-
-    modeled = games[games['season'].between(MODELED_START, END_SEASON)]
-    coverage = (
-        modeled.groupby('season', as_index=False)
-        .agg(
-            games=('game_id', 'count'),
-            team_context_eligible=('team_context_eligible', 'sum'),
-        )
+    forecast_games = _merge_games(
+        read_df(FORECAST_DATA),
+        team_context,
+        FORECAST_MODELED_START,
     )
-    coverage['coverage_rate'] = (
-        coverage['team_context_eligible'] / coverage['games']
-    )
+    write_df(forecast_games, OUT_MATCHUPS)
+    forecast_coverage = _coverage(forecast_games)
     out = ensure_dir('outputs/nfl') / 'team_context_data_quality.csv'
-    coverage.to_csv(out, index=False)
+    forecast_coverage.to_csv(out, index=False)
 
     print(f'Wrote {len(team_context):,} team-game rows to {OUT_TEAM_GAMES}')
-    print(f'Wrote {len(games):,} matchup rows to {OUT_MATCHUPS}')
-    print(coverage.to_string(index=False))
+    print(f'Wrote {len(forecast_games):,} forecast-native matchup rows to {OUT_MATCHUPS}')
+    print(forecast_coverage.to_string(index=False))
+
+    if Path(BASE_DATA).exists():
+        long_games = _merge_games(
+            read_df(BASE_DATA),
+            team_context,
+            LONG_MODELED_START,
+        )
+        write_df(long_games, OUT_LONG_MATCHUPS)
+        long_coverage = _coverage(long_games)
+        long_out = ensure_dir('outputs/nfl') / 'team_context_long_data_quality.csv'
+        long_coverage.to_csv(long_out, index=False)
+        print(
+            f'Wrote {len(long_games):,} long-history matchup rows '
+            f'to {OUT_LONG_MATCHUPS}'
+        )
+        print(long_coverage.to_string(index=False))
+    else:
+        print(
+            f'Long-history base dataset {BASE_DATA} not found; '
+            'skipping pre-2018 discovery table.'
+        )
 
 
 if __name__ == '__main__':
