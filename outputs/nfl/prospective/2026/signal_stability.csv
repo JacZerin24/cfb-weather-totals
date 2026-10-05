@@ -25,4 +25,4 @@ game_id,week,away_team,home_team,official_signal,official_snapshot_utc,monitor_c
 2026_04_NYJ_CHI,4,NYJ,CHI,NO PLAY,2026-10-03 16:44:26.685619+00:00,3,NO PLAY,False,False,False,False
 2026_04_TEN_BAL,4,TEN,BAL,NO PLAY,2026-10-03 16:44:26.685619+00:00,3,NO PLAY,False,False,False,False
 2026_04_DET_CAR,4,DET,CAR,NO PLAY,2026-10-04 00:07:23.978072+00:00,4,NO PLAY,False,False,False,False
-2026_04_ATL_NO,4,ATL,NO,NO PLAY,2026-10-05 00:10:41.746736+00:00,2,NO PLAY,False,False,False,False
+2026_04_ATL_NO,4,ATL,NO,NO PLAY,2026-10-05 00:10:41.746736+00:00,3,NO PLAY,False,False,False,False
