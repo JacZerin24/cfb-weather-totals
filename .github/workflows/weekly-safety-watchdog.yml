@@ -21,7 +21,7 @@ permissions:
 
 concurrency:
   group: cfb-weather-weekly-watchdog
-  cancel-in-progress: false
+  queue: max
 
 jobs:
   central-time-gate:
@@ -66,6 +66,7 @@ jobs:
     needs: central-time-gate
     if: needs.central-time-gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     steps:
       - name: Verify safety build or dispatch backup
         env:
@@ -140,7 +141,7 @@ jobs:
           fi
 
           # Avoid launching a duplicate backup if the scheduled build exists but
-          # is merely still running. Give an active run up to 10 more minutes.
+          # is merely still running. Give an active run up to 30 more minutes.
           ACTIVE_RUN_ID=$(jq -r --arg cutoff "$CUTOFF_UTC" '
             [
               .workflow_runs[]
@@ -156,7 +157,7 @@ jobs:
 
           if [ -n "$ACTIVE_RUN_ID" ]; then
             echo "Weekly build $ACTIVE_RUN_ID is still active; waiting before considering a backup."
-            for ATTEMPT in $(seq 1 30); do
+            for ATTEMPT in $(seq 1 90); do
               sleep 20
               ACTIVE_JSON=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${ACTIVE_RUN_ID}")
               ACTIVE_STATUS=$(jq -r '.status' <<< "$ACTIVE_JSON")
@@ -182,6 +183,15 @@ jobs:
               echo "Active weekly build $ACTIVE_RUN_ID completed without a successful weekly-paper-run."
               break
             done
+
+            if [ "$ACTIVE_STATUS" != "completed" ]; then
+              echo "Weekly build $ACTIVE_RUN_ID is still active after 30 minutes; leaving it in place rather than dispatching a duplicate."
+              {
+                echo "### Weekly safety watchdog"
+                echo "Weekly build [$ACTIVE_RUN_ID](https://github.com/${GITHUB_REPOSITORY}/actions/runs/$ACTIVE_RUN_ID) is still active after the watchdog grace period. No duplicate backup was dispatched."
+              } >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
           fi
 
           DISPATCHED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)
@@ -193,7 +203,9 @@ jobs:
               --input -
 
           BACKUP_RUN_ID=""
-          for ATTEMPT in $(seq 1 30); do
+          # A full weekly build can legitimately take 15-25 minutes, especially
+          # during hosted-runner incidents. Allow up to 45 minutes for backup completion.
+          for ATTEMPT in $(seq 1 135); do
             sleep 20
             BACKUP_RUNS=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/${TARGET_WORKFLOW}/runs?event=workflow_dispatch&per_page=20")
             BACKUP_RUN_ID=$(jq -r --arg dispatched "$DISPATCHED_AT" '
