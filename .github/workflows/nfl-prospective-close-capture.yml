@@ -12,12 +12,12 @@ permissions:
 
 concurrency:
   group: cfb-weather-data-writes
-  cancel-in-progress: false
+  queue: max
 
 jobs:
   capture:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 45
 
     steps:
       - name: Check out repository
