@@ -31,7 +31,7 @@ This status never authorizes wagering automatically. REVIEW_ELIGIBLE means only 
 
 ## Frozen-signal stability
 
-- Monitor coverage: 100.00%
+- Monitor coverage: 96.43%
 - Official NO PLAYs that qualified later: 0
 - Official entries that faded to NO PLAY later: 1
 - Later tier upgrades: 0
