@@ -227,7 +227,7 @@
       </div>
       <div class="hero-card hero-side">
         <div><span class="eyebrow">Slate</span><br><strong>2026 · Week 5</strong></div>
-        <div><span class="eyebrow">Updated</span><br><strong>Oct 11, 2026 · 7:44 PM CT</strong></div>
+        <div><span class="eyebrow">Updated</span><br><strong>Oct 12, 2026 · 1:35 AM CT</strong></div>
         <div><span class="eyebrow">Official horizon</span><br><strong>24 hours before kickoff</strong></div>
         <div><span class="eyebrow">Side</span><br><strong>OVER only</strong></div>
       </div>
@@ -288,21 +288,21 @@
         </select>
       </div>
       <div class="cards" id="gameCards">
-      <article class="game-card" data-status="NO PLAY" data-signal="NO PLAY" data-state="24H_DECISION_WINDOW">
+      <article class="game-card" data-status="PAST WINDOW" data-signal="NO PLAY" data-state="PAST_24H_WINDOW">
         <div class="card-top">
-          <span class="badge no-play">NO PLAY</span>
-          <span class="time-to-kick">23.5h to kickoff</span>
+          <span class="badge past">PAST WINDOW</span>
+          <span class="time-to-kick">17.7h to kickoff</span>
         </div>
         <h3>BUF <span>@</span> LA</h3>
         <div class="kickoff">Mon Oct 12 · 7:15 PM CT · SoFi Stadium</div>
         
         <div class="pick">OVER 54.5 · -110 · FanDuel</div>
-        <div class="best-price">Best at 54.5: -107 · LowVig.ag</div>
+        <div class="best-price">Best at 54.5: -105 · LowVig.ag</div>
         <div class="grid">
           <div><span>Frozen model</span><strong>+-2.2 pts · P(OVER) 40.1% · model total 52.3</strong></div>
           <div><span>Weather input</span><strong>Dome · weather withheld by protocol</strong></div>
-          <div><span>Market breadth</span><strong>8 books · range 0.5 pts</strong></div>
-          <div><span>Decision state</span><strong>24H DECISION WINDOW</strong></div>
+          <div><span>Market breadth</span><strong>9 books · range 0.5 pts</strong></div>
+          <div><span>Decision state</span><strong>PAST 24H WINDOW</strong></div>
         </div>
         <div class="official no-play"><span class="official-label">Official 24h decision</span><strong>NO PLAY</strong><small>Frozen Oct 11 · 7:44 PM CT</small></div>
       </article>
@@ -352,7 +352,7 @@
               <th>Decision state</th>
               <th><button class="sort-btn" type="button" data-nfl-sort="12">Hours to kick <span>↕</span></button></th>
             </tr></thead>
-            <tbody id="nflBoardBody"><tr data-status="NO PLAY" data-signal="NO PLAY" data-weather-types="INDOOR"><td><span class="badge no-play">NO PLAY</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>BUF @ LA</strong><br><small>SoFi Stadium</small></td><td class="kickoff-num" data-sort-value="1791850500">Mon Oct 12 · 7:15 PM CT</td><td class="nfl-num" data-sort-value="54.500000">OVER 54.5 · -110 · FanDuel</td><td>54.5 -107 · LowVig.ag</td><td class="nfl-num" data-sort-value="">—</td><td class="nfl-num" data-sort-value="">—</td><td>Dome</td><td class="nfl-num" data-sort-value="-2.161813">-2.2</td><td class="nfl-num" data-sort-value="0.401250">40.1%</td><td>24H DECISION WINDOW</td><td class="nfl-num" data-sort-value="23.509734">23.5h</td></tr></tbody>
+            <tbody id="nflBoardBody"><tr data-status="PAST WINDOW" data-signal="NO PLAY" data-weather-types="INDOOR"><td><span class="badge past">PAST WINDOW</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>BUF @ LA</strong><br><small>SoFi Stadium</small></td><td class="kickoff-num" data-sort-value="1791850500">Mon Oct 12 · 7:15 PM CT</td><td class="nfl-num" data-sort-value="54.500000">OVER 54.5 · -110 · FanDuel</td><td>54.5 -105 · LowVig.ag</td><td class="nfl-num" data-sort-value="">—</td><td class="nfl-num" data-sort-value="">—</td><td>Dome</td><td class="nfl-num" data-sort-value="-2.161813">-2.2</td><td class="nfl-num" data-sort-value="0.401250">40.1%</td><td>PAST 24H WINDOW</td><td class="nfl-num" data-sort-value="17.662427">17.7h</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -387,9 +387,9 @@
           <div><span>Record</span><strong>0-1-0</strong></div>
           <div><span>Captured-price ROI</span><strong>-100.0%</strong></div>
           <div><span>Mean CLV</span><strong>0.50 pts</strong></div>
-          <div><span>Brier score</span><strong>0.275</strong></div>
+          <div><span>Brier score</span><strong>0.271</strong></div>
           <div><span>Graded entries</span><strong>1</strong></div>
-          <div><span>Graded decisions</span><strong>29</strong></div>
+          <div><span>Graded decisions</span><strong>33</strong></div>
         </div>
         <div class="evaluation-note"><strong>Unmet pre-registered checks:</strong> sample_graded_entries, sample_graded_official_decisions, sample_entries_with_clv, sample_distinct_entry_weeks, performance_positive_captured_price_roi…</div>
       </div>
@@ -440,7 +440,7 @@
 
   <script>
     // NFL_SITE_PARITY
-    const nflGamePoints = [{"game_id": "2026_05_BUF_LA", "lat": 33.953485, "lon": -118.3390307, "status": "NO PLAY", "signal": "NO PLAY", "state": "24H_DECISION_WINDOW", "away": "BUF", "home": "LA", "kickoff": "Mon Oct 12 · 7:15 PM CT", "venue": "SoFi Stadium", "market": "OVER 54.5 · -110 · FanDuel", "best": "54.5 -107 · LowVig.ag", "model": "OVER edge -2.2 · model 52.3 · P(OVER) 40.1%", "weather": "Dome · weather withheld", "roof": "dome", "weather_types": ["INDOOR"]}];
+    const nflGamePoints = [{"game_id": "2026_05_BUF_LA", "lat": 33.953485, "lon": -118.3390307, "status": "PAST WINDOW", "signal": "NO PLAY", "state": "PAST_24H_WINDOW", "away": "BUF", "home": "LA", "kickoff": "Mon Oct 12 · 7:15 PM CT", "venue": "SoFi Stadium", "market": "OVER 54.5 · -110 · FanDuel", "best": "54.5 -105 · LowVig.ag", "model": "OVER edge -2.2 · model 52.3 · P(OVER) 40.1%", "weather": "Dome · weather withheld", "roof": "dome", "weather_types": ["INDOOR"]}];
     const nflSignalColors = {
       'STRONG':'#a3e635',
       'QUALIFIES':'#22c55e',

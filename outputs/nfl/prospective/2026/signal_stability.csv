@@ -32,4 +32,4 @@ game_id,week,away_team,home_team,official_signal,official_snapshot_utc,monitor_c
 2026_05_DET_ARI,5,DET,ARI,NO PLAY,2026-10-10 19:32:12.228567+00:00,4,NO PLAY,False,False,False,False
 2026_05_SF_SEA,5,SF,SEA,NO PLAY,2026-10-10 19:32:12.228567+00:00,4,NO PLAY,False,False,False,False
 2026_05_BAL_ATL,5,BAL,ATL,NO PLAY,2026-10-11 00:30:29.727385+00:00,3,NO PLAY,False,False,False,False
-2026_05_BUF_LA,5,BUF,LA,NO PLAY,2026-10-12 00:44:32.043358+00:00,0,,False,False,False,False
+2026_05_BUF_LA,5,BUF,LA,NO PLAY,2026-10-12 00:44:32.043358+00:00,1,NO PLAY,False,False,False,False
