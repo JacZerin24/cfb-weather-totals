@@ -1,6 +1,6 @@
 # NFL Live Weekly Paper Board
 
-Generated: 2026-10-16T21:43:54.337593+00:00
+Generated: 2026-10-16T23:54:48.781078+00:00
 
 Frozen protocol: nfl_totals_paper_v1 v1
 
@@ -16,7 +16,7 @@ This board is operational paper-mode output. First-attempt scheduled runs archiv
 | EARLY LOOK | BEFORE_24H_WINDOW |      6 | NO          | NYG         | 2026-10-18 17:00:00+00:00 |            46   |                   -110 |                55.2 |                 5.9 |               0.784207 |           0.491219 |                 46.7842 |
 | EARLY LOOK | BEFORE_24H_WINDOW |      6 | CAR         | PHI         | 2026-10-18 17:00:00+00:00 |            39   |                   -110 |                55.4 |                11.4 |              -1.57233  |           0.393485 |                 37.4277 |
 | EARLY LOOK | BEFORE_24H_WINDOW |      6 | PIT         | TB          | 2026-10-18 17:00:00+00:00 |            39.5 |                   -105 |                73.1 |                 9   |               2.02468  |           0.51024  |                 41.5247 |
-| EARLY LOOK | BEFORE_24H_WINDOW |      6 | ARI         | LA          | 2026-10-18 20:05:00+00:00 |            51.5 |                   -110 |               nan   |               nan   |               0.243273 |           0.511003 |                 51.7433 |
+| EARLY LOOK | BEFORE_24H_WINDOW |      6 | ARI         | LA          | 2026-10-18 20:05:00+00:00 |            51.5 |                   -112 |               nan   |               nan   |               0.243273 |           0.511003 |                 51.7433 |
 | EARLY LOOK | BEFORE_24H_WINDOW |      6 | LAC         | KC          | 2026-10-18 20:25:00+00:00 |            41.5 |                   -105 |                66.4 |                 7.6 |              -0.634942 |           0.478376 |                 40.8651 |
 | EARLY LOOK | BEFORE_24H_WINDOW |      6 | BUF         | LV          | 2026-10-18 20:25:00+00:00 |            53.5 |                   -110 |               nan   |               nan   |               1.29528  |           0.576142 |                 54.7953 |
 | EARLY LOOK | BEFORE_24H_WINDOW |      6 | DAL         | GB          | 2026-10-19 00:20:00+00:00 |            53   |                   -110 |                60.7 |                 8.8 |               0.516846 |           0.48357  |                 53.5168 |
