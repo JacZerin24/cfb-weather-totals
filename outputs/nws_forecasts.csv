@@ -38,9 +38,9 @@ game_id,away_team,home_team,start_date,venue_name,game_indoors,nws_status,nws_of
 401868161,UC Davis,Southern Utah,2026-10-18 00:00:00+00:00,Eccles Coliseum,False,ok,SLC,63.0,29.0,28.0,3.452337276,6.904674552,0.0,0.0,0.0,No meaningful precipitation signal
 401858266,North Carolina,Duke,2026-10-17 19:30:00+00:00,Wallace Wade Stadium,False,ok,RAH,54.0,48.0,80.0,14.960128196000001,26.467919115999997,7.0,0.01,0.0,No meaningful precipitation signal
 401866442,Massachusetts,Buffalo,2026-10-17 17:00:00+00:00,UB Stadium,False,ok,BUF,46.0,27.0,47.0,10.357011828,12.658570012,0.0,0.0,0.0,No meaningful precipitation signal
+401856830,Kansas,Kansas State,2026-10-17 16:00:00+00:00,Bill Snyder Family Stadium,False,ok,TOP,47.0,33.0,58.0,4.603116368,4.603116368,0.0,0.0,0.0,No meaningful precipitation signal
 401868383,Mercer,Samford,2026-10-17 23:00:00+00:00,Seibert Stadium,False,ok,BMX,61.0,42.0,50.0,16.110907288,21.864802748000002,0.0,0.0,0.0,No meaningful precipitation signal
 401866445,Ohio,Sacramento State,2026-10-18 02:00:00+00:00,Hornet Stadium,False,ok,STO,81.0,45.0,28.0,0.0,3.452337276,0.0,0.0,0.0,No meaningful precipitation signal
-401856830,Kansas,Kansas State,2026-10-17 16:00:00+00:00,Bill Snyder Family Stadium,False,ok,TOP,48.0,34.0,58.0,4.603116368,9.206232736,0.0,0.0,0.0,No meaningful precipitation signal
 401856719,Auburn,Georgia,2026-10-17 19:30:00+00:00,Sanford Stadium,False,ok,FFC,68.0,40.0,36.0,11.50779092,21.864802748000002,0.0,0.0,0.0,No meaningful precipitation signal
 401868949,Florida A&M,Jackson State,2026-10-17 19:00:00+00:00,Mississippi Veterans Memorial Stadium,False,ok,JAN,70.0,42.0,36.0,17.26168638,25.317140024,0.0,0.0,0.0,No meaningful precipitation signal
 401862806,Kent State,South Florida,2026-10-17 23:00:00+00:00,Raymond James Stadium,False,ok,TBW,72.0,62.0,73.0,12.658570012,21.864802748000002,11.0,0.01,0.0,No meaningful precipitation signal
@@ -70,12 +70,12 @@ game_id,away_team,home_team,start_date,venue_name,game_indoors,nws_status,nws_of
 401868055,Abilene Christian,North Alabama,2026-10-17 23:00:00+00:00,Braly Municipal Stadium,False,ok,HUN,61.0,37.0,41.0,10.357011828,19.563244564,0.0,0.0,0.0,No meaningful precipitation signal
 401867849,Illinois State,Southern Illinois,2026-10-17 20:00:00+00:00,Saluki Stadium,False,ok,PAH,58.0,37.0,45.0,8.055453644,12.658570012,0.0,0.0,0.0,No meaningful precipitation signal
 401864520,Nevada,North Dakota State,2026-10-17 23:00:00+00:00,Fargodome,True,indoor,,,,,,,,,,Indoor/dome game
-401858261,Charleston Southern,Clemson,2026-10-17 16:00:00+00:00,"Memorial Stadium (Clemson, SC)",False,ok,GSP,62.0,45.0,54.0,12.658570012,23.01558184,0.0,0.0,0.0,No meaningful precipitation signal
 401858269,Wake Forest,California,2026-10-18 02:30:00+00:00,California Memorial Stadium,False,ok,MTR,69.0,52.0,54.0,1.150779092,3.452337276,0.0,0.0,0.0,No meaningful precipitation signal
 401868079,Cal Poly,Northern Colorado,2026-10-18 00:00:00+00:00,Nottingham Field,False,ok,BOU,68.0,28.0,22.0,3.452337276,5.75389546,0.0,0.0,0.0,No meaningful precipitation signal
 401856724,Florida,Texas,2026-10-17 16:00:00+00:00,DKR-Texas Memorial Stadium,False,ok,EWX,60.0,42.0,51.0,10.357011828,21.864802748000002,0.0,0.0,0.0,No meaningful precipitation signal
 401869934,Arkansas State,Southern Miss,2026-10-17 23:00:00+00:00,M. M. Roberts Stadium,False,ok,JAN,69.0,40.0,35.0,13.809349104,26.467919115999997,0.0,0.0,0.0,No meaningful precipitation signal
 401856722,Kentucky,Oklahoma,2026-10-17 23:30:00+00:00,"Memorial Stadium (Norman, OK)",False,ok,OUN,58.0,39.0,49.0,2.301558184,4.603116368,0.0,0.0,0.0,No meaningful precipitation signal
+401858261,Charleston Southern,Clemson,2026-10-17 16:00:00+00:00,"Memorial Stadium (Clemson, SC)",False,ok,GSP,62.0,45.0,54.0,12.658570012,23.01558184,0.0,0.0,0.0,No meaningful precipitation signal
 401866667,Towson,Campbell,2026-10-17 19:30:00+00:00,Barker-Lane Stadium,False,ok,RAH,55.0,51.0,86.0,17.26168638,26.467919115999997,39.0,0.05,0.0,Measurable precipitation forecast
 401858265,Louisville,Syracuse,2026-10-17 23:30:00+00:00,JMA Wireless Dome,True,indoor,,,,,,,,,,Indoor/dome game
 401868088,Montana State,Eastern Washington,2026-10-17 23:00:00+00:00,Roos Field,False,ok,OTX,62.0,35.0,37.0,20.714023656,33.372593668,3.0,0.0,0.0,No meaningful precipitation signal
@@ -84,11 +84,11 @@ game_id,away_team,home_team,start_date,venue_name,game_indoors,nws_status,nws_of
 401858263,Florida State,Miami,2026-10-17 23:00:00+00:00,Hard Rock Stadium,False,ok,MFL,78.0,75.0,91.0,5.75389546,10.357011828,65.0,1.07,0.0,Measurable precipitation forecast
 401867925,Duquesne,Stonehill,2026-10-17 16:00:00+00:00,W.B. Mason Stadium,False,ok,BOX,51.0,34.0,52.0,13.809349104,27.618698208,0.0,0.0,0.0,No meaningful precipitation signal
 401866444,Toledo,Eastern Michigan,2026-10-17 19:30:00+00:00,Rynearson Stadium,False,ok,DTX,52.0,32.0,45.0,4.603116368,9.206232736,0.0,0.0,0.0,No meaningful precipitation signal
+401869957,Georgia State,James Madison,2026-10-17 16:00:00+00:00,Bridgeforth Stadium,False,ok,LWX,50.0,38.0,63.0,17.26168638,27.618698208,5.0,0.030000000000000002,0.0,Measurable precipitation forecast
 401858489,Rutgers,Maryland,2026-10-17 16:30:00+00:00,SECU Stadium,False,ok,LWX,53.0,41.0,64.0,16.110907288,27.618698208,11.0,0.02,0.0,Measurable precipitation forecast
 401856833,Utah,Colorado,2026-10-18 02:15:00+00:00,Folsom Field,False,ok,BOU,56.0,24.0,29.0,5.75389546,9.206232736,0.0,0.0,0.0,No meaningful precipitation signal
 401868134,Central Arkansas,Tarleton State,2026-10-17 23:00:00+00:00,"Memorial Stadium (Stephenville, TX)",False,ok,FWD,60.0,38.0,44.0,4.603116368,11.50779092,0.0,0.0,0.0,No meaningful precipitation signal
 401868181,Lindenwood,Eastern Illinois,2026-10-17 19:00:00+00:00,O'Brien Stadium,False,ok,ILX,58.0,35.0,42.0,3.452337276,6.904674552,0.0,0.0,0.0,No meaningful precipitation signal
-401869957,Georgia State,James Madison,2026-10-17 16:00:00+00:00,Bridgeforth Stadium,False,ok,LWX,51.0,39.0,63.0,17.26168638,27.618698208,5.0,0.030000000000000002,0.0,Measurable precipitation forecast
 401862804,Navy,UTSA,2026-10-18 00:00:00+00:00,Alamodome,True,indoor,,,,,,,,,,Indoor/dome game
 401856831,Oklahoma State,Houston,2026-10-17 23:30:00+00:00,TDECU Stadium,False,ok,HGX,68.0,39.0,34.0,9.206232736,16.110907288,0.0,0.0,0.0,No meaningful precipitation signal
 401862802,Florida Atlantic,Army,2026-10-17 16:00:00+00:00,Michie Stadium,False,ok,OKX,51.0,36.0,57.0,11.50779092,25.317140024,1.0,0.0,0.0,No meaningful precipitation signal
