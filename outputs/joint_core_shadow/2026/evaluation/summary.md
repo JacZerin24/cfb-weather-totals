@@ -5,26 +5,26 @@
 Protocol: `joint-core-eval-2026.2`  
 Challenger: `joint-core-weather-context-hgb-v0.1`  
 Prospective signal: **PROSPECTIVE_MAE_FAVORABLE_UNCERTAIN**  
-Graded paired joint-core-ready games: **256**
+Graded paired joint-core-ready games: **307**
 
 ## Primary paired model metric
 
-- Baseline MAE: **12.217** points
-- Challenger MAE: **12.126** points
-- Challenger minus baseline MAE: **-0.090** points (negative is better)
-- 95% paired bootstrap interval: **[-0.289, +0.110]**
+- Baseline MAE: **12.365** points
+- Challenger MAE: **12.316** points
+- Challenger minus baseline MAE: **-0.049** points (negative is better)
+- 95% paired bootstrap interval: **[-0.230, +0.135]**
 
 ## Decision-support diagnostics
 
-- Status disagreements: **11**
-- Qualifier disagreements: **4**
-- Scorable status migrations: **11**
-- Status-migration accuracy: **0.545**
+- Status disagreements: **14**
+- Qualifier disagreements: **6**
+- Scorable status migrations: **14**
+- Status-migration accuracy: **0.429**
 
 ## Qualifier economics (supporting evidence)
 
-- Baseline: 3-1-0, ROI +0.432, avg CLV +0.750
-- Challenger: 1-3-0, ROI -0.523, avg CLV +0.500
+- Baseline: 3-2-0, ROI +0.145, avg CLV +0.750
+- Challenger: 1-6-0, ROI -0.727, avg CLV +0.583
 
 ## Interpretation guardrail
 
