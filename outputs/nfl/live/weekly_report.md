@@ -1,6 +1,6 @@
 # NFL Live Weekly Paper Board
 
-Generated: 2026-10-19T13:58:18.260666+00:00
+Generated: 2026-10-19T20:43:28.861349+00:00
 
 Frozen protocol: nfl_totals_paper_v1 v1
 
