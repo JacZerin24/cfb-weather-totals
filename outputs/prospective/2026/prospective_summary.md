@@ -17,9 +17,9 @@ Immutable board snapshots and close captures remain the source of truth. Derived
 
 | scope        |   official_games |   qualifying_entries |   settled_qualifying_entries |   excluded_qualifying_entries |   pending_qualifying_entries |   graded_ex_pushes |   wins |   losses |   pushes |   hit_rate_ex_pushes |   net_units_1u_at_-110 |   roi_per_graded_entry |   qualifiers_with_clv |   average_clv_points |   median_clv_points |   positive_clv_rate |
 |:-------------|-----------------:|---------------------:|-----------------------------:|------------------------------:|-----------------------------:|-------------------:|-------:|---------:|---------:|---------------------:|-----------------------:|-----------------------:|----------------------:|---------------------:|--------------------:|--------------------:|
-| ALL          |             1310 |                   19 |                           17 |                             1 |                            1 |                 17 |      9 |        8 |        0 |             0.529412 |               0.181818 |              0.0106952 |                     6 |             0.708333 |               0.375 |                 0.5 |
+| ALL          |             1310 |                   20 |                           17 |                             1 |                            2 |                 17 |      9 |        8 |        0 |             0.529412 |               0.181818 |              0.0106952 |                     6 |             0.708333 |               0.375 |                 0.5 |
 | FCS-only HGB |              440 |                   10 |                            9 |                             1 |                            0 |                  9 |      6 |        3 |        0 |             0.666667 |               2.45455  |              0.272727  |                     4 |             1        |               0.5   |                 0.5 |
-| GENERAL HGB  |              870 |                    9 |                            8 |                             0 |                            1 |                  8 |      3 |        5 |        0 |             0.375    |              -2.27273  |             -0.284091  |                     2 |             0.125    |               0.125 |                 0.5 |
+| GENERAL HGB  |              870 |                   10 |                            8 |                             0 |                            2 |                  8 |      3 |        5 |        0 |             0.375    |              -2.27273  |             -0.284091  |                     2 |             0.125    |               0.125 |                 0.5 |
 
 ## Data-integrity corrections
 
@@ -29,7 +29,7 @@ Immutable board snapshots and close captures remain the source of truth. Derived
 
 ## Data integrity
 
-- Immutable board snapshots: 98
+- Immutable board snapshots: 99
 - Immutable close captures: 58
 - Official game entries selected: 1310
 
