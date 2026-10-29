@@ -57,3 +57,4 @@ game_id,week,away_team,home_team,official_signal,official_snapshot_utc,monitor_c
 2026_07_LA_LV,7,LA,LV,NO PLAY,2026-10-24 21:12:34.205865+00:00,4,NO PLAY,False,False,False,False
 2026_07_KC_SEA,7,KC,SEA,NO PLAY,2026-10-24 23:44:17.155433+00:00,5,NO PLAY,False,False,False,False
 2026_07_DAL_PHI,7,DAL,PHI,NO PLAY,2026-10-25 23:33:51.255695+00:00,3,NO PLAY,False,False,False,False
+2026_08_CAR_GB,8,CAR,GB,NO PLAY,2026-10-29 01:14:54.718826+00:00,0,,False,False,False,False
