@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-10-31T15:49:32.707601+00:00",
+  "generated_at_utc": "2026-10-31T17:22:12.477111+00:00",
   "evaluation_id": "nfl_totals_prospective_eval_v1",
   "protocol_id": "nfl_totals_paper_v1",
   "status": "INSUFFICIENT_SAMPLE",
@@ -32,7 +32,7 @@
     "empirical_base_rate": 0.543859649122807,
     "empirical_base_rate_brier": 0.24807633117882427,
     "monitored_decisions": 59,
-    "monitor_coverage_fraction": 1.0,
+    "monitor_coverage_fraction": 0.8805970149253731,
     "late_qualifiers_after_freeze": 1,
     "official_entries_faded": 1,
     "tier_upgrades_later": 0,
