@@ -90,7 +90,7 @@
     "office": "EWX"
   },
   "29.6499,-82.3486": {
-    "checked_at": "2026-10-05T19:25:48.589736+00:00",
+    "checked_at": "2026-11-04T20:49:21.971777+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/JAX/42,32/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/JAX/42,32/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/JAX/42,32",
@@ -342,7 +342,7 @@
     "office": "EPZ"
   },
   "31.7996,-85.9518": {
-    "checked_at": "2026-10-05T19:25:46.326832+00:00",
+    "checked_at": "2026-11-04T20:49:19.684675+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/BMX/96,11/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/BMX/96,11/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/BMX/96,11",
@@ -405,7 +405,7 @@
     "office": "BMX"
   },
   "32.4122,-81.7849": {
-    "checked_at": "2026-10-05T19:25:55.356320+00:00",
+    "checked_at": "2026-11-04T20:49:18.405830+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/CHS/20,53/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/CHS/20,53/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/CHS/20,53",
@@ -648,7 +648,7 @@
     "office": "FFC"
   },
   "33.7724,-84.3928": {
-    "checked_at": "2026-10-05T19:25:54.186217+00:00",
+    "checked_at": "2026-11-04T20:49:21.814443+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/FFC/50,88/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/FFC/50,88/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/FFC/50,88",
@@ -702,7 +702,7 @@
     "office": "LOX"
   },
   "34.0289,-84.5676": {
-    "checked_at": "2026-10-05T19:25:46.370063+00:00",
+    "checked_at": "2026-11-04T20:49:17.606778+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/FFC/43,99/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/FFC/43,99/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/FFC/43,99",
@@ -1062,7 +1062,7 @@
     "office": "OHX"
   },
   "36.2114,-81.6854": {
-    "checked_at": "2026-10-05T19:25:48.705479+00:00",
+    "checked_at": "2026-11-04T20:49:17.111054+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/RNK/17,16/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/RNK/17,16/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/RNK/17,16",
@@ -1404,7 +1404,7 @@
     "office": "TOP"
   },
   "38.9847,-76.5076": {
-    "checked_at": "2026-10-05T19:25:53.788605+00:00",
+    "checked_at": "2026-11-04T20:49:18.072142+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/LWX/114,78/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/LWX/114,78/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/LWX/114,78",
@@ -1467,7 +1467,7 @@
     "office": "PHI"
   },
   "39.2020,-96.5938": {
-    "checked_at": "2026-10-05T19:25:53.564590+00:00",
+    "checked_at": "2026-11-04T20:49:16.604030+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/TOP/49,56/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/TOP/49,56/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/TOP/49,56",
@@ -1593,7 +1593,7 @@
     "office": "PHI"
   },
   "40.0016,-83.0197": {
-    "checked_at": "2026-10-05T19:25:54.639821+00:00",
+    "checked_at": "2026-11-04T20:49:18.938378+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/ILN/84,83/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/ILN/84,83/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/ILN/84,83",
@@ -1674,7 +1674,7 @@
     "office": "BOU"
   },
   "40.4352,-86.9187": {
-    "checked_at": "2026-10-05T19:25:55.467519+00:00",
+    "checked_at": "2026-11-04T20:49:14.202808+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/IND/30,98/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/IND/30,98/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/IND/30,98",
@@ -1773,7 +1773,7 @@
     "office": "PHI"
   },
   "40.7600,-111.8488": {
-    "checked_at": "2026-10-05T19:25:55.710129+00:00",
+    "checked_at": "2026-11-04T20:49:12.617190+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/SLC/102,175/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/SLC/102,175/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/SLC/102,175",
@@ -1926,7 +1926,7 @@
     "office": "CLE"
   },
   "41.3875,-73.9641": {
-    "checked_at": "2026-10-05T19:25:48.129604+00:00",
+    "checked_at": "2026-11-04T20:49:21.468140+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/OKX/30,73/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/OKX/30,73/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/OKX/30,73",
@@ -1998,7 +1998,7 @@
     "office": "ALY"
   },
   "41.7517,-111.8116": {
-    "checked_at": "2026-10-05T19:25:47.017083+00:00",
+    "checked_at": "2026-11-04T20:49:23.017294+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/SLC/109,220/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/SLC/109,220/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/SLC/109,220",
@@ -2385,7 +2385,7 @@
     "office": "OTX"
   },
   "47.6503,-122.3016": {
-    "checked_at": "2026-10-05T19:25:46.830730+00:00",
+    "checked_at": "2026-11-04T20:49:18.746102+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/SEW/126,70/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/SEW/126,70/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/SEW/126,70",
