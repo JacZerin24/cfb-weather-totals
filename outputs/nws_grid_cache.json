@@ -99,7 +99,7 @@
     "office": "JAX"
   },
   "29.6949,-95.5167": {
-    "checked_at": "2026-10-02T18:29:55.133319+00:00",
+    "checked_at": "2026-11-06T20:28:56.353916+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/HGX/57,92/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/HGX/57,92/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/HGX/57,92",
@@ -2367,7 +2367,7 @@
     "office": "OTX"
   },
   "46.8639,-113.9815": {
-    "checked_at": "2026-10-02T16:18:55.356568+00:00",
+    "checked_at": "2026-11-06T20:28:52.738660+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/MSO/105,131/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/MSO/105,131/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/MSO/105,131",
