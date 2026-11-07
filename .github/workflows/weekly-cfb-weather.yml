@@ -15,6 +15,13 @@ on:
     # GitHub cron is UTC. Paired CDT/CST expressions preserve the requested
     # America/Chicago clock times. The central-time gate below runs only the
     # expression matching the current Central offset.
+    # Sunday operational refresh: 4:23 AM Central. Non-official.
+    - cron: '23 9 * * 0'      # CDT
+    - cron: '23 10 * * 0'     # CST
+    # Tue/Wed Feb-Oct: primary operational refresh while Nov-Jan already
+    # have midweek schedules. These new crons are NOT official-eligible.
+    - cron: '23 9 * 2-10 2,3'  # CDT
+    - cron: '23 10 * 2-10 2,3' # CST
     # Monday operational early look: 5:17 AM Central.
     - cron: '17 10 * * 1'    # CDT
     - cron: '17 11 * * 1'    # CST
@@ -63,12 +70,14 @@ jobs:
           fi
 
           case "$EVENT_SCHEDULE" in
-            "17 10 * * 1"|"17 10 * * 4,5"|"17 13 * * 4,5"|"17 6 * * 6")
+            "17 10 * * 1"|"17 10 * * 4,5"|"17 13 * * 4,5"|"17 6 * * 6"|\
+            "23 9 * * 0"|"23 9 * 2-10 2,3")
               EXPECTED_OFFSET="-0500"
               ;;
             "17 11 * * 1"|"17 11 * * 4,5"|"17 14 * * 4,5"|"17 7 * * 6"|\
             "17 11 * 11 2,3"|"17 14 * 11 2,3"|\
-            "17 11 * 12,1 2,3"|"17 14 * 12,1 2,3"|"17 14 * 12,1 1")
+            "17 11 * 12,1 2,3"|"17 14 * 12,1 2,3"|"17 14 * 12,1 1"|\
+            "23 10 * * 0"|"23 10 * 2-10 2,3")
               EXPECTED_OFFSET="-0600"
               ;;
             *)
