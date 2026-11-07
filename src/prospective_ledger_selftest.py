@@ -296,8 +296,25 @@ def main() -> None:
     assert 'actions: write' in watchdog_workflow
     assert '/dispatches' in watchdog_workflow
     assert 'weekly-paper-run' in watchdog_workflow
-    assert 'SAFETY_HOUR=1' in watchdog_workflow
-    assert '47 11 * 11,12,1 2,3' in watchdog_workflow
+    # Primary operational coverage on days not already covered by an
+    # official or postseason midweek schedule; these are not added to the
+    # frozen official-eligibility cron list.
+    for cron in ('23 9 * * 0', '23 10 * * 0', '23 9 * 2-10 2,3', '23 10 * 2-10 2,3'):
+        assert cron in weekly_workflow, f'Missing daily operational cron: {cron}'
+        assert cron not in expected_official_crons, f'Operational cron unexpectedly became official: {cron}'
+
+    # Verify real completion, not just a green schedule-gate workflow run.
+    assert 'deadline_hour = 8 if now.weekday() == 5 else 12' in watchdog_workflow
+    assert '.completed_at <= $deadline' in watchdog_workflow
+    assert 'weekly-paper-run' in watchdog_workflow and 'deploy-site' in watchdog_workflow
+    assert 'exit 1' in watchdog_workflow
+    for cron in (
+        '7 11-16 * * 0-5', '7 12-17 * * 0-5',
+        '7 8-12 * * 6', '7 9-13 * * 6',
+        '13 17 * * 0-5', '13 18 * * 0-5',
+        '13 13 * * 6', '13 14 * * 6',
+    ):
+        assert cron in watchdog_workflow, f'Missing deadline watchdog cron: {cron}'
 
     close_workflow = (ROOT / '.github/workflows/prospective-close-capture.yml').read_text(encoding='utf-8')
     assert 'workflow_dispatch' not in close_workflow, 'Close benchmark workflow must not allow manual captures.'
