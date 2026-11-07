@@ -294,6 +294,8 @@ def main() -> None:
 
     watchdog_workflow = (ROOT / '.github/workflows/weekly-safety-watchdog.yml').read_text(encoding='utf-8')
     assert 'actions: write' in watchdog_workflow
+    assert "workflows: ['Weekly CFB Weather Totals']" in watchdog_workflow
+    assert 'types: [completed]' in watchdog_workflow
     assert '/dispatches' in watchdog_workflow
     assert 'weekly-paper-run' in watchdog_workflow
     # Primary operational coverage on days not already covered by an
