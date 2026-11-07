@@ -3,22 +3,26 @@ name: Guard Weekly CFB Safety Run
 on:
   workflow_dispatch:
   schedule:
-    # Check 30 minutes after the 5:17 AM Central safety run on Monday,
-    # Thursday, and Friday.
-    - cron: '47 10 * * 1,4,5'  # 5:47 AM CDT
-    - cron: '47 11 * * 1,4,5'  # 5:47 AM CST
-    # November through January Tue/Wed operational coverage is CST-only.
-    # November snapshots are also part of protocol 2026.5 official entry timing.
-    - cron: '47 11 * 11,12,1 2,3' # 5:47 AM CST
-    # Saturday deadline guard: 6:47 AM Central. The normal Saturday full build
-    # is at 1:17 AM, so this guard normally only verifies that it succeeded.
-    - cron: '47 11 * * 6'      # 6:47 AM CDT
-    - cron: '47 12 * * 6'      # 6:47 AM CST
+    # Repeated operational recovery checks. All clock times are America/Chicago.
+    # Sunday-Friday: 6:07 through 11:07 AM; hard deadline audit at 12:13 PM.
+    - cron: '7 11-16 * * 0-5'  # CDT
+    - cron: '7 12-17 * * 0-5'  # CST
+    - cron: '13 17 * * 0-5'   # CDT noon deadline audit
+    - cron: '13 18 * * 0-5'   # CST noon deadline audit
+    # Saturday: 3:07 through 7:07 AM; hard deadline audit at 8:13 AM.
+    - cron: '7 8-12 * * 6'   # CDT
+    - cron: '7 9-13 * * 6'   # CST
+    - cron: '13 13 * * 6'   # CDT Saturday deadline audit
+    - cron: '13 14 * * 6'   # CST Saturday deadline audit
+    # Backup dispatches remain operational-only: workflow_dispatch is NOT
+    # official-eligible under the frozen prospective protocol.
 
 permissions:
   actions: write
   contents: read
 
+# Serialize watchdog decisions to avoid two delayed cron ticks both
+# dispatching a replacement for the same missing build.
 concurrency:
   group: cfb-weather-weekly-watchdog
   queue: max
@@ -42,21 +46,29 @@ jobs:
           fi
 
           case "$EVENT_SCHEDULE" in
-            "47 10 * * 1,4,5"|"47 11 * * 6")
+            "7 11-16 * * 0-5"|"13 17 * * 0-5"|"7 8-12 * * 6"|"13 13 * * 6")
               EXPECTED_OFFSET="-0500"
               ;;
-            "47 11 * * 1,4,5"|"47 12 * * 6"|"47 11 * 11,12,1 2,3")
+            "7 12-17 * * 0-5"|"13 18 * * 0-5"|"7 9-13 * * 6"|"13 14 * * 6")
               EXPECTED_OFFSET="-0600"
               ;;
             *)
-              echo "Unknown scheduled expression: $EVENT_SCHEDULE"
+              echo "::error::Unknown scheduled expression: $EVENT_SCHEDULE"
               exit 1
               ;;
           esac
 
           CENTRAL_OFFSET=$(TZ=America/Chicago date +%z)
-          if [ "$CENTRAL_OFFSET" = "$EXPECTED_OFFSET" ]; then
+          CENTRAL_DOW=$(TZ=America/Chicago date +%u)
+          # Do not reinterpret a cron delayed into a different local day as
+          # a watchdog request for the following day's operational build.
+          if [[ "$EVENT_SCHEDULE" == *"0-5"* && "$CENTRAL_DOW" == 6 ]] ||
+             [[ "$EVENT_SCHEDULE" == *" * 6" && "$CENTRAL_DOW" != 6 ]]; then
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping delayed watchdog tick for the wrong Central day."
+          elif [ "$CENTRAL_OFFSET" = "$EXPECTED_OFFSET" ]; then
             echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "Running watchdog for Central offset $CENTRAL_OFFSET."
           else
             echo "should_run=false" >> "$GITHUB_OUTPUT"
             echo "Skipping inactive seasonal watchdog cron $EVENT_SCHEDULE."
@@ -66,88 +78,91 @@ jobs:
     needs: central-time-gate
     if: needs.central-time-gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 15
     steps:
-      - name: Verify safety build or dispatch backup
+      - name: Check completion deadline or dispatch operational backup
         env:
           GH_TOKEN: ${{ github.token }}
           TARGET_WORKFLOW: weekly-cfb-weather.yml
         run: |
           set -euo pipefail
 
-          CENTRAL_DOW=$(TZ=America/Chicago date +%u)
-          case "$CENTRAL_DOW" in
-            1|2|3|4|5)
-              SAFETY_HOUR=5
-              SAFETY_MINUTE=17
-              ;;
-            6)
-              SAFETY_HOUR=1
-              SAFETY_MINUTE=17
-              ;;
-            *)
-              echo "The watchdog only applies to scheduled Monday-Saturday operational safety windows."
-              exit 1
-              ;;
-          esac
-
-          CUTOFF_UTC=$(python - "$SAFETY_HOUR" "$SAFETY_MINUTE" <<'PY'
-          import sys
+          # Resolve both the midnight boundary and actual completed-by
+          # deadline in Central time. GitHub "success" alone can mean all
+          # production jobs were skipped; only a successful completed paper
+          # run AND website deployment count toward this deadline.
+          read -r DAY_START_UTC DEADLINE_UTC NOW_UTC DEADLINE_LABEL < <(
+            python - <<'PY'
           from datetime import datetime, timezone
           from zoneinfo import ZoneInfo
-
           now = datetime.now(ZoneInfo("America/Chicago"))
-          cutoff = now.replace(
-              hour=int(sys.argv[1]),
-              minute=int(sys.argv[2]),
-              second=0,
-              microsecond=0,
-          )
-          print(cutoff.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
+          start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+          deadline_hour = 8 if now.weekday() == 5 else 12
+          deadline = start.replace(hour=deadline_hour)
+          fmt = lambda dt: dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+          print(fmt(start), fmt(deadline), fmt(now), f"{deadline_hour}:00")
           PY
           )
 
-          echo "Checking for a successful weekly build started at or after $CUTOFF_UTC."
-          RUNS_JSON=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/${TARGET_WORKFLOW}/runs?per_page=50")
+          echo "Checking for CFB build AND deployment completed today by $DEADLINE_LABEL Central."
+          echo "Day start: $DAY_START_UTC; deadline: $DEADLINE_UTC; now: $NOW_UTC"
+
+          RUNS_JSON=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/${TARGET_WORKFLOW}/runs?per_page=100")
           mapfile -t CANDIDATE_RUNS < <(
-            jq -r --arg cutoff "$CUTOFF_UTC" '
+            jq -r --arg start "$DAY_START_UTC" '
               .workflow_runs[]
-              | select(
-                  .status == "completed"
-                  and .conclusion == "success"
-                  and .run_started_at >= $cutoff
-                )
+              | select(.status == "completed" and .conclusion == "success" and .created_at >= $start)
               | .id
             ' <<< "$RUNS_JSON"
           )
 
           SUCCESSFUL_RUN=""
           for RUN_ID in "${CANDIDATE_RUNS[@]}"; do
-            JOBS_JSON=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}/jobs")
-            if jq -e 'any(.jobs[]; .name == "weekly-paper-run" and .conclusion == "success")' \
-              <<< "$JOBS_JSON" >/dev/null; then
+            JOBS_JSON=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}/jobs?per_page=100")
+            if jq -e --arg deadline "$DEADLINE_UTC" '
+              [.jobs[]
+                | select(
+                    (.name == "weekly-paper-run" or .name == "deploy-site")
+                    and .conclusion == "success"
+                    and .completed_at != null
+                    and .completed_at <= $deadline
+                  )
+              ] | length == 2
+            ' <<< "$JOBS_JSON" >/dev/null; then
               SUCCESSFUL_RUN="$RUN_ID"
               break
             fi
           done
 
           if [ -n "$SUCCESSFUL_RUN" ]; then
-            echo "Safety requirement already satisfied by run $SUCCESSFUL_RUN."
+            echo "Deadline satisfied by full build and deployment in run $SUCCESSFUL_RUN."
             {
-              echo "### Weekly safety watchdog"
-              echo "A successful weekly build already completed: [run $SUCCESSFUL_RUN](https://github.com/${GITHUB_REPOSITORY}/actions/runs/$SUCCESSFUL_RUN)."
+              echo "### CFB daily deadline"
+              echo "A complete build and website deployment finished before $DEADLINE_LABEL Central: [run $SUCCESSFUL_RUN](https://github.com/${GITHUB_REPOSITORY}/actions/runs/$SUCCESSFUL_RUN)."
             } >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
 
-          # Avoid launching a duplicate backup if the scheduled build exists but
-          # is merely still running. Give an active run up to 30 more minutes.
-          ACTIVE_RUN_ID=$(jq -r --arg cutoff "$CUTOFF_UTC" '
-            [
-              .workflow_runs[]
+          # Never report an on-time success for a late run; do not attempt to
+          # backfill a deadline with an after-deadline manual dispatch.
+          if [[ "$NOW_UTC" > "$DEADLINE_UTC" || "$NOW_UTC" == "$DEADLINE_UTC" ]]; then
+            {
+              echo "### CFB daily deadline MISSED"
+              echo "No complete CFB build **and** site deployment finished before $DEADLINE_LABEL Central."
+              echo "Later operational refreshes do not repair the missed deadline or become official prospective entries."
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::CFB daily deadline missed: no fully completed build and deployment by $DEADLINE_LABEL Central."
+            exit 1
+          fi
+
+          # If a full run is underway or queued, do not launch a duplicate.
+          # The next hourly check verifies actual completion. Serializing this
+          # watchdog plus the build's data-write lock avoids overlapping writes.
+          ACTIVE_RUN_ID=$(jq -r --arg start "$DAY_START_UTC" '
+            [.workflow_runs[]
               | select(
                   (.status == "queued" or .status == "in_progress")
-                  and .created_at >= $cutoff
+                  and .created_at >= $start
                 )
             ]
             | sort_by(.created_at)
@@ -156,104 +171,24 @@ jobs:
           ' <<< "$RUNS_JSON")
 
           if [ -n "$ACTIVE_RUN_ID" ]; then
-            echo "Weekly build $ACTIVE_RUN_ID is still active; waiting before considering a backup."
-            for ATTEMPT in $(seq 1 90); do
-              sleep 20
-              ACTIVE_JSON=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${ACTIVE_RUN_ID}")
-              ACTIVE_STATUS=$(jq -r '.status' <<< "$ACTIVE_JSON")
-              ACTIVE_CONCLUSION=$(jq -r '.conclusion // ""' <<< "$ACTIVE_JSON")
-
-              if [ "$ACTIVE_STATUS" != "completed" ]; then
-                continue
-              fi
-
-              if [ "$ACTIVE_CONCLUSION" = "success" ]; then
-                JOBS_JSON=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${ACTIVE_RUN_ID}/jobs")
-                if jq -e 'any(.jobs[]; .name == "weekly-paper-run" and .conclusion == "success")' \
-                  <<< "$JOBS_JSON" >/dev/null; then
-                  echo "Active weekly build $ACTIVE_RUN_ID completed successfully."
-                  {
-                    echo "### Weekly safety watchdog"
-                    echo "The scheduled build was still running when checked and then completed successfully: [run $ACTIVE_RUN_ID](https://github.com/${GITHUB_REPOSITORY}/actions/runs/$ACTIVE_RUN_ID)."
-                  } >> "$GITHUB_STEP_SUMMARY"
-                  exit 0
-                fi
-              fi
-
-              echo "Active weekly build $ACTIVE_RUN_ID completed without a successful weekly-paper-run."
-              break
-            done
-
-            if [ "$ACTIVE_STATUS" != "completed" ]; then
-              echo "Weekly build $ACTIVE_RUN_ID is still active after 30 minutes; leaving it in place rather than dispatching a duplicate."
-              {
-                echo "### Weekly safety watchdog"
-                echo "Weekly build [$ACTIVE_RUN_ID](https://github.com/${GITHUB_REPOSITORY}/actions/runs/$ACTIVE_RUN_ID) is still active after the watchdog grace period. No duplicate backup was dispatched."
-              } >> "$GITHUB_STEP_SUMMARY"
-              exit 0
-            fi
+            echo "Build $ACTIVE_RUN_ID is active; avoiding a duplicate dispatch."
+            {
+              echo "### CFB deadline safeguard"
+              echo "An active build is being tracked: [run $ACTIVE_RUN_ID](https://github.com/${GITHUB_REPOSITORY}/actions/runs/$ACTIVE_RUN_ID)."
+              echo "It must finish and deploy before $DEADLINE_LABEL Central."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
           fi
 
-          DISPATCHED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-          echo "No successful safety build found. Dispatching an operational backup."
+          echo "No completed or active CFB build for today's deadline; dispatching operational backup."
           jq -n '{ref: "main", inputs: {watchdog_backup: "true"}}' |
-            gh api \
-              --method POST \
+            gh api --method POST \
               "repos/${GITHUB_REPOSITORY}/actions/workflows/${TARGET_WORKFLOW}/dispatches" \
               --input -
 
-          BACKUP_RUN_ID=""
-          # A full weekly build can legitimately take 15-25 minutes, especially
-          # during hosted-runner incidents. Allow up to 45 minutes for backup completion.
-          for ATTEMPT in $(seq 1 135); do
-            sleep 20
-            BACKUP_RUNS=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/${TARGET_WORKFLOW}/runs?event=workflow_dispatch&per_page=20")
-            BACKUP_RUN_ID=$(jq -r --arg dispatched "$DISPATCHED_AT" '
-              [
-                .workflow_runs[]
-                | select(.created_at >= $dispatched)
-              ]
-              | sort_by(.created_at)
-              | last
-              | .id // empty
-            ' <<< "$BACKUP_RUNS")
-
-            if [ -z "$BACKUP_RUN_ID" ]; then
-              continue
-            fi
-
-            RUN_STATE=$(jq -r --arg id "$BACKUP_RUN_ID" '
-              .workflow_runs[]
-              | select((.id | tostring) == $id)
-              | [.status, (.conclusion // "")]
-              | @tsv
-            ' <<< "$BACKUP_RUNS")
-            RUN_STATUS=$(cut -f1 <<< "$RUN_STATE")
-            RUN_CONCLUSION=$(cut -f2 <<< "$RUN_STATE")
-
-            if [ "$RUN_STATUS" != "completed" ]; then
-              continue
-            fi
-
-            if [ "$RUN_CONCLUSION" = "success" ]; then
-              JOBS_JSON=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${BACKUP_RUN_ID}/jobs")
-              if jq -e 'any(.jobs[]; .name == "weekly-paper-run" and .conclusion == "success")' \
-                <<< "$JOBS_JSON" >/dev/null; then
-                echo "Backup run $BACKUP_RUN_ID completed successfully."
-                {
-                  echo "### Weekly safety watchdog"
-                  echo "The safety run was missing, so the watchdog dispatched and verified [backup run $BACKUP_RUN_ID](https://github.com/${GITHUB_REPOSITORY}/actions/runs/$BACKUP_RUN_ID)."
-                } >> "$GITHUB_STEP_SUMMARY"
-                exit 0
-              fi
-            fi
-
-            echo "Backup run $BACKUP_RUN_ID completed with conclusion: $RUN_CONCLUSION."
-            exit 1
-          done
-
-          echo "Timed out waiting for the dispatched backup to finish."
-          if [ -n "$BACKUP_RUN_ID" ]; then
-            echo "Backup run: https://github.com/${GITHUB_REPOSITORY}/actions/runs/$BACKUP_RUN_ID"
-          fi
-          exit 1
+          {
+            echo "### CFB daily deadline safeguard"
+            echo "Dispatched a full operational backup after detecting no completed or active build."
+            echo "The next watchdog tick will verify its result. The backup remains **ineligible for official prospective entries**."
+            echo "Required completion and deployment deadline: $DEADLINE_LABEL Central."
+          } >> "$GITHUB_STEP_SUMMARY"
