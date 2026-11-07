@@ -2,6 +2,13 @@ name: Guard Weekly CFB Safety Run
 
 on:
   workflow_dispatch:
+  # React immediately to a completed full workflow, including a skipped
+  # seasonal cron or failed build. This avoids relying solely on delayed cron
+  # watchdog ticks to identify a missing usable production run.
+  workflow_run:
+    workflows: ['Weekly CFB Weather Totals']
+    types: [completed]
+    branches: [main]
   schedule:
     # Repeated operational recovery checks. All clock times are America/Chicago.
     # Sunday-Friday: 6:07 through 11:07 AM; hard deadline audit at 12:13 PM.
