@@ -29,7 +29,7 @@ From committed `outputs/data_quality_summary.csv`:
 
 The `with_weather` count means **a temperature or wind observation/value exists** in the historical source. It does not mean an archived pregame weather **forecast** is present, and this coverage percentage must not be used as a forecast-vintage coverage percentage. These 11,757 rows are the subset with historical market totals/outcomes; they are not all 26,843 games in the larger underlying game universe.
 
-The processed `modeling_dataset.csv` and raw pull CSVs are **not committed** to main; live workflows restore them from GitHub Actions artifacts. An independent training reproduction was not executed in this inspection. The read-only `research/phase1/reproduce_baseline.py` is provided for that artifact; it reports the input SHA-256 and compares the result to published counts without reclassifying the historical number as a realized ROI.
+The processed `modeling_dataset.csv` and raw pull CSVs are **not committed** to main; live workflows restore them from GitHub Actions artifacts. The November 7, 2026 live-training artifact (run `42380170001`) was recovered and its `modeling_dataset.csv` SHA-256 is `a2f5a61248afe895e39bde58c5d3f8e7d10ed490095418e45d69ff0bbc7b3678`. An unpinned local reproduction (sklearn 1.8, rather than the repository-pinned 1.9) produced 701 game selections, 404 wins, 287 losses and 10 pushes, so it cannot certify exact parity with the published 651-game result. An independent **pinned-environment** training reproduction is delegated to the new read-only PR audit workflow. The read-only `research/phase1/reproduce_baseline.py` is provided for that artifact; it reports the input SHA-256 and compares the result to published counts without reclassifying the historical number as a realized ROI.
 
 ## Required evidence and fail-closed design
 
@@ -66,8 +66,8 @@ The second command intentionally returns a blocked coverage report when no times
 
 ## Operational isolation checklist
 
-- No edits to `src/`, `config/`, `.github/workflows/`, `docs/`, `outputs/` or `data/`.
-- No GitHub Actions scheduled jobs, API billing, bookmaker requests, or new network dependencies.
+- No edits to `src/`, `config/`, existing operational GitHub workflows, `docs/`, `outputs/` or `data/`. A new PR-scoped test-only workflow can retrieve a fixed training artifact without writing to production.
+- No new scheduled jobs, API billing, bookmaker requests, or new data-provider network dependencies. The independent test-only GitHub Actions job may download the existing stored training artifact and install the already-pinned Python requirements.
 - No alteration to 2026 prospective immutable snapshots or their grading.
 - New code is additive, under `research/phase1/` plus this human-written audit document.
 - Test fixture uses invented synthetic games; passing tests validate exclusion logic, **not** predictive profitability.
