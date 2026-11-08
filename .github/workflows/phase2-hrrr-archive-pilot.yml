@@ -1,0 +1,54 @@
+name: Phase 2 Archived HRRR CFB Pilot (research only)
+
+on:
+  pull_request:
+    paths:
+      - 'research/phase2/**'
+      - '.github/workflows/phase2-hrrr-archive-pilot.yml'
+      - 'documentation/PHASE2_HISTORICAL_ARCHIVE_PILOT_2026.md'
+
+permissions:
+  contents: read
+
+jobs:
+  phase2-hrrr-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out proposed research (no write token)
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install research-only GRIB reader
+        run: |
+          python -m pip install 'requests>=2.31,<3' 'eccodes>=2.35,<3'
+      - name: Offline audit unit tests
+        run: python -m unittest discover -s research/phase2 -p 'test_*.py' -v
+      - name: Build 2023, 2024, 2025 fixed cases and deterministic decision schedules
+        run: |
+          python -m research.phase2.hrrr_archive_pilot \
+            --games research/phase2/sample_games_2023_2025.csv \
+            --out research/phase2/dry_run \
+            --per-season 1 --dry-run
+      - name: Retrieve limited NOAA HRRR forecast messages at 2h, 6h, 24h
+        # Runs with NO secrets; only public NOAA AWS data. F48 is intentionally marked unavailable.
+        run: |
+          python -m research.phase2.hrrr_archive_pilot \
+            --games research/phase2/sample_games_2023_2025.csv \
+            --out research/phase2/pilot_results \
+            --per-season 1
+      - name: Upload weather research output only (never to data/ or outputs/)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase2-hrrr-archive-pilot-${{ github.run_id }}
+          path: |
+            research/phase2/dry_run/*.csv
+            research/phase2/dry_run/*.json
+            research/phase2/pilot_results/*.csv
+            research/phase2/pilot_results/*.json
+          retention-days: 30
