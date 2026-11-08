@@ -1,0 +1,13 @@
+game_id,season,start_date,home_team,away_team,venue_id,venue,venue_latitude,venue_longitude,venue_coordinates_source,sample_policy
+401520258,2023,2023-09-23T23:00:00.000Z,LSU,Arkansas,3958,Tiger Stadium (LA),30.412,-91.1838,https://cfbtrack.com/stadiums/3958-tiger-stadium-la,first_chronological_FBS_home_game_by_season_and_venue
+401520180,2023,2023-09-02T19:30:00.000Z,Wisconsin,Buffalo,347,Camp Randall Stadium,43.0699,-89.4127,https://cfbtrack.com/stadiums/347-camp-randall-stadium,first_chronological_FBS_home_game_by_season_and_venue
+401520188,2023,2023-09-09T16:00:00.000Z,Colorado,Nebraska,3726,Folsom Field,40.0095,-105.2669,https://cfbtrack.com/stadiums/3726-folsom-field,first_chronological_FBS_home_game_by_season_and_venue
+401523997,2023,2023-09-02T19:30:00.000Z,Washington,Boise State,3765,Husky Stadium,47.6503,-122.3016,https://cfbtrack.com/stadiums/3765-husky-stadium,first_chronological_FBS_home_game_by_season_and_venue
+401628365,2024,2024-09-21T19:30:00.000Z,LSU,UCLA,3958,Tiger Stadium (LA),30.412,-91.1838,https://cfbtrack.com/stadiums/3958-tiger-stadium-la,first_chronological_FBS_home_game_by_season_and_venue
+401628461,2024,2024-08-31T01:00:00.000Z,Wisconsin,Western Michigan,347,Camp Randall Stadium,43.0699,-89.4127,https://cfbtrack.com/stadiums/347-camp-randall-stadium,first_chronological_FBS_home_game_by_season_and_venue
+401636874,2024,2024-09-22T00:00:00.000Z,Colorado,Baylor,3726,Folsom Field,40.0095,-105.2669,https://cfbtrack.com/stadiums/3726-folsom-field,first_chronological_FBS_home_game_by_season_and_venue
+401628473,2024,2024-09-07T19:30:00.000Z,Washington,Eastern Michigan,3765,Husky Stadium,47.6503,-122.3016,https://cfbtrack.com/stadiums/3765-husky-stadium,first_chronological_FBS_home_game_by_season_and_venue
+401752687,2025,2025-09-06T23:30:00.000Z,LSU,Louisiana Tech,3958,Tiger Stadium (LA),30.412,-91.1838,https://cfbtrack.com/stadiums/3958-tiger-stadium-la,first_chronological_FBS_home_game_by_season_and_venue
+401762791,2025,2025-08-29T01:00:00.000Z,Wisconsin,Miami (OH),347,Camp Randall Stadium,43.0699,-89.4127,https://cfbtrack.com/stadiums/347-camp-randall-stadium,first_chronological_FBS_home_game_by_season_and_venue
+401754375,2025,2025-08-30T00:00:00.000Z,Colorado,Georgia Tech,3726,Folsom Field,40.0095,-105.2669,https://cfbtrack.com/stadiums/3726-folsom-field,first_chronological_FBS_home_game_by_season_and_venue
+401752805,2025,2025-08-31T03:00:00.000Z,Washington,Colorado State,3765,Husky Stadium,47.6503,-122.3016,https://cfbtrack.com/stadiums/3765-husky-stadium,first_chronological_FBS_home_game_by_season_and_venue
