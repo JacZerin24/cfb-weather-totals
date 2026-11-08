@@ -4,26 +4,26 @@
 
 Protocol: `orientation-eval-2026.3`  
 Challenger: `orientation-crosswind-hgb-v0.1`  
-Graded paired orientation-ready games: **443**
+Graded paired orientation-ready games: **495**
 
 ## Primary paired model metric
 
-- Baseline MAE: **12.506** points
-- Challenger MAE: **12.416** points
-- Challenger minus baseline MAE: **-0.090** points (negative is better)
-- 95% paired bootstrap interval: **[-0.227, +0.044]**
+- Baseline MAE: **12.661** points
+- Challenger MAE: **12.511** points
+- Challenger minus baseline MAE: **-0.149** points (negative is better)
+- 95% paired bootstrap interval: **[-0.282, -0.020]**
 
 ## Decision-support diagnostics
 
-- Status disagreements: **23**
-- Qualifier disagreements: **11**
-- Scorable status migrations: **23**
-- Status-migration accuracy: **0.435**
+- Status disagreements: **25**
+- Qualifier disagreements: **12**
+- Scorable status migrations: **25**
+- Status-migration accuracy: **0.480**
 
 ## Qualifier economics (supporting evidence)
 
-- Baseline: 3-4-0, ROI -0.182, avg CLV +0.750
-- Challenger: 2-10-0, ROI -0.682, avg CLV +0.875
+- Baseline: 4-6-0, ROI -0.236, avg CLV +0.250
+- Challenger: 4-12-0, ROI -0.523, avg CLV +0.625
 
 ## Interpretation guardrail
 
