@@ -1,1 +1,28 @@
-The requested file reference is not currently visible. Use files.search or files.list to rediscover the file, then retry with a returned ref_id or file_id.
+{
+  "date_utc": "2026-11-08",
+  "github_workflow_run_id": 42460132132,
+  "github_workflow_artifact_id": 13608524237,
+  "original_cfbd_modeling_artifact_sha256": "a2f5a61248afe895e39bde58c5d3f8e7d10ed490095418e45d69ff0bbc7b3678",
+  "forecast_csv_sha256": "3080c7c9f2822d4da42ff32d5179c6bde9d3086660090dee6cdee6bccc61e79b",
+  "games": 12,
+  "venues": 4,
+  "seasons": [
+    2023,
+    2024,
+    2025
+  ],
+  "forecast_reconstructed": 36,
+  "nominally_feasible_horizons": 36,
+  "unsupported_48h_horizons": 12,
+  "archive_fetch_failures": 0,
+  "mean_abs_temperature_24h_to_2h_F": 3.6249999999999996,
+  "max_abs_temperature_24h_to_2h_F": 8.0,
+  "mean_abs_wind_24h_to_2h_mph": 2.7416666666666667,
+  "max_abs_wind_24h_to_2h_mph": 9.4,
+  "gridpoint_distance_km_min": 0.5717422754096612,
+  "gridpoint_distance_km_max": 1.5548075963091257,
+  "verified_timestamped_bookmaker_quotes": 0,
+  "validated_betting_roi": null,
+  "as_of_availability_proven": false,
+  "provisional_publication_lag_hours": 2
+}
