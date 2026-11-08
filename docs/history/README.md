@@ -9,3 +9,7 @@ immutable archives, and operational workflows remain unchanged.
 
 The published `history/index.html` redirects to the most recent completed week.
 The live site's season/week selector also links to individual archived week pages.
+
+The Pages-only `src.preview_week_results` step shows verified completed scores
+and in-memory frozen-protocol paper results on the current weekly board even on Sundays.
+This does not rewrite the official graded ledger or alter the model pipeline.
