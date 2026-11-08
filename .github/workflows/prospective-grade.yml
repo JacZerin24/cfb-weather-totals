@@ -58,6 +58,7 @@ jobs:
           python -m src.prospective_integrity_rebuild
 
       - name: Refresh archived weekly pages with verified final scores
+        continue-on-error: true
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
         run: python -m src.build_week_history
@@ -89,7 +90,7 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add outputs/prospective/2026/
-          git add docs/index.html docs/history/
+          if [ -d docs/history ]; then git add docs/index.html docs/history/; fi
           if [ -d outputs/orientation_shadow/2026/evaluation ]; then
             git add outputs/orientation_shadow/2026/evaluation/
           fi
