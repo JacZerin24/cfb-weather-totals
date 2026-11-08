@@ -63,3 +63,6 @@ jobs:
           grep -ql '<th>Final result</th>' docs/history/week-*.html
           grep -ql 'id="weekHistorySelect"' docs/history/week-*.html
 
+
+      - name: Validate Sunday current-week final results without APIs
+        run: python -m src.preview_week_results_selftest
