@@ -29,7 +29,20 @@ From committed `outputs/data_quality_summary.csv`:
 
 The `with_weather` count means **a temperature or wind observation/value exists** in the historical source. It does not mean an archived pregame weather **forecast** is present, and this coverage percentage must not be used as a forecast-vintage coverage percentage. These 11,757 rows are the subset with historical market totals/outcomes; they are not all 26,843 games in the larger underlying game universe.
 
-The processed `modeling_dataset.csv` and raw pull CSVs are **not committed** to main; live workflows restore them from GitHub Actions artifacts. The November 7, 2026 live-training artifact (run `42380170001`) was recovered and its `modeling_dataset.csv` SHA-256 is `a2f5a61248afe895e39bde58c5d3f8e7d10ed490095418e45d69ff0bbc7b3678`. An unpinned local reproduction (sklearn 1.8, rather than the repository-pinned 1.9) produced 701 game selections, 404 wins, 287 losses and 10 pushes, so it cannot certify exact parity with the published 651-game result. An independent **pinned-environment** training reproduction is delegated to the new read-only PR audit workflow. The read-only `research/phase1/reproduce_baseline.py` is provided for that artifact; it reports the input SHA-256 and compares the result to published counts without reclassifying the historical number as a realized ROI.
+The processed `modeling_dataset.csv` and raw pull CSVs are **not committed** to main; live workflows restore them from GitHub Actions artifacts. The November 7, 2026 live-training artifact (run `42380170001`) was recovered and its `modeling_dataset.csv` SHA-256 is `a2f5a61248afe895e39bde58c5d3f8e7d10ed490095418e45d69ff0bbc7b3678`. An unpinned local reproduction (sklearn 1.8, rather than the repository-pinned 1.9) produced 701 game selections, 404 wins, 287 losses and 10 pushes, so it cannot certify exact parity with the published 651-game result. The independent **pinned-environment** GitHub Actions check on November 8, 2026 (scikit-learn 1.9.0) **reproduced the published baseline exactly**: 651 game selections, 643 graded, 376–267 with 8 pushes, +74.8181818 net units, +11.6358% simulated ROI. Its input dataset SHA matched the November 7 archive. These two separate local/CI results demonstrate that the historical simulation is software-version sensitive, but reproducible with its pinned environment. The read-only `research/phase1/reproduce_baseline.py` is provided for that artifact; it reports the input SHA-256 and compares the result to published counts without reclassifying the historical number as a realized ROI.
+
+## Completed Phase 1 evidence-gate execution (November 8, 2026)
+
+Running the audit with the recovered `modeling_dataset.csv`, **without fabricating any odds, forecast, or prediction-vintage files**, produced:
+
+- **26,835** completed-score games available for an audit of source provenance across the full game universe (the broader universe includes games without CFBD historical totals);
+- **107,340** separate game/horizon rows (48h, 24h, 6h and 2h); these are alternative scenarios, not independent bets;
+- **0** fully substantiated source/quote/forecast/prediction triples from the **supplied historical training artifact**;
+- **0** execution-verified qualifying bets and ROI `null`, as required by the hard stop.
+
+This does **not** say zero historical forecast or betting quotes existed elsewhere. It means their point-in-time evidence is not present in the input dataset used by the current historical backtest. A paid odds archive and genuine issued forecast vintages would be needed before an executable historical ROI can be estimated.
+
+Pinned results are committed for auditability in `research/phase1/verified_results/`. They are the output of the research-only GitHub check, not changes to live/production data.
 
 ## Required evidence and fail-closed design
 
