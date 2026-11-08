@@ -245,6 +245,7 @@ jobs:
           fi
 
       - name: Build historical week viewer from pregame archive
+        continue-on-error: true
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
         run: python -m src.build_week_history
