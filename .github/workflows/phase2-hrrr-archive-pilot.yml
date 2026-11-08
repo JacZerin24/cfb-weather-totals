@@ -13,7 +13,7 @@ permissions:
 jobs:
   phase2-hrrr-pilot:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 35
     steps:
       - name: Check out proposed research (no write token)
         uses: actions/checkout@v4
@@ -41,6 +41,12 @@ jobs:
             --games research/phase2/sample_games_2023_2025.csv \
             --out research/phase2/pilot_results \
             --per-season 1
+      - name: Retrieve NOAA HRRR forecasts for 12 predeclared games at four outdoor stadiums
+        run: |
+          python -m research.phase2.hrrr_archive_pilot \
+            --games research/phase2/sample_games_2023_2025_multivenue.csv \
+            --out research/phase2/multivenue_results \
+            --per-season 4
       - name: Upload weather research output only (never to data/ or outputs/)
         if: always()
         uses: actions/upload-artifact@v4
@@ -51,4 +57,6 @@ jobs:
             research/phase2/dry_run/*.json
             research/phase2/pilot_results/*.csv
             research/phase2/pilot_results/*.json
+            research/phase2/multivenue_results/*.csv
+            research/phase2/multivenue_results/*.json
           retention-days: 30
