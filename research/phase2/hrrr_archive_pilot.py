@@ -183,11 +183,11 @@ def main() -> None:
     parser=argparse.ArgumentParser()
     parser.add_argument('--games',default='research/phase2/sample_games_2023_2025.csv')
     parser.add_argument('--out',default='research/phase2/pilot_results')
-    parser.add_argument('--per-season',type=int,default=1,help='1 or 2 predetermined LSU home FBS games per season')
+    parser.add_argument('--per-season',type=int,default=1,help='number of predetermined games per season in supplied sample (1, 2, or 4)')
     parser.add_argument('--dry-run',action='store_true',help='Only create deterministic as-of schedule and availability flags')
     args=parser.parse_args()
-    if args.per_season not in [1,2]:
-        parser.error('Pilot sample must be 1 or 2 games per season')
+    if args.per_season not in [1,2,4]:
+        parser.error('Pilot sample must be 1, 2, or 4 games per season')
     out=Path(args.out);out.mkdir(parents=True,exist_ok=True)
     with open(args.games,newline='') as f: cases=list(csv.DictReader(f))
     cases=[g for i,year in enumerate(('2023','2024','2025'))
