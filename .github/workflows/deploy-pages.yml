@@ -11,6 +11,8 @@ on:
     workflows:
       - Manual Historical Research Run
       - Site UI Weather Tools
+      - Weekly CFB Weather Totals
+      - Rebuild Prospective Results
     types:
       - completed
 
@@ -46,7 +48,7 @@ jobs:
             echo "should_deploy=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          if [ "$SOURCE_WORKFLOW" = "Manual Historical Research Run" ] || [ "$SOURCE_WORKFLOW" = "Site UI Weather Tools" ]; then
+          if [ "$SOURCE_WORKFLOW" = "Manual Historical Research Run" ] || [ "$SOURCE_WORKFLOW" = "Site UI Weather Tools" ] || [ "$SOURCE_WORKFLOW" = "Weekly CFB Weather Totals" ] || [ "$SOURCE_WORKFLOW" = "Rebuild Prospective Results" ]; then
             echo "should_deploy=true" >> "$GITHUB_OUTPUT"
           else
             echo "should_deploy=false" >> "$GITHUB_OUTPUT"
@@ -75,6 +77,26 @@ jobs:
           grep -q 'id="radarToggle"' docs/index.html
           grep -q 'id="weatherFilter"' docs/index.html
           grep -q 'data-weather-sort="2"' docs/index.html
+
+      # Website-only presentation. Does not modify the forecasting or grading workflows
+      # or commit derived files to the repository.
+      - name: Set up Python for archived website pages
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install website renderer requirements
+        run: pip install -r requirements.txt
+
+      - name: Render historical CFB boards in the Pages artifact
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: |
+          set -euo pipefail
+          python -m src.build_week_history
+          test -s docs/history/index.html
+          grep -q 'id="weekHistorySelect"' docs/index.html
+          grep -ql '<th>Final result</th>' docs/history/week-*.html
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
