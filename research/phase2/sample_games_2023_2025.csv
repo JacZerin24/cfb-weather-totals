@@ -1,0 +1,7 @@
+game_id,season,start_date,home_team,away_team,venue_id,venue,venue_latitude,venue_longitude,venue_coordinates_source,sample_policy
+401520258,2023,2023-09-23T23:00:00.000Z,LSU,Arkansas,3958.0,Tiger Stadium (LA),30.412,-91.1838,https://cfbtrack.com/stadiums/3958-tiger-stadium-la,first_two_chronological_fbs_opponents_per_year_at_venue_3958
+401520319,2023,2023-10-14T23:00:00.000Z,LSU,Auburn,3958.0,Tiger Stadium (LA),30.412,-91.1838,https://cfbtrack.com/stadiums/3958-tiger-stadium-la,first_two_chronological_fbs_opponents_per_year_at_venue_3958
+401628365,2024,2024-09-21T19:30:00.000Z,LSU,UCLA,3958.0,Tiger Stadium (LA),30.412,-91.1838,https://cfbtrack.com/stadiums/3958-tiger-stadium-la,first_two_chronological_fbs_opponents_per_year_at_venue_3958
+401628376,2024,2024-09-28T23:45:00.000Z,LSU,South Alabama,3958.0,Tiger Stadium (LA),30.412,-91.1838,https://cfbtrack.com/stadiums/3958-tiger-stadium-la,first_two_chronological_fbs_opponents_per_year_at_venue_3958
+401752687,2025,2025-09-06T23:30:00.000Z,LSU,Louisiana Tech,3958.0,Tiger Stadium (LA),30.412,-91.1838,https://cfbtrack.com/stadiums/3958-tiger-stadium-la,first_two_chronological_fbs_opponents_per_year_at_venue_3958
+401752699,2025,2025-09-13T23:30:00.000Z,LSU,Florida,3958.0,Tiger Stadium (LA),30.412,-91.1838,https://cfbtrack.com/stadiums/3958-tiger-stadium-la,first_two_chronological_fbs_opponents_per_year_at_venue_3958
