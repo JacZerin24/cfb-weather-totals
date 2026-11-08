@@ -54,3 +54,12 @@ jobs:
 
       - name: Validate archived pre-kickoff week viewer without external APIs
         run: python -m src.build_week_history_selftest
+
+      - name: Build real historical weeks from immutable snapshots offline
+        run: |
+          set -euo pipefail
+          python -m src.build_week_history
+          test -s docs/history/index.html
+          grep -ql '<th>Final result</th>' docs/history/week-*.html
+          grep -ql 'id="weekHistorySelect"' docs/history/week-*.html
+
