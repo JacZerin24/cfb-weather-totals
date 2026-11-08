@@ -57,6 +57,11 @@ jobs:
           python -m src.prospective_ledger validate-protocol
           python -m src.prospective_integrity_rebuild
 
+      - name: Refresh archived weekly pages with verified final scores
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: python -m src.build_week_history
+
       # The two research-only shadow graders still rely on pandas 2.x's
       # permissive bool-into-float assignment behavior. Keep the production
       # ledger on the repository-pinned pandas version above, then isolate the
@@ -84,6 +89,7 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add outputs/prospective/2026/
+          git add docs/index.html docs/history/
           if [ -d outputs/orientation_shadow/2026/evaluation ]; then
             git add outputs/orientation_shadow/2026/evaluation/
           fi
