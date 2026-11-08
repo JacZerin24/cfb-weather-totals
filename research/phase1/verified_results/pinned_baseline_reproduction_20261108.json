@@ -1,0 +1,24 @@
+{
+  "input_sha256": "a2f5a61248afe895e39bde58c5d3f8e7d10ed490095418e45d69ff0bbc7b3678",
+  "sklearn_version": "1.9.0",
+  "rule": "FBS-vs-FBS HGB, early_stopping=False, UNDER edge>=4, total>=56",
+  "observed": {
+    "games": 651,
+    "graded": 643,
+    "wins": 376,
+    "losses": 267,
+    "pushes": 8,
+    "hit_rate": 0.5847589424572317,
+    "net_units": 74.81818181818181,
+    "roi": 0.1163579810547151
+  },
+  "published_expected": {
+    "games": 651,
+    "graded": 643,
+    "wins": 376,
+    "losses": 267,
+    "pushes": 8
+  },
+  "matches_published_counts": true,
+  "warning": "Historical reproduction uses ex-post CFBD game weather and untimestamped CFBD selected totals; NOT a decision-time ROI validation."
+}
