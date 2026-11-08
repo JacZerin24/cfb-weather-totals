@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import os
 import re
-from datetime import datetime
+from datetime import timedelta
 from html import escape
 from pathlib import Path
 from typing import Any
@@ -98,8 +98,9 @@ def read_snapshots() -> pd.DataFrame:
     if frames.empty:
         return frames
     kickoff_ct = frames["start_date"].dt.tz_convert(CT)
-    week_start_ct = kickoff_ct.dt.normalize() - pd.to_timedelta(kickoff_ct.dt.weekday, unit="D")
-    frames["week_start"] = week_start_ct.dt.strftime("%Y-%m-%d")
+    frames["week_start"] = kickoff_ct.dt.date.map(
+        lambda day: (day - timedelta(days=day.weekday())).isoformat()
+    )
     frames = frames.sort_values(["snapshot_timestamp_utc", "game_id"])
     # An exact pre-kickoff archived row, not a retrospectively re-scored game.
     return frames.drop_duplicates(["game_id", "week_start"], keep="last")
@@ -235,7 +236,7 @@ def add_navigation(html: str, weeks: list[tuple[str, str]], selected: str | None
     if "    .week-history-nav {" not in html:
         html = html.replace("  </style>", css + "\n  </style>", 1)
     html = html.replace("</nav>", "</nav>\n" + navigation(weeks, selected, history), 1)
-    if not history:
+    if not history and '<a href="history/">Previous weeks</a>' not in html:
         html = html.replace('<a href="#board">Full board</a>',
                             '<a href="#board">Full board</a><a href="history/">Previous weeks</a>', 1)
     return html
@@ -315,7 +316,7 @@ def build_history(now: pd.Timestamp | None = None, fetch_scores: bool = True) ->
         return {}
     now = now if now is not None else pd.Timestamp.now(tz=CT)
     now_ct = pd.Timestamp(now).tz_convert(CT)
-    this_week = (now_ct.normalize() - pd.Timedelta(days=now_ct.weekday())).strftime("%Y-%m-%d")
+    this_week = (now_ct.date() - timedelta(days=now_ct.weekday())).isoformat()
     snapshots = snapshots[snapshots["week_start"].lt(this_week)].copy()
     if snapshots.empty:
         print("No prior completed calendar weeks available.")
