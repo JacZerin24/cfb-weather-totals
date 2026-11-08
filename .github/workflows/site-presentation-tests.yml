@@ -51,3 +51,6 @@ jobs:
           grep -q 'id="radarToggle"' docs/index.html
           grep -q 'id="weatherFilter"' docs/index.html
           grep -q 'data-weather-sort="2"' docs/index.html
+
+      - name: Validate archived pre-kickoff week viewer without external APIs
+        run: python -m src.build_week_history_selftest
