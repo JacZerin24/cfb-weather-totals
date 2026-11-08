@@ -244,6 +244,11 @@ jobs:
             python -m src.prospective_ledger verify
           fi
 
+      - name: Build historical week viewer from pregame archive
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: python -m src.build_week_history
+
       # Research-only challengers run only after the official prospective step.
       # They cannot change weekly_board.csv, weekly_picks.csv, thresholds, or the official ledger.
       - name: Capture research-only in-season form challenger
