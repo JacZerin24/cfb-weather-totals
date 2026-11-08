@@ -94,8 +94,11 @@ jobs:
         run: |
           set -euo pipefail
           python -m src.build_week_history
+          python -m src.preview_week_results
           test -s docs/history/index.html
+          test -s docs/history/current-week-review.json
           grep -q 'id="weekHistorySelect"' docs/index.html
+          grep -q '<th>Final result</th>' docs/index.html
           grep -ql '<th>Final result</th>' docs/history/week-*.html
 
       - name: Configure Pages
