@@ -1,1 +1,24 @@
-The requested file reference is not currently visible. Use files.search or files.list to rediscover the file, then retry with a returned ref_id or file_id.
+{
+  "pilot_years": [
+    2023,
+    2024,
+    2025
+  ],
+  "games": 12,
+  "horizons": [
+    48,
+    24,
+    6,
+    2
+  ],
+  "forecast_rows": 48,
+  "by_status": {
+    "forecast_reconstructed": 36,
+    "missing_archive_run_or_forecast_range": 12
+  },
+  "archive_weather_successes": 36,
+  "genuine_timestamped_bookmaker_quotes": 0,
+  "execution_verified_plays": 0,
+  "execution_verified_roi": null,
+  "note": "No sportsbook data or archived model predictions supplied. Forecast publication lags are assumptions, not measured issue availability. No betting ROI can be computed."
+}
