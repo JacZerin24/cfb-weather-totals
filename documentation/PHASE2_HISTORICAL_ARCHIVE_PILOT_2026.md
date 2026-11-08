@@ -60,3 +60,18 @@ python -m research.phase2.odds_snapshot_import \
 4. Compute season-level ROI only on actual quotes using a frozen candidate strategy, include bootstrapped confidence bands and variation by season. **No 50% ROI claim without a demonstrably independent and sufficiently large prospective test.**
 
 The retrospective reconstructed weather is an engineering feasibility demonstration, not proof that the legacy historical selection was placeable or that its edge generalizes.
+
+## Expanded 12-case geographic feasibility check (after initial three-case engine validation)
+
+After the initial three-case weather engine succeeded, a second **pre-registered before fetching the additional forecasts** sample was defined for broader climate/geographic coverage. Select the **first chronological FBS opponent** at the following four **outdoor** home venues in each of 2023, 2024, and 2025, for 12 games total (36 nominal available forecasts plus 12 unsupported 48h windows):
+
+| Venue | CFBD venue ID | Stadium latitude, longitude | Location source |
+|---|---:|---|---|
+| Tiger Stadium, LSU | 3958 | 30.4120, -91.1838 | https://cfbtrack.com/stadiums/3958-tiger-stadium-la |
+| Camp Randall, Wisconsin | 347 | 43.0699, -89.4127 | https://cfbtrack.com/stadiums/347-camp-randall-stadium |
+| Folsom Field, Colorado | 3726 | 40.0095, -105.2669 | https://cfbtrack.com/stadiums/3726-folsom-field |
+| Husky Stadium, Washington | 3765 | 47.6503, -122.3016 | https://cfbtrack.com/stadiums/3765-husky-stadium |
+
+The fixed `sample_games_2023_2025_multivenue.csv` is derived from the existing November 7 game archive, sorted within season and venue by actual scheduled timestamp, **without consulting outcomes, postgame weather, or which games the historical model selected**. This is an engineering/geographic sample, **not** random, not a representative ROI denominator, not a strategy result. The extra 12-case fetch is additive to the 3-case engineering demo and does not modify any source or live pipeline. Cases require exact venue ID and a historical CFBD market reference total solely to ensure the sample could eventually be matched to a pregame bookmaker quote; those historical totals are NOT passed into the weather extraction or treated as bets.
+
+CI writes only `research/phase2/multivenue_results/` to a research-only artifact. Full schedule and run forecast provenance are in the output CSV.
