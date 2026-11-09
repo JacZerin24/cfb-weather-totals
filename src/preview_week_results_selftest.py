@@ -58,6 +58,14 @@ def main() -> None:
         assert preview.current_calendar_start(
             pd.Timestamp("2026-11-08T12:00:00Z")
         ) == "2026-11-02"
+        assert preview.displayed_board_week_start(
+            rows, pd.Timestamp("2026-11-08T12:00:00Z")
+        ) == "2026-11-02"
+        next_slate = rows.copy()
+        next_slate["start_date"] = "2026-11-14T20:00:00Z"
+        assert preview.displayed_board_week_start(
+            next_slate, pd.Timestamp("2026-11-08T12:00:00Z")
+        ) == "2026-11-09", "Sunday results must follow next-week live slate"
         summary = preview.week_verification_summary(grades, "2026-11-02")
         assert summary["wins"] == 1 and summary["official_qualifiers"] == 1
         assert summary["net_units_1u_at_-110"] > 0.9

@@ -37,6 +37,17 @@ def current_calendar_start(now: pd.Timestamp | None = None) -> str:
     return (day - timedelta(days=day.weekday())).isoformat()
 
 
+def displayed_board_week_start(board: pd.DataFrame, now: pd.Timestamp | None = None) -> str:
+    """Match verification numbers to the LIVE slate rather than the calendar date."""
+    if "start_date" not in board or board.empty:
+        return current_calendar_start(now)
+    kickoff = pd.to_datetime(board["start_date"], utc=True, errors="coerce").dt.tz_convert(history.CT)
+    mondays = kickoff.dropna().dt.date.map(
+        lambda day: (day - timedelta(days=day.weekday())).isoformat()
+    )
+    return str(mondays.mode().iloc[0]) if not mondays.empty else current_calendar_start(now)
+
+
 def read_only_grade(scores: pd.DataFrame) -> pd.DataFrame:
     """Apply the frozen official selection and grading logic without writing ledgers."""
     raw = _read_immutable(SNAPSHOT_DIR)
@@ -200,7 +211,7 @@ def publish_current_week_results(
     html = CURRENT.read_text(encoding="utf-8")
     new, final_count = apply_current_table(html, board, snapshots, finals, current_grades)
     CURRENT.write_text(new, encoding="utf-8")
-    week_start = current_calendar_start(now)
+    week_start = displayed_board_week_start(board, now)
     summary = week_verification_summary(current_grades, week_start)
     summary["live_board_games"] = len(board)
     summary["live_board_verified_finals"] = final_count

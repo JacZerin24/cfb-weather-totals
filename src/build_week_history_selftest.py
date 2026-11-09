@@ -53,7 +53,8 @@ def main() -> None:
                 "actual_total_points": 44,
             }]).to_csv(history.SOURCE / "graded_entries.csv", index=False)
             (base / "docs/index.html").write_text(
-                '<html><head><style></style></head><body><nav>'
+                '<html><head><style></style></head><body>'
+                '<header><h1>CFB Weather Totals</h1></header><nav>'
                 '<a href="#board">Full board</a></nav></body></html>',
                 encoding="utf-8",
             )
@@ -84,6 +85,23 @@ def main() -> None:
             live = (base / "docs/index.html").read_text(encoding="utf-8")
             assert live.count(history.NAV_START) == 1
             assert live.count('href="history/"') == 1
+            assert live.index(history.NAV_START) > live.index("<h1>CFB Weather Totals</h1>")
+            assert live.index(history.NAV_START) < live.index("</header>")
+            assert "Browse weeks" in live
+            assert "Previous week: Week 1" in live
+            assert 'aria-label="Select college football week"' in live
+
+            # An early Sunday refresh can display NEXT week's board already.
+            # In that case Saturday's completed games must be visible in history
+            # on Sunday, without waiting for the Monday calendar rollover.
+            pd.DataFrame([{
+                "start_date": "2026-09-12T20:00:00Z",
+            }]).to_csv(base / "outputs/weekly_board.csv", index=False)
+            assert history.live_board_week_start() == "2026-09-07"
+            sunday = history.build_history(
+                now=pd.Timestamp("2026-09-06T12:00:00Z"), fetch_scores=False
+            )
+            assert sum(sunday.values()) == 1, sunday
     finally:
         history.SOURCE, history.DEST, history.ROOT = old
     print("Historical week viewer self-test passed: pregame snapshot, final result, "
