@@ -13,3 +13,8 @@ The live site's season/week selector also links to individual archived week page
 The Pages-only `src.preview_week_results` step shows verified completed scores
 and in-memory frozen-protocol paper results on the current weekly board even on Sundays.
 This does not rewrite the official graded ledger or alter the model pipeline.
+
+The Pages renderer places a prominent **Browse weeks** selector next to the page
+heading, with a direct link to the latest archived week. If the operational
+board already shows next week's games on Sunday, the previously completed
+slate becomes available in history immediately. All changes are display-only.
