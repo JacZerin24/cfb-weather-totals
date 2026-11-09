@@ -213,21 +213,50 @@ def navigation(weeks: list[tuple[str, str]], selected: str | None, history: bool
             f'<option value="{escape(href)}"{" selected" if selected == name else ""}>'
             f'{escape(label)}</option>'
         )
+    if history:
+        quick = f'<a class="week-history-prev" href="{live}">Back to current week</a>'
+    elif weeks:
+        last_name, last_label = weeks[-1]
+        latest_url = f'history/{last_name}.html'
+        quick = (f'<a class="week-history-prev" href="{escape(latest_url)}">'
+                 f'Previous week: {escape(last_label)}</a>')
+    else:
+        quick = ""
     return (
         NAV_START +
-        '<div class="shell week-history-nav"><label for="weekHistorySelect">'
-        'Season / week</label><select id="weekHistorySelect" aria-label="Select college football week" '
+        '<div class="week-history-nav" role="group" aria-label="Browse college football weeks">'
+        '<div class="week-history-meta"><strong>Browse weeks</strong>'
+        '<span>Review past game results and forecasts</span></div>'
+        '<label class="week-history-select-label" for="weekHistorySelect">Season / week</label>'
+        '<select id="weekHistorySelect" aria-label="Select college football week" '
         'onchange="if(this.value) window.location.href=this.value;">' +
-        "".join(option_list) + "</select></div>" + NAV_END
+        "".join(option_list) + "</select>" + quick + "</div>" + NAV_END
     )
 
 
 def add_navigation(html: str, weeks: list[tuple[str, str]], selected: str | None, history: bool) -> str:
     html = re.sub(re.escape(NAV_START) + r".*?" + re.escape(NAV_END), "", html, flags=re.S)
     css = """
-    .week-history-nav { display:flex; gap:12px; align-items:center; padding:12px 0; }
-    .week-history-nav label { color:var(--muted); font-size:12px; font-weight:900; }
-    .week-history-nav select { max-width:min(100%,360px); }
+    .week-history-nav { display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+      margin:16px 0 4px; padding:14px 16px; border:1px solid rgba(125,211,252,.38);
+      border-radius:14px; background:rgba(125,211,252,.09); }
+    .week-history-meta { display:grid; gap:3px; min-width:170px; }
+    .week-history-meta strong { font-size:15px; color:#f1f6ff; }
+    .week-history-meta span { font-size:12px; color:#bfdbfe; }
+    .week-history-select-label { font-size:12px; color:#cbd5e1; font-weight:800; }
+    .week-history-nav select { flex:1; min-width:160px; max-width:310px;
+      min-height:44px; padding:9px 12px; border:1px solid #64748b;
+      border-radius:10px; background:#17243d; color:#f8fbff; font-size:15px; }
+    .week-history-prev { display:inline-flex; align-items:center; min-height:44px;
+      padding:9px 12px; border:1px solid rgba(125,211,252,.38);
+      border-radius:10px; font-size:13px; font-weight:800; text-decoration:none;
+      color:#e0f2fe; background:rgba(125,211,252,.12); }
+    .week-history-prev:hover { background:rgba(125,211,252,.22); }
+    @media(max-width:720px) { .week-history-nav { align-items:stretch; }
+      .week-history-meta { width:100%; }
+      .week-history-select-label { width:100%; }
+      .week-history-nav select { max-width:none; width:100%; }
+      .week-history-prev { width:100%; justify-content:center; } }
     .history-result { min-width:184px; line-height:1.6; }
     .history-official { color:#bbf7d0; font-weight:800; }
     .history-note { margin:0 0 18px; padding:13px 17px; border:1px solid var(--line);
@@ -235,7 +264,12 @@ def add_navigation(html: str, weeks: list[tuple[str, str]], selected: str | None
     """
     if "    .week-history-nav {" not in html:
         html = html.replace("  </style>", css + "\n  </style>", 1)
-    html = html.replace("</nav>", "</nav>\n" + navigation(weeks, selected, history), 1)
+    picker = navigation(weeks, selected, history)
+    heading = "<h1>CFB Weather Totals</h1>"
+    if heading in html:
+        html = html.replace(heading, heading + "\n" + picker, 1)
+    else:
+        html = html.replace("</nav>", "</nav>\n" + picker, 1)
     if not history and '<a href="history/">Previous weeks</a>' not in html:
         html = html.replace('<a href="#board">Full board</a>',
                             '<a href="#board">Full board</a><a href="history/">Previous weeks</a>', 1)
@@ -309,6 +343,22 @@ def render_archive(
     return html
 
 
+def live_board_week_start() -> str | None:
+    """Identify the actual displayed slate week, even if it advances on Sunday."""
+    path = ROOT / "outputs/weekly_board.csv"
+    if not path.exists():
+        return None
+    try:
+        frame = pd.read_csv(path, usecols=["start_date"])
+    except (ValueError, OSError, pd.errors.EmptyDataError):
+        return None
+    dates = pd.to_datetime(frame["start_date"], utc=True, errors="coerce").dt.tz_convert(CT)
+    mondays = dates.dropna().dt.date.map(
+        lambda day: (day - timedelta(days=day.weekday())).isoformat()
+    )
+    return str(mondays.mode().iloc[0]) if not mondays.empty else None
+
+
 def build_history(now: pd.Timestamp | None = None, fetch_scores: bool = True) -> dict[str, int]:
     snapshots = read_snapshots()
     if snapshots.empty:
@@ -317,7 +367,11 @@ def build_history(now: pd.Timestamp | None = None, fetch_scores: bool = True) ->
     now = now if now is not None else pd.Timestamp.now(tz=CT)
     now_ct = pd.Timestamp(now).tz_convert(CT)
     this_week = (now_ct.date() - timedelta(days=now_ct.weekday())).isoformat()
-    snapshots = snapshots[snapshots["week_start"].lt(this_week)].copy()
+    # A Sunday refresh may already display NEXT week's slate. Make the prior
+    # completed slate available immediately instead of hiding it until Monday.
+    displayed_week = live_board_week_start()
+    archive_cutoff = max(this_week, displayed_week) if displayed_week else this_week
+    snapshots = snapshots[snapshots["week_start"].lt(archive_cutoff)].copy()
     if snapshots.empty:
         print("No prior completed calendar weeks available.")
         return {}
