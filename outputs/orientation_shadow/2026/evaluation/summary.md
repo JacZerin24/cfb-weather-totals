@@ -4,14 +4,14 @@
 
 Protocol: `orientation-eval-2026.3`  
 Challenger: `orientation-crosswind-hgb-v0.1`  
-Graded paired orientation-ready games: **495**
+Graded paired orientation-ready games: **498**
 
 ## Primary paired model metric
 
-- Baseline MAE: **12.661** points
-- Challenger MAE: **12.511** points
-- Challenger minus baseline MAE: **-0.149** points (negative is better)
-- 95% paired bootstrap interval: **[-0.282, -0.020]**
+- Baseline MAE: **12.630** points
+- Challenger MAE: **12.485** points
+- Challenger minus baseline MAE: **-0.146** points (negative is better)
+- 95% paired bootstrap interval: **[-0.276, -0.015]**
 
 ## Decision-support diagnostics
 
