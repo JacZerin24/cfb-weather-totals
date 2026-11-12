@@ -25,6 +25,13 @@ on:
     # Monday operational early look: 5:17 AM Central.
     - cron: '17 10 * * 1'    # CDT
     - cron: '17 11 * * 1'    # CST
+    # Early operational-only recovery opportunities. GitHub scheduled events can
+    # be delayed by hours; these give the deadline monitor more lead time.
+    # They are NOT official prospective entry crons and must never be promoted.
+    - cron: '37 7 * * 4,5'   # Thu/Fri 2:37 AM CDT
+    - cron: '37 8 * * 4,5'   # Thu/Fri 2:37 AM CST
+    - cron: '37 8 * * 6'     # Sat 3:37 AM CDT
+    - cron: '37 9 * * 6'     # Sat 3:37 AM CST
     # Thursday/Friday safety snapshot: 5:17 AM Central.
     - cron: '17 10 * * 4,5'  # CDT
     - cron: '17 11 * * 4,5'  # CST
@@ -71,10 +78,12 @@ jobs:
 
           case "$EVENT_SCHEDULE" in
             "17 10 * * 1"|"17 10 * * 4,5"|"17 13 * * 4,5"|"17 6 * * 6"|\
+            "37 7 * * 4,5"|"37 8 * * 6"|\
             "23 9 * * 0"|"23 9 * 2-10 2,3")
               EXPECTED_OFFSET="-0500"
               ;;
             "17 11 * * 1"|"17 11 * * 4,5"|"17 14 * * 4,5"|"17 7 * * 6"|\
+            "37 8 * * 4,5"|"37 9 * * 6"|\
             "17 11 * 11 2,3"|"17 14 * 11 2,3"|\
             "17 11 * 12,1 2,3"|"17 14 * 12,1 2,3"|"17 14 * 12,1 1"|\
             "23 10 * * 0"|"23 10 * 2-10 2,3")
