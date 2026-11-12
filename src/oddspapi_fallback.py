@@ -15,7 +15,7 @@ from .odds_api_fallback import _kickoff_distance_hours, _provider_rank, _team_sc
 BASE_URL = 'https://api.oddspapi.io/v4'
 AMERICAN_FOOTBALL_SPORT_ID = 14
 NCAA_TOURNAMENT_ID = 27653
-BULK_BOOKMAKER_CHUNK_SIZE = 4
+BULK_BOOKMAKER_CHUNK_SIZE = 1  # Provider rejects multi-book requests on this subscription.
 COVERAGE_PATH = Path('outputs/oddspapi_bookmaker_coverage.csv')
 
 # Live FCS coverage audit on 2026-08-27 found bet365 and Hard Rock Bet on
@@ -389,12 +389,13 @@ def fetch_oddspapi_ncaa(
     stats['oddspapi_request_count'] = subscription.get('request_count')
     bulk_books = _bulk_bookmakers(subscription)
 
-    # Keep a reserve of at least five requests so scheduled runs cannot exhaust
-    # the free account. Fixtures + markets cost two calls; each book costs one.
+    # Preserve five unused metered requests after fixtures, markets and odds.
+    # Query one bookmaker per request: the live account rejected a four-book
+    # comma-separated bulk query with HTTP 400 on 2026-11-12.
     try:
         request_limit = int(stats['oddspapi_request_limit'])
         request_count = int(stats['oddspapi_request_count_before'])
-        max_bulk_calls = max(0, request_limit - request_count - 2)
+        max_bulk_calls = max(0, request_limit - request_count - 2 - 5)
         if max_bulk_calls < len(_chunks(bulk_books)):
             bulk_books = bulk_books[:max_bulk_calls * BULK_BOOKMAKER_CHUNK_SIZE]
     except (TypeError, ValueError):
