@@ -11,9 +11,13 @@ on:
     branches: [main]
   schedule:
     # Repeated operational recovery checks. All clock times are America/Chicago.
-    # Sunday-Friday: 6:07 through 11:07 AM; hard deadline audit at 12:13 PM.
-    - cron: '7 11-16 * * 0-5'  # CDT
-    - cron: '7 12-17 * * 0-5'  # CST
+    # Sunday-Wednesday: 6:07 through 11:07 AM. Thursday/Friday start
+    # at 3:07 AM to catch missing early recovery builds before the deadline.
+    # Hard deadline audit remains 12:13 PM.
+    - cron: '7 11-16 * * 0-3'  # Sun-Wed CDT
+    - cron: '7 12-17 * * 0-3'  # Sun-Wed CST
+    - cron: '7 8-16 * * 4,5'  # Thu/Fri CDT 3:07-11:07 AM
+    - cron: '7 9-17 * * 4,5'  # Thu/Fri CST 3:07-11:07 AM
     - cron: '13 17 * * 0-5'   # CDT noon deadline audit
     - cron: '13 18 * * 0-5'   # CST noon deadline audit
     # Saturday: 3:07 through 7:07 AM; hard deadline audit at 8:13 AM.
@@ -53,10 +57,10 @@ jobs:
           fi
 
           case "$EVENT_SCHEDULE" in
-            "7 11-16 * * 0-5"|"13 17 * * 0-5"|"7 8-12 * * 6"|"13 13 * * 6")
+            "7 11-16 * * 0-3"|"7 8-16 * * 4,5"|"13 17 * * 0-5"|"7 8-12 * * 6"|"13 13 * * 6")
               EXPECTED_OFFSET="-0500"
               ;;
-            "7 12-17 * * 0-5"|"13 18 * * 0-5"|"7 9-13 * * 6"|"13 14 * * 6")
+            "7 12-17 * * 0-3"|"7 9-17 * * 4,5"|"13 18 * * 0-5"|"7 9-13 * * 6"|"13 14 * * 6")
               EXPECTED_OFFSET="-0600"
               ;;
             *)

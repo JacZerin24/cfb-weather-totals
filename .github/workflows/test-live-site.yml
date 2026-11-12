@@ -34,6 +34,9 @@ jobs:
       - name: Validate market cache safety
         run: python -m src.market_line_cache_selftest
 
+      - name: Validate OddsPapi request batching and quota safety
+        run: python -m src.oddspapi_reliability_selftest
+
       - name: Validate live decision and integration logic
         run: |
           python - <<'PY'
