@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-12T01:00:20.011049+00:00",
+  "generated_at_utc": "2026-11-12T11:52:19.233525+00:00",
   "evaluation_id": "nfl_totals_prospective_eval_v1",
   "protocol_id": "nfl_totals_paper_v1",
   "status": "INSUFFICIENT_SAMPLE",
@@ -31,8 +31,8 @@
     "brier_score": 0.2621801353086093,
     "empirical_base_rate": 0.5189873417721519,
     "empirical_base_rate_brier": 0.24963948085242743,
-    "monitored_decisions": 82,
-    "monitor_coverage_fraction": 0.9879518072289156,
+    "monitored_decisions": 83,
+    "monitor_coverage_fraction": 1.0,
     "late_qualifiers_after_freeze": 2,
     "official_entries_faded": 1,
     "tier_upgrades_later": 0,
