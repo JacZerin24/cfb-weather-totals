@@ -1,6 +1,6 @@
 # NFL Live Weekly Paper Board
 
-Generated: 2026-11-12T11:52:10.691446+00:00
+Generated: 2026-11-12T12:33:46.878641+00:00
 
 Frozen protocol: nfl_totals_paper_v1 v1
 
@@ -8,7 +8,7 @@ This board is operational paper-mode output. First-attempt scheduled runs archiv
 
 | status      | decision_state    |   week | away_team   | home_team   | kickoff_utc               |   closing_total |   consensus_over_price |   forecast_temp_24h |   forecast_wind_24h |   pred_market_residual |   over_probability |   model_projected_total |
 |:------------|:------------------|-------:|:------------|:------------|:--------------------------|----------------:|-----------------------:|--------------------:|--------------------:|-----------------------:|-------------------:|------------------------:|
-| PAST WINDOW | PAST_24H_WINDOW   |     10 | WAS         | NYG         | 2026-11-13 01:15:00+00:00 |            41   |                   -108 |                49.9 |                17.3 |              -4.746    |           0.326643 |                 36.254  |
+| PAST WINDOW | PAST_24H_WINDOW   |     10 | WAS         | NYG         | 2026-11-13 01:15:00+00:00 |            40.5 |                   -112 |                49.9 |                17.3 |              -4.746    |           0.321543 |                 35.754  |
 | EARLY LOOK  | BEFORE_24H_WINDOW |     10 | NE          | DET         | 2026-11-15 14:30:00+00:00 |            51   |                   -108 |               nan   |               nan   |               1.99474  |           0.548471 |                 52.9947 |
 | EARLY LOOK  | BEFORE_24H_WINDOW |     10 | KC          | ATL         | 2026-11-15 18:00:00+00:00 |            47   |                   -113 |               nan   |               nan   |               0.198987 |           0.463808 |                 47.199  |
 | EARLY LOOK  | BEFORE_24H_WINDOW |     10 | HOU         | CLE         | 2026-11-15 18:00:00+00:00 |            41.5 |                   -108 |                42.3 |                 9.8 |              -0.32771  |           0.459136 |                 41.1723 |
