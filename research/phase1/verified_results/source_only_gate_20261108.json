@@ -1,0 +1,12 @@
+{
+  "status": "BLOCKED_NO_VERIFIABLE_BETS",
+  "evaluated_game_horizons": 107340,
+  "distinct_games": 26835,
+  "complete_game_horizons": 0,
+  "graded_qualifiers": 0,
+  "wins": 0,
+  "losses": 0,
+  "pushes": 0,
+  "roi_per_stake": null,
+  "important": "No verifiable bets means ROI is unavailable, not 0%. Multiple lead horizons must never be summed as independent wagers; market access and transaction costs are not demonstrated."
+}
