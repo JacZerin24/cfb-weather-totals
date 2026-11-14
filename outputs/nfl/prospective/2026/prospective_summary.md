@@ -2,8 +2,8 @@
 
 Frozen protocol: nfl_totals_paper_v1
 
-- Official decisions recorded: 83
-- Official paper entries: 1
+- Official decisions recorded: 90
+- Official paper entries: 2
 - Near-kickoff benchmarks: 1
 
 Official decisions are selected from content-hashed immutable decision snapshots. The first eligible scheduled snapshot inside the frozen 24-hour window is permanent for that game.
