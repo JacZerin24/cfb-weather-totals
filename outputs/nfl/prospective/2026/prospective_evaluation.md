@@ -6,13 +6,13 @@ This status never authorizes wagering automatically. REVIEW_ELIGIBLE means only 
 
 ## Prospective performance
 
-- Official decisions graded: 83
-- Official entries graded: 1
-- Record: 0-1-0 pushes
-- Win rate: 0.00%
-- 95% Wilson interval: 0.00% to 79.35%
-- Captured-price ROI: -100.00% (-1.000 units)
-- Flat -110 reference ROI: -100.00%
+- Official decisions graded: 90
+- Official entries graded: 2
+- Record: 1-1-0 pushes
+- Win rate: 50.00%
+- 95% Wilson interval: 9.45% to 90.55%
+- Captured-price ROI: -4.55% (-0.091 units)
+- Flat -110 reference ROI: -4.55%
 
 ## Closing-line value
 
@@ -23,11 +23,11 @@ This status never authorizes wagering automatically. REVIEW_ELIGIBLE means only 
 
 ## Calibration
 
-- Calibration decisions: 80
-- Brier score: 0.265
+- Calibration decisions: 87
+- Brier score: 0.262
 - Empirical base-rate Brier: 0.249
-- Mean predicted P(OVER): 47.28%
-- Observed OVER rate: 52.50%
+- Mean predicted P(OVER): 47.62%
+- Observed OVER rate: 52.87%
 
 ## Frozen-signal stability
 
