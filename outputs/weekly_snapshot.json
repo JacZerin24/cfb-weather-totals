@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-15T16:27:18.855510+00:00",
+  "generated_at": "2026-11-15T17:17:32.684478+00:00",
   "season": 2026,
   "week": 11,
   "games_scanned": 1,
@@ -36,7 +36,7 @@
       "selected_vs_market_median": 0.0,
       "line_cache_status": "LIVE",
       "line_is_cached": false,
-      "line_last_seen_utc": "2026-11-15T16:27:14.175253+00:00",
+      "line_last_seen_utc": "2026-11-15T17:17:26.712575+00:00",
       "line_age_hours": 0.0,
       "model_projected_total": 47.935166823848476,
       "pred_market_residual": -0.5648331761515266,
