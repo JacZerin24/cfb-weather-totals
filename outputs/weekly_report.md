@@ -1,14 +1,14 @@
 # Weekly CFB Weather Totals Report
 
-Generated: 2026-11-15 17:19 UTC
+Generated: 2026-11-16 21:08 UTC
 
 > Paper tracking only. This report is not a guarantee of profit or betting advice.
 
 ## Weekly picks
 
-| status              | note                                                                                           |
-|:--------------------|:-----------------------------------------------------------------------------------------------|
-| no_qualifying_plays | No game currently satisfies the HGB under 4.0+ edge, 56+ total, and forecast-readiness screen. |
+| status    | decision_reason                                                         |   research_tags | division_track   | model_track   |   season |   week |   game_id | start_date                | start_time_tbd   | away_team   | home_team   | venue_name                         | venue_city   | venue_state   |   venue_latitude |   venue_longitude | game_indoors   |   closing_total | line_provider   | line_source   |   line_provider_count |   line_total_range |   line_total_median |   selected_vs_market_median | line_cache_status   | line_is_cached   | line_last_seen_utc               |   line_age_hours |   model_projected_total |   pred_market_residual |   abs_pred_edge | model_side   |   temperature_f |   dewpoint_f |   humidity |   wind_mph |   wind_gust_mph |   precip_probability_pct |   precipitation |   snowfall | weather_summary                    | nws_status   | nws_office   | home_conference   | away_conference   | home_classification   | away_classification   | fbs_vs_fbs   |   status_rank |
+|:----------|:------------------------------------------------------------------------|----------------:|:-----------------|:--------------|---------:|-------:|----------:|:--------------------------|:-----------------|:------------|:------------|:-----------------------------------|:-------------|:--------------|-----------------:|------------------:|:---------------|----------------:|:----------------|:--------------|----------------------:|-------------------:|--------------------:|----------------------------:|:--------------------|:-----------------|:---------------------------------|-----------------:|------------------------:|-----------------------:|----------------:|:-------------|----------------:|-------------:|-----------:|-----------:|----------------:|-------------------------:|----------------:|-----------:|:-----------------------------------|:-------------|:-------------|:------------------|:------------------|:----------------------|:----------------------|:-------------|--------------:|
+| QUALIFIES | Validated HGB under edge ≥4.0 with the preferred 56+ high-total screen. |             nan | FBS              | GENERAL HGB   |     2026 |     12 | 401862834 | 2026-11-21 17:00:00+00:00 | False            | Memphis     | Navy        | Navy-Marine Corps Memorial Stadium | Annapolis    | MD            |          38.9847 |          -76.5076 | False          |            66.5 | DraftKings      | CFBD          |                     2 |                  0 |                66.5 |                           0 | LIVE                | False            | 2026-11-16T21:05:56.250506+00:00 |                0 |                 61.5723 |                -4.9277 |          4.9277 | under        |              59 |           48 |         67 |     5.7539 |         6.90467 |                        1 |             nan |        nan | No meaningful precipitation signal | ok           | LWX          | American Athletic | American Athletic | fbs                   | fbs                   | True         |             0 |
 
 ## Starter backtest summary
 
