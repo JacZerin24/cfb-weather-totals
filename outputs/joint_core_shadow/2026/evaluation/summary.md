@@ -5,14 +5,14 @@
 Protocol: `joint-core-eval-2026.2`  
 Challenger: `joint-core-weather-context-hgb-v0.1`  
 Prospective signal: **PROSPECTIVE_MAE_FAVORABLE_UNCERTAIN**  
-Graded paired joint-core-ready games: **525**
+Graded paired joint-core-ready games: **527**
 
 ## Primary paired model metric
 
-- Baseline MAE: **12.800** points
-- Challenger MAE: **12.690** points
-- Challenger minus baseline MAE: **-0.110** points (negative is better)
-- 95% paired bootstrap interval: **[-0.263, +0.044]**
+- Baseline MAE: **12.809** points
+- Challenger MAE: **12.698** points
+- Challenger minus baseline MAE: **-0.111** points (negative is better)
+- 95% paired bootstrap interval: **[-0.266, +0.045]**
 
 ## Decision-support diagnostics
 
