@@ -144,7 +144,7 @@
     "office": "HGX"
   },
   "29.7867,-90.8046": {
-    "checked_at": "2026-10-14T22:48:37.371375+00:00",
+    "checked_at": "2026-11-19T19:31:34.436997+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/LIX/40,80/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/LIX/40,80/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/LIX/40,80",
@@ -459,7 +459,7 @@
     "office": "SHV"
   },
   "32.6026,-85.4897": {
-    "checked_at": "2026-10-19T17:02:40.217455+00:00",
+    "checked_at": "2026-11-19T19:31:49.874558+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/BMX/111,47/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/BMX/111,47/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/BMX/111,47",
