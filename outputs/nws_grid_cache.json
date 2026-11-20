@@ -900,7 +900,7 @@
     "office": "GSP"
   },
   "35.4048,-78.7425": {
-    "checked_at": "2026-10-14T22:48:35.211312+00:00",
+    "checked_at": "2026-11-20T19:09:05.926430+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/RAH/73,40/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/RAH/73,40/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/RAH/73,40",
@@ -1242,7 +1242,7 @@
     "office": "AKQ"
   },
   "37.6758,-113.0774": {
-    "checked_at": "2026-10-14T22:48:39.134887+00:00",
+    "checked_at": "2026-11-20T19:09:11.677242+00:00",
     "forecast_hourly_url": "https://api.weather.gov/gridpoints/SLC/41,42/forecast/hourly",
     "forecast_url": "https://api.weather.gov/gridpoints/SLC/41,42/forecast",
     "grid_data_url": "https://api.weather.gov/gridpoints/SLC/41,42",
