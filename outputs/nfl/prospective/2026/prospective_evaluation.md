@@ -6,7 +6,7 @@ This status never authorizes wagering automatically. REVIEW_ELIGIBLE means only 
 
 ## Prospective performance
 
-- Official decisions graded: 92
+- Official decisions graded: 93
 - Official entries graded: 2
 - Record: 1-1-0 pushes
 - Win rate: 50.00%
@@ -23,15 +23,15 @@ This status never authorizes wagering automatically. REVIEW_ELIGIBLE means only 
 
 ## Calibration
 
-- Calibration decisions: 89
+- Calibration decisions: 90
 - Brier score: 0.263
 - Empirical base-rate Brier: 0.249
-- Mean predicted P(OVER): 47.58%
-- Observed OVER rate: 52.81%
+- Mean predicted P(OVER): 47.56%
+- Observed OVER rate: 53.33%
 
 ## Frozen-signal stability
 
-- Monitor coverage: 98.94%
+- Monitor coverage: 100.00%
 - Official NO PLAYs that qualified later: 2
 - Official entries that faded to NO PLAY later: 1
 - Later tier upgrades: 0

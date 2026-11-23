@@ -227,7 +227,7 @@
       </div>
       <div class="hero-card hero-side">
         <div><span class="eyebrow">Slate</span><br><strong>2026 · Week 11</strong></div>
-        <div><span class="eyebrow">Updated</span><br><strong>Nov 22, 2026 · 7:58 PM CT</strong></div>
+        <div><span class="eyebrow">Updated</span><br><strong>Nov 23, 2026 · 7:40 AM CT</strong></div>
         <div><span class="eyebrow">Official horizon</span><br><strong>24 hours before kickoff</strong></div>
         <div><span class="eyebrow">Side</span><br><strong>OVER only</strong></div>
       </div>
@@ -288,21 +288,21 @@
         </select>
       </div>
       <div class="cards" id="gameCards">
-      <article class="game-card" data-status="NO PLAY" data-signal="NO PLAY" data-state="24H_DECISION_WINDOW">
+      <article class="game-card" data-status="PAST WINDOW" data-signal="NO PLAY" data-state="PAST_24H_WINDOW">
         <div class="card-top">
-          <span class="badge no-play">NO PLAY</span>
-          <span class="time-to-kick">23.3h to kickoff</span>
+          <span class="badge past">PAST WINDOW</span>
+          <span class="time-to-kick">11.6h to kickoff</span>
         </div>
         <h3>CIN <span>@</span> WAS</h3>
         <div class="kickoff">Mon Nov 23 · 7:15 PM CT · Northwest Stadium</div>
         
-        <div class="pick">OVER 55.0 · -110 · BetUS</div>
-        <div class="best-price">Best at 55.0: +100 · LowVig.ag</div>
+        <div class="pick">OVER 54.5 · -110 · BetUS</div>
+        <div class="best-price">Best at 54.5: -108 · BetRivers</div>
         <div class="grid">
-          <div><span>Frozen model</span><strong>+-3.4 pts · P(OVER) 36.4% · model total 51.6</strong></div>
-          <div><span>Weather input</span><strong>24h JMA · 54°F · wind 12 mph</strong></div>
-          <div><span>Market breadth</span><strong>9 books · range 0.5 pts</strong></div>
-          <div><span>Decision state</span><strong>24H DECISION WINDOW</strong></div>
+          <div><span>Frozen model</span><strong>+-3.0 pts · P(OVER) 39.6% · model total 51.5</strong></div>
+          <div><span>Weather input</span><strong>24h JMA · 53°F · wind 11 mph</strong></div>
+          <div><span>Market breadth</span><strong>9 books · range 0.0 pts</strong></div>
+          <div><span>Decision state</span><strong>PAST 24H WINDOW</strong></div>
         </div>
         <div class="official no-play"><span class="official-label">Official 24h decision</span><strong>NO PLAY</strong><small>Frozen Nov 22 · 7:59 PM CT</small></div>
       </article>
@@ -352,7 +352,7 @@
               <th>Decision state</th>
               <th><button class="sort-btn" type="button" data-nfl-sort="12">Hours to kick <span>↕</span></button></th>
             </tr></thead>
-            <tbody id="nflBoardBody"><tr data-status="NO PLAY" data-signal="NO PLAY" data-weather-types=""><td><span class="badge no-play">NO PLAY</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>CIN @ WAS</strong><br><small>Northwest Stadium</small></td><td class="kickoff-num" data-sort-value="1795482900">Mon Nov 23 · 7:15 PM CT</td><td class="nfl-num" data-sort-value="55.000000">OVER 55.0 · -110 · BetUS</td><td>55.0 +100 · LowVig.ag</td><td class="nfl-num" data-sort-value="54.400000">54°F</td><td class="nfl-num" data-sort-value="12.200000">12 mph</td><td>Outdoors</td><td class="nfl-num" data-sort-value="-3.357184">-3.4</td><td class="nfl-num" data-sort-value="0.364417">36.4%</td><td>24H DECISION WINDOW</td><td class="nfl-num" data-sort-value="23.267216">23.3h</td></tr></tbody>
+            <tbody id="nflBoardBody"><tr data-status="PAST WINDOW" data-signal="NO PLAY" data-weather-types=""><td><span class="badge past">PAST WINDOW</span></td><td><span class="badge no-play">NO PLAY</span></td><td><strong>CIN @ WAS</strong><br><small>Northwest Stadium</small></td><td class="kickoff-num" data-sort-value="1795482900">Mon Nov 23 · 7:15 PM CT</td><td class="nfl-num" data-sort-value="54.500000">OVER 54.5 · -110 · BetUS</td><td>54.5 -108 · BetRivers</td><td class="nfl-num" data-sort-value="53.400000">53°F</td><td class="nfl-num" data-sort-value="11.300000">11 mph</td><td>Outdoors</td><td class="nfl-num" data-sort-value="-2.987383">-3.0</td><td class="nfl-num" data-sort-value="0.395578">39.6%</td><td>PAST 24H WINDOW</td><td class="nfl-num" data-sort-value="11.572033">11.6h</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -389,7 +389,7 @@
           <div><span>Mean CLV</span><strong>0.50 pts</strong></div>
           <div><span>Brier score</span><strong>0.263</strong></div>
           <div><span>Graded entries</span><strong>2</strong></div>
-          <div><span>Graded decisions</span><strong>92</strong></div>
+          <div><span>Graded decisions</span><strong>93</strong></div>
         </div>
         <div class="evaluation-note"><strong>Unmet pre-registered checks:</strong> sample_graded_entries, sample_graded_official_decisions, sample_entries_with_clv, sample_distinct_entry_weeks, performance_positive_captured_price_roi…</div>
       </div>
@@ -440,7 +440,7 @@
 
   <script>
     // NFL_SITE_PARITY
-    const nflGamePoints = [{"game_id": "2026_11_CIN_WAS", "lat": 38.907703, "lon": -76.8645083, "status": "NO PLAY", "signal": "NO PLAY", "state": "24H_DECISION_WINDOW", "away": "CIN", "home": "WAS", "kickoff": "Mon Nov 23 · 7:15 PM CT", "venue": "Northwest Stadium", "market": "OVER 55.0 · -110 · BetUS", "best": "55.0 +100 · LowVig.ag", "model": "OVER edge -3.4 · model 51.6 · P(OVER) 36.4%", "weather": "24h JMA · 54°F · wind 12 mph", "roof": "outdoors", "weather_types": []}];
+    const nflGamePoints = [{"game_id": "2026_11_CIN_WAS", "lat": 38.907703, "lon": -76.8645083, "status": "PAST WINDOW", "signal": "NO PLAY", "state": "PAST_24H_WINDOW", "away": "CIN", "home": "WAS", "kickoff": "Mon Nov 23 · 7:15 PM CT", "venue": "Northwest Stadium", "market": "OVER 54.5 · -110 · BetUS", "best": "54.5 -108 · BetRivers", "model": "OVER edge -3.0 · model 51.5 · P(OVER) 39.6%", "weather": "24h JMA · 53°F · wind 11 mph", "roof": "outdoors", "weather_types": []}];
     const nflSignalColors = {
       'STRONG':'#a3e635',
       'QUALIFIES':'#22c55e',
