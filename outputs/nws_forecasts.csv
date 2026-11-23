@@ -48,9 +48,9 @@ game_id,away_team,home_team,start_date,venue_name,game_indoors,nws_status,nws_of
 401871103,Southern Miss,Old Dominion,2026-11-28 18:00:00+00:00,S.B. Ballard Stadium,False,ok,AKQ,56.0,39.0,53.0,11.50779092,18.412465472,0.0,,,No meaningful precipitation signal
 401864549,North Dakota State,San José State,2026-11-27 20:30:00+00:00,CEFCU Stadium,False,ok,MTR,66.0,55.0,68.0,0.0,3.452337276,0.0,0.0,0.0,No meaningful precipitation signal
 401869959,Louisiana,Georgia State,2026-11-28 19:00:00+00:00,Center Parc Stadium,False,ok,FFC,58.0,37.0,45.0,9.206232736,17.26168638,2.0,0.0,0.0,No meaningful precipitation signal
+401856764,South Carolina,Clemson,2026-11-28 20:00:00+00:00,"Memorial Stadium (Clemson, SC)",False,ok,GSP,62.0,39.0,43.0,11.50779092,19.563244564,1.0,0.0,0.0,No meaningful precipitation signal
 401856761,Louisville,Kentucky,2026-11-28 17:00:00+00:00,Kroger Field,False,ok,LMK,48.0,37.0,65.0,12.658570012,19.563244564,3.0,0.0,0.0,No meaningful precipitation signal
 401858314,Notre Dame,Syracuse,2026-11-28 17:00:00+00:00,JMA Wireless Dome,True,indoor,,,,,,,,,,Indoor/dome game
-401856764,South Carolina,Clemson,2026-11-28 20:00:00+00:00,"Memorial Stadium (Clemson, SC)",False,ok,GSP,62.0,39.0,43.0,11.50779092,19.563244564,1.0,0.0,0.0,No meaningful precipitation signal
 401869954,Louisiana Tech,Georgia Southern,2026-11-28 17:00:00+00:00,Allen E. Paulson Stadium,False,ok,CHS,58.0,38.0,47.0,9.206232736,13.809349104,0.0,,,No meaningful precipitation signal
 401862837,Florida Atlantic,East Carolina,2026-11-28 18:00:00+00:00,Dowdy-Ficklen Stadium,False,ok,MHX,59.0,39.0,47.0,9.206232736,13.809349104,0.0,,,No meaningful precipitation signal
 401866471,Miami (OH),Western Michigan,2026-11-25 00:00:00+00:00,Waldo Stadium,False,ok,GRR,33.0,19.0,56.0,1.150779092,4.603116368,0.0,0.0,0.0,No meaningful precipitation signal
