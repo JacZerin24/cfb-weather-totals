@@ -2,7 +2,7 @@
 
 Frozen protocol: nfl_totals_paper_v1
 
-- Official decisions recorded: 94
+- Official decisions recorded: 95
 - Official paper entries: 2
 - Near-kickoff benchmarks: 1
 

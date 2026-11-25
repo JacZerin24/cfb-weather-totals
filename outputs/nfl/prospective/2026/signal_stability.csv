@@ -93,3 +93,4 @@ game_id,week,away_team,home_team,official_signal,official_snapshot_utc,monitor_c
 2026_11_IND_HOU,11,IND,HOU,NO PLAY,2026-11-19 02:49:59.285497+00:00,2,NO PLAY,False,False,False,False
 2026_11_NYJ_LAC,11,NYJ,LAC,NO PLAY,2026-11-21 19:48:21.039038+00:00,2,NO PLAY,False,False,False,False
 2026_11_CIN_WAS,11,CIN,WAS,NO PLAY,2026-11-23 01:59:04.090096+00:00,1,NO PLAY,False,False,False,False
+2026_12_GB_LA,12,GB,LA,NO PLAY,2026-11-25 00:07:46.249481+00:00,0,,False,False,False,False
